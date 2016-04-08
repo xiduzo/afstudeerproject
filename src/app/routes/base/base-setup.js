@@ -18,12 +18,6 @@
             views: {
                 '': {
                     templateUrl: 'app/routes/base/base.html'
-                },
-                'header@base': {
-                    templateUrl: 'app/routes/base/header.html'
-                },
-                'footer@base': {
-                    templateUrl: 'app/routes/base/footer.html'
                 }
             }
         });

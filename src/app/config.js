@@ -10,9 +10,9 @@
         $urlRouterProvider,
         $logProvider,
         $compileProvider,
-        localStorageServiceProvider
+        localStorageServiceProvider,
+        DEBUG_ENABLED
     ) {
-
         $urlRouterProvider.otherwise('/');
 
         $logProvider.debugEnabled(DEBUG_ENABLED);

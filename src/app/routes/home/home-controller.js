@@ -6,7 +6,7 @@
         .controller('HomeController', HomeController);
 
     /** @ngInject */
-    function HomeController($state, API, $rootScope) {
+    function HomeController() {
 
         var vm = this;
 
