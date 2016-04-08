@@ -1,0 +1,6 @@
+# Ingore all the dependecy files
+bower_components/*
+node_modules/*
+
+# Ingore the temporarily files
+.tmp/*
