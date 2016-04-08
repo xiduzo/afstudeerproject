@@ -1,0 +1,43 @@
+// Basic colors
+$white: rgb(253, 253, 253);
+$black: rgb(15, 15, 15);
+$grey: rgb(236, 240, 241);
+
+$green: rgb(46, 204, 133);
+$red: rgb(231, 76, 60);
+$blue: rgb(34, 167, 240);
+
+$pink: rgb(210, 82, 127);
+$purple: rgb(102, 51, 153);
+$yellow: rgb(244, 208, 63);
+$orange: rgb(230, 126, 34);
+
+
+// Working colors
+$main_color: $green;
+$main_color-dark: darken($main_color, 10);
+$main_color-darker: darken($main_color, 15);
+$main_color-darkest: darken($main_color, 20);
+$main_color-light: lighten($main_color, 10);
+$main_color-lighter: lighten($main_color, 15);
+$main_color-lightest: lighten($main_color, 20);
+
+$support_color: $blue;
+$support_color-dark: darken($support_color, 10);
+$support_color-darker: darken($support_color, 15);
+$support_color-darkest: darken($support_color, 20);
+$support_color-light: lighten($support_color, 10);
+$support_color-lighter: lighten($support_color, 15);
+$support_color-lightest: lighten($support_color, 20);
+
+
+// Feedback to the user colors
+$message--error: $red;
+$message--warning: $orange;
+$message--good: $green;
+$message--feedback: $support_color;
+
+
+// Sections
+$background_color: rgb(236, 236, 236);
+$nav_color: $support_color-darkest;
