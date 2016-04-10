@@ -12,6 +12,7 @@
             'ui.router',
             'restangular',
             'LocalStorageModule',
+            'ngMaterial',
 
             // Filters
             'secondsToDateTime',
