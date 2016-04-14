@@ -1,16 +1,27 @@
-<div id="wrapper" layout="column" style="min-height: 100vh">
+<div id="wrapper" layout="column" style="height: 100vh">
 
-    <md-toolbar>
-        <h1>Angular app</h1>
+    <md-toolbar layout="row">
+        <md-button aria-label="toggle menu">
+            <md-icon md-svg-icon="menu">
+            </md-icon>
+        </md-button>
+        <h1>
+            [PLATFORM NAME]
+        </h1>
     </md-toolbar>
 
     <div class="container" layout="row" flex>
-        <md-sidenav md-is-locked-open="true" style="background: red;">
-            Sidenav
+        <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-4dp">
+            <md-list>
+                <md-list-item>
+                    <md-button>
+                        test
+                    </md-button>
+                </md-list-item>
+            </md-list>
         </md-sidenav>
 
-        <md-content style="background: green;" flex>
-            content
+        <md-content ui-view="main" flex>
         </md-content>
     </div>
 

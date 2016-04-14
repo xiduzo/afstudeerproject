@@ -12,7 +12,8 @@
         $compileProvider,
         localStorageServiceProvider,
         DEBUG_ENABLED,
-        $mdThemingProvider
+        $mdThemingProvider,
+        $mdIconProvider
     ) {
         $urlRouterProvider.otherwise('/');
 
@@ -46,6 +47,15 @@
             .primaryPalette('cmd')
             .accentPalette('cmdContrast')
         ; // End of theming
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Building the icon set
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $mdIconProvider
+            .icon('menu', './assets/icons/ic_menu_black_48px.svg', 48)
+        ; // End icon provier
+
+
 
     }
 
