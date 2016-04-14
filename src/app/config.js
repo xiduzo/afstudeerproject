@@ -43,20 +43,31 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        var cmd_palette = $mdThemingProvider.extendPalette('amber', {
-            // Define extra settings which has to differ from the default amber template
-            'contrastDefaultColor': 'light',
-        });
-
-        var cmd_palette_contrast = $mdThemingProvider.extendPalette('purple', {
-            // Define extra settings which has to differ from the default amber template
-            // 'contrastDefaultColor': 'light',
-        });
 
         $mdThemingProvider
             // Add palettes
-            .definePalette('cmd', cmd_palette)
-            .definePalette('cmdContrast', cmd_palette_contrast)
+            .definePalette('cmd', $mdThemingProvider.extendPalette('amber', {
+                'contrastDefaultColor': 'light',
+            }))
+            .definePalette('cmdContrast', {
+                // Im color blind, not that creative with colors
+                '50':   'FAFAFA', // #FAFAFA
+                '100':  'F5F5F5', // #F5F5F5
+                '200':  'EEEEEE', // #EEEEEE
+                '300':  'E0E0E0', // #E0E0E0
+                '400':  'BDBDBD', // #BDBDBD
+                '500':  '9E9E9E', // #9E9E9E
+                '600':  '757575', // #757575
+                '700':  '616161', // #616161
+                '800':  '424242', // #424242
+                '900':  '212121', // #212121
+                'A100': '757575', // #757575
+                'A200': '616161', // #616161
+                'A400': '424242', // #424242
+                'A700': '212121', // #212121
+                'contrastDefaultColor': 'light',
+                'default': '000000' // #000000
+            })
 
             // Set the theme to default
             .theme('default')
