@@ -6,15 +6,27 @@
         .controller('BaseController', BaseController);
 
     /** @ngInject */
-    function BaseController() {
+    function BaseController($mdSidenav) {
 
-        var vm = this;
-
-        console.log(true);
+        var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         Method Declarations
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+		      Methods
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.toggleNavigation = toggleNavigation;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		      Method Declarations
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function toggleNavigation() {
+            // Opens and closes navigation
+            $mdSidenav('main__navigation').toggle();
+        }
 
     }
 

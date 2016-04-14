@@ -17,7 +17,9 @@
             abstract: true,
             views: {
                 '': {
-                    templateUrl: 'app/routes/base/base.html'
+                    templateUrl: 'app/routes/base/base.html',
+                    controller: 'BaseController',
+                    controllerAs: 'baseCtrl'
                 }
             }
         });
