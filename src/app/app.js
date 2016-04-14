@@ -5,7 +5,6 @@
         .module('cmd', [
 
             //3rd Parties
-            'toastr',
             'ngCookies',
             'ngSanitize',
             'ui.router',
