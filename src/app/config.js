@@ -52,7 +52,8 @@
             Building the icon set
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $mdIconProvider
-            .icon('menu', './assets/icons/ic_menu_black_48px.svg', 48)
+            .icon('menu_dark', './assets/icons/ic_menu_black_48px.svg', 48)
+            .icon('menu_light', './assets/icons/ic_menu_white_48px.svg', 48)
         ; // End icon provier
 
 

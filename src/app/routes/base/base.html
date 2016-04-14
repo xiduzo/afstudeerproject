@@ -1,9 +1,8 @@
 <div id="wrapper" layout="column" style="height: 100vh">
 
     <md-toolbar layout="row">
-        <md-button aria-label="toggle menu">
-            <md-icon md-svg-icon="menu">
-            </md-icon>
+        <md-button aria-label="toggle menu" md-no-ink>
+            <md-icon md-svg-icon="menu_light"></md-icon>
         </md-button>
         <h1>
             [PLATFORM NAME]
@@ -11,15 +10,7 @@
     </md-toolbar>
 
     <div class="container" layout="row" flex>
-        <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-4dp">
-            <md-list>
-                <md-list-item>
-                    <md-button>
-                        test
-                    </md-button>
-                </md-list-item>
-            </md-list>
-        </md-sidenav>
+        <navigation></navigation>
 
         <md-content ui-view="main" flex>
         </md-content>
