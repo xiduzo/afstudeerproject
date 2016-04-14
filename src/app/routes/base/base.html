@@ -1,7 +1,11 @@
 <div id="wrapper" layout="column" style="height: 100vh">
 
-    <md-toolbar layout="row">
-        <md-button hide-gt-sm aria-label="toggle menu" md-no-ink ng-click="baseCtrl.toggleNavigation()">
+    <md-toolbar layout="row" layout-padding>
+        <md-button
+            hide-gt-sm
+            md-no-ink
+            aria-label="toggle menu"
+            ng-click="baseCtrl.toggleNavigation()">
             <md-icon md-svg-icon="menu_light"></md-icon>
         </md-button>
         <h1>
@@ -12,8 +16,7 @@
     <div class="container" layout="row" flex>
         <navigation></navigation>
 
-        <md-content ui-view="main" flex>
-        </md-content>
+        <md-content ui-view="main" flex layout-padding></md-content>
     </div>
 
 </div>
