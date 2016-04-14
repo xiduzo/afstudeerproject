@@ -5,7 +5,6 @@
         .module('cmd', [
 
             //3rd Parties
-            'ngAnimate',
             'toastr',
             'ngCookies',
             'ngSanitize',
@@ -13,6 +12,7 @@
             'restangular',
             'LocalStorageModule',
             'ngMaterial',
+            'ngScrollbars',
 
             // Filters
             'secondsToDateTime',

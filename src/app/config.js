@@ -13,15 +13,32 @@
         localStorageServiceProvider,
         DEBUG_ENABLED,
         $mdThemingProvider,
-        $mdIconProvider
+        $mdIconProvider,
+        ScrollBarsProvider
     ) {
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Routing provier
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $urlRouterProvider.otherwise('/');
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Log provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $logProvider.debugEnabled(DEBUG_ENABLED);
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Compile provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $compileProvider.debugInfoEnabled(DEBUG_ENABLED);
 
-        localStorageServiceProvider.setPrefix('cmd');
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            localStorage provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        localStorageServiceProvider
+            .setPrefix('cmd')
+            .setStorageCookieDomain(window.location)
+            .setStorageCookie(60, '/')
+        ; // End of local storage
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
@@ -37,13 +54,14 @@
         });
 
         $mdThemingProvider
-            .definePalette('cmd', cmd_palette);
+            // Add palettes
+            .definePalette('cmd', cmd_palette)
+            .definePalette('cmdContrast', cmd_palette_contrast)
 
-        $mdThemingProvider
-            .definePalette('cmdContrast', cmd_palette_contrast);
-
-        $mdThemingProvider
+            // Set the theme to default
             .theme('default')
+
+            // Set palletes
             .primaryPalette('cmd')
             .accentPalette('cmdContrast')
         ; // End of theming
@@ -56,6 +74,19 @@
             .icon('menu_light', './assets/icons/ic_menu_white_48px.svg', 48)
         ; // End icon provier
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Fancy scrollbars \o.0/
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        ScrollBarsProvider.defaults = {
+            scrollButtons: {
+                scrollAmount: 'auto',
+                enable: false,
+            },
+            scrollInertia: 400,
+            axis: 'y', // 'y' || 'x' || 'yx'
+            theme: 'minimal-dark',
+            autoHideScrollbar: true,
+        };
 
 
     }
