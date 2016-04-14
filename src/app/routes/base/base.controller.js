@@ -6,7 +6,7 @@
         .controller('BaseController', BaseController);
 
     /** @ngInject */
-    function BaseController($mdSidenav) {
+    function BaseController($mdSidenav, $mdToast) {
 
         var self = this;
 
