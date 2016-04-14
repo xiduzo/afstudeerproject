@@ -69,9 +69,19 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Building the icon set
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // I actualy love this one b/c I won't be using
+        // a fontset with 80% unused shit I don't need .__.
         $mdIconProvider
             .icon('menu_dark', './assets/icons/ic_menu_black_48px.svg', 48)
             .icon('menu_light', './assets/icons/ic_menu_white_48px.svg', 48)
+            .icon('person_light', './assets/icons/ic_person_white_48px.svg', 48)
+            .icon('person_dark', './assets/icons/ic_person_black_48px.svg', 48)
+            .icon('dashboard_light', './assets/icons/ic_dashboard_white_48px.svg', 48)
+            .icon('dashboard_dark', './assets/icons/ic_dashboard_black_48px.svg', 48)
+            .icon('timeline_light', './assets/icons/ic_timeline_white_48px.svg', 48)
+            .icon('timeline_dark', './assets/icons/ic_timeline_black_48px.svg', 48)
+            .icon('school_light', './assets/icons/ic_school_white_48px.svg', 48)
+            .icon('school_dark', './assets/icons/ic_school_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

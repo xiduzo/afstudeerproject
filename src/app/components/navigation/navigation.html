@@ -4,8 +4,21 @@
     md-component-id="main__navigation">
     <md-list ng-click="navigationCtrl.toggleNavigation()">
         <md-list-item>
-            <md-button>
-                test
+            <md-button layout="row" layout-fill layout-align="start center">
+                <md-icon md-svg-icon="dashboard_dark"></md-icon>
+                <span flex>My dashboard</span>
+            </md-button>
+        </md-list-item>
+        <md-list-item>
+            <md-button layout="row" layout-fill layout-align="start center">
+                <md-icon md-svg-icon="person_dark"></md-icon>
+                <span flex>My account</span>
+            </md-button>
+        </md-list-item>
+        <md-list-item>
+            <md-button layout="row" layout-fill layout-align="start center">
+                <md-icon md-svg-icon="timeline_dark"></md-icon>
+                <span flex>Progress</span>
             </md-button>
         </md-list-item>
     </md-list>
