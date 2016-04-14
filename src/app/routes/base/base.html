@@ -1,7 +1,17 @@
-<div class="wrapper">
+<div id="wrapper" layout="column" style="min-height: 100vh">
 
-    <md-content data-ui-view="main" id="main">
+    <md-toolbar>
+        <h1>Angular app</h1>
+    </md-toolbar>
 
-    </md-content>
+    <div class="container" layout="row" flex>
+        <md-sidenav md-is-locked-open="true" style="background: red;">
+            Sidenav
+        </md-sidenav>
+
+        <md-content style="background: green;" flex>
+            content
+        </md-content>
+    </div>
 
 </div>

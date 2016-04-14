@@ -11,7 +11,8 @@
         $logProvider,
         $compileProvider,
         localStorageServiceProvider,
-        DEBUG_ENABLED
+        DEBUG_ENABLED,
+        $mdThemingProvider
     ) {
         $urlRouterProvider.otherwise('/');
 
@@ -20,6 +21,31 @@
         $compileProvider.debugInfoEnabled(DEBUG_ENABLED);
 
         localStorageServiceProvider.setPrefix('cmd');
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Build a CMD theme
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        var cmd_palette = $mdThemingProvider.extendPalette('amber', {
+            // Define extra settings which has to differ from the default amber template
+            'contrastDefaultColor': 'light',
+        });
+
+        var cmd_palette_contrast = $mdThemingProvider.extendPalette('purple', {
+            // Define extra settings which has to differ from the default amber template
+            // 'contrastDefaultColor': 'light',
+        });
+
+        $mdThemingProvider
+            .definePalette('cmd', cmd_palette);
+
+        $mdThemingProvider
+            .definePalette('cmdContrast', cmd_palette_contrast);
+
+        $mdThemingProvider
+            .theme('default')
+            .primaryPalette('cmd')
+            .accentPalette('cmdContrast')
+        ; // End of theming
 
     }
 
