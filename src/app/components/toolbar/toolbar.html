@@ -1,0 +1,22 @@
+<md-toolbar layout="row" layout-padding>
+    <md-button
+        hide-gt-sm
+        md-no-ink
+        aria-label="toggle menu"
+        ng-click="toolbarCtrl.toggleNavigation()">
+        <md-icon md-svg-icon="menu_light"></md-icon>
+    </md-button>
+    <h1 class="md-title" flex>
+        [PLATFORM NAME]
+    </h1>
+    <md-icon md-svg-icon="school_light"
+        ng-style="{
+            'height': '40px',
+            'width': '40px',
+        }"
+        >
+        <md-tooltip md-direction="left">
+            You have lecturer access
+        </md-tooltip>
+    </md-icon>
+</md-toolbar>
