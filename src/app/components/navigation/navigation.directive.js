@@ -3,11 +3,10 @@
 
     angular
         .module('cmd.components')
-        .directive('navigation', navigation)
-        .controller('NavigationController', NavigationController);
+        .directive('cmdNavigation', cmdNavigation);
 
     /** @ngInject */
-    function navigation() {
+    function cmdNavigation() {
 
         return {
             restrict: 'E',
@@ -17,32 +16,6 @@
             replace: true,
             bindToController: true,
         };
-
-    }
-
-    /** @ngInject */
-    function NavigationController($mdSidenav) {
-
-        var self = this;
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		      Methods
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.toggleNavigation = toggleNavigation;
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Variables
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		      Method Declarations
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function toggleNavigation() {
-            console.log(true);
-            // Opens and closes navigation
-            $mdSidenav('main__navigation').toggle();
-        }
 
     }
 
