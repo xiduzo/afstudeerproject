@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.worlds')
-        .controller('WorldsController', WorldsController);
+        .controller('WorldsOverviewController', WorldsOverviewController);
 
     /** @ngInject */
-    function WorldsController() {
+    function WorldsOverviewController() {
 
         var vm = this;
 

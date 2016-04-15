@@ -11,12 +11,17 @@
         $stateProvider
 
             .state('base.worlds', {
-                url: '/worlds',
+                url: '/account',
+                abstract: true
+            })
+
+            .state('base.worlds.overview', {
+                url: '/overview',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/coordinator/worlds/worlds.html',
-                        controller: 'WorldsController',
-                        controllerAs: 'worldsCtrl'
+                        templateUrl: 'app/routes/coordinator/worlds/overview/overview.html',
+                        controller: 'WorldsOverviewController',
+                        controllerAs: 'worldsOverviewCtrl'
                     }
                 }
             })
