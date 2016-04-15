@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.guilds', {
-                url: '/',
+                url: '/guilds',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/guilds.html',

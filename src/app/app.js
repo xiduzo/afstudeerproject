@@ -31,6 +31,8 @@
             'cmd.home',
             'cmd.worlds',
             'cmd.guilds',
+            'cmd.guild',
+            'cmd.account',
     ]);
 
 }());

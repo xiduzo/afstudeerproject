@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.worlds', {
-                url: '/',
+                url: '/worlds',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/worlds/worlds.html',
