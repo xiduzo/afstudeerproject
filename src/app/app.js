@@ -12,6 +12,7 @@
             'LocalStorageModule',
             'ngMaterial',
             'ngScrollbars',
+            'dndLists',
 
             // Filters
             'secondsToDateTime',
