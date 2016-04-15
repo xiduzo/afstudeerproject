@@ -29,6 +29,7 @@
 
             //routes
             'cmd.home',
+            'cmd.worlds',
             'cmd.guilds',
     ]);
 
