@@ -12,11 +12,16 @@
 
             .state('base.guilds', {
                 url: '/guilds',
+                abstract: true
+            })
+
+            .state('base.guilds.overview', {
+                url: '/overview',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/lecturer/guilds/guilds.html',
-                        controller: 'GuildsController',
-                        controllerAs: 'guildsCtrl'
+                        templateUrl: 'app/routes/lecturer/guilds/overview/overview.html',
+                        controller: 'GuildsOverviewController',
+                        controllerAs: 'guildsOverviewCtrl'
                     }
                 }
             })
