@@ -4,28 +4,59 @@
 
     <md-list ng-click="navigationCtrl.toggleNavigation()" ng-scrollbars>
 
+        <!-- Admin -->
+        <div>
+            <md-subheader>
+                Admin
+            </md-subheader>
+
+            <md-list-item md-ink-ripple>
+                <md-icon md-svg-icon="build_dark"></md-icon>
+                <span flex>Tweak game</span>
+            </md-list-item>
+
+            <md-divider></md-divider>
+        </div>
+
         <!-- Lecturer -->
-        <md-subheader>
-            Lecturer
-        </md-subheader>
-        <md-list-item md-ink-ripple>
-            <md-icon md-svg-icon="timeline_dark"></md-icon>
-            <span flex>Progress</span>
-        </md-list-item>
-        <md-divider></md-divider>
+        <div>
+            <md-subheader>
+                Lecturer
+            </md-subheader>
+
+            <md-list-item md-ink-ripple>
+                <md-icon md-svg-icon="timeline_dark"></md-icon>
+                <span flex>Progress</span>
+            </md-list-item>
+
+            <md-divider></md-divider>
+        </div>
 
         <!-- Student -->
-        <md-subheader>
-            Student
-        </md-subheader>
-        <md-list-item md-ink-ripple>
-            <md-icon md-svg-icon="dashboard_dark"></md-icon>
-            <span flex>My dashboard</span>
-        </md-list-item>
-        <md-list-item md-ink-ripple>
-            <md-icon md-svg-icon="person_dark"></md-icon>
-            <span flex>My account</span>
-        </md-list-item>
+        <div>
+            <md-subheader>
+                Student
+            </md-subheader>
+
+            <md-list-item md-ink-ripple>
+                <md-icon md-svg-icon="dashboard_dark"></md-icon>
+                <span flex>Dashboard</span>
+            </md-list-item>
+
+            <md-divider></md-divider>
+        </div>
+
+        <!-- All users -->
+        <div>
+            <md-subheader>
+                My account
+            </md-subheader>
+
+            <md-list-item md-ink-ripple>
+                <md-icon md-svg-icon="person_dark"></md-icon>
+                <span flex>My account</span>
+            </md-list-item>
+        </div>
 
     </md-list>
 

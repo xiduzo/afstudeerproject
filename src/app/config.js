@@ -93,6 +93,10 @@
             .icon('timeline_dark', './assets/icons/ic_timeline_black_48px.svg', 48)
             .icon('school_light', './assets/icons/ic_school_white_48px.svg', 24)
             .icon('school_dark', './assets/icons/ic_school_black_48px.svg', 48)
+            .icon('build_light', './assets/icons/ic_build_white_48px.svg', 24)
+            .icon('build_dark', './assets/icons/ic_build_black_48px.svg', 48)
+            .icon('gavel_light', './assets/icons/ic_gavel_white_48px.svg', 24)
+            .icon('gavel_dark', './assets/icons/ic_gavel_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
