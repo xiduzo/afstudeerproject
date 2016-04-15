@@ -105,6 +105,8 @@
             .icon('guild_dark', './assets/icons/ic_security_black_48px.svg', 48)
             .icon('world_light', './assets/icons/ic_public_white_48px.svg', 24)
             .icon('world_dark', './assets/icons/ic_public_black_48px.svg', 48)
+            .icon('pencil_light', './assets/icons/ic_create_white_48px.svg', 24)
+            .icon('pencil_dark', './assets/icons/ic_create_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
