@@ -1,11 +1,20 @@
 <section>
 
-
     <div layout="row" layout-wrap>
 
-        <div flex="100" flex-gt-xs="50" flex-gt-sm="100" flex-gt-md="50" flex-lg="33" flex-gt-lg="25" ng-repeat="world in worldsOverviewCtrl.worlds">
+        <div flex="100"
+            flex-gt-xs="50"
+            flex-gt-sm="100"
+            flex-gt-md="50"
+            flex-lg="33"
+            flex-gt-lg="25"
+            ng-repeat="world in worldsOverviewCtrl.worlds">
+
             <md-card>
-                <md-card-title>
+
+                <md-card-title ng-style="{
+                        'background': world.color
+                    }">
                     <md-card-title-text layout="row">
                         <md-icon md-svg-icon="world_dark"></md-icon>
                         <span class="md-headline" flex layout-margin>{{world.name}}</span>
@@ -15,15 +24,21 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-divider></md-divider>
+
                 <md-card-content>
-                    <md-list ng-repeat="guild in world.guilds">
-                        <md-list-item>
+                    <md-list dnd-list="world.guilds"
+                        dnd-inserted="worldsOverviewCtrl.moveGuild(event, item)">
+                        <md-list-item ng-repeat="guild in world.guilds"
+                            dnd-draggable="guild"
+                            dnd-moved="world.guilds.splice($index, 1)"
+                            dnd-effect-allowed="move">
                             <md-icon md-svg-icon="guild_dark"></md-icon>
                             <span flex>{{ guild.name }}</span>
                         </md-list-item>
                     </md-list>
                 </md-card-content>
                 <md-divider></md-divider>
+
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button>
                         Action 1
@@ -33,7 +48,8 @@
                     </md-button>
                 </md-card-actions>
             </md-card>
-        </div>
+
+        </div> <!-- End of worlds -->
 
     </div>
 

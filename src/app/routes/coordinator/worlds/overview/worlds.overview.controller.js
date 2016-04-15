@@ -6,7 +6,7 @@
         .controller('WorldsOverviewController', WorldsOverviewController);
 
     /** @ngInject */
-    function WorldsOverviewController($mdDialog) {
+    function WorldsOverviewController($mdDialog, $mdToast) {
 
         var vm = this;
 
@@ -14,6 +14,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         vm.changeWorldName = changeWorldName;
+        vm.moveGuild = moveGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -21,59 +22,63 @@
         vm.worlds = {
             groen: {
                 name: 'Groen',
-                guilds: {
-                    0: {
-                        name: 'Guild 1'
+                color: '#23cd86',
+                guilds: [
+                    {
+                        name: 'Guild g1'
                     },
-                    1: {
-                        name: 'Guild 2'
+                    {
+                        name: 'Guild g2'
                     },
-                    2: {
-                        name: 'Guild 3'
-                    },
-                }
+                    {
+                        name: 'Guild g3'
+                    }
+                ]
             },
             blauw: {
                 name: 'Blauw',
-                guilds: {
-                    0: {
-                        name: 'Guild 1'
+                color: '#2371cd',
+                guilds: [
+                    {
+                        name: 'Guild b1'
                     },
-                    1: {
-                        name: 'Guild 2'
+                    {
+                        name: 'Guild b2'
                     },
-                    2: {
-                        name: 'Guild 3'
-                    },
-                }
+                    {
+                        name: 'Guild b3'
+                    }
+                ]
             },
             geel: {
                 name: 'Geel',
-                guilds: {
-                    0: {
-                        name: 'Guild 1'
+                color: '#b5cd23',
+                guilds: [
+                    {
+                        name: 'Guild g1'
                     },
-                    1: {
-                        name: 'Guild 2'
+                    {
+                        name: 'Guild g2'
                     },
-                    2: {
-                        name: 'Guild 3'
-                    },
-                }
+                    {
+                        name: 'Guild g3'
+                    }
+                ]
             },
             Rood: {
                 name: 'Rood',
-                guilds: {
-                    0: {
-                        name: 'Guild 1'
+                color: '#cd2327',
+                guilds: [
+                    {
+                        name: 'Guild r1'
                     },
-                    1: {
-                        name: 'Guild 2'
+                    {
+                        name: 'Guild r2'
                     },
-                    2: {
-                        name: 'Guild 3'
-                    },
-                }
+                    {
+                        name: 'Guild r3'
+                    }
+                ]
             }
         };
 
@@ -99,11 +104,29 @@
                     }
                     // TODO
                     // Safe the new name to the DB
-                    console.log('Save to DB');
                     world.name = result;
+                    $mdToast.show(
+                        $mdToast
+                        .simple()
+                        .position('bottom right')
+                        .textContent('World name changed')
+                        .hideDelay(1000)
+                    );
                 }, function() {
                     console.log('Canceled');
                 });
+        }
+
+        function moveGuild(event, guild) {
+            // TODO
+            // Change the world ID of the guild
+            $mdToast.show(
+                $mdToast
+                .simple()
+                .position('bottom right')
+                .textContent('Guild moved to new world')
+                .hideDelay(1000)
+            );
         }
 
     }

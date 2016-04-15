@@ -1,0 +1,13 @@
+.dndPlaceholder {
+    background: $dndPlaceholder;
+    height: 48px;
+    list-style: none;
+}
+
+.dndDragging {
+    border: 1px solid #BDBDBD;
+}
+
+.dndDraggingSource {
+    display: none;
+}
