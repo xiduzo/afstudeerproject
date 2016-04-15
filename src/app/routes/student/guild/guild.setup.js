@@ -12,11 +12,16 @@
 
             .state('base.guild', {
                 url: '/guild',
+                abstract: true
+            })
+
+            .state('base.guild.overview', {
+                url: '/overview',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/student/guild/guild.html',
-                        controller: 'GuildController',
-                        controllerAs: 'guildCtrl'
+                        templateUrl: 'app/routes/student/guild/overview/overview.html',
+                        controller: 'GuildOverviewController',
+                        controllerAs: 'guildOverviewCtrl'
                     }
                 }
             })

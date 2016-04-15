@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.guild')
-        .controller('GuildController', GuildController);
+        .controller('GuildOverviewController', GuildOverviewController);
 
     /** @ngInject */
-    function GuildController() {
+    function GuildOverviewController() {
 
         var vm = this;
 
