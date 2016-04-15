@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.worlds', {
-                url: '/account',
+                url: '/worlds',
                 abstract: true
             })
 
