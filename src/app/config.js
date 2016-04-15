@@ -97,6 +97,12 @@
             .icon('build_dark', './assets/icons/ic_build_black_48px.svg', 48)
             .icon('gavel_light', './assets/icons/ic_gavel_white_48px.svg', 24)
             .icon('gavel_dark', './assets/icons/ic_gavel_black_48px.svg', 48)
+            .icon('settings_light', './assets/icons/ic_settings_white_48px.svg', 24)
+            .icon('settings_dark', './assets/icons/ic_settings_black_48px.svg', 48)
+            .icon('group_light', './assets/icons/ic_group_white_48px.svg', 24)
+            .icon('group_dark', './assets/icons/ic_group_black_48px.svg', 48)
+            .icon('guild_light', './assets/icons/ic_security_white_48px.svg', 24)
+            .icon('guild_dark', './assets/icons/ic_security_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
