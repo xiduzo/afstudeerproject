@@ -18,8 +18,8 @@
                     <md-card-title-text layout="row">
                         <md-icon md-svg-icon="world_dark"></md-icon>
                         <span class="md-headline" flex layout-margin>{{world.name}}</span>
-                        <md-button aria-label="Edit world name" ng-click="worldsOverviewCtrl.changeWorldName(world)">
-                            <md-icon md-svg-icon="pencil_dark"></md-icon>
+                        <md-button aria-label="Change world settings" ui-sref="base.worlds.settings({worldId: world.id})">
+                            <md-icon md-svg-icon="settings_dark"></md-icon>
                         </md-button>
                     </md-card-title-text>
                 </md-card-title>
@@ -27,7 +27,7 @@
 
                 <md-card-content>
                     <md-list dnd-list="world.guilds"
-                        dnd-inserted="worldsOverviewCtrl.moveGuild(event, item)">
+                        dnd-inserted="worldsOverviewCtrl.moveGuild(event, world, item)">
                         <md-list-item ng-repeat="guild in world.guilds"
                             dnd-draggable="guild"
                             dnd-moved="world.guilds.splice($index, 1)"

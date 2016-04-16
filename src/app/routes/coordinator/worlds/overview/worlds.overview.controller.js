@@ -13,7 +13,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        vm.changeWorldName = changeWorldName;
         vm.moveGuild = moveGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,60 +22,76 @@
             groen: {
                 name: 'Groen',
                 color: '#23cd86',
+                id: 1,
                 guilds: [
                     {
-                        name: 'Guild g1'
+                        name: 'Guild g1',
+                        world: 1
                     },
                     {
-                        name: 'Guild g2'
+                        name: 'Guild g2',
+                        world: 1
                     },
                     {
-                        name: 'Guild g3'
+                        name: 'Guild g3',
+                        world: 1
                     }
                 ]
             },
             blauw: {
                 name: 'Blauw',
                 color: '#2371cd',
+                id: 2,
                 guilds: [
                     {
-                        name: 'Guild b1'
+                        name: 'Guild b1',
+                        world: 2
                     },
                     {
-                        name: 'Guild b2'
+                        name: 'Guild b2',
+                        world: 2
                     },
                     {
-                        name: 'Guild b3'
+                        name: 'Guild b3',
+                        world: 2
                     }
                 ]
             },
             geel: {
                 name: 'Geel',
                 color: '#b5cd23',
+                id: 3,
                 guilds: [
                     {
-                        name: 'Guild g1'
+                        name: 'Guild g1',
+                        world: 3
                     },
                     {
-                        name: 'Guild g2'
+                        name: 'Guild g2',
+                        world: 3
                     },
                     {
-                        name: 'Guild g3'
+                        name: 'Guild g3',
+                        world: 3
                     }
                 ]
             },
             Rood: {
                 name: 'Rood',
                 color: '#cd2327',
+                id: 4,
                 guilds: [
                     {
-                        name: 'Guild r1'
+                        name: 'Guild r1',
+                        world: 4
                     },
                     {
-                        name: 'Guild r2'
+                        name: 'Guild r2',
+                        world: 4
                     },
                     {
-                        name: 'Guild r3'
+                        name: 'Guild r3',
+                        world: 4
                     }
                 ]
             }
@@ -85,41 +100,15 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function changeWorldName(world) {
-            // Appending dialog to document.body to cover sidenav in docs app
-            var confirm = $mdDialog.prompt()
-                .title('Enter a new name for '+world.name)
-                .clickOutsideToClose(true)
-                .placeholder('New world name')
-                .ariaLabel('World name')
-                .targetEvent(world)
-                .ok('Change')
-                .cancel('Cancel');
-
-            $mdDialog
-                .show(confirm)
-                .then(function(result) {
-                    if(!result) {
-                        return;
-                    }
-                    // TODO
-                    // Safe the new name to the DB
-                    world.name = result;
-                    $mdToast.show(
-                        $mdToast
-                        .simple()
-                        .position('bottom right')
-                        .textContent('World name changed')
-                        .hideDelay(1000)
-                    );
-                }, function() {
-                    console.log('Canceled');
-                });
-        }
-
-        function moveGuild(event, guild) {
+        function moveGuild(event, world, guild) {
+            if(world.id === guild.world) {
+                return;
+            }
             // TODO
             // Change the world ID of the guild
+
+            guild.world = world.id;
+            
             $mdToast.show(
                 $mdToast
                 .simple()
