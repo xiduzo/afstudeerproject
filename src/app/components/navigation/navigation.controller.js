@@ -6,7 +6,7 @@
         .controller('NavigationController', NavigationController);
 
     /** @ngInject */
-    function NavigationController($scope, $mdSidenav) {
+    function NavigationController($rootScope, $mdSidenav) {
 
         var self = this;
 
@@ -18,8 +18,12 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = $scope.Global.data.user;
+        self.user = $rootScope.Global.data.user;
         self.access = self.user.access;
+
+        $rootScope.$on('user-login', function() {
+            self.access = self.user.access;
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations

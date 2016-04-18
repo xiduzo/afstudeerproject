@@ -1,1 +1,61 @@
-login
+<section layout="row" layout-align="center center" layout-wrap style="height: 85vh;">
+    <md-card
+        flex-xs="90"
+        flex-gt-xs="70"
+        flex-gt-sm="60"
+        flex-gt-md="30"
+        flex-gt-lg="20">
+
+        <md-card-title>
+            <md-card-title-text layout="row">
+                <span class="md-headline" flex layout-margin>Login to [PLATFORM NAME]</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-divider></md-divider>
+
+        <md-card-content>
+
+            <!-- User login -->
+            <div layout="column">
+                <md-input-container>
+                    <label>Username</label>
+                    <input type="text" ng-model="accountLoginCtrl.username">
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input type="password" ng-model="accountLoginCtrl.password">
+                </md-input-container>
+            </div>
+
+            Login as
+            <hr/>
+
+            <!-- What kind of account do you want to login to -->
+            <md-radio-group layout="row" ng-model="accountLoginCtrl.login_type">
+                <md-radio-button value="student">
+                    Student
+                </md-radio-button>
+                <md-radio-button value="lecturer">
+                    Lecturer
+                </md-radio-button>
+                <md-radio-button value="coordiantor">
+                    Coordinator
+                </md-radio-button>
+            </md-radio-group>
+
+        </md-card-content>
+        <md-divider></md-divider>
+
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button aria-label="Change world settings" ng-click="accountLoginCtrl.login()">
+                <md-icon md-svg-icon="settings_dark"></md-icon>
+                Login
+            </md-button>
+            <md-button>
+                <md-icon md-svg-icon="eye_dark"></md-icon>
+                Forgot password
+            </md-button>
+        </md-card-actions>
+
+    </md-card>
+</section>
