@@ -44,7 +44,7 @@
             // Stop the side navigation from opening in the first place
             $mdSidenav('main__navigation').toggle();
 
-
+            // Go back to the login page
             $state.go('base.account.login');
         }
 

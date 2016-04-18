@@ -17,7 +17,7 @@
             },
             user: {
                 data: {},
-                access: 0,
+                access: 1,
             }
         };
 
