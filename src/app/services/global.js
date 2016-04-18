@@ -17,7 +17,7 @@
             },
             user: {
                 name: 'test',
-                access: 1,
+                access: 2,
             }
         };
 
