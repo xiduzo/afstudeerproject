@@ -1,8 +1,9 @@
 <md-sidenav class="md-whiteframe-4dp"
     md-is-locked-open="$mdMedia('gt-sm') && navigationCtrl.access >= 1"
-    md-component-id="main__navigation">
+    md-component-id="main__navigation"
+    id="main__navigation">
 
-    <md-list ng-click="navigationCtrl.toggleNavigation()" ng-scrollbars>
+    <md-list ng-click="navigationCtrl.toggleNavigation()">
 
         <!-- Coordinator -->
         <div ng-if="navigationCtrl.access === 3">
