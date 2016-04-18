@@ -21,7 +21,6 @@
         vm.worlds = {
             groen: {
                 name: 'Groen',
-                color: '#23cd86',
                 id: 1,
                 guilds: [
                     {
@@ -40,7 +39,6 @@
             },
             blauw: {
                 name: 'Blauw',
-                color: '#2371cd',
                 id: 2,
                 guilds: [
                     {
@@ -59,7 +57,6 @@
             },
             geel: {
                 name: 'Geel',
-                color: '#b5cd23',
                 id: 3,
                 guilds: [
                     {
@@ -78,7 +75,6 @@
             },
             Rood: {
                 name: 'Rood',
-                color: '#cd2327',
                 id: 4,
                 guilds: [
                     {
@@ -108,7 +104,7 @@
             // Change the world ID of the guild
 
             guild.world = world.id;
-            
+
             $mdToast.show(
                 $mdToast
                 .simple()

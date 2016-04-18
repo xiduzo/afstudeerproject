@@ -109,6 +109,8 @@
             .icon('pencil_dark', './assets/icons/ic_create_black_48px.svg', 48)
             .icon('eye_light', './assets/icons/ic_visibility_white_48px.svg', 24)
             .icon('eye_dark', './assets/icons/ic_visibility_black_48px.svg', 48)
+            .icon('book_light', './assets/icons/ic_book_white_48px.svg', 24)
+            .icon('book_dark', './assets/icons/ic_book_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
