@@ -6,7 +6,7 @@
         .controller('WorldsOverviewController', WorldsOverviewController);
 
     /** @ngInject */
-    function WorldsOverviewController($mdDialog, $mdToast) {
+    function WorldsOverviewController($mdToast) {
 
         var vm = this;
 

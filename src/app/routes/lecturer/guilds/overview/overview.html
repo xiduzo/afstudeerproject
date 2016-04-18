@@ -1,1 +1,52 @@
-guilds overview
+<section>
+    <div layout="row" layout-wrap>
+
+        <div flex="100"
+            flex-gt-xs="50"
+            flex-gt-sm="100"
+            flex-gt-md="50"
+            flex-lg="33"
+            flex-gt-lg="25"
+            ng-repeat="guild in guildsOverviewCtrl.guilds">
+
+            <md-card>
+
+                <md-card-title>
+                    <md-card-title-text layout="row">
+                        <md-icon md-svg-icon="world_dark"></md-icon>
+                        <span class="md-headline" flex layout-margin>{{guild.name}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-divider></md-divider>
+
+                <md-card-content>
+                    <md-list dnd-list="guild.players"
+                        dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
+                        <md-list-item ng-repeat="player in guild.players"
+                            dnd-draggable="player"
+                            dnd-moved="guild.players.splice($index, 1)"
+                            dnd-effect-allowed="move">
+                            <md-icon md-svg-icon="guild_dark"></md-icon>
+                            <span flex>{{ player.name }}</span>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+                <md-divider></md-divider>
+
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button aria-label="Change guild settings">
+                        <md-icon md-svg-icon="settings_dark"></md-icon>
+                        Settings
+                    </md-button>
+                    <md-button>
+                        <md-icon md-svg-icon="eye_dark"></md-icon>
+                        View
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+
+        </div> <!-- End of worlds -->
+
+    </div>
+
+</section>
