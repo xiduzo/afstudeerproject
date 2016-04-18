@@ -21,7 +21,8 @@
         self.user = $rootScope.Global.data.user;
         self.access = self.user.access;
 
-        $rootScope.$on('user-login', function() {
+        $rootScope.$on('user-changed', function() {
+            self.user = $rootScope.Global.data.user;
             self.access = self.user.access;
         });
 

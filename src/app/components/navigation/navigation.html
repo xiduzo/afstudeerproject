@@ -12,7 +12,7 @@
             </md-subheader>
 
             <md-list-item md-ink-ripple>
-                <md-icon md-svg-icon="dashboard_dark"></md-icon>
+                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
                 <span flex>Dashboard</span>
             </md-list-item>
             <md-list-item ui-sref="base.worlds.overview">
@@ -20,7 +20,7 @@
                 <span flex>Worlds</span>
             </md-list-item>
             <md-list-item md-ink-ripple>
-                <md-icon md-svg-icon="build_dark"></md-icon>
+                <!-- <md-icon md-svg-icon="build_dark"></md-icon> -->
                 <span flex>Tweak game</span>
             </md-list-item>
 
@@ -34,8 +34,12 @@
             </md-subheader>
 
             <md-list-item md-ink-ripple>
-                <md-icon md-svg-icon="dashboard_dark"></md-icon>
+                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
                 <span flex>Dashboard</span>
+            </md-list-item>
+            <md-list-item md-ink-ripple>
+                <!-- <md-icon md-svg-icon="timeline_dark"></md-icon> -->
+                <span flex>Play game</span>
             </md-list-item>
             <md-list-item ui-sref="base.progress.overview">
                 <md-icon md-svg-icon="timeline_dark"></md-icon>
@@ -56,7 +60,7 @@
             </md-subheader>
 
             <md-list-item md-ink-ripple>
-                <md-icon md-svg-icon="dashboard_dark"></md-icon>
+                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
                 <span flex>Dashboard</span>
             </md-list-item>
             <md-list-item ui-sref="base.guild.overview">
@@ -68,7 +72,7 @@
                 <span flex>Questlog</span>
             </md-list-item>
             <md-list-item md-ink-ripple>
-                <md-icon md-svg-icon="book_dark"></md-icon>
+                <!-- <md-icon md-svg-icon="book_dark"></md-icon> -->
                 <span flex>Bible</span>
             </md-list-item>
 
@@ -88,6 +92,10 @@
             <md-list-item ui-sref="base.account.settings">
                 <md-icon md-svg-icon="settings_dark"></md-icon>
                 <span flex>Settings</span>
+            </md-list-item>
+            <md-list-item md-ink-ripple ng-click="navigationCtrl.logOut()">
+                <md-icon md-svg-icon="settings_dark"></md-icon>
+                <span flex>Logout</span>
             </md-list-item>
         </div>
 

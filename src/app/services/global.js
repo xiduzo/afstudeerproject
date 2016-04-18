@@ -16,8 +16,8 @@
                 password: ''
             },
             user: {
-                name: 'test',
-                access: 3,
+                data: {},
+                access: 0,
             }
         };
 

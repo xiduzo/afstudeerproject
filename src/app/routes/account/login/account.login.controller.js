@@ -40,7 +40,7 @@
 
             // TODO
             // Handle the response
-            $rootScope.$broadcast('user-login');
+            $rootScope.$broadcast('user-changed');
             $state.go('base.home');
         }
 
