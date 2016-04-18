@@ -14,13 +14,24 @@
                 abstract: true
             })
 
+            .state('base.account.login', {
+                url: '/login',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/account/login/login.html',
+                        controller: 'AccountLoginController',
+                        controllerAs: 'accountLoginCtrl'
+                    }
+                }
+            })
+
             .state('base.account.detail', {
                 url: '/detail',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/account/detail/detail.html',
                         controller: 'AccountDetailController',
-                        controllerAs: 'acountDetailCtrl'
+                        controllerAs: 'accountDetailCtrl'
                     }
                 }
             })
@@ -31,7 +42,7 @@
                     'main@base': {
                         templateUrl: 'app/routes/account/settings/settings.html',
                         controller: 'AccountSettingsController',
-                        controllerAs: 'acountSettingsCtrl'
+                        controllerAs: 'accountSettingsCtrl'
                     }
                 }
             })

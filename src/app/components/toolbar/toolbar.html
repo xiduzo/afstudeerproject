@@ -12,23 +12,23 @@
         [PLATFORM NAME]
     </h1>
     <md-icon md-svg-icon="school_light"
+        ng-if="toolbarCtrl.access === 2"
         ng-style="{
             'height': '40px',
             'width': '40px'
-        }"
-        >
+        }">
         <md-tooltip md-direction="left">
-            You have lecturer access
+            You have game master access
         </md-tooltip>
     </md-icon>
     <md-icon md-svg-icon="gavel_light"
+        ng-if="toolbarCtrl.access === 3"
         ng-style="{
             'height': '40px',
             'width': '40px',
-        }"
-        >
+        }">
         <md-tooltip md-direction="left">
-            You have coordinator access
+            You have god access
         </md-tooltip>
     </md-icon>
 </md-toolbar>

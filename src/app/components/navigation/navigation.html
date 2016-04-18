@@ -1,11 +1,11 @@
 <md-sidenav class="md-whiteframe-4dp"
-    md-is-locked-open="$mdMedia('gt-sm')"
+    md-is-locked-open="$mdMedia('gt-sm') && navigationCtrl.access >= 1"
     md-component-id="main__navigation">
 
     <md-list ng-click="navigationCtrl.toggleNavigation()" ng-scrollbars>
 
         <!-- Coordinator -->
-        <div>
+        <div ng-if="navigationCtrl.access === 3">
             <md-subheader>
                 God
             </md-subheader>
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Lecturer -->
-        <div>
+        <div ng-if="navigationCtrl.access === 2">
             <md-subheader>
                 Game master
             </md-subheader>
@@ -49,7 +49,7 @@
         </div>
 
         <!-- Student -->
-        <div>
+        <div ng-if="navigationCtrl.access === 1">
             <md-subheader>
                 Player
             </md-subheader>
@@ -75,7 +75,7 @@
         </div>
 
         <!-- All users -->
-        <div>
+        <div ng-if="navigationCtrl.access >= 1">
             <md-subheader>
                 Account
             </md-subheader>
