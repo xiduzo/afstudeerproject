@@ -1,5 +1,8 @@
 #main__navigation {
     md-list {
+        &:focus{
+            outline: none;
+        }
         md-list-item {
             a {
                 margin: 0;

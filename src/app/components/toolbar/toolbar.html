@@ -1,32 +1,25 @@
 <md-toolbar layout="row"
     layout-padding
     md-component-id="main__toolbar">
-    <md-button
-        hide-gt-sm
-        md-no-ink
+    <md-icon hide-gt-sm
         aria-label="toggle menu"
-        ng-click="toolbarCtrl.toggleNavigation()">
-        <md-icon md-svg-icon="menu_light"></md-icon>
-    </md-button>
+        md-svg-icon="menu_light"
+        ng-click="toolbarCtrl.toggleNavigation()"
+        class="icon--size--40">
+    </md-icon>
     <h1 class="md-title" flex>
         [PLATFORM NAME]
     </h1>
     <md-icon md-svg-icon="school_light"
         ng-if="toolbarCtrl.access === 2"
-        ng-style="{
-            'height': '40px',
-            'width': '40px'
-        }">
+        class="icon--size--40">
         <md-tooltip md-direction="left">
             You have game master access
         </md-tooltip>
     </md-icon>
     <md-icon md-svg-icon="gavel_light"
         ng-if="toolbarCtrl.access === 3"
-        ng-style="{
-            'height': '40px',
-            'width': '40px',
-        }">
+        class="icon--size--40">
         <md-tooltip md-direction="left">
             You have god access
         </md-tooltip>
