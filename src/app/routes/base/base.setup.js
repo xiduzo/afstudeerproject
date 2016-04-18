@@ -36,8 +36,12 @@
         $log,
         $rootScope,
         $state,
-        $stateParams
+        $stateParams,
+        Global
     ) {
+
+        // Set the global information on the rootScope
+        $rootScope.Global = Global;
 
         $rootScope.$on('$stateChangeError', function () { // eslint ignore:line
             $log.error('Error while changing state', arguments);
@@ -47,12 +51,7 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
-            if(!fromState.name) {
-                $rootScope.$previousState = {name: 'base.home', isRoot: true};
-            } else {
-                $rootScope.$previousState = fromState;
-            }
-            $rootScope.$broadcast('state-loaded');
+            $rootScope.$previousState = !fromState.name ? {name: 'base.home', isRoot: true} : fromState;
         });
 
     }

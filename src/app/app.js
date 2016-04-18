@@ -33,6 +33,7 @@
             'cmd.worlds',
             'cmd.guilds',
             'cmd.guild',
+            'cmd.quests',
             'cmd.account',
     ]);
 
