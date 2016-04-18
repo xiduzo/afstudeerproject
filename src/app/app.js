@@ -32,6 +32,7 @@
             'cmd.home',
             'cmd.worlds',
             'cmd.guilds',
+            'cmd.progress',
             'cmd.guild',
             'cmd.quests',
             'cmd.account',
