@@ -25,6 +25,12 @@
                 }
             })
 
+            .state('base.account.forgot', {
+                onEnter: function($window) {
+                    $window.open('https://id.hva.nl/idm/user/login.jsp', '_blank');
+                }
+            })
+
             .state('base.account.detail', {
                 url: '/detail',
                 views: {

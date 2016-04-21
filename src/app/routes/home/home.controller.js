@@ -6,13 +6,18 @@
         .controller('HomeController', HomeController);
 
     /** @ngInject */
-    function HomeController() {
+    function HomeController($scope) {
 
-        var vm = this;
+        var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         Method Declarations
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+            Variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.user = $scope.Global.data.user.data;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Method Declarations
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     }
 
