@@ -22,6 +22,75 @@
         self.user = $rootScope.Global.data.user;
         self.access = self.user.access;
 
+        self.navigation = [
+            {
+                subgroup: 'coordinator',
+                verbose: 'God',
+                access_level: 3,
+                items: [
+                    {
+                        name: 'Dashboard',
+                        icon: 'dashboard_dark',
+                        link_to: '',
+                    },
+                    {
+                        name: 'Worlds',
+                        icon: 'world_dark',
+                        link_to: 'base.worlds.overview',
+                    },
+                    {
+                        name: 'Tweak game',
+                        icon: 'build_dark',
+                        link_to: '',
+                    }
+                ],
+            },
+            {
+                subgroup: 'lecturer',
+                verbose: 'Game master',
+                access_level: 2,
+                items: [
+                    {
+                        name: 'Dashboard',
+                        icon: 'dashboard_dark',
+                        link_to: '',
+                    },
+                    {
+                        name: 'Progress',
+                        icon: 'timeline_dark',
+                        link_to: 'base.progress.overview',
+                    },
+                    {
+                        name: 'Guilds',
+                        icon: 'guild_dark',
+                        link_to: 'base.guilds.overview',
+                    },
+                ],
+            },
+            {
+                subgroup: 'student',
+                verbose: 'Player',
+                access_level: 1,
+                items: [
+                    {
+                        name: 'Dashboard',
+                        icon: 'dashboard_dark',
+                        link_to: '',
+                    },
+                    {
+                        name: 'Guild',
+                        icon: 'guild_dark',
+                        link_to: 'base.guild.overview',
+                    },
+                    {
+                        name: 'Questlog',
+                        icon: 'book_dark',
+                        link_to: 'base.quests.log',
+                    },
+                ],
+            },
+        ];
+
         $rootScope.$on('user-changed', function() {
             self.user = $rootScope.Global.data.user;
             self.access = self.user.access;

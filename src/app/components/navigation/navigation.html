@@ -5,78 +5,16 @@
 
     <md-list ng-click="navigationCtrl.toggleNavigation()">
 
-        <!-- Coordinator -->
-        <div ng-if="navigationCtrl.access === 3">
+        <div ng-repeat="group in navigationCtrl.navigation"
+            ng-if="navigationCtrl.access == group.access_level">
             <md-subheader>
-                God
+                {{ group.verbose }}
             </md-subheader>
 
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
-                <span flex>Dashboard</span>
+            <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items">
+                <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+                <span flex>{{ item.name }}</span>
             </md-list-item>
-            <md-list-item ui-sref="base.worlds.overview">
-                <md-icon md-svg-icon="world_dark"></md-icon>
-                <span flex>Worlds</span>
-            </md-list-item>
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="build_dark"></md-icon> -->
-                <span flex>Tweak game</span>
-            </md-list-item>
-
-            <md-divider></md-divider>
-        </div>
-
-        <!-- Lecturer -->
-        <div ng-if="navigationCtrl.access === 2">
-            <md-subheader>
-                Game master
-            </md-subheader>
-
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
-                <span flex>Dashboard</span>
-            </md-list-item>
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="timeline_dark"></md-icon> -->
-                <span flex>Play game</span>
-            </md-list-item>
-            <md-list-item ui-sref="base.progress.overview">
-                <md-icon md-svg-icon="timeline_dark"></md-icon>
-                <span flex>Progress</span>
-            </md-list-item>
-            <md-list-item ui-sref="base.guilds.overview">
-                <md-icon md-svg-icon="guild_dark"></md-icon>
-                <span flex>Guilds</span>
-            </md-list-item>
-
-            <md-divider></md-divider>
-        </div>
-
-        <!-- Student -->
-        <div ng-if="navigationCtrl.access === 1">
-            <md-subheader>
-                Player
-            </md-subheader>
-
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="dashboard_dark"></md-icon> -->
-                <span flex>Dashboard</span>
-            </md-list-item>
-            <md-list-item ui-sref="base.guild.overview">
-                <md-icon md-svg-icon="guild_dark"></md-icon>
-                <span flex>Guild</span>
-            </md-list-item>
-            <md-list-item ui-sref="base.quests.log">
-                <md-icon md-svg-icon="book_dark"></md-icon>
-                <span flex>Questlog</span>
-            </md-list-item>
-            <md-list-item md-ink-ripple>
-                <!-- <md-icon md-svg-icon="book_dark"></md-icon> -->
-                <span flex>Bible</span>
-            </md-list-item>
-
-            <md-divider></md-divider>
         </div>
 
         <!-- All users -->
