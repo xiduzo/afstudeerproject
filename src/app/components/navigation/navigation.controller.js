@@ -31,7 +31,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: '',
+                        link_to: 'base',
                     },
                     {
                         name: 'Worlds',
@@ -41,7 +41,7 @@
                     {
                         name: 'Tweak game',
                         icon: 'build_dark',
-                        link_to: '',
+                        link_to: 'base',
                     }
                 ],
             },
@@ -53,7 +53,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: '',
+                        link_to: 'base',
                     },
                     {
                         name: 'Progress',
@@ -75,7 +75,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: '',
+                        link_to: 'base',
                     },
                     {
                         name: 'Guild',
@@ -105,8 +105,8 @@
         }
 
         function logOut() {
-            $rootScope.Global.data.user.data = {};
-            $rootScope.Global.data.user.access = 0;
+            $rootScope.Global.setUser({});
+            $rootScope.Global.setAccess(0);
             $rootScope.$broadcast('user-changed');
 
             // TODO
