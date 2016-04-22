@@ -42,11 +42,13 @@
                     if(response.uid) {
                         // TODO
                         // Check for user in DB, else create one
-                        $scope.Global.data.user.data = response;
+                        $scope.Global.setUser(response);
 
                         // TODO
                         // Add some kind of lecturer / coordinator check
-                        $scope.Global.data.user.access = self.login_form.login_type === "student" ? 1 : 2;
+                        $scope.Global.setAccess(self.login_form.login_type === "student" ? 1 : 2);
+
+                        console.log($scope.Global.getUser());
 
                         $rootScope.$broadcast('user-changed');
                         $state.go('base.home');

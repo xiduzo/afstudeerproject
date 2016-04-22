@@ -10,18 +10,32 @@
 
         var self = this;
 
-        self.data = {
-            credentials: {
-                username: '',
-                password: ''
+        self.user = {};
+        self.credentials = {};
+        self.access = null;
+
+        self.functions = {
+            setUser: function(user) {
+                self.user = user;
             },
-            user: {
-                data: {},
-                access: null,
-            }
+            getUser: function() {
+                return self.user;
+            },
+            setAccess: function(acces) {
+                self.access = acces;
+            },
+            getAccess: function() {
+                return self.access;
+            },
+            setCredentials: function(credentials) {
+                self.credentials = credentials;
+            },
+            getCredentials: function() {
+                return self.credentials;
+            },
         };
 
-        return self;
+        return self.functions;
 
     }
 

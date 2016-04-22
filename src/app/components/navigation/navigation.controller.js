@@ -19,8 +19,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = $rootScope.Global.data.user;
-        self.access = self.user.access;
+        self.user = $rootScope.Global.getUser();
+        self.access = $rootScope.Global.getAccess();
 
         self.navigation = [
             {
@@ -92,8 +92,8 @@
         ];
 
         $rootScope.$on('user-changed', function() {
-            self.user = $rootScope.Global.data.user;
-            self.access = self.user.access;
+            self.user = $rootScope.Global.getUser();
+            self.access = $rootScope.Global.getAccess();
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
