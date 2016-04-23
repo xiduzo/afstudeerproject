@@ -3,7 +3,7 @@
     md-component-id="main__navigation"
     id="main__navigation">
 
-    <md-list ng-click="navigationCtrl.toggleNavigation()">
+    <md-list>
 
         <div ng-repeat="group in navigationCtrl.navigation"
             ng-if="navigationCtrl.access == group.access_level">
@@ -31,7 +31,7 @@
                 <md-icon md-svg-icon="settings_dark"></md-icon>
                 <span flex>Settings</span>
             </md-list-item>
-            <md-list-item md-ink-ripple ng-click="navigationCtrl.logOut()">
+            <md-list-item md-ink-ripple ng-click="navigationCtrl.logout()">
                 <md-icon md-svg-icon="settings_dark"></md-icon>
                 <span flex>Logout</span>
             </md-list-item>

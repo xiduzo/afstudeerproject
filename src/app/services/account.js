@@ -6,7 +6,15 @@
         .factory('Account', Account);
 
     /** @ngInject */
-    function Account($http, $q, LDAP_LOGIN_API, $log) {
+    function Account(
+        $http,
+        $mdSidenav,
+        $q,
+        $rootScope,
+        $state,
+        localStorageService,
+        LDAP_LOGIN_API
+    ) {
 
         var service = this;
 
@@ -14,6 +22,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.login = login;
+        service.logout = logout;
 
 
         return service;
@@ -40,6 +49,19 @@
                     resolve(response.data);
                 });
             });
+        }
+
+        function logout() {
+            $rootScope.Global.setUser({});
+            $rootScope.Global.setAccess(0);
+            localStorageService.clearAll();
+            $rootScope.$broadcast('user-changed');
+
+            // Close the sidenav for the login page
+            $mdSidenav('main__navigation').close();
+
+            // Go back to the login page
+            $state.go('base.account.login');
         }
 
     }

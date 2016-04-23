@@ -6,7 +6,7 @@
         .controller('NavigationController', NavigationController);
 
     /** @ngInject */
-    function NavigationController($rootScope, $mdSidenav, $state) {
+    function NavigationController($rootScope, $mdSidenav, Account) {
 
         var self = this;
 
@@ -14,7 +14,7 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.toggleNavigation = toggleNavigation;
-        self.logOut = logOut;
+        self.logout = logout;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -104,17 +104,8 @@
             $mdSidenav('main__navigation').toggle();
         }
 
-        function logOut() {
-            $rootScope.Global.setUser({});
-            $rootScope.Global.setAccess(0);
-            $rootScope.$broadcast('user-changed');
-
-            // TODO
-            // Stop the side navigation from opening in the first place
-            $mdSidenav('main__navigation').toggle();
-
-            // Go back to the login page
-            $state.go('base.account.login');
+        function logout() {
+            Account.logout();
         }
 
     }
