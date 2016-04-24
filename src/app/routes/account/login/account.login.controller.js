@@ -8,11 +8,7 @@
     /** @ngInject */
     function AccountLoginController(
         $mdToast,
-        $scope,
-        $state,
-        $rootScope,
-        Account,
-        localStorageService
+        Account
     ) {
 
         var self = this;
@@ -41,34 +37,31 @@
                 .login(self.login_form.username, self.login_form.password, self.login_form.login_type)
                 .then(function(response) {
                     if(response.uid) {
-                        // TODO
-                        // Check for user in DB, else create one
 
                         // Only work with the information we need
                         var logged_in_user = {
-                            preferredlanguage: response.preferredlanguage[0],
-                            mail:              response.mail[0],
                             uid:               response.uid[0],
-                            surname:           response.sn[0],
-                            initials:          response.initials[0],
-                            gender:            response.hvageslacht[0],
-                            displayname:       response.displayname[0],
+                            email:             response.mail[0].toLowerCase(),
                             hvastudentnumber:  response.hvastudentnumber[0],
-                            lastlogin:         response.modifytimestamp[0],
+                            initials:          response.initials[0],
+                            surname:           response.sn[0],
+                            displayname:       response.displayname[0],
+                            gender:            response.hvageslacht[0],
+                            preferredlanguage: response.preferredlanguage[0],
+                            lastlogin:         new Date(),
+                            access:            self.login_form.login_type === 'medewerker' ? 2 : 1
                         };
 
-                        localStorageService.set('user', logged_in_user);
-                        $scope.Global.setUser(logged_in_user);
+                        Account
+                            .checkForExistingUser(logged_in_user.uid)
+                            .then(function(response) {
 
-                        // TODO
-                        // Add some kind of lecturer / coordinator check
-                        localStorageService.set('access', self.login_form.login_type === "student" ? 1 : 2);
-                        $scope.Global.setAccess(self.login_form.login_type === "student" ? 1 : 2);
-
-                        // Set localStorage
-
-                        $rootScope.$broadcast('user-changed');
-                        $state.go('base.home');
+                                if(response) {
+                                } else {
+                                    Account.setUser(logged_in_user);
+                                    // Create user into the database
+                                }
+                            });
 
                     } else {
                         $mdToast.show(

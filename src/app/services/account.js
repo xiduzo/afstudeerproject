@@ -13,7 +13,8 @@
         $rootScope,
         $state,
         localStorageService,
-        LDAP_LOGIN_API
+        LDAP_LOGIN_API,
+        API_URL
     ) {
 
         var service = this;
@@ -23,7 +24,8 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.login = login;
         service.logout = logout;
-
+        service.checkForExistingUser = checkForExistingUser;
+        service.setUser = setUser;
 
         return service;
 
@@ -45,8 +47,7 @@
                 .then(function(response) {
                     resolve(response.data);
                 }, function(error) {
-                    response.data.message = "Something went wrong during login, please try again.";
-                    resolve(response.data);
+                    reject(error);
                 });
             });
         }
@@ -62,6 +63,36 @@
 
             // Go back to the login page
             $state.go('base.account.login');
+        }
+
+        function checkForExistingUser(uid) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'validations/user_exists.php',
+                    method: "GET",
+                    params: {
+                        uid: uid
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function setUser(user) {
+            localStorageService.set('user', user);
+            $rootScope.Global.setUser(user);
+
+            // TODO
+            // Add some kind of lecturer / coordinator check
+            localStorageService.set('access', user.access);
+            $rootScope.Global.setAccess(user.access);
+
+            $rootScope.$broadcast('user-changed');
+            $state.go('base.home');
         }
 
     }
