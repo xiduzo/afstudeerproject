@@ -41,8 +41,8 @@
                         // Only work with the information we need
                         var logged_in_user = {
                             uid:               response.uid[0],
-                            email:             response.mail[0].toLowerCase(),
                             hvastudentnumber:  response.hvastudentnumber[0],
+                            email:             response.mail[0].toLowerCase(),
                             initials:          response.initials[0],
                             surname:           response.sn[0],
                             displayname:       response.displayname[0],
@@ -57,9 +57,17 @@
                             .then(function(response) {
 
                                 if(response) {
-                                } else {
                                     Account.setUser(logged_in_user);
+                                } else {
                                     // Create user into the database
+                                    console.log('creating user');
+                                    Account
+                                        .createUser(logged_in_user)
+                                        .then(function(response) {
+                                            // TODO
+                                            // Do somethin when the user is created
+                                            Account.setUser(logged_in_user);
+                                        });
                                 }
                             });
 

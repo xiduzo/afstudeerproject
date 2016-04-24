@@ -11,12 +11,10 @@
         return;
     }
 
-    if($database->has("User", [
+    $access = $database->get("User", "access", [
         "uid" => $uid
-    ])) {
-        echo json_encode(true);
-    } else {
-        echo json_encode(false);
-    }
+    ]);
+
+    echo json_encode($access);
 
 ?>

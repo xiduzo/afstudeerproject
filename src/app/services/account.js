@@ -26,6 +26,8 @@
         service.logout = logout;
         service.checkForExistingUser = checkForExistingUser;
         service.setUser = setUser;
+        service.getAccessLevel = getAccessLevel;
+        service.createUser = createUser;
 
         return service;
 
@@ -88,11 +90,53 @@
 
             // TODO
             // Add some kind of lecturer / coordinator check
-            localStorageService.set('access', user.access);
             $rootScope.Global.setAccess(user.access);
 
             $rootScope.$broadcast('user-changed');
             $state.go('base.home');
+        }
+
+        function getAccessLevel(uid) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'gets/access_level.php',
+                    method: "GET",
+                    params: {
+                        uid: uid
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function createUser(user) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'inserts/user.php',
+                    method: "GET",
+                    params: {
+                        uid:               user.uid,
+                        hvastudentnumber:  user.hvastudentnumber,
+                        email:             user.email,
+                        initials:          user.initials,
+                        surname:           user.surname,
+                        displayname:       user.displayname,
+                        gender:            user.gender,
+                        preferredlanguage: user.preferredlanguage,
+                        lastlogin:         user.lastlogin,
+                        access:            user.access
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         }
 
     }
