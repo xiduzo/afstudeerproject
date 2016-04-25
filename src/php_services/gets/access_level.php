@@ -6,8 +6,8 @@
 
     $uid = $_GET['uid'];
 
-    if(!$uid) {
-        echo json_encode(false)
+    if(empty($uid)) {
+        echo json_encode(false);
         return;
     }
 

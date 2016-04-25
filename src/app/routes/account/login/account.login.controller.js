@@ -8,8 +8,16 @@
     /** @ngInject */
     function AccountLoginController(
         $mdToast,
-        Account
+        $state,
+        Account,
+        Global
     ) {
+
+        // If the user is logged in send him back to the homepage
+        if(Global.getAccess() > 0) {
+            $state.go('base.home');
+            return;
+        }
 
         var self = this;
 
@@ -57,16 +65,16 @@
                             .then(function(response) {
 
                                 if(response) {
+                                    // If the user exist in the DB, we dont need to do fancy stuff anymore
                                     Account.setUser(logged_in_user);
                                 } else {
                                     // Create user into the database
-                                    console.log('creating user');
                                     Account
                                         .createUser(logged_in_user)
                                         .then(function(response) {
-                                            // TODO
-                                            // Do somethin when the user is created
-                                            Account.setUser(logged_in_user);
+                                            if(response) {
+                                                Account.setUser(logged_in_user);
+                                            }
                                         });
                                 }
                             });

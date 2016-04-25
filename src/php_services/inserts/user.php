@@ -1,4 +1,4 @@
-<?
+<?php
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
 
@@ -25,7 +25,7 @@
         "uid"               => $uid,
         "hvaStudentNumber"  => $hvastudentnumber,
         "email"             => $email,
-        "initial"           => $initials,
+        "initials"          => $initials,
         "surname"           => $surname,
         "displayname"       => $displayname,
         "gender"            => $gender,
@@ -33,6 +33,8 @@
         "lastLogin"         => $lastlogin,
         "access"            => $access
     ]);
+
+    echo json_encode(true);
 
 
 ?>

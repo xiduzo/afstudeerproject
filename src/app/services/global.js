@@ -11,7 +11,6 @@
         var self = this;
 
         self.user = {};
-        self.credentials = {};
         self.access = null;
 
         self.functions = {
@@ -37,12 +36,11 @@
 
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
-            // TODO
-            // If there is an user logged in, get his access level from the DB
+
             Account
                 .getAccessLevel(self.user.uid)
                 .then(function(response) {
-                    self.acces = response;
+                    self.access = response;
                 });
         }
 
