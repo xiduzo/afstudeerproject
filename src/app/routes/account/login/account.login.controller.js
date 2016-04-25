@@ -56,7 +56,6 @@
                             displayname:       response.displayname[0],
                             gender:            response.hvageslacht[0],
                             preferredlanguage: response.preferredlanguage[0],
-                            lastlogin:         new Date(),
                             access:            self.login_form.login_type === 'medewerker' ? 2 : 1
                         };
 

@@ -26,12 +26,6 @@
             getAccess: function() {
                 return self.access;
             },
-            setCredentials: function(credentials) {
-                self.credentials = credentials;
-            },
-            getCredentials: function() {
-                return self.credentials;
-            },
         };
 
         if(localStorageService.get('user')) {

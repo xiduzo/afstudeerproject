@@ -127,7 +127,6 @@
                         displayname:       user.displayname,
                         gender:            user.gender,
                         preferredlanguage: user.preferredlanguage,
-                        lastlogin:         user.lastlogin,
                         access:            user.access
                     }
                 })

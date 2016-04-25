@@ -3,6 +3,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     require_once '../config.php';
+    require_once '../functions/now.php';
 
     $uid               = $_GET['uid'];
     $hvastudentnumber  = $_GET['hvastudentnumber'];
@@ -12,10 +13,9 @@
     $displayname       = $_GET['displayname'];
     $gender            = $_GET['gender'];
     $preferredlanguage = $_GET['preferredlanguage'];
-    $lastlogin         = $_GET['lastlogin'];
     $access            = $_GET['access'];
 
-    if(empty($uid) || empty($hvastudentnumber) || empty($email) || empty($initials) || empty($surname) || empty($displayname) || empty($gender) || empty($preferredlanguage) || empty($lastlogin) || empty($access)) {
+    if(empty($uid) || empty($hvastudentnumber) || empty($email) || empty($initials) || empty($surname) || empty($displayname) || empty($gender) || empty($preferredlanguage) || empty($access)) {
         echo json_encode(false);
         return;
     }
@@ -30,7 +30,7 @@
         "displayname"       => $displayname,
         "gender"            => $gender,
         "preferredLanguage" => $preferredlanguage,
-        "lastLogin"         => $lastlogin,
+        "lastLogin"         => now(),
         "access"            => $access
     ]);
 
