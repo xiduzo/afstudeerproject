@@ -88,12 +88,15 @@
             localStorageService.set('user', user);
             $rootScope.Global.setUser(user);
 
-            // TODO
-            // Add some kind of lecturer / coordinator check
-            $rootScope.Global.setAccess(user.access);
+            // Get the access level from the DB just to be sure no one will give himself access
+            service
+                .getAccessLevel(user.uid)
+                .then(function(response) {
+                    $rootScope.Global.setAccess(response);
+                    $rootScope.$broadcast('user-changed');
+                    $state.go('base.home');
+                });
 
-            $rootScope.$broadcast('user-changed');
-            $state.go('base.home');
         }
 
         function getAccessLevel(uid) {

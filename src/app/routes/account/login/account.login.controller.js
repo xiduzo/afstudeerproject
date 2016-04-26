@@ -56,7 +56,7 @@
                             displayname:       response.displayname[0],
                             gender:            response.hvageslacht[0],
                             preferredlanguage: response.preferredlanguage[0],
-                            access:            self.login_form.login_type === 'medewerker' ? 2 : 1
+                            access:            self.login_form.login_type === 'student' ? 1 : 2
                         };
 
                         Account
@@ -67,6 +67,15 @@
                                     // If the user exist in the DB, we dont need to do fancy stuff anymore
                                     Account.setUser(logged_in_user);
                                 } else {
+                                    // TODO
+                                    // When the user is logging in for the first times
+                                    // I think they can give themself access level 2 when they
+                                    // Manipulate the logged_in_user object before this service is fired
+                                    //
+                                    // On the other hand, they are first year students so let's just assume
+                                    // They do not have the expertice to do this (yet...)
+
+
                                     // Create user into the database
                                     Account
                                         .createUser(logged_in_user)

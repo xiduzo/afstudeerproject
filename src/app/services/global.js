@@ -20,8 +20,8 @@
             getUser: function() {
                 return self.user;
             },
-            setAccess: function(acces) {
-                self.access = acces;
+            setAccess: function(access) {
+                self.access = access;
             },
             getAccess: function() {
                 return self.access;
