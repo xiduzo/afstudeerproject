@@ -4,7 +4,9 @@
     angular
         .module('cmd', [
 
-            //3rd Parties
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      3rd parties
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'ngCookies',
             'ngSanitize',
             'ui.router',
@@ -15,28 +17,45 @@
             'ngScrollbars',
             'dndLists',
 
-            // Filters
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      Filters
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'secondsToDateTime',
 
-            //Config
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      Config
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'cmd.config',
 
-            //Constants
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      Constants
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'cmd.constants',
 
-            //modules
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      Modules
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'cmd.base',
             'cmd.services',
             'cmd.components',
 
-            //routes
+            /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    		      Routes
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+            // All
             'cmd.home',
-            'cmd.worlds',
+            'cmd.account',
+
+            // Student
+            'cmd.quests',
+            'cmd.guild',
+
+            // Lecturer
             'cmd.guilds',
             'cmd.progress',
-            'cmd.guild',
-            'cmd.quests',
-            'cmd.account',
+
+            // Coordinator
+            'cmd.worlds',
     ]);
 
 }());

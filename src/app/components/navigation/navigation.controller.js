@@ -38,7 +38,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base',
+                        link_to: 'base.home',
                     },
                     {
                         name: 'Worlds',
@@ -48,7 +48,7 @@
                     {
                         name: 'Tweak game',
                         icon: 'build_dark',
-                        link_to: 'base',
+                        link_to: 'base.home',
                     }
                 ],
             },
@@ -60,7 +60,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base',
+                        link_to: 'base.home',
                     },
                     {
                         name: 'Progress',
@@ -82,7 +82,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base',
+                        link_to: 'base.home',
                     },
                     {
                         name: 'Guild',

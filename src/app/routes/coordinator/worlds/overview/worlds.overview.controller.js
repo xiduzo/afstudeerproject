@@ -6,7 +6,21 @@
         .controller('WorldsOverviewController', WorldsOverviewController);
 
     /** @ngInject */
-    function WorldsOverviewController($mdToast) {
+    function WorldsOverviewController(
+        $mdToast,
+        COORDINATOR_ACCESS_LEVEL
+    ) {
+
+        if(Global.getAccess() !== COORDINATOR_ACCESS_LEVEL) {
+            $mdToast.show(
+                $mdToast.simple()
+                .textContent('You are not allowed to view this page')
+                .position('bottom right')
+                .hideDelay(3000)
+            );
+            $state.go('base.home');
+            return;
+        }
 
         var vm = this;
 
