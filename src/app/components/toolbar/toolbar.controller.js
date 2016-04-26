@@ -6,7 +6,15 @@
         .controller('Toolbarontroller', Toolbarontroller);
 
     /** @ngInject */
-    function Toolbarontroller($scope, $mdMedia, $rootScope, $mdSidenav) {
+    function Toolbarontroller(
+        $scope,
+        $mdMedia,
+        $rootScope,
+        $mdSidenav,
+        STUDENT_ACCESS_LEVEL,
+        LECTURER_ACCESS_LEVEL,
+        COORDINATOR_ACCESS_LEVEL
+    ) {
 
         var self = this;
 
@@ -20,10 +28,9 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = $rootScope.Global.getUser();
         self.access = $rootScope.Global.getAccess();
-
-        $scope.$watch(function() { return $mdMedia('gt-sm'); }, function(bool) {
-            self.index = bool;
-        });
+        self.STUDENT_ACCESS_LEVEL = STUDENT_ACCESS_LEVEL;
+        self.LECTURER_ACCESS_LEVEL = LECTURER_ACCESS_LEVEL;
+        self.COORDINATOR_ACCESS_LEVEL = COORDINATOR_ACCESS_LEVEL;
 
         $rootScope.$on('user-changed', function() {
             self.user = $rootScope.Global.getUser();

@@ -6,7 +6,14 @@
         .controller('NavigationController', NavigationController);
 
     /** @ngInject */
-    function NavigationController($rootScope, $mdSidenav, Account) {
+    function NavigationController(
+        $rootScope,
+        $mdSidenav,
+        Account,
+        STUDENT_ACCESS_LEVEL,
+        LECTURER_ACCESS_LEVEL,
+        COORDINATOR_ACCESS_LEVEL
+    ) {
 
         var self = this;
 
@@ -26,7 +33,7 @@
             {
                 subgroup: 'coordinator',
                 verbose: 'God',
-                access_level: 3,
+                access_level: COORDINATOR_ACCESS_LEVEL,
                 items: [
                     {
                         name: 'Dashboard',
@@ -48,7 +55,7 @@
             {
                 subgroup: 'lecturer',
                 verbose: 'Game master',
-                access_level: 2,
+                access_level: LECTURER_ACCESS_LEVEL,
                 items: [
                     {
                         name: 'Dashboard',
@@ -70,7 +77,7 @@
             {
                 subgroup: 'student',
                 verbose: 'Player',
-                access_level: 1,
+                access_level: STUDENT_ACCESS_LEVEL,
                 items: [
                     {
                         name: 'Dashboard',
