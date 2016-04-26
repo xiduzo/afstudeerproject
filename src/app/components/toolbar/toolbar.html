@@ -1,6 +1,10 @@
 <md-toolbar layout="row"
     layout-padding
-    md-component-id="main__toolbar">
+    md-component-id="main__toolbar"
+    id="main__toolbar"
+    ng-class="{
+        'z__index': toolbarCtrl.index
+    }">
     <md-icon hide-gt-sm
         aria-label="toggle menu"
         md-svg-icon="menu_light"

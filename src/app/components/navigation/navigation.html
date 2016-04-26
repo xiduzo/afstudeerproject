@@ -3,6 +3,15 @@
     md-component-id="main__navigation"
     id="main__navigation">
 
+    <md-toolbar layout-padding ng-if="navigationCtrl.user.email">
+        <div class="user__information" layout="row">
+            <img class="round" gravatar-size="75" gravatar-src="navigationCtrl.user.email">
+            <div layout-padding flex>
+                {{ navigationCtrl.user.displayname }} {{ navigationCtrl.user.surname }}
+            </div>
+        </div>
+    </md-toolbar>
+
     <md-list>
 
         <div ng-repeat="group in navigationCtrl.navigation"
