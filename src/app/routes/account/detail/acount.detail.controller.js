@@ -6,7 +6,7 @@
         .controller('AccountDetailController', AccountDetailController);
 
     /** @ngInject */
-    function AccountDetailController() {
+    function AccountDetailController(Global) {
 
         var self = this;
 
@@ -17,6 +17,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.user = Global.getUser();
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
