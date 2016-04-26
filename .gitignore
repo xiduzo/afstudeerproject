@@ -1,6 +1,9 @@
-# Ingore all the dependecy files
+# Ignore all the dependency files
 bower_components/*
 node_modules/*
 
-# Ingore the temporarily files
+# Ignore the temporarily files
 .tmp/*
+
+# Ignore the dist folder
+dist/*
