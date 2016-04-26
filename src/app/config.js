@@ -7,14 +7,15 @@
 
     /** @ngInject */
     function config(
-        $urlRouterProvider,
-        $logProvider,
         $compileProvider,
-        localStorageServiceProvider,
-        DEBUG_ENABLED,
+        $logProvider,
         $mdThemingProvider,
         $mdIconProvider,
-        ScrollBarsProvider
+        $urlRouterProvider,
+        gravatarServiceProvider,
+        localStorageServiceProvider,
+        ScrollBarsProvider,
+        DEBUG_ENABLED
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provier
@@ -130,6 +131,10 @@
             theme: 'minimal-dark',
             autoHideScrollbar: true,
         };
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Gravatar
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
     }
