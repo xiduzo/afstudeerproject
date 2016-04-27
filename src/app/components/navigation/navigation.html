@@ -30,7 +30,7 @@
         <!-- All users -->
         <div ng-if="navigationCtrl.access >= navigationCtrl.account_navigation.access_level">
             <md-subheader>
-                Account
+                {{ navigationCtrl.account_navigation.verbose }}
             </md-subheader>
 
             <md-list-item ng-repeat="item in navigationCtrl.sub_navigation.items"

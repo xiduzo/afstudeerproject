@@ -100,6 +100,8 @@
 
         self.account_navigation = {
             access_level: STUDENT_ACCESS_LEVEL,
+            subgroup: 'account',
+            verbose: 'Account',
             items: [
                 {
                     name: 'Profile',
