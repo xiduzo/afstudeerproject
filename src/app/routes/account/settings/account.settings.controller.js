@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function AccountSettingsController(
+        $mdToast,
         Global,
         STUDENT_ACCESS_LEVEL
     ) {

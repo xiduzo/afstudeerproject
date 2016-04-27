@@ -29,7 +29,7 @@
         self.user = $rootScope.Global.getUser();
         self.access = $rootScope.Global.getAccess();
 
-        self.navigation = [
+        self.main_navigation = [
             {
                 subgroup: 'coordinator',
                 verbose: 'God',
@@ -98,6 +98,22 @@
             },
         ];
 
+        self.account_navigation = {
+            access_level: STUDENT_ACCESS_LEVEL,
+            items: [
+                {
+                    name: 'Profile',
+                    icon: 'person_dark',
+                    link_to: 'base.account.detail'
+                },
+                {
+                    name: 'Settings',
+                    icon: 'settings_dark',
+                    link_to: 'base.account.settings'
+                }
+            ]
+        };
+
         $rootScope.$on('user-changed', function() {
             self.user = $rootScope.Global.getUser();
             self.access = $rootScope.Global.getAccess();
@@ -112,6 +128,10 @@
         }
 
         function logout() {
+            // Close the navigation
+            self.toggleNavigation();
+
+            // Logout the user
             Account.logout();
         }
 

@@ -14,31 +14,30 @@
 
     <md-list>
 
-        <div ng-repeat="group in navigationCtrl.navigation"
+        <div ng-repeat="group in navigationCtrl.main_navigation"
             ng-if="navigationCtrl.access == group.access_level">
             <md-subheader>
                 {{ group.verbose }}
             </md-subheader>
 
-            <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items">
+            <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items"
+                ng-click="navigationCtrl.toggleNavigation()">
                 <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
                 <span flex>{{ item.name }}</span>
             </md-list-item>
         </div>
 
         <!-- All users -->
-        <div ng-if="navigationCtrl.access >= 1">
+        <div ng-if="navigationCtrl.access >= navigationCtrl.account_navigation.access_level">
             <md-subheader>
                 Account
             </md-subheader>
 
-            <md-list-item ui-sref="base.account.detail">
-                <md-icon md-svg-icon="person_dark"></md-icon>
-                <span flex>Profile</span>
-            </md-list-item>
-            <md-list-item ui-sref="base.account.settings">
-                <md-icon md-svg-icon="settings_dark"></md-icon>
-                <span flex>Settings</span>
+            <md-list-item ng-repeat="item in navigationCtrl.sub_navigation.items"
+                ui-sref="{{ item.link_to }}"
+                ng-click="navigationCtrl.toggleNavigation()">
+                <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+                <span flex>{{ item.name }}</span>
             </md-list-item>
             <md-list-item md-ink-ripple ng-click="navigationCtrl.logout()">
                 <md-icon md-svg-icon="settings_dark"></md-icon>
