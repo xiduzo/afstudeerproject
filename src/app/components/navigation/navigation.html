@@ -3,11 +3,19 @@
     md-component-id="main__navigation"
     id="main__navigation">
 
-    <md-toolbar layout-padding ng-if="navigationCtrl.user.email">
+    <md-toolbar ng-if="navigationCtrl.user.email">
         <div class="user__information" layout="row">
-            <img class="round" gravatar-size="75" gravatar-src="navigationCtrl.user.email">
-            <div layout-padding flex>
-                {{ navigationCtrl.user.displayname }} {{ navigationCtrl.user.surname }}
+            <div flex="30" layout-margin>
+                <img class="round" gravatar-size="75" gravatar-src="navigationCtrl.user.email">
+            </div>
+            <div flex layout="column" layout-align="center start">
+                <div class="md-headline">
+                    {{ navigationCtrl.user.displayname }} {{ navigationCtrl.user.surname }}
+                </div>
+                <div class="md-subhead">
+                    @{{ navigationCtrl.user.uid }}
+                </div>
+            </br/>
             </div>
         </div>
     </md-toolbar>
