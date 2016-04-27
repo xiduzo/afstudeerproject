@@ -14,6 +14,7 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.getGuilds = getGuilds;
+        service.addGuild = addGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -27,6 +28,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function getGuilds(worldId) {
             console.log('get guilds from world id '+ worldId);
+        }
+
+        function addGuild(name) {
+
         }
     }
 
