@@ -33,7 +33,7 @@
                 {{ navigationCtrl.account_navigation.verbose }}
             </md-subheader>
 
-            <md-list-item ng-repeat="item in navigationCtrl.sub_navigation.items"
+            <md-list-item ng-repeat="item in navigationCtrl.account_navigation.items"
                 ui-sref="{{ item.link_to }}"
                 ng-click="navigationCtrl.toggleNavigation()">
                 <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
