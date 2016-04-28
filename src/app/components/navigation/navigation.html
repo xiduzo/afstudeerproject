@@ -1,9 +1,10 @@
 <md-sidenav
     md-is-locked-open="$mdMedia('gt-sm') && navigationCtrl.access >= 1"
     md-component-id="main__navigation"
-    id="main__navigation">
+    id="main__navigation"
+    layout="column">
 
-    <md-toolbar ng-if="navigationCtrl.user.email">
+    <md-toolbar ng-if="navigationCtrl.user.email" flex="none">
         <div class="user__information" layout="row">
             <div flex="30" layout-margin>
                 <img class="round" gravatar-size="75" gravatar-src="navigationCtrl.user.email">
@@ -20,39 +21,43 @@
         </div>
     </md-toolbar>
 
-    <md-list>
+    <!-- Adding ng-scrollbars over here will overrule the subheader effect -->
+    <md-content flex>
 
-        <div ng-repeat="group in navigationCtrl.main_navigation"
+        <section ng-repeat="group in navigationCtrl.main_navigation"
             ng-if="navigationCtrl.access == group.access_level">
             <md-subheader>
                 {{ group.verbose }}
             </md-subheader>
-
-            <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items"
-                ng-click="navigationCtrl.toggleNavigation()">
-                <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
-                <span flex>{{ item.name }}</span>
-            </md-list-item>
-        </div>
+            <md-list>
+                <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items"
+                    ng-click="navigationCtrl.toggleNavigation()">
+                    <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+                    <span flex>{{ item.name }}</span>
+                </md-list-item>
+            </md-list>
+        </section>
 
         <!-- All users -->
-        <div ng-if="navigationCtrl.access >= navigationCtrl.account_navigation.access_level">
+        <section ng-if="navigationCtrl.access >= navigationCtrl.account_navigation.access_level">
             <md-subheader>
                 {{ navigationCtrl.account_navigation.verbose }}
             </md-subheader>
+            <md-list>
+                <md-list-item ng-repeat="item in navigationCtrl.account_navigation.items"
+                    ui-sref="{{ item.link_to }}"
+                    ng-click="navigationCtrl.toggleNavigation()">
+                    <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+                    <span flex>{{ item.name }}</span>
+                </md-list-item>
+                <md-list-item md-ink-ripple ng-click="navigationCtrl.logout()">
+                    <md-icon md-svg-icon="settings_dark"></md-icon>
+                    <span flex>Logout</span>
+                </md-list-item>
+            </md-list>
+        </section>
 
-            <md-list-item ng-repeat="item in navigationCtrl.account_navigation.items"
-                ui-sref="{{ item.link_to }}"
-                ng-click="navigationCtrl.toggleNavigation()">
-                <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
-                <span flex>{{ item.name }}</span>
-            </md-list-item>
-            <md-list-item md-ink-ripple ng-click="navigationCtrl.logout()">
-                <md-icon md-svg-icon="settings_dark"></md-icon>
-                <span flex>Logout</span>
-            </md-list-item>
-        </div>
+    </md-content>
 
-    </md-list>
 
 </md-sidenav>
