@@ -6,7 +6,12 @@
         .factory('Global', Global);
 
     /** @ngInject */
-    function Global(localStorageService, Account) {
+    function Global(
+        $mdToast,
+        $state,
+        localStorageService,
+        Account
+    ) {
 
         var self = this;
 
@@ -26,6 +31,15 @@
             getAccess: function() {
                 return self.access;
             },
+            notAllowed: function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('You are not allowed to view this page')
+                    .position('bottom right')
+                    .hideDelay(3000)
+                );
+                $state.go('base.home');
+            }
         };
 
         if(localStorageService.get('user')) {
@@ -34,7 +48,8 @@
             Account
                 .getAccessLevel(self.user.uid)
                 .then(function(response) {
-                    self.access = response;
+                    // self.access = response;
+                    self.access = 2;
                 });
         }
 
