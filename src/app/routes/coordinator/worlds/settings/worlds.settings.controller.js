@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function WorldsSettingsController(
+        Global,
         COORDINATOR_ACCESS_LEVEL
     ) {
 

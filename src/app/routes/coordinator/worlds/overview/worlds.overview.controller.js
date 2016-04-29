@@ -7,7 +7,10 @@
 
     /** @ngInject */
     function WorldsOverviewController(
+        $mdDialog,
+        $mdToast,
         Global,
+        World,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -16,90 +19,33 @@
             return;
         }
 
-        var vm = this;
+        var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        vm.moveGuild = moveGuild;
+        self.moveGuild = moveGuild;
+        self.newWorldDialog = newWorldDialog;
+        self.changeWorldName = changeWorldName;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        vm.worlds = {
-            groen: {
-                name: 'Groen',
-                id: 1,
-                guilds: [
-                    {
-                        name: 'Guild g1',
-                        world: 1
-                    },
-                    {
-                        name: 'Guild g2',
-                        world: 1
-                    },
-                    {
-                        name: 'Guild g3',
-                        world: 1
-                    }
-                ]
-            },
-            blauw: {
-                name: 'Blauw',
-                id: 2,
-                guilds: [
-                    {
-                        name: 'Guild b1',
-                        world: 2
-                    },
-                    {
-                        name: 'Guild b2',
-                        world: 2
-                    },
-                    {
-                        name: 'Guild b3',
-                        world: 2
-                    }
-                ]
-            },
-            geel: {
-                name: 'Geel',
-                id: 3,
-                guilds: [
-                    {
-                        name: 'Guild g1',
-                        world: 3
-                    },
-                    {
-                        name: 'Guild g2',
-                        world: 3
-                    },
-                    {
-                        name: 'Guild g3',
-                        world: 3
-                    }
-                ]
-            },
-            Rood: {
-                name: 'Rood',
-                id: 4,
-                guilds: [
-                    {
-                        name: 'Guild r1',
-                        world: 4
-                    },
-                    {
-                        name: 'Guild r2',
-                        world: 4
-                    },
-                    {
-                        name: 'Guild r3',
-                        world: 4
-                    }
-                ]
-            }
-        };
+        self.worlds = [];
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        World.getWorlds()
+            .then(function(response) {
+                _.each(response, function(world) {
+                    // console.log(world);
+                    self.worlds.push(world);
+                });
+                // console.log(response);
+            }, function() {
+                // reject
+            });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -120,6 +66,110 @@
                 .textContent('Guild moved to new world')
                 .hideDelay(1000)
             );
+        }
+
+        function newWorldDialog(event) {
+            var dialog = $mdDialog.prompt()
+                        .title('Add a new world to [PLATFORM NAME]')
+                        .textContent('How would you like to name the new world?')
+                        .clickOutsideToClose(true)
+                        .placeholder('New world name')
+                        .ariaLabel('New world name')
+                        .targetEvent(event)
+                        .ok('Create new world')
+                        .cancel('Cancel');
+
+            $mdDialog.show(dialog)
+                .then(function(result) {
+                    // Ok
+
+                    // Checks for thw world name
+                    if(!result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent('Please enter a worldname')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                        return;
+                    }
+
+                    World
+                        .addWorld(result)
+                        .then(function(response) {
+                            self.worlds.unshift(response);
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent('World ' + response.name + ' created')
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                        }, function() {
+
+                        });
+
+                }, function() {
+                    // Cancel
+                });
+
+        }
+
+        function changeWorldName(event, world) {
+            var dialog = $mdDialog.prompt()
+                        .title('Change the world name of "' +world.name+ '"')
+                        .textContent('How would you like to name this world?')
+                        .clickOutsideToClose(true)
+                        .placeholder('World name')
+                        .ariaLabel('World name')
+                        .targetEvent(event)
+                        .ok('Change world name')
+                        .cancel('Cancel');
+
+            $mdDialog.show(dialog)
+                .then(function(result) {
+                    // Ok
+
+                    // Checks for thw world name
+                    if(!result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent('Please enter a worldname')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                        return;
+                    }
+
+                    World.changeWorldName(result, world.uuid)
+                        .then(function(response) {
+                            world.name = result;
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent('World name change to ' + result)
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                        }, function() {
+                            // Err
+                        });
+
+                    // World
+                    //     .addWorld(result)
+                    //     .then(function(response) {
+                    //         self.worlds.unshift(response);
+                    //         $mdToast.show(
+                    //             $mdToast.simple()
+                    //             .textContent('World ' + response.name + ' created')
+                    //             .position('bottom right')
+                    //             .hideDelay(3000)
+                    //         );
+                    //     }, function() {
+                    //
+                    //     });
+
+                }, function() {
+                    // Cancel
+                });
         }
 
     }

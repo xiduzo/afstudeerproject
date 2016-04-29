@@ -1,26 +1,28 @@
 <section>
 
-    <div layout="row">
+    <section layout="row">
         <h2 class="md-headline" flex>
             Worlds overview
         </h2>
-        <md-button class="md-raised md-accent md-fab">
+        <md-button class="md-raised md-accent md-fab" ng-click="worldsOverviewCtrl.newWorldDialog()">
             <md-icon md-svg-icon="world_light"></md-icon>
             <md-tooltip md-direction="left">
-                Add new world
+                Create new world
             </md-tooltip>
         </md-button>
-    </div>
+    </section>
 
-    <div layout="row" layout-wrap>
-
+    <section layout="row" layout-wrap>
+        <h3 ng-if="worldsOverviewCtrl.worlds.length < 1" class="md-title">
+            No worlds have been found, add a new world by clicking on the 'Create new world' button.
+        </h3>
         <div flex="100"
             flex-gt-xs="50"
             flex-gt-sm="100"
             flex-gt-md="50"
             flex-lg="33"
             flex-gt-lg="25"
-            ng-repeat="world in worldsOverviewCtrl.worlds">
+            ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: '-created_at'">
 
             <md-card>
 
@@ -29,6 +31,7 @@
                         <md-icon md-svg-icon="world_dark"></md-icon>
                         <span class="md-headline" flex layout-margin>{{world.name}}</span>
                     </md-card-title-text>
+                    <md-icon md-svg-icon="pencil_dark" ng-click="worldsOverviewCtrl.changeWorldName($event, world)"></md-icon>
                 </md-card-title>
                 <md-divider></md-divider>
 
@@ -47,7 +50,7 @@
                 <md-divider></md-divider>
 
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button aria-label="Change world settings" ui-sref="base.worlds.settings({worldId: world.id})">
+                    <md-button aria-label="Change world settings" ui-sref="base.worlds.settings({worldId: world.uuid})">
                         <md-icon md-svg-icon="settings_dark"></md-icon>
                         Settings
                     </md-button>
@@ -60,6 +63,6 @@
 
         </div> <!-- End of worlds -->
 
-    </div>
+    </section>
 
 </section>
