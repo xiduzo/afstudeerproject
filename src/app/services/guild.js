@@ -15,6 +15,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.getGuilds = getGuilds;
         service.addGuild = addGuild;
+        service.getUsersWithoutGuild = getUsersWithoutGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -32,6 +33,20 @@
 
         function addGuild(name) {
 
+        }
+
+        function getUsersWithoutGuild() {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'gets/users_without_world.php',
+                    method: "GET"
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         }
     }
 

@@ -1,4 +1,4 @@
-<?
+<?php
     // http://php.net/manual/en/function.uniqid.php#80419
 
     function uuid() {
