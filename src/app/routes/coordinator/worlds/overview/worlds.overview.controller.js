@@ -153,20 +153,6 @@
                             // Err
                         });
 
-                    // World
-                    //     .addWorld(result)
-                    //     .then(function(response) {
-                    //         self.worlds.unshift(response);
-                    //         $mdToast.show(
-                    //             $mdToast.simple()
-                    //             .textContent('World ' + response.name + ' created')
-                    //             .position('bottom right')
-                    //             .hideDelay(3000)
-                    //         );
-                    //     }, function() {
-                    //
-                    //     });
-
                 }, function() {
                     // Cancel
                 });
