@@ -116,6 +116,8 @@
             .icon('world_dark', './assets/icons/ic_public_black_48px.svg', 48)
             .icon('help_light', './assets/icons/ic_help_white_48px.svg', 48)
             .icon('help_dark', './assets/icons/ic_help_black_48px.svg', 48)
+            .icon('delete_light', './assets/icons/ic_delete_white_48px.svg', 48)
+            .icon('delete_dark', './assets/icons/ic_delete_black_48px.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
