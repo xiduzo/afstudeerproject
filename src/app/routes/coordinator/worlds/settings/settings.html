@@ -1,7 +1,15 @@
 <section>
-    <div layout="row">
+
+    <section layout="row">
         <h2 class="md-headline" flex>
-            Game settings
+            World settings of: {{ worldsSettingsCtrl.world.name }}
         </h2>
-    </div>
+        <md-button class="md-raised md-warn md-fab" ng-click="worldsSettingsCtrl.deleteWorld($event)">
+            <md-icon md-svg-icon="delete_light"></md-icon>
+            <md-tooltip md-direction="left">
+                Delete world
+            </md-tooltip>
+        </md-button>
+    </section>
+
 </section>
