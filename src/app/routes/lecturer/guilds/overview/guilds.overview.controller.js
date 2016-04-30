@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function GuildsOverviewController(
+        $mdDialog,
         $mdToast,
         Guild,
         Global,
@@ -18,92 +19,30 @@
             return;
         }
 
-        var vm = this;
-
-        Guild.getGuilds('1233');
+        var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        vm.movePlayer = movePlayer;
+        self.movePlayer = movePlayer;
+        self.newGuildDialog = newGuildDialog;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        vm.guilds = {
-            0: {
-                name: 'Guild 1',
-                id: 1,
-                players: [
-                    {
-                        name: 'Player 1 g1',
-                        guild: 1
-                    },
-                    {
-                        name: 'Player 2 g1',
-                        guild: 1
-                    },
-                    {
-                        name: 'Player 3 g1',
-                        guild: 1
-                    }
-                ]
-            },
-            1: {
-                name: 'Guild 2',
-                id: 2,
-                players: [
-                    {
-                        name: 'Player 1 g2',
-                        guild: 2
-                    },
-                    {
-                        name: 'Player 2 g2',
-                        guild: 2
-                    },
-                    {
-                        name: 'Player 3 g2',
-                        guild: 2
-                    }
-                ]
-            },
-            2: {
-                name: 'Guild 3',
-                id: 3,
-                players: [
-                    {
-                        name: 'Player 1 g3',
-                        guild: 3
-                    },
-                    {
-                        name: 'Player 2 g3',
-                        guild: 3
-                    },
-                    {
-                        name: 'Player 3 g3',
-                        guild: 3
-                    }
-                ]
-            },
-            3: {
-                name: 'Guild 4',
-                id: 4,
-                players: [
-                    {
-                        name: 'Player 1 g4',
-                        guild: 4
-                    },
-                    {
-                        name: 'Player 2 g4',
-                        guild: 4
-                    },
-                    {
-                        name: 'Player 3 g4',
-                        guild: 4
-                    }
-                ]
-            }
-        };
+        self.guilds = [];
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        Guild.getGuilds()
+            .then(function(response) {
+                _.each(response, function(guild) {
+                    self.guilds.push(guild);
+                });
+            }, function() {
+                // Err
+            });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -122,6 +61,54 @@
                 .textContent('Player moved to new guild')
                 .hideDelay(1000)
             );
+        }
+
+
+        function newGuildDialog(event) {
+            var dialog = $mdDialog.prompt()
+                        .title('Add a new guild to [WORLD NAME]')
+                        .textContent('How would you like to name the new guild?')
+                        .clickOutsideToClose(true)
+                        .placeholder('New guild name')
+                        .ariaLabel('New guild name')
+                        .targetEvent(event)
+                        .ok('Create new guild')
+                        .cancel('Cancel');
+
+            $mdDialog.show(dialog)
+                .then(function(result) {
+                    // Ok
+
+                    // Checks for the guild name
+                    if(!result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent('Please enter a guild name')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                        return;
+                    }
+
+                    Guild
+                        .addGuild(result)
+                        .then(function(response) {
+                            console.log(response);
+                            self.guilds.unshift(response);
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent('Guild ' + response.name + ' created')
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                        }, function() {
+
+                        });
+
+                }, function() {
+                    // Cancel
+                });
+
         }
 
     }

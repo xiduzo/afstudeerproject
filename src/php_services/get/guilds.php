@@ -5,8 +5,8 @@
     require_once '../config.php';
 
 
-    $worlds = $database->select("World", "*");
+    $guilds = $database->select("Guild", "*");
 
-    echo json_encode($worlds);
+    echo json_encode($guilds);
 
 ?>

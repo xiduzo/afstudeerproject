@@ -6,7 +6,12 @@
         .factory('Guild', Guild);
 
     /** @ngInject */
-    function Guild(Account) {
+    function Guild(
+        $http,
+        $q,
+        Account,
+        API_URL
+    ) {
 
         var service = this;
 
@@ -27,12 +32,35 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function getGuilds(worldId) {
-            console.log('get guilds from world id '+ worldId);
+        function getGuilds() {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/guilds.php',
+                    method: "GET"
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         }
 
         function addGuild(name) {
-
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'insert/guild.php',
+                    method: "GET",
+                    params: {
+                        name: name
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         }
 
         function getUsersWithoutGuild() {
