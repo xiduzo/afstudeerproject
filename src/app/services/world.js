@@ -19,7 +19,9 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.addWorld = addWorld;
         service.getWorlds = getWorlds;
+        service.getWorld = getWorld;
         service.changeWorldName = changeWorldName;
+        service.deleteWorld = deleteWorld;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -34,7 +36,7 @@
         function addWorld(name) {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'inserts/world.php',
+                    url: API_URL + 'insert/world.php',
                     method: "GET",
                     params: {
                         name: name
@@ -48,10 +50,27 @@
             });
         }
 
+        function getWorld(uuid) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/world.php',
+                    method: "GET",
+                    params: {
+                        uuid: uuid
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
         function getWorlds() {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'gets/worlds.php',
+                    url: API_URL + 'get/worlds.php',
                     method: "GET"
                 })
                 .then(function(response) {
@@ -69,6 +88,23 @@
                     method: "GET",
                     params: {
                         name: name,
+                        uuid: uuid
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function deleteWorld(uuid) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'delete/world.php',
+                    method: "GET",
+                    params: {
                         uuid: uuid
                     }
                 })

@@ -3,7 +3,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     require_once '../config.php';
-    require_once '../functions/now.php';
+    require_once '../function/now.php';
 
     $uid               = $_GET['uid'];
     $hvastudentnumber  = $_GET['hvastudentnumber'];

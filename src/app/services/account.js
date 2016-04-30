@@ -70,7 +70,7 @@
         function checkForExistingUser(uid) {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'validations/user_exists.php',
+                    url: API_URL + 'validate/user_exists.php',
                     method: "GET",
                     params: {
                         uid: uid
@@ -102,7 +102,7 @@
         function getAccessLevel(uid) {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'gets/access_level.php',
+                    url: API_URL + 'get/access_level.php',
                     method: "GET",
                     params: {
                         uid: uid
@@ -119,7 +119,7 @@
         function createUser(user) {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'inserts/user.php',
+                    url: API_URL + 'insert/user.php',
                     method: "GET",
                     params: {
                         uid:               user.uid,

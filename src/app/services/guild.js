@@ -38,7 +38,7 @@
         function getUsersWithoutGuild() {
             return $q(function(resolve, reject) {
                 $http({
-                    url: API_URL + 'gets/users_without_world.php',
+                    url: API_URL + 'get/users_without_world.php',
                     method: "GET"
                 })
                 .then(function(response) {
