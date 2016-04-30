@@ -1,5 +1,6 @@
 # Ignore all the dependency files
 bower_components/*
+src/bower_components/*
 node_modules/*
 
 # Ignore the temporarily files
