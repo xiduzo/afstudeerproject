@@ -3,7 +3,7 @@
         <h2 class="md-headline" flex>
             Guilds overview
         </h2>
-        <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog()">
+        <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event)">
             <md-icon md-svg-icon="guild_light"></md-icon>
             <md-tooltip md-direction="left">
                 Add new guild
@@ -41,6 +41,11 @@
                             <span flex>{{ player.name }}</span>
                         </md-list-item>
                     </md-list>
+                    <div layout="row" layout-align="center center">
+                         <md-button ng-click="guildsOverviewCtrl.addGuildMember($event, guild)">
+                             Add new guild members
+                         </md-button>
+                    </div>
                 </md-card-content>
                 <md-divider></md-divider>
 

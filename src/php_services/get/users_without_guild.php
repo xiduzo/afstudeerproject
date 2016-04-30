@@ -11,6 +11,7 @@
     ], [
         "uid",
         "displayname",
+        "surname",
         "email"
     ], [
         "guildUuid" => null

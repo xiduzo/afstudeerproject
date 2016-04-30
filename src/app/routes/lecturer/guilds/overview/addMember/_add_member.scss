@@ -1,0 +1,12 @@
+.autocomplete__custom__template {
+    li {
+        padding: 8px 0 8px 8px;
+        white-space: normal;
+        .item {
+            &--metadata {
+                display: block;
+                line-height: 2;
+            }
+        }
+    }
+}

@@ -26,6 +26,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.movePlayer = movePlayer;
         self.newGuildDialog = newGuildDialog;
+        self.addGuildMember = addGuildMember;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -108,7 +109,25 @@
                 }, function() {
                     // Cancel
                 });
+        }
 
+        function addGuildMember(event, guild) {
+
+            $mdDialog.show({
+                controller: 'GuildsAddMemberController',
+                controllerAs: 'guildsAddMemberCtrl',
+                templateUrl: 'app/routes/lecturer/guilds/overview/addMember/addMember.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    guildUuid: guild.uuid
+                }
+            })
+                .then(function(response) {
+                    console.log(response);
+                }, function() {
+                    // Err
+                });
         }
 
     }
