@@ -27,7 +27,7 @@
             })
 
             .state('base.worlds.settings', {
-                url: '/:worldId/settings',
+                url: '/:worldUuid/settings',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/worlds/settings/settings.html',
