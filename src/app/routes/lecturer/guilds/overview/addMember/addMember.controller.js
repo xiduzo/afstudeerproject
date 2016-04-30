@@ -59,6 +59,9 @@
                 return;
             }
 
+            //  TODO
+            // clear the input field of the md autocomplete
+
             // Remove the player from the possible user list
             self.users_without_guild.splice(self.users_without_guild.indexOf(player),1);
 

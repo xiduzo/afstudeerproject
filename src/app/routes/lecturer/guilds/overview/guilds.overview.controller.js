@@ -124,6 +124,8 @@
                 }
             })
                 .then(function(response) {
+                    // TODO
+                    // When saving the modal, save the players into the guild
                     console.log(response);
                 }, function() {
                     // Err
