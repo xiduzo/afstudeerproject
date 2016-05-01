@@ -12,7 +12,8 @@
             <md-content>
                 <md-autocomplete
                     md-no-cache="true"
-                    md-min-length="0"
+                    md-min-length="2"
+                    md-selected-item="guildsAddMemberCtrl.selected_item"
                     md-search-text="guildsAddMemberCtrl.search_text"
                     md-search-text-change="guildsAddMemberCtrl.filterUsers(guildsAddMemberCtrl.search_text)"
                     md-selected-item-change="guildsAddMemberCtrl.selectPlayer(player)"
@@ -24,8 +25,8 @@
                             <span class="item--metastat">
                                 <img class="round" gravatar-size="45" gravatar-src="player.email">
                             </span>
-                            <span class="item--metastat" md-highlight-text="guildsAddMemberCtrl.search_text">
-                                {{ player.displayname }} {{ player.surname }}
+                            <span class="item--metastat" md-highlight-text="guildsAddMemberCtrl.search_text" md-highlight-flags="^i">
+                                {{ player.filter_name }}
                             </span>
                         </span>
                     </md-item-template>
@@ -36,16 +37,22 @@
                 </md-autocomplete>
 
                 <md-list ng-if="guildsAddMemberCtrl.selected_users.length > 0" layout-margin>
+                    <h3 class="md-subhead">
+                        Selected players
+                    </h3>
                     <md-list-item ng-repeat="player in guildsAddMemberCtrl.selected_users">
                         <div flex="20" layout-align="center center">
                             <img class="round" gravatar-size="50" gravatar-src="player.email">
                         </div>
                         <p flex>
-                            {{ player.displayname}} {{ plater.surname }}
+                            {{ player.filter_name }}
                         </p>
-                        <md-icon md-svg-icon="delete_dark" aria-label="Remove selected use"
-                            ng-click="guildsAddMemberCtrl.removeSelectedPlayer(player)">
-                        </md-icon>
+                        <md-button ng-click="guildsAddMemberCtrl.removeSelectedPlayer(player)">
+                            <md-icon md-svg-icon="delete_dark"></md-icon>
+                            <md-tooltip md-direction="top">
+                                Deselect player
+                            </md-tooltip>
+                        </md-button>
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -69,10 +76,12 @@
     </md-dialog-content>
 
     <md-dialog-actions>
-        <button class="md-primary md-button" md-ink-ripple type="button" aria-label="Cancel">
+        <button class="md-primary md-button" type="button" aria-label="Cancel"
+            ng-click="guildsAddMemberCtrl.close()" md-ink-ripple>
             Cancel
         </button>
-            <button class="md-primary md-button" md-ink-ripple type="button" aria-label="Add new guild members">
+            <button class="md-primary md-button" type="button" aria-label="Add new guild members"
+                ng-click="guildsAddMemberCtrl.addPlayersToTeam()" md-ink-ripple>
                 Add members
         </button>
     </md-dialog-actions>

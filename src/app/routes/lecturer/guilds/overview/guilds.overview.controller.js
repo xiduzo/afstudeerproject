@@ -39,6 +39,7 @@
         Guild.getGuilds()
             .then(function(response) {
                 _.each(response, function(guild) {
+                    guild.players = [];
                     self.guilds.push(guild);
                 });
             }, function() {
@@ -49,17 +50,17 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function movePlayer(event, guild, player) {
-            if(guild.id === player.guild.id) {
+            if(guild.uuid === player.guildUuid) {
                 return;
             }
 
-            player.guild = guild.id;
+            player.guildUuid = guild.uuid;
 
             $mdToast.show(
                 $mdToast
                 .simple()
                 .position('bottom right')
-                .textContent('Player moved to new guild')
+                .textContent(player.displayname + ' moved to ' + guild.name)
                 .hideDelay(1000)
             );
         }
@@ -94,7 +95,7 @@
                     Guild
                         .addGuild(result)
                         .then(function(response) {
-                            console.log(response);
+                            response.players = [];
                             self.guilds.unshift(response);
                             $mdToast.show(
                                 $mdToast.simple()
@@ -124,9 +125,27 @@
                 }
             })
                 .then(function(response) {
+                    if(!response) {
+                        return;
+                    }
+
+                    // Adding each user to the guild
+                    _.each(response, function(user) {
+                        user.guildUuid = guild.uuid;
+                        // console.log(guild.players);
+                        // console.log(user.uid, guild.uuid);
+                        guild.players.push(user);
+                    });
+
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(response.length + ' player(s) added to ' + guild.name)
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+
                     // TODO
                     // When saving the modal, save the players into the guild
-                    console.log(response);
                 }, function() {
                     // Err
                 });

@@ -76,6 +76,10 @@
                 });
             });
         }
+
+        function addUserToGuild(user) {
+            
+        }
     }
 
 }());

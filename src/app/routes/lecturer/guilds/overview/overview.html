@@ -38,7 +38,9 @@
                             dnd-moved="guild.players.splice($index, 1)"
                             dnd-effect-allowed="move">
                             <md-icon md-svg-icon="guild_dark"></md-icon>
-                            <span flex>{{ player.name }}</span>
+                            <span flex>
+                                {{ player.displayname }} {{ player.surname }}
+                            </span>
                         </md-list-item>
                     </md-list>
                     <div layout="row" layout-align="center center">
