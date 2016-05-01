@@ -22,6 +22,7 @@
         service.addGuild = addGuild;
         service.getUsersWithoutGuild = getUsersWithoutGuild;
         service.addUserToGuild = addUserToGuild;
+        service.removeUserFromGuild = removeUserFromGuild;
         service.getGuildMembers = getGuildMembers;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,6 +84,24 @@
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'insert/user_in_guild.php',
+                    method: "GET",
+                    params: {
+                        userUid: user,
+                        guildUuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function removeUserFromGuild(user, guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'delete/user_from_guild.php',
                     method: "GET",
                     params: {
                         userUid: user,

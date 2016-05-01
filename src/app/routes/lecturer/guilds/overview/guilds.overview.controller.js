@@ -27,6 +27,7 @@
         self.movePlayer = movePlayer;
         self.newGuildDialog = newGuildDialog;
         self.addGuildMember = addGuildMember;
+        self.removeGuildMember = removeGuildMember;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -142,7 +143,6 @@
                     _.each(response, function(user) {
                         Guild.addUserToGuild(user.uid, guild.uuid)
                             .then(function(response) {
-                                console.log(response);
                                 user.guildUuid = guild.uuid;
                                 guild.players.push(user);
                             }, function() {
@@ -157,8 +157,24 @@
                         .hideDelay(3000)
                     );
 
-                    // TODO
-                    // When saving the modal, save the players into the guild
+                }, function() {
+                    // Err
+                });
+        }
+
+        function removeGuildMember(user, guild) {
+            Guild.removeUserFromGuild(user.uid, guild.uuid)
+                .then(function(response) {
+                    if(!response) {
+                        return;
+                    }
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(user.displayname + ' got removed from ' + guild.name)
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                    guild.players.splice(guild.players.indexOf(user), 1);
                 }, function() {
                     // Err
                 });

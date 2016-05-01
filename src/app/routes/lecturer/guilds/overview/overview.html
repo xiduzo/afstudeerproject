@@ -37,10 +37,15 @@
                             dnd-draggable="player"
                             dnd-moved="guild.players.splice($index, 1)"
                             dnd-effect-allowed="move">
-                            <md-icon md-svg-icon="guild_dark"></md-icon>
+                            <img class="round" gravatar-size="45" gravatar-src="player.email" layout-padding>
                             <span flex>
                                 {{ player.displayname }} {{ player.surname }}
                             </span>
+                            <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
+                                <md-tooltip md-direction="bottom">
+                                    Remove player from guild
+                                </md-tooltip>
+                            </md-icon>
                         </md-list-item>
                     </md-list>
                     <div layout="row" layout-align="center center">

@@ -4,7 +4,6 @@
 
     require_once '../config.php';
 
-
     $guilds = $database->select("Guild", "*");
 
     echo json_encode($guilds);

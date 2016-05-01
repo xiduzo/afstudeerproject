@@ -64,8 +64,6 @@
                 return;
             }
 
-            //  TODO
-            // clear the input field of the md autocomplete
             self.search_text = "";
             self.selected_item = undefined;
 

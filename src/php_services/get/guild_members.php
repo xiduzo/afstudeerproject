@@ -10,6 +10,7 @@
 
     if(empty($guildUuid)) {
         echo json_encode(false);
+        return;
     }
 
     $users = $database->select("User", [

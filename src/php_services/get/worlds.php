@@ -4,7 +4,6 @@
 
     require_once '../config.php';
 
-
     $worlds = $database->select("World", "*");
 
     echo json_encode($worlds);
