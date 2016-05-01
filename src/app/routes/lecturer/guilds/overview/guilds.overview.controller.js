@@ -41,6 +41,15 @@
                 _.each(response, function(guild) {
                     guild.players = [];
                     self.guilds.push(guild);
+
+                    Guild.getGuildMembers(guild.uuid)
+                        .then(function(response) {
+                            _.each(response, function(user) {
+                                guild.players.push(user);
+                            });
+                        }, function() {
+                            // Err
+                        });
                 });
             }, function() {
                 // Err
@@ -131,10 +140,14 @@
 
                     // Adding each user to the guild
                     _.each(response, function(user) {
-                        user.guildUuid = guild.uuid;
-                        // console.log(guild.players);
-                        // console.log(user.uid, guild.uuid);
-                        guild.players.push(user);
+                        Guild.addUserToGuild(user.uid, guild.uuid)
+                            .then(function(response) {
+                                console.log(response);
+                                user.guildUuid = guild.uuid;
+                                guild.players.push(user);
+                            }, function() {
+                                // Err
+                            });
                     });
 
                     $mdToast.show(

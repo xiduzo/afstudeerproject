@@ -21,6 +21,8 @@
         service.getGuilds = getGuilds;
         service.addGuild = addGuild;
         service.getUsersWithoutGuild = getUsersWithoutGuild;
+        service.addUserToGuild = addUserToGuild;
+        service.getGuildMembers = getGuildMembers;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -77,8 +79,39 @@
             });
         }
 
-        function addUserToGuild(user) {
-            
+        function addUserToGuild(user, guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'insert/user_in_guild.php',
+                    method: "GET",
+                    params: {
+                        userUid: user,
+                        guildUuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function getGuildMembers(guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/guild_members.php',
+                    method: "GET",
+                    params: {
+                        guildUuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
         }
     }
 
