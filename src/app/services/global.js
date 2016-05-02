@@ -29,7 +29,7 @@
                 self.access = access;
             },
             getAccess: function() {
-                return self.access;
+                return Number(self.access);
             },
             notAllowed: function() {
                 $mdToast.show(
@@ -48,8 +48,8 @@
             Account
                 .getAccessLevel(self.user.uid)
                 .then(function(response) {
-                    // self.access = response;
-                    self.access = 2;
+                    self.access = response;
+                    // self.access = 2;
                 });
         }
 
