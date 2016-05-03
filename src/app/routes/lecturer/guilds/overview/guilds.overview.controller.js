@@ -46,6 +46,7 @@
                     Guild.getGuildMembers(guild.uuid)
                         .then(function(response) {
                             _.each(response, function(user) {
+                                user.guildUuid = guild.uuid;
                                 guild.players.push(user);
                             });
                         }, function() {
@@ -59,20 +60,27 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function movePlayer(event, guild, player) {
-            if(guild.uuid === player.guildUuid) {
+        function movePlayer(event, guild, user) {
+            if(guild.uuid === user.guildUuid) {
                 return;
             }
 
-            player.guildUuid = guild.uuid;
+            Guild.patchPlayersGuild(user.uid, guild.uuid)
+                .then(function(response) {
+                    user.guildUuid = guild.uuid;
+                    $mdToast.show(
+                        $mdToast
+                        .simple()
+                        .position('bottom right')
+                        .textContent(user.displayname + ' moved to ' + guild.name)
+                        .hideDelay(1000)
+                    );
+                }, function() {
+                    // Err
+                });
 
-            $mdToast.show(
-                $mdToast
-                .simple()
-                .position('bottom right')
-                .textContent(player.displayname + ' moved to ' + guild.name)
-                .hideDelay(1000)
-            );
+            // player.guildUuid = guild.uuid;
+            //
         }
 
 

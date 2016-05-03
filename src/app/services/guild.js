@@ -24,6 +24,7 @@
         service.addUserToGuild = addUserToGuild;
         service.removeUserFromGuild = removeUserFromGuild;
         service.getGuildMembers = getGuildMembers;
+        service.patchPlayersGuild = patchPlayersGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -122,6 +123,24 @@
                     url: API_URL + 'get/guild_members.php',
                     method: "GET",
                     params: {
+                        guildUuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function patchPlayersGuild(user, guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'patch/user_guild.php',
+                    method: "GET",
+                    params: {
+                        userUid: user,
                         guildUuid: guild
                     }
                 })
