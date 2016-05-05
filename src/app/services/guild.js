@@ -19,12 +19,15 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.getGuilds = getGuilds;
+        service.getGuild = getGuild;
         service.addGuild = addGuild;
         service.getUsersWithoutGuild = getUsersWithoutGuild;
         service.addUserToGuild = addUserToGuild;
         service.removeUserFromGuild = removeUserFromGuild;
         service.getGuildMembers = getGuildMembers;
         service.patchPlayersGuild = patchPlayersGuild;
+        service.patchGuildName = patchGuildName;
+        service.deleteGuild = deleteGuild;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -41,6 +44,23 @@
                 $http({
                     url: API_URL + 'get/guilds.php',
                     method: "GET"
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function getGuild(guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/guild.php',
+                    method: "GET",
+                    params: {
+                        uuid: guild
+                    }
                 })
                 .then(function(response) {
                     resolve(response.data);
@@ -142,6 +162,41 @@
                     params: {
                         userUid: user,
                         guildUuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function patchGuildName(name, guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'patch/guild_name.php',
+                    method: "GET",
+                    params: {
+                        name: name,
+                        uuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function deleteGuild(guild) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'delete/guild.php',
+                    method: "GET",
+                    params: {
+                        uuid: guild
                     }
                 })
                 .then(function(response) {
