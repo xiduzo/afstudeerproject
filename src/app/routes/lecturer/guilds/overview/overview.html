@@ -6,12 +6,14 @@
         <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event)">
             <md-icon md-svg-icon="guild_light"></md-icon>
             <md-tooltip md-direction="left">
-                Add new guild
+                Create new guild
             </md-tooltip>
         </md-button>
     </div>
     <div layout="row" layout-wrap>
-
+        <h3 ng-if="guildsOverviewCtrl.guilds.length < 1" class="md-title">
+            No guilds have been found, add a new guild by clicking on the 'Create new guild' button.
+        </h3>
         <div flex="100"
             flex-gt-xs="50"
             flex-gt-sm="100"
@@ -27,6 +29,7 @@
                         <md-icon md-svg-icon="guild_dark"></md-icon>
                         <span class="md-headline" flex layout-margin>{{guild.name}}</span>
                     </md-card-title-text>
+                    <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)"></md-icon>
                 </md-card-title>
                 <md-divider></md-divider>
 
@@ -57,7 +60,7 @@
                 <md-divider></md-divider>
 
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button aria-label="Change guild settings">
+                    <md-button aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.uuid})">
                         <md-icon md-svg-icon="settings_dark"></md-icon>
                         Settings
                     </md-button>
