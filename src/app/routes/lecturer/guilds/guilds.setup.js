@@ -26,6 +26,17 @@
                 }
             })
 
+            .state('base.guilds.settings', {
+                url: '/:guildUuid/settings',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/lecturer/guilds/settings/settings.html',
+                        controller: 'GuildSettingsController',
+                        controllerAs: 'guildSettingsCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }
