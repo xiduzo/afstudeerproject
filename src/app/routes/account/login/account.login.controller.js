@@ -41,8 +41,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function login() {
 
-            Account
-                .login(self.login_form.username, self.login_form.password, self.login_form.login_type)
+            Account.login(self.login_form.username, self.login_form.password, self.login_form.login_type)
                 .then(function(response) {
                     if(response.uid) {
 
@@ -59,13 +58,18 @@
                             access:            self.login_form.login_type === 'student' ? 1 : 2
                         };
 
-                        Account
-                            .checkForExistingUser(logged_in_user.uid)
+                        Account.checkForExistingUser(logged_in_user.uid)
                             .then(function(response) {
 
                                 if(response) {
-                                    // If the user exist in the DB, we dont need to do fancy stuff anymore
-                                    Account.setUser(logged_in_user);
+                                    // If the user exist in the DB
+                                    // Patch last login and set user
+                                    Account.patchLastLogin(logged_in_user.uid)
+                                        .then(function() {
+                                            Account.setUser(logged_in_user);
+                                        }, function() {
+                                            // Err
+                                        });
                                 } else {
                                     // TODO
                                     // When the user is logging in for the first times
@@ -77,8 +81,7 @@
 
 
                                     // Create user into the database
-                                    Account
-                                        .createUser(logged_in_user)
+                                    Account.createUser(logged_in_user)
                                         .then(function(response) {
                                             if(response) {
                                                 Account.setUser(logged_in_user);

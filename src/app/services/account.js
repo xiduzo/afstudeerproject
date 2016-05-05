@@ -28,6 +28,7 @@
         service.setUser = setUser;
         service.getAccessLevel = getAccessLevel;
         service.createUser = createUser;
+        service.patchLastLogin = patchLastLogin;
 
         return service;
 
@@ -89,8 +90,7 @@
             $rootScope.Global.setUser(user);
 
             // Get the access level from the DB just to be sure no one will give himself access
-            service
-                .getAccessLevel(user.uid)
+            service.getAccessLevel(user.uid)
                 .then(function(response) {
                     $rootScope.Global.setAccess(response);
                     $rootScope.$broadcast('user-changed');
@@ -131,6 +131,23 @@
                         gender:            user.gender,
                         preferredlanguage: user.preferredlanguage,
                         access:            user.access
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function patchLastLogin(user) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'patch/last_login.php',
+                    method: "GET",
+                    params: {
+                        uid: user,
                     }
                 })
                 .then(function(response) {
