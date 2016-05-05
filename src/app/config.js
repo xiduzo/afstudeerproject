@@ -128,7 +128,7 @@
                 scrollAmount: 'auto',
                 enable: false,
             },
-            scrollInertia: 400,
+            scrollInertia: 100,
             axis: 'y', // 'y' || 'x' || 'yx'
             theme: 'minimal-dark',
             autoHideScrollbar: true,
