@@ -33,6 +33,15 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
+                if(!response) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('World ' + $stateParams.worldUuid + ' does not exist')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                    $state.go('base.guilds.overview');
+                }
                 self.world = response;
             }, function() {
                 // Err
