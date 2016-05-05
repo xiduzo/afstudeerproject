@@ -14,7 +14,10 @@
         "surname",
         "email"
     ], [
-        "guildUuid" => null
+        "AND" => [
+            "guildUuid" => null,
+            "access" => 1
+        ]
     ]);
 
     echo json_encode($users);
