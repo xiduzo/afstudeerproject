@@ -63,11 +63,7 @@
             if(world.uuid === gamemaster.worldUuid) {
                 return;
             }
-            // // TODO
-            // // Change the world ID of the guild
-            //
-            // guild.world = world.id;
-            //
+
             World.patchGamemasterWorld(gamemaster.uid, world.uuid)
                 .then(function(response) {
                     if(!response) {
