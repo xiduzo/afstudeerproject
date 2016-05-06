@@ -27,6 +27,7 @@
         service.getGamemasters = getGamemasters;
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
+        service.getWorldsOfGamemaster = getWorldsOfGamemaster;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -199,6 +200,23 @@
                     params: {
                         userUid: gamemaster,
                         worldUuid: world
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function getWorldsOfGamemaster(gamemaster) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/worlds_of_gamemaster.php',
+                    method: "GET",
+                    params: {
+                        userUid: gamemaster
                     }
                 })
                 .then(function(response) {
