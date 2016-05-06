@@ -24,9 +24,11 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.moveGuild = moveGuild;
+        self.moveGamemaster = moveGamemaster;
         self.newWorldDialog = newWorldDialog;
         self.changeWorldName = changeWorldName;
+        self.addGamemaster = addGamemaster;
+        self.removeGamemaster = removeGamemaster;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -39,33 +41,49 @@
         World.getWorlds()
             .then(function(response) {
                 _.each(response, function(world) {
-                    // console.log(world);
+                    world.gamemasters = [];
                     self.worlds.push(world);
+                    World.getGamemasters(world.uuid)
+                        .then(function(response) {
+                            _.each(response, function(gamemaster) {
+                                world.gamemasters.push(gamemaster);
+                            });
+                        }, function() {
+                            // Err
+                        });
                 });
-                // console.log(response);
             }, function() {
-                // reject
+                // Err
             });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function moveGuild(event, world, guild) {
-            if(world.id === guild.world) {
+        function moveGamemaster(event, world, gamemaster) {
+            if(world.uuid === gamemaster.worldUuid) {
                 return;
             }
-            // TODO
-            // Change the world ID of the guild
+            // // TODO
+            // // Change the world ID of the guild
+            //
+            // guild.world = world.id;
+            //
+            World.patchGamemasterWorld(gamemaster.uid, world.uuid)
+                .then(function(response) {
+                    if(!response) {
+                        return;
+                    }
 
-            guild.world = world.id;
-
-            $mdToast.show(
-                $mdToast
-                .simple()
-                .position('bottom right')
-                .textContent('Guild moved to new world')
-                .hideDelay(1000)
-            );
+                    $mdToast.show(
+                        $mdToast
+                        .simple()
+                        .position('bottom right')
+                        .textContent(gamemaster.displayname + ' moved to ' + world.name)
+                        .hideDelay(1000)
+                    );
+                }, function() {
+                    // Err
+                });
         }
 
         function newWorldDialog(event) {
@@ -83,7 +101,7 @@
                 .then(function(result) {
                     // Ok
 
-                    // Checks for thw world name
+                    // Checks for the world name
                     if(!result) {
                         $mdToast.show(
                             $mdToast.simple()
@@ -94,8 +112,7 @@
                         return;
                     }
 
-                    World
-                        .addWorld(result)
+                    World.addWorld(result)
                         .then(function(response) {
                             self.worlds.unshift(response);
                             $mdToast.show(
@@ -155,6 +172,77 @@
 
                 }, function() {
                     // Cancel
+                });
+        }
+
+        function addGamemaster(event, world) {
+            World.getLecturers(world.uuid)
+                .then(function(response) {
+
+                    $mdDialog.show({
+                        controller: 'AasController',
+                        controllerAs: 'aasCtrl',
+                        templateUrl: 'app/components/autocomplete_and_select/aas.html',
+                        targetEvent: event,
+                        clickOutsideToClose: true,
+                        locals: {
+                            title: 'Add gamemasters to this world',
+                            subtitle: 'Please select the gamemasters which shall protect this world.',
+                            about: 'gamemasters',
+                            players: response,
+                            guildUuid: world.uuid
+                        }
+                    })
+                        .then(function(response) {
+                            if(!response) {
+                                return;
+                            }
+
+                            // Adding each lecturer to the world
+                            _.each(response, function(user) {
+                                World.addGamemasterToWorld(user.uid, world.uuid)
+                                    .then(function(response) {
+                                        user.worldUuid = world.uuid;
+                                        world.gamemasters.push(user);
+                                    }, function() {
+                                        // Err
+                                    });
+                            });
+
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent(response.length + ' gamemaster(s) added to ' + world.name)
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+
+                        }, function() {
+                            // Err
+                        });
+
+                }, function() {
+                    // Err
+                });
+        }
+
+        function removeGamemaster(gamemaster, world) {
+            World.removeGamemasterFromWorld(gamemaster.uid, world.uuid)
+                .then(function(response) {
+                    if(!response) {
+                        return;
+                    }
+
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(gamemaster.displayname + ' got removed from ' + world.name)
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+
+                    world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
+
+                }, function() {
+                    // Err
                 });
         }
 

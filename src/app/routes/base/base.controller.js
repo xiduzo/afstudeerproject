@@ -6,7 +6,9 @@
         .controller('BaseController', BaseController);
 
     /** @ngInject */
-    function BaseController($mdSidenav) {
+    function BaseController(
+        $rootScope
+    ) {
 
         var self = this;
 
@@ -17,7 +19,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+        self.user = $rootScope.Global.getUser();
+        self.access = $rootScope.Global.getAccess();
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations

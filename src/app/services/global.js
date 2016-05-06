@@ -47,8 +47,8 @@
 
             Account.getAccessLevel(self.user.uid)
                 .then(function(response) {
-                    self.access = response;
-                    // self.access = 2;
+                    // self.access = response;
+                    self.access = 3;
                 });
         }
 

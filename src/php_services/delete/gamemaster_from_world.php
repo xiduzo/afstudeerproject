@@ -5,21 +5,20 @@
 
     require_once '../config.php';
 
-    $uuid = $_GET['uuid'];
+    $userUid = $_GET['userUid'];
+    $worldUuid = $_GET['worldUuid'];
 
-    if(empty($uuid)) {
+    if(empty($userUid) || empty($worldUuid)) {
         echo json_encode(false);
         return;
     }
 
     // Insert the house to the database
-    $database->delete("World", [
-        "uuid" => $uuid
-    ]);
-
-    // Also delete all connections of this world in the DB
     $database->delete("UserInWorld", [
-        "worldUuid" => $uuid
+        "AND" => [
+            "userUid" => $userUid,
+            "worldUuid" => $worldUuid
+        ]
     ]);
 
     echo json_encode(true);

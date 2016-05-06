@@ -138,10 +138,7 @@
                 controllerAs: 'guildsAddMemberCtrl',
                 templateUrl: 'app/routes/lecturer/guilds/overview/addMember/addMember.html',
                 targetEvent: event,
-                clickOutsideToClose: true,
-                locals: {
-                    guildUuid: guild.uuid
-                }
+                clickOutsideToClose: true
             })
                 .then(function(response) {
                     if(!response) {
