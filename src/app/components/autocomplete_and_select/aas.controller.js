@@ -11,8 +11,7 @@
         title,
         subtitle,
         about,
-        players,
-        Guild
+        players
     ) {
 
         var self = this;
@@ -25,7 +24,7 @@
         self.removeSelectedPlayer = removeSelectedPlayer;
         self.close = close;
         self.players = players;
-        self.addPlayersToTeam = addPlayersToTeam;
+        self.returnPlayers = returnPlayers;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -47,7 +46,6 @@
         _.each(self.players, function(player) {
             player.selected = false;
             player.filter_name = player.displayname + ' ' + player.surname;
-            // self.filter_users.push(player);
         });
 
 
@@ -97,7 +95,7 @@
             $mdDialog.hide();
         }
 
-        function addPlayersToTeam() {
+        function returnPlayers() {
             $mdDialog.hide(self.selected_users);
         }
 

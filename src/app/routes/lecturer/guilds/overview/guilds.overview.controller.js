@@ -133,35 +133,48 @@
 
         function addGuildMember(event, guild) {
 
-            $mdDialog.show({
-                controller: 'GuildsAddMemberController',
-                controllerAs: 'guildsAddMemberCtrl',
-                templateUrl: 'app/routes/lecturer/guilds/overview/addMember/addMember.html',
-                targetEvent: event,
-                clickOutsideToClose: true
-            })
+            Guild.getUsersWithoutGuild()
                 .then(function(response) {
-                    if(!response) {
-                        return;
-                    }
 
-                    // Adding each user to the guild
-                    _.each(response, function(user) {
-                        Guild.addUserToGuild(user.uid, guild.uuid)
-                            .then(function(response) {
-                                user.guildUuid = guild.uuid;
-                                guild.players.push(user);
-                            }, function() {
-                                // Err
+                    $mdDialog.show({
+                        controller: 'AasController',
+                        controllerAs: 'aasCtrl',
+                        templateUrl: 'app/components/autocomplete_and_select/aas.html',
+                        targetEvent: event,
+                        clickOutsideToClose: true,
+                        locals: {
+                            title: 'Add players to this guild',
+                            subtitle: 'Please select the players you would like to add.',
+                            about: 'players',
+                            players: response
+                        }
+                    })
+                        .then(function(response) {
+                            if(!response) {
+                                return;
+                            }
+
+                            // Adding each lecturer to the world
+                            _.each(response, function(user) {
+                                Guild.addUserToGuild(user.uid, guild.uuid)
+                                    .then(function(response) {
+                                        user.guildUuid = guild.uuid;
+                                        guild.players.push(user);
+                                    }, function() {
+                                        // Err
+                                    });
                             });
-                    });
 
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent(response.length + ' player(s) added to ' + guild.name)
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent(response.length + ' players(s) added to ' + guild.name)
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+
+                        }, function() {
+                            // Err
+                        });
 
                 }, function() {
                     // Err
