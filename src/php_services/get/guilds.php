@@ -4,7 +4,16 @@
 
     require_once '../config.php';
 
-    $guilds = $database->select("Guild", "*");
+    $worldUuid = $_GET['worldUuid'];
+
+    if(empty($worldUuid)) {
+        echo json_encode(false);
+        return;
+    }
+
+    $guilds = $database->select("Guild", "*", [
+        "worldUuid" => $worldUuid
+    ]);
 
     echo json_encode($guilds);
 

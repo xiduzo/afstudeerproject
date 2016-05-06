@@ -39,11 +39,14 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function getGuilds() {
+        function getGuilds(world) {
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'get/guilds.php',
-                    method: "GET"
+                    method: "GET",
+                    params: {
+                        worldUuid: world
+                    }
                 })
                 .then(function(response) {
                     resolve(response.data);
@@ -70,13 +73,15 @@
             });
         }
 
-        function addGuild(name) {
+        function addGuild(name, world) {
+            console.log(world);
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'insert/guild.php',
                     method: "GET",
                     params: {
-                        name: name
+                        name: name,
+                        worldUuid: world
                     }
                 })
                 .then(function(response) {

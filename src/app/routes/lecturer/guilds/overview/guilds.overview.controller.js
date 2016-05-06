@@ -34,22 +34,20 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.guilds = [];
+        self.worlds = [];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getGuilds()
+        World.getWorldsOfGamemaster(Global.getUser().uid)
             .then(function(response) {
-                _.each(response, function(guild) {
-                    guild.players = [];
-                    self.guilds.push(guild);
-
-                    Guild.getGuildMembers(guild.uuid)
+                _.each(response, function(world) {
+                    world.guilds = [];
+                    self.worlds.push(world);
+                    Guild.getGuilds(world.uuid)
                         .then(function(response) {
-                            _.each(response, function(user) {
-                                user.guildUuid = guild.uuid;
-                                guild.players.push(user);
+                            _.each(response, function(guild) {
+                                world.guilds.push(guild);
                             });
                         }, function() {
                             // Err
@@ -86,7 +84,7 @@
         }
 
 
-        function newGuildDialog(event) {
+        function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
                         .title('Add a new guild to [WORLD NAME]')
                         .textContent('How would you like to name the new guild?')
@@ -112,11 +110,10 @@
                         return;
                     }
 
-                    Guild
-                        .addGuild(result)
+                    Guild.addGuild(result, world.uuid)
                         .then(function(response) {
                             response.players = [];
-                            self.guilds.unshift(response);
+                            world.guilds.unshift(response);
                             $mdToast.show(
                                 $mdToast.simple()
                                 .textContent('Guild ' + response.name + ' created')

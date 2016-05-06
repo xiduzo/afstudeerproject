@@ -1,78 +1,92 @@
-<section>
-    <div layout="row">
-        <h2 class="md-headline" flex>
-            Guilds overview
-        </h2>
-        <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event)">
-            <md-icon md-svg-icon="guild_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Create new guild
-            </md-tooltip>
-        </md-button>
-    </div>
-    <div layout="row" layout-wrap>
-        <h3 ng-if="guildsOverviewCtrl.guilds.length < 1" class="md-title">
-            No guilds have been found, add a new guild by clicking on the 'Create new guild' button.
-        </h3>
-        <div flex="100"
-            flex-gt-xs="50"
-            flex-gt-sm="100"
-            flex-gt-md="50"
-            flex-lg="33"
-            flex-gt-lg="25"
-            ng-repeat="guild in guildsOverviewCtrl.guilds">
-
-            <md-card>
-
-                <md-card-title>
-                    <md-card-title-text layout="row">
-                        <md-icon md-svg-icon="guild_dark"></md-icon>
-                        <span class="md-headline" flex layout-margin>{{guild.name}}</span>
-                    </md-card-title-text>
-                    <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)"></md-icon>
-                </md-card-title>
-                <md-divider></md-divider>
-
-                <md-card-content>
-                    <md-list dnd-list="guild.players"
-                        dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
-                        <md-list-item ng-repeat="player in guild.players"
-                            dnd-draggable="player"
-                            dnd-moved="guild.players.splice($index, 1)"
-                            dnd-effect-allowed="move">
-                            <img class="round" gravatar-size="45" gravatar-src="player.email" layout-padding>
-                            <span flex>
-                                {{ player.displayname }} {{ player.surname }}
-                            </span>
-                            <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
-                                <md-tooltip md-direction="bottom">
-                                    Remove player from guild
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
+        <md-tab ng-repeat="world in guildsOverviewCtrl.worlds">
+            <md-tab-label>
+                {{ world.name }}
+            </md-tab-label>
+            <md-tab-body>
+                <section layout-padding class="background">
+                    <section>
+                        <div layout="row">
+                            <h2 class="md-headline" flex>
+                                Guilds overview of {{ world.name }}
+                            </h2>
+                            <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
+                                <md-icon md-svg-icon="guild_light"></md-icon>
+                                <md-tooltip md-direction="left">
+                                    Create new guild
                                 </md-tooltip>
-                            </md-icon>
-                        </md-list-item>
-                    </md-list>
-                    <div layout="row" layout-align="center center">
-                         <md-button ng-click="guildsOverviewCtrl.addGuildMember($event, guild)">
-                             Add new guild members
-                         </md-button>
-                    </div>
-                </md-card-content>
-                <md-divider></md-divider>
+                            </md-button>
+                        </div>
+                        <div layout="row" layout-wrap>
+                            <h3 ng-if="world.guilds.length < 1" class="md-title">
+                                No guilds have been found, add a new guild by clicking on the 'Create new guild' button.
+                            </h3>
+                            <div flex="100"
+                                flex-gt-xs="50"
+                                flex-gt-sm="100"
+                                flex-gt-md="50"
+                                flex-lg="33"
+                                flex-gt-lg="25"
+                                ng-repeat="guild in world.guilds">
 
-                <md-card-actions layout="row" layout-align="end center">
-                    <md-button aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.uuid})">
-                        <md-icon md-svg-icon="settings_dark"></md-icon>
-                        Settings
-                    </md-button>
-                    <md-button>
-                        <md-icon md-svg-icon="eye_dark"></md-icon>
-                        View
-                    </md-button>
-                </md-card-actions>
-            </md-card>
+                                <md-card>
 
-        </div> <!-- End of worlds -->
+                                    <md-card-title>
+                                        <md-card-title-text layout="row">
+                                            <md-icon md-svg-icon="guild_dark"></md-icon>
+                                            <span class="md-headline" flex layout-margin>{{guild.name}}</span>
+                                        </md-card-title-text>
+                                        <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)"></md-icon>
+                                    </md-card-title>
+                                    <md-divider></md-divider>
 
-    </div>
+                                    <md-card-content>
+                                        <md-list dnd-list="guild.players"
+                                            dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
+                                            <md-list-item ng-repeat="player in guild.players"
+                                                dnd-draggable="player"
+                                                dnd-moved="guild.players.splice($index, 1)"
+                                                dnd-effect-allowed="move">
+                                                <img class="round" gravatar-size="45" gravatar-src="player.email" layout-padding>
+                                                <span flex>
+                                                    {{ player.displayname }} {{ player.surname }}
+                                                </span>
+                                                <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
+                                                    <md-tooltip md-direction="bottom">
+                                                        Remove player from guild
+                                                    </md-tooltip>
+                                                </md-icon>
+                                            </md-list-item>
+                                        </md-list>
+                                        <div layout="row" layout-align="center center">
+                                             <md-button ng-click="guildsOverviewCtrl.addGuildMember($event, guild)">
+                                                 Add new guild members
+                                             </md-button>
+                                        </div>
+                                    </md-card-content>
+                                    <md-divider></md-divider>
 
-</section>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.uuid})">
+                                            <md-icon md-svg-icon="settings_dark"></md-icon>
+                                            Settings
+                                        </md-button>
+                                        <md-button>
+                                            <md-icon md-svg-icon="eye_dark"></md-icon>
+                                            View
+                                        </md-button>
+                                    </md-card-actions>
+                                </md-card>
+
+                            </div> <!-- End of worlds -->
+
+                        </div>
+
+                    </section>
+
+                </section>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
+</md-content>

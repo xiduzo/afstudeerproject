@@ -5,25 +5,21 @@
     require_once '../config.php';
 
     $userUid = $_GET['userUid'];
-    $worldUuid = $_GET['worldUuid'];
 
-    if(empty($userUid) || empty($worldUuid)) {
+    if(empty($userUid)) {
         echo json_encode(false);
         return;
     }
 
-    $guilds = $database->select("Guild", [
-        "[>]UserInWorld" => ["worldUuid" => "worldUuid"]
+    $worlds = $database->select("World", [
+        "[>]UserInWorld" => ["uuid" => "worldUuid"]
     ], [
         "uuid",
         "name"
     ], [
-        "AND" => [
-            "UserInWorld.worldUuid" => $worldUuid,
-            "UserInWorld.userUid" => $userUid
-        ]
+        "UserInWorld.userUid" => $userUid
     ]);
 
-    echo json_encode($guilds);
+    echo json_encode($worlds);
 
 ?>

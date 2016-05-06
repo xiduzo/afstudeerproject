@@ -8,8 +8,9 @@
     require_once '../function/uuid.php';
 
     $name = $_GET['name'];
+    $worldUuid = $_GET['worldUuid'];
 
-    if(empty($name)) {
+    if(empty($name) || empty($worldUuid)) {
         echo json_encode(false);
         return;
     }
@@ -19,7 +20,8 @@
     // Insert the house to the database
     $database->insert("Guild", [
         "uuid" => $uuid,
-        "name" => $name
+        "name" => $name,
+        "worldUuid" => $worldUuid
     ]);
 
     $guild = $database->get("Guild", "*", [
