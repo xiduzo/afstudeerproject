@@ -1,10 +1,12 @@
-<section>
+<section layout-padding>
     <div layout="row">
         <h2 class="md-headline" flex>
             Account detail
         </h2>
     </div>
     <div class="row">
+        <div class="radarChart"></div>
+
         {{ accountDetailCtrl.user }}
 
         <img gravatar-src="accountDetailCtrl.user.email" />
