@@ -5,9 +5,17 @@
 
     require_once '../config.php';
 
+    $worldUuid = $_GET['worldUuid'];
+
+    if(empty($worldUuid)) {
+        echo json_encode(false);
+        return;
+    }
+
     // http://stackoverflow.com/a/2686266/4655177
     $users = $database->select("User", [
-        "[>]UserInGuild" => ["uid" => "userUid"]
+        "[>]UserInGuild" => ["uid" => "userUid"],
+        "[>]Guild" => ["UserInGuild.guildUuid" => "uuid"]
     ], [
         "uid",
         "displayname",
@@ -15,7 +23,13 @@
         "email"
     ], [
         "AND" => [
-            "guildUuid" => null,
+            "AND" => [
+                "guildUuid" => null,
+                "OR" => [
+                    "worldUuid[!]" => [$worldUuid],
+                    "worldUuid" => null
+                ]
+            ],
             "access" => 1
         ]
     ]);

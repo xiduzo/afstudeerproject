@@ -47,7 +47,16 @@
                     Guild.getGuilds(world.uuid)
                         .then(function(response) {
                             _.each(response, function(guild) {
+                                guild.members = [];
                                 world.guilds.push(guild);
+                                Guild.getGuildMembers(guild.uuid)
+                                    .then(function(response) {
+                                        _.each(response, function(member) {
+                                            guild.members.push(member);
+                                        });
+                                    }, function() {
+                                        // Err
+                                    });
                             });
                         }, function() {
                             // Err
@@ -86,7 +95,7 @@
 
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
-                        .title('Add a new guild to [WORLD NAME]')
+                        .title('Add a new guild to ' + world.name)
                         .textContent('How would you like to name the new guild?')
                         .clickOutsideToClose(true)
                         .placeholder('New guild name')
@@ -112,7 +121,7 @@
 
                     Guild.addGuild(result, world.uuid)
                         .then(function(response) {
-                            response.players = [];
+                            response.members = [];
                             world.guilds.unshift(response);
                             $mdToast.show(
                                 $mdToast.simple()
@@ -129,9 +138,9 @@
                 });
         }
 
-        function addGuildMember(event, guild) {
+        function addGuildMember(event, world, guild) {
 
-            Guild.getUsersWithoutGuild()
+            Guild.getUsersWithoutGuild(world.uuid)
                 .then(function(response) {
 
                     $mdDialog.show({
@@ -141,9 +150,9 @@
                         targetEvent: event,
                         clickOutsideToClose: true,
                         locals: {
-                            title: 'Add players to this guild',
+                            title: 'Add members to this guild',
                             subtitle: 'Please select the players you would like to add.',
-                            about: 'players',
+                            about: 'members',
                             players: response
                         }
                     })
@@ -157,7 +166,7 @@
                                 Guild.addUserToGuild(user.uid, guild.uuid)
                                     .then(function(response) {
                                         user.guildUuid = guild.uuid;
-                                        guild.players.push(user);
+                                        guild.members.push(user);
                                     }, function() {
                                         // Err
                                     });
@@ -165,7 +174,7 @@
 
                             $mdToast.show(
                                 $mdToast.simple()
-                                .textContent(response.length + ' players(s) added to ' + guild.name)
+                                .textContent(response.length + ' member(s) added to ' + guild.name)
                                 .position('bottom right')
                                 .hideDelay(3000)
                             );
@@ -191,7 +200,7 @@
                         .position('bottom right')
                         .hideDelay(3000)
                     );
-                    guild.players.splice(guild.players.indexOf(user), 1);
+                    guild.members.splice(guild.members.indexOf(user), 1);
                 }, function() {
                     // Err
                 });

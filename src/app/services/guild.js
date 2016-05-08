@@ -74,7 +74,6 @@
         }
 
         function addGuild(name, world) {
-            console.log(world);
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'insert/guild.php',
@@ -92,11 +91,14 @@
             });
         }
 
-        function getUsersWithoutGuild() {
+        function getUsersWithoutGuild(world) {
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'get/users_without_guild.php',
-                    method: "GET"
+                    method: "GET",
+                    params: {
+                        worldUuid: world
+                    }
                 })
                 .then(function(response) {
                     resolve(response.data);
