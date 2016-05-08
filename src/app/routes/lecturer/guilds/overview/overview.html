@@ -27,7 +27,7 @@
                             flex-gt-md="50"
                             flex-lg="33"
                             flex-gt-lg="25"
-                            ng-repeat="guild in world.guilds">
+                            ng-repeat="guild in world.guilds | orderBy: '-created_at'">
 
                             <md-card>
 
