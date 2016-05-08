@@ -6,7 +6,9 @@
             </md-tab-label>
             <md-tab-body>
                 <section layout-padding>
-                    {{ guild.members }}
+                    <div ng-repeat="member in guild.members">
+                        {{ member }}
+                    </div>
                 </section>
             </md-tab-body>
         </md-tab>
