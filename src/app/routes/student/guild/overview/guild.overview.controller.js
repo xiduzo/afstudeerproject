@@ -12,12 +12,12 @@
         STUDENT_ACCESS_LEVEL
     ) {
 
-        var self = this;
-
         if(Global.getAccess() !== STUDENT_ACCESS_LEVEL) {
             Global.notAllowed();
             return;
         }
+
+        var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
