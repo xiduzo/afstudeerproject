@@ -70,7 +70,7 @@
                 World.removeGamemasterFromWorld(gamemaster.uid, gamemaster.worldUuid);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
             } else {
-                World.patchGamemasterWorld(gamemaster.uid, world.uuid)
+                World.patchGamemasterWorld(gamemaster.uid, gamemaster.worldUuid, world.uuid)
                     .then(function(response) {
                         if(!response) {
                             return;
@@ -120,6 +120,7 @@
 
                     World.addWorld(result)
                         .then(function(response) {
+                            response.gamemasters = [];
                             self.worlds.unshift(response);
                             $mdToast.show(
                                 $mdToast.simple()

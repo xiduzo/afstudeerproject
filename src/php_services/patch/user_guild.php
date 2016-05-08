@@ -7,8 +7,9 @@
 
     $userUid = $_GET['userUid'];
     $guildUuid = $_GET['guildUuid'];
+    $oldGuildUuid = $_GET['oldGuildUuid'];
 
-    if(empty($userUid) || empty($guildUuid)) {
+    if(empty($userUid) || empty($guildUuid) || empty($oldGuildUuid)) {
         echo json_encode(false);
         return;
     }
@@ -17,7 +18,10 @@
     $database->update("UserInGuild", [
         "guildUuid" => $guildUuid
     ], [
-        "userUid" => $userUid
+        "AND" => [
+            "guildUuid" => $oldGuildUuid,
+            "userUid" => $userUid
+        ]
     ]);
 
     echo json_encode(true);

@@ -52,6 +52,7 @@
                                 Guild.getGuildMembers(guild.uuid)
                                     .then(function(response) {
                                         _.each(response, function(member) {
+                                            member.guildUuid = guild.uuid;
                                             guild.members.push(member);
                                         });
                                     }, function() {
@@ -74,7 +75,7 @@
                 return;
             }
 
-            Guild.patchPlayersGuild(user.uid, guild.uuid)
+            Guild.patchPlayersGuild(user.uid, user.guildUuid, guild.uuid)
                 .then(function(response) {
                     user.guildUuid = guild.uuid;
                     $mdToast.show(

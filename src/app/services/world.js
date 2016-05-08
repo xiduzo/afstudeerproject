@@ -192,14 +192,15 @@
             });
         }
 
-        function patchGamemasterWorld(gamemaster, world) {
+        function patchGamemasterWorld(gamemaster, oldWorld, world) {
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'patch/user_world.php',
                     method: "GET",
                     params: {
                         userUid: gamemaster,
-                        worldUuid: world
+                        worldUuid: world,
+                        oldWorldUuid: oldWorld
                     }
                 })
                 .then(function(response) {

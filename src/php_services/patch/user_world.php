@@ -7,8 +7,9 @@
 
     $userUid = $_GET['userUid'];
     $worldUuid = $_GET['worldUuid'];
+    $oldWorldUuid = $_GET['oldWorldUuid']
 
-    if(empty($userUid) || empty($worldUuid)) {
+    if(empty($userUid) || empty($worldUuid) || empty($oldWorldUuid)) {
         echo json_encode(false);
         return;
     }
@@ -17,7 +18,10 @@
     $database->update("UserInWorld", [
         "worldUuid" => $worldUuid
     ], [
-        "userUid" => $userUid
+        "AND" => [
+            "userUid" => $userUid,
+            "worldUuid" => $oldWorldUuid
+        ]
     ]);
 
     echo json_encode(true);

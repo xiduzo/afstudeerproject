@@ -162,13 +162,14 @@
             });
         }
 
-        function patchPlayersGuild(user, guild) {
+        function patchPlayersGuild(user, oldGuild, guild) {
             return $q(function(resolve, reject) {
                 $http({
                     url: API_URL + 'patch/user_guild.php',
                     method: "GET",
                     params: {
                         userUid: user,
+                        oldGuildUuid: oldGuild,
                         guildUuid: guild
                     }
                 })
