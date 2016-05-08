@@ -46,6 +46,7 @@
                     World.getGamemasters(world.uuid)
                         .then(function(response) {
                             _.each(response, function(gamemaster) {
+                                gamemaster.worldUuid = world.uuid;
                                 world.gamemasters.push(gamemaster);
                             });
                         }, function() {
@@ -64,22 +65,31 @@
                 return;
             }
 
-            World.patchGamemasterWorld(gamemaster.uid, world.uuid)
-                .then(function(response) {
-                    if(!response) {
-                        return;
-                    }
+            if((_.where(world.gamemasters, { uid: gamemaster.uid })).length >=2) {
+                // Remove duplicate gamemasters in world
+                World.removeGamemasterFromWorld(gamemaster.uid, gamemaster.worldUuid);
+                world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
+            } else {
+                World.patchGamemasterWorld(gamemaster.uid, world.uuid)
+                    .then(function(response) {
+                        if(!response) {
+                            return;
+                        }
 
-                    $mdToast.show(
-                        $mdToast
-                        .simple()
-                        .position('bottom right')
-                        .textContent(gamemaster.displayname + ' moved to ' + world.name)
-                        .hideDelay(1000)
-                    );
-                }, function() {
-                    // Err
-                });
+                        gamemaster.worldUuid = world.uuid;
+                        $mdToast.show(
+                            $mdToast
+                            .simple()
+                            .position('bottom right')
+                            .textContent(gamemaster.displayname + ' moved to ' + world.name)
+                            .hideDelay(1000)
+                        );
+                    }, function() {
+                        // Err
+                    });
+            }
+
+
         }
 
         function newWorldDialog(event) {
@@ -194,15 +204,19 @@
                                 return;
                             }
 
-                            // Adding each lecturer to the world
                             _.each(response, function(user) {
-                                World.addGamemasterToWorld(user.uid, world.uuid)
-                                    .then(function(response) {
-                                        user.worldUuid = world.uuid;
-                                        world.gamemasters.push(user);
-                                    }, function() {
-                                        // Err
-                                    });
+                                // Do not add lecturers which allready are lecturers in this world
+                                // TODO
+                                // dont give the option of selecting this users in the first place
+                                if(_.where(world.gamemasters, { uid: user.uid }).length === 0) {
+                                    World.addGamemasterToWorld(user.uid, world.uuid)
+                                        .then(function(response) {
+                                            user.worldUuid = world.uuid;
+                                            world.gamemasters.push(user);
+                                        }, function() {
+                                            // Err
+                                        });
+                                }
                             });
 
                             $mdToast.show(
