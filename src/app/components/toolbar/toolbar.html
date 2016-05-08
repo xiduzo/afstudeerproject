@@ -2,13 +2,14 @@
     layout-padding
     md-component-id="main__toolbar"
     id="main__toolbar">
-    <md-icon hide-gt-sm
-        aria-label="toggle menu"
-        md-svg-icon="menu_light"
+    <md-button aria-label="toggle menu"
         ng-click="toolbarCtrl.toggleNavigation()"
         ng-if="toolbarCtrl.access >= 1"
-        class="icon--size--40">
-    </md-icon>
+        hide-gt-sm>
+        <md-icon
+            md-svg-icon="menu_light">
+        </md-icon>
+    </md-button>
     <h1 class="md-title" flex>
         [PLATFORM NAME]
     </h1>
