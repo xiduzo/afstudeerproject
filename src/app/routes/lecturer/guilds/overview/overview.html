@@ -1,11 +1,11 @@
-<md-content>
+<section>
     <md-tabs md-dynamic-height md-border-bottom class="md-primary">
         <md-tab ng-repeat="world in guildsOverviewCtrl.worlds">
             <md-tab-label>
                 {{ world.name }}
             </md-tab-label>
-            <md-tab-body>
-                <section layout-padding class="background">
+            <md-tab-body class="md-primary">
+                <section layout-padding class="md-accent">
                     <div layout="row">
                         <h2 class="md-headline" flex>
                             Guilds overview of {{ world.name }}
@@ -87,4 +87,4 @@
             </md-tab-body>
         </md-tab>
     </md-tabs>
-</md-content>
+</section>
