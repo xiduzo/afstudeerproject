@@ -28,7 +28,8 @@
                 "worldUuid" => null
             ],
             "access" => 1
-        ]
+        ],
+        "GROUP" => "uid"
     ]);
 
     echo json_encode($users);
