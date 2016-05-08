@@ -34,9 +34,15 @@
                                 <md-card-title>
                                     <md-card-title-text layout="row">
                                         <md-icon md-svg-icon="guild_dark"></md-icon>
-                                        <span class="md-headline" flex layout-margin>{{guild.name}}</span>
+                                        <span class="md-headline" flex layout-margin>
+                                            {{guild.name}}
+                                        </span>
                                     </md-card-title-text>
-                                    <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)"></md-icon>
+                                    <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)">
+                                        <md-tooltip md-direction="bottom">
+                                            Change guild name
+                                        </md-tooltip>
+                                    </md-icon>
                                 </md-card-title>
                                 <md-divider></md-divider>
 
