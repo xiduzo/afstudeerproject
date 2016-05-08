@@ -28,6 +28,7 @@
         service.patchPlayersGuild = patchPlayersGuild;
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
+        service.getUserGuilds = getUserGuilds;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -204,6 +205,23 @@
                     method: "GET",
                     params: {
                         uuid: guild
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function getUserGuilds(user) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/user_guilds.php',
+                    method: "GET",
+                    params: {
+                        userUid: user
                     }
                 })
                 .then(function(response) {

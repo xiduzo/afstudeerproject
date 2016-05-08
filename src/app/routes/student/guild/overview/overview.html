@@ -1,7 +1,14 @@
-<section layout-padding>
-    <div layout="row">
-        <h2 class="md-headline" flex>
-            Guild overview
-        </h2>
-    </div>
+<section>
+    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
+        <md-tab ng-repeat="guild in guildOverviewCtrl.guilds">
+            <md-tab-label>
+                {{ guild.name }}
+            </md-tab-label>
+            <md-tab-body>
+                <section layout-padding>
+                    {{ guild.members }}
+                </section>
+            </md-tab-body>
+        </md-tab>
+    </md-tabs>
 </section>
