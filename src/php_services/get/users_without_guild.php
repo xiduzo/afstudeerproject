@@ -23,12 +23,9 @@
         "email"
     ], [
         "AND" => [
-            "AND" => [
-                "guildUuid" => null,
-                "OR" => [
-                    "worldUuid[!]" => [$worldUuid],
-                    "worldUuid" => null
-                ]
+            "OR" => [
+                "worldUuid[!]" => [$worldUuid],
+                "worldUuid" => null
             ],
             "access" => 1
         ]
