@@ -8,7 +8,6 @@
     /** @ngInject */
     function AccountDetailController(
         Global,
-        RadarChart,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -26,45 +25,96 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-		var data = [
-            [
-                {
-                    axis:  "Interaction Design",
-                    value: 0.73
-                },
-                {
-                    axis:  "Visual Interface Design",
-                    value: 0.6
-                },
-                {
-                    axis:  "Frontend Development",
-                    value: 0.87
-                },
-                {
-                    axis:  "Content management",
-                    value: 0.23
-                },
-                {
-                    axis:  "Project management",
-                    value: 0.04
-                }
-            ]
-        ];
-
-		var radarChartOptions = {
-            w: 300,
-            h: 300,
-            margin: {top: 50, right: 50, bottom: 50, left: 75 },
-            maxValue: 1,
-            levels: 5,
-            roundStrokes: true,
-            color: d3.scale.ordinal().range(["#FFC107"])
-		};
-
-		// Draw the chart
-		RadarChart.BuildChart(".radarChart", data, radarChartOptions);
-
         self.user = Global.getUser();
+        self.average_score = {
+            name: 'Average score',
+            data: [
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100)
+            ],
+            color: '#95a5a6',
+            pointPlacement: 'on'
+        };
+
+        self.my_score = {
+            name: 'My score',
+            data: [
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100)
+            ],
+            color: '#FFCC00',
+            pointPlacement: 'on'
+        };
+
+        $('#container').highcharts({
+            chart: {
+                polar: true,
+                type: 'area',
+                backgroundColor:'rgba(255, 255, 255, 0)',
+                spacingBottom: 10,
+                spacingTop: 10,
+                spacingLeft: 10,
+                spacingRight: 10,
+                width: 400,
+                height: 400,
+            },
+
+            title: {
+                text: ''
+            },
+
+            exporting: {
+                // Only show the exporting button when you have a higher access level than the student
+                enabled: Global.getAccess() > 1 ? true : false,
+                backgroundColor: 'rgba(255, 255, 255, 0)'
+            },
+
+            pane: {
+                size: '65%'
+            },
+
+            xAxis: {
+                categories: [
+                    'Interaction Design',
+                    'Visual Interface Design',
+                    'Frontend Development',
+                    'Content management',
+                    'Project management'
+                ],
+                tickmarkPlacement: 'on',
+                lineWidth: 0,
+            },
+
+            yAxis: {
+                gridLineInterpolation: 'polar',
+                lineWidth: 0,
+                min: 0,
+                max: 100,
+                tickInterval : 100 / 4
+            },
+
+            tooltip: {
+                shared: true,
+                pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+            },
+
+            legend: {
+               enabled: false
+            },
+
+            series: [self.average_score, self.my_score],
+
+            credits: {
+                text: ''
+            }
+
+        });
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
