@@ -6,6 +6,9 @@
             </md-tab-label>
             <md-tab-body>
                 <section layout-padding>
+                    <md-content layout="row" class="md-whiteframe-z2">
+                        <div id="{{guild.uuid}}" flex="100"></div>
+                    </md-content>
                     <div ng-repeat="member in guild.members">
                         {{ member }}
                     </div>
