@@ -57,6 +57,18 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        var exp_data = [];
+        var predicted_data = [];
+
+        for(var i = 0; i <= 7; i++) {
+            var exp = Math.floor(Math.random() * 10000 + 10000 * i);
+            if(i < 5) {
+                exp_data.push(exp);
+            }
+
+            predicted_data.push(exp);
+        }
+
         function createExperienceChart(guild) {
             $('#'+guild.uuid).highcharts({
 
@@ -105,32 +117,27 @@
 
                 tooltip: {
                     shared: false,
-                    pointFormat: 'Experience: <strong>{point.y:,.0f}</strong>'
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong>'
                 },
 
                 series: [
                     {
-                        name: 'dase_data',
-                        color: 'rgba(0,0,0,0)',
-                        data: [
-                            -1, -1, -1, -1, -1, -1, -1, -1
-                        ]
+                        name: 'Predicted experience',
+                        data: predicted_data,
+                        color: 'rgba(0,0,0,0.25)',
+                        dashStyle: 'ShortDash'
                     },
                     {
-                        name: guild.name,
-                        data: [
-                            0,
-                            Math.floor(Math.random() * 10000 ),
-                            Math.floor(Math.random() * 5000 + 5000),
-                            Math.floor(Math.random() * 10000 + 10000),
-                            Math.floor(Math.random() * 15000 + 15000),
-                            Math.floor(Math.random() * 20000 + 20000),
-                            Math.floor(Math.random() * 40000 + 40000),
-                            Math.floor(Math.random() * 40000 + 60000),
-                        ],
+                        name: 'Experience',
+                        data: exp_data,
                         color: '#FFCC00'
                     }
-                ]
+                ],
+
+                credits: {
+                    text: moment().format("DD/MM/YY h:mm"),
+                    href: ''
+                }
             });
         }
 

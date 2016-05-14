@@ -111,7 +111,8 @@
             series: [self.average_score, self.my_score],
 
             credits: {
-                text: ''
+                text: moment().format("DD/MM/YY h:mm"),
+                href: ''
             }
 
         });
