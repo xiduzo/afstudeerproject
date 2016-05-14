@@ -11,7 +11,6 @@
             'ngSanitize',
             'ui.router',
             'ui.gravatar',
-            'restangular',
             'LocalStorageModule',
             'ngMaterial',
             'ngScrollbars',
