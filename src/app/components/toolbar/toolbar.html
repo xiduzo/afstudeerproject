@@ -20,6 +20,14 @@
             You have game master access
         </md-tooltip>
     </md-icon>
+    <md-icon md-svg-icon="research_light"
+        ng-if="toolbarCtrl.user.uid === 'boera006'"
+        class="icon--size--36"
+        ui-sref="base.research">
+        <md-tooltip md-direction="left">
+            Research
+        </md-tooltip>
+    </md-icon>
     <md-icon md-svg-icon="gavel_light"
         ng-if="toolbarCtrl.access === toolbarCtrl.COORDINATOR_ACCESS_LEVEL"
         class="icon--size--36">

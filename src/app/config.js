@@ -86,8 +86,8 @@
         $mdIconProvider
 
             // Material icons @ https://design.google.com/icons/
-            .icon('menu_dark', './assets/icons/material/ic_menu_black_48px.svg', 48)
             .icon('menu_light', './assets/icons/material/ic_menu_white_48px.svg', 48)
+            .icon('menu_dark', './assets/icons/material/ic_menu_black_48px.svg', 48)
             .icon('person_light', './assets/icons/material/ic_person_white_48px.svg', 48)
             .icon('person_dark', './assets/icons/material/ic_person_black_48px.svg', 48)
             .icon('dashboard_light', './assets/icons/material/ic_dashboard_white_48px.svg', 48)
@@ -120,6 +120,8 @@
             .icon('help_dark', './assets/icons/material/ic_help_black_48px.svg', 48)
             .icon('delete_light', './assets/icons/material/ic_delete_white_48px.svg', 48)
             .icon('delete_dark', './assets/icons/material/ic_delete_black_48px.svg', 48)
+            .icon('research_light', './assets/icons/material/ic_polymer_white_48px.svg', 48)
+            .icon('research_dark', './assets/icons/material/ic_polymer_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
 

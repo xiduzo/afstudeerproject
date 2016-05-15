@@ -55,6 +55,9 @@
 
             // Coordinator
             'cmd.worlds',
+
+            // Research
+            'cmd.research',
     ]);
 
 }());
