@@ -50,6 +50,9 @@
                     // self.access = response;
                     self.access = 1;
                 });
+
+            // self.access = 1;
+            $state.go('base.home');
         }
 
         return self.functions;

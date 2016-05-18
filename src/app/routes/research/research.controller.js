@@ -78,7 +78,7 @@
             var colors = Highcharts.getOptions().colors,
                 categories = ['ClassCraft'],
                 data = [{
-                    y: 50,
+                    y: 100,
                     color: colors[0],
                     drilldown: {
                     name: 'classcraft',
@@ -143,7 +143,7 @@
                     valueSuffix: ''
                 },
                 series: [{
-                    name: 'Browsers',
+                    name: '',
                     data: browserData,
                     size: '60%',
                     dataLabels: {
@@ -154,7 +154,7 @@
                     distance: -90
                     }
                 }, {
-                    name: 'Versions',
+                    name: 'Percentage',
                     data: versionsData,
                     size: '80%',
                     innerSize: '60%',

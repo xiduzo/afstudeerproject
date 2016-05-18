@@ -77,8 +77,7 @@
                 },
 
                 title: {
-                    text: 'Experience for ' +guild.name,
-                    x: -20 //center
+                    text: 'Experience for ' +guild.name
                 },
 
                 xAxis: {
