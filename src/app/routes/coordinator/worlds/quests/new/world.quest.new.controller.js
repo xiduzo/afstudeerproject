@@ -30,6 +30,8 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.worldUuid = $stateParams.worldUuid;
+        self.world = [];
+
         self.skills = {
             interaction_design: {
                 level: 0,
@@ -57,6 +59,12 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        World.getWorld($stateParams.worldUuid)
+            .then(function(response) {
+
+            }, function() {
+                // Err
+            });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations

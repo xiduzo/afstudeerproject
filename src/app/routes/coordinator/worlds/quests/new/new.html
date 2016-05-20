@@ -1,4 +1,5 @@
 <section layout-padding>
+
     <section layout="row">
         <h2 class="md-headline" flex>
             Create quest
@@ -11,7 +12,26 @@
         </md-button>
     </section>
 
-    <md-content class="sliders md-whiteframe-z2" layout-padding layout="row">
+    <md-content class="md-whiteframe-z2" layout-padding>
+        <form>
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Quest name</label>
+                    <input ng-model="user.title">
+                </md-input-container>
+                <md-input-container>
+                    <label>Experience</label>
+                    <input type="number" step="10" name="experience"/>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+
+    <section>
+        <!-- Spacer -->
+    </section>
+
+    <md-content class="md-whiteframe-z2" layout-padding layout="row">
         <section flex="50" layout="column" layout-align="center">
             <div layout>
                 <div flex="25" layout layout-align="left center">
@@ -94,7 +114,7 @@
                 </md-slider>
             </div>
         </section>
-        <section class="svg" flex="50" layout layout-align="center center">
+        <section flex="50" layout layout-align="center center">
             <div id="spiderChart"></div>
         </section>
     </md-content>
