@@ -122,6 +122,10 @@
             .icon('delete_dark', './assets/icons/material/ic_delete_black_48px.svg', 48)
             .icon('research_light', './assets/icons/material/ic_polymer_white_48px.svg', 48)
             .icon('research_dark', './assets/icons/material/ic_polymer_black_48px.svg', 48)
+            .icon('refresh_light', './assets/icons/material/ic_autorenew_white_48px.svg', 48)
+            .icon('refresh_dark', './assets/icons/material/ic_autorenew_black_48px.svg', 48)
+            .icon('back_light', './assets/icons/material/ic_arrow_back_white_48px.svg', 48)
+            .icon('back_dark', './assets/icons/material/ic_arrow_back_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
 
