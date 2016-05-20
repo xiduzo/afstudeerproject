@@ -1,0 +1,101 @@
+<section layout-padding>
+    <section layout="row">
+        <h2 class="md-headline" flex>
+            Create quest
+        </h2>
+        <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
+            <md-icon md-svg-icon="back_light"></md-icon>
+            <md-tooltip md-direction="left">
+                Take me back
+            </md-tooltip>
+        </md-button>
+    </section>
+
+    <md-content class="sliders md-whiteframe-z2" layout-padding layout="row">
+        <section flex="50" layout="column" layout-align="center">
+            <div layout>
+                <div flex="25" layout layout-align="left center">
+                    <span class="md-body-1">
+                        Interaction Design
+                    </span>
+                </div>
+                <md-slider flex class="md-primary"
+                    ng-model="worldsQuestsNewCtrl.skills.interaction_design.level"
+                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
+                    md-discrete
+                    step="5"
+                    min="0"
+                    max="100"
+                    aria-label="Interaction Design">
+                </md-slider>
+            </div>
+            <div layout>
+                <div flex="25" layout layout-align="left center">
+                    <span class="md-body-1">
+                        Visual Interface Design
+                    </span>
+                </div>
+                <md-slider flex class="md-primary"
+                    ng-model="worldsQuestsNewCtrl.skills.visual_interface_design.level"
+                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
+                    md-discrete
+                    step="5"
+                    min="0"
+                    max="100"
+                    aria-label="Visual Interface Design">
+                </md-slider>
+            </div>
+            <div layout>
+                <div flex="25" layout layout-align="left center">
+                    <span class="md-body-1">
+                        Frontend Development
+                    </span>
+                </div>
+                <md-slider flex class="md-primary"
+                    ng-model="worldsQuestsNewCtrl.skills.frontend_development.level"
+                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
+                    md-discrete
+                    step="5"
+                    min="0"
+                    max="100"
+                    aria-label="Frontend Development">
+                </md-slider>
+            </div>
+            <div layout>
+                <div flex="25" layout layout-align="left center">
+                    <span class="md-body-1">
+                        Content management
+                    </span>
+                </div>
+                <md-slider flex class="md-primary"
+                    ng-model="worldsQuestsNewCtrl.skills.content_management.level"
+                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
+                    md-discrete
+                    step="5"
+                    min="0"
+                    max="100"
+                    aria-label="Content management">
+                </md-slider>
+            </div>
+            <div layout>
+                <div flex="25" layout layout-align="left center">
+                    <span class="md-body-1">
+                        Project management
+                    </span>
+                </div>
+                <md-slider flex class="md-primary"
+                    ng-model="worldsQuestsNewCtrl.skills.project_management.level"
+                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
+                    md-discrete
+                    step="5"
+                    min="0"
+                    max="100"
+                    aria-label="Project management">
+                </md-slider>
+            </div>
+        </section>
+        <section class="svg" flex="50" layout layout-align="center center">
+            <div id="spiderChart"></div>
+        </section>
+    </md-content>
+</section>
