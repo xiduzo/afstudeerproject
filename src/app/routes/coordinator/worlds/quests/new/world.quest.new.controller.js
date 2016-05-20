@@ -31,6 +31,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.worldUuid = $stateParams.worldUuid;
         self.world = [];
+        self.formInput = {
+            name: '',
+            experience: 0
+        };
 
         self.skills = {
             interaction_design: {
@@ -74,7 +78,6 @@
                 chart: {
                     polar: true,
                     type: 'area',
-                    backgroundColor:'rgba(255, 255, 255, 0)',
                     spacingBottom: 10,
                     spacingTop: 10,
                     spacingLeft: 10,
@@ -148,7 +151,7 @@
                 ],
 
                 credits: {
-                    text: 'Skill requirements for ',
+                    text: 'Skill requirements for ' + self.formInput.name || '',
                     href: ''
                 }
 

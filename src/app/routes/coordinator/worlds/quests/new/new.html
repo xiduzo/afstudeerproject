@@ -17,7 +17,10 @@
             <div layout="row">
                 <md-input-container flex>
                     <label>Quest name</label>
-                    <input ng-model="user.title">
+                    <input
+                        ng-model="worldsQuestsNewCtrl.formInput.name"
+                        required
+                        ng-change="worldsQuestsNewCtrl.makeSpiderChart()">
                 </md-input-container>
                 <md-input-container>
                     <label>Experience</label>
@@ -32,7 +35,7 @@
     </section>
 
     <md-content class="md-whiteframe-z2" layout-padding layout="row">
-        <section flex="50" layout="column" layout-align="center">
+        <section flex="50" layout="column" layout-align="space-around">
             <div layout>
                 <div flex="25" layout layout-align="left center">
                     <span class="md-body-1">
