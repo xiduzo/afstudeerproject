@@ -37,6 +37,22 @@
                 }
             })
 
+            .state('base.worlds.quests', {
+                url: '/quests',
+                abstract: true
+            })
+
+            .state('base.worlds.quests.new', {
+                url: '/:worldUuid/new',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/coordinator/worlds/quests/new/new.html',
+                        controller: 'WorldsQuestsNewController',
+                        controllerAs: 'worldsQuestsNewCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }

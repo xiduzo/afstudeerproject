@@ -12,4 +12,22 @@
         </md-button>
     </section>
 
+    <section layout="row">
+        <h3 class="md-title" flex>
+            Quests
+        </h3>
+        <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.uuid})">
+            <md-icon md-svg-icon="book_light"></md-icon>
+            <md-tooltip md-direction="bottom">
+                Create new quest
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-raised md-accent md-fab" ng-click="">
+            <md-icon md-svg-icon="refresh_light"></md-icon>
+            <md-tooltip md-direction="bottom">
+                Sync with moodle
+            </md-tooltip>
+        </md-button>
+    </section>
+
 </section>
