@@ -1,0 +1,25 @@
+<section layout-padding>
+
+    <div layout="row">
+        <h2 class="md-headline" flex>
+            {{ guildDetailCtrl.guild.name }}
+        </h2>
+    </div>
+
+    <div layout="row">
+        <md-card flex="33" ng-repeat="member in guildDetailCtrl.guild.members">
+            <md-card-title layout="column" layout-align="center center">
+                <img gravatar-src="member.email" class="round icon--size--96" gravatar-size="96" />
+                <md-card-title-text>
+                    <h2 class="md-headline" flex layout-margin>
+                        {{ member.displayname }} {{ member.surname }}
+                    </h2>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+                {{ member.uid }}
+            </md-card-content>
+        </md-card>
+    </div>
+</section>

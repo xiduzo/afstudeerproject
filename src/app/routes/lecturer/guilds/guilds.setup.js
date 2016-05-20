@@ -37,6 +37,17 @@
                 }
             })
 
+            .state('base.guilds.detail', {
+                url: '/:guildUuid/detail',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/lecturer/guilds/detail/detail.html',
+                        controller: 'GuildDetailController',
+                        controllerAs: 'guildDetailCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }
