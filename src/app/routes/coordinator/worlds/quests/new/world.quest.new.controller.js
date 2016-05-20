@@ -151,7 +151,7 @@
                 ],
 
                 credits: {
-                    text: 'Skill requirements for ' + self.formInput.name || '',
+                    text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
                     href: ''
                 }
 

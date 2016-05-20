@@ -42,6 +42,7 @@
                     );
                     $state.go('base.guilds.overview');
                 }
+                response.quests = [];
                 self.world = response;
             }, function() {
                 // Err
