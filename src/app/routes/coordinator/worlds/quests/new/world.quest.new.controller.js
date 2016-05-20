@@ -61,10 +61,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // TODO
-        // When the user is sliding like crazy
-        // Their computer may not like all this drawings
-        // Need to add some form of debounce
         function makeSpiderChart() {
             $('#spiderChart').highcharts({
                 chart: {
