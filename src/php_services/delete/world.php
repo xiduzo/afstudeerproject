@@ -22,6 +22,9 @@
         "worldUuid" => $uuid
     ]);
 
+    // TODO
+    // Also delete the quests of this world
+
     echo json_encode(true);
 
 ?>
