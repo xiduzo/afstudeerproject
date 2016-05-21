@@ -53,6 +53,17 @@
                 }
             })
 
+            .state('base.worlds.quests.edit', {
+                url: '/:worldUuid/:questUuid/edit',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/coordinator/worlds/quests/edit/edit.html',
+                        controller: 'WorldsQuestsEditController',
+                        controllerAs: 'worldsQuestsEditCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }
