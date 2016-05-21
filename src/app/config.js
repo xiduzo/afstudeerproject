@@ -128,6 +128,8 @@
             .icon('back_dark', './assets/icons/material/ic_arrow_back_black_48px.svg', 48)
             .icon('more_vert_light', './assets/icons/material/ic_more_vert_white_48px.svg', 48)
             .icon('more_vert_dark', './assets/icons/material/ic_more_vert_black_48px.svg', 48)
+            .icon('add_light', './assets/icons/material/ic_add_white_48px.svg', 48)
+            .icon('add_dark', './assets/icons/material/ic_add_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
 
