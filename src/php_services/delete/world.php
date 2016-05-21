@@ -22,8 +22,9 @@
         "worldUuid" => $uuid
     ]);
 
-    // TODO
-    // Also delete the quests of this world
+    $database->delete("Quest", [
+        "worldUuid" => $uuid
+    ]);
 
     echo json_encode(true);
 
