@@ -30,4 +30,28 @@
         </md-button>
     </section>
 
+    <section layout="row" layout-wrap>
+        <div ng-if="worldsSettingsCtrl.world.quests.length <= 0">
+            Er zijn op het moment geen quests beschikbaar voor {{ worldsSettingsCtrl.world.name }}
+        </div>
+        <div ng-if="worldsSettingsCtrl.world.quests" flex="33"
+            ng-repeat="quest in worldsSettingsCtrl.world.quests">
+            <md-card>
+                <section layout layout-align="center center">
+                    <div id="{{ quest.uuid }}"></div>
+                </section>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">
+                            {{ quest.name }}
+                        </span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    {{ quest.description }}
+                </md-card-content>
+            </md-card>
+        </div>
+    </section>
+
 </section>

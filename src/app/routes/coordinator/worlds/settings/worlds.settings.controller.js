@@ -11,8 +11,10 @@
         $mdToast,
         $state,
         $stateParams,
+        $timeout,
         Global,
         World,
+        Quest,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -27,6 +29,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteWorld = deleteWorld;
+        self.makeSpiderChart = makeSpiderChart;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -44,9 +47,24 @@
                 }
                 response.quests = [];
                 self.world = response;
+                Quest.getQuests(response.uuid)
+                    .then(function(response) {
+                        _.each(response, function(quest) {
+                            self.world.quests.push(quest);
+                            setTimeout(function () {
+                                self.makeSpiderChart(quest);
+                            }, 10);
+                        });
+                        // _.each(self.world.quests, function(quest) {
+                        // });
+
+                    }, function() {
+                        // Err
+                    });
             }, function() {
                 // Err
             });
+
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,6 +95,91 @@
                     });
             }, function() {
                 // No
+            });
+        }
+
+        function makeSpiderChart(quest) {
+            $('#'+quest.uuid).highcharts({
+                chart: {
+                    polar: true,
+                    type: 'area',
+                    spacingBottom: 10,
+                    spacingTop: 25,
+                    spacingLeft: 10,
+                    spacingRight: 10,
+                    width: 400,
+                    height: 250,
+                },
+
+                title: {
+                    text: ''
+                },
+
+                exporting: {
+                    // Only show the exporting button when you have a higher access level than the student
+                    enabled: Global.getAccess() > 1 ? true : false,
+                    backgroundColor: 'rgba(255, 255, 255, 0)'
+                },
+
+                pane: {
+                    size: '80%'
+                },
+
+                xAxis: {
+                    categories: [
+                        'Interaction design',
+                        'Visual interface design',
+                        'Frontend development',
+                        'Content management',
+                        'Project management'
+                    ],
+                    tickmarkPlacement: 'on',
+                    lineWidth: 0,
+                },
+
+                yAxis: {
+                    gridLineInterpolation: 'polar',
+                    lineWidth: 0,
+                    min: 0,
+                    max: 100,
+                    tickInterval : 100 / 4
+                },
+
+                tooltip: {
+                    shared: true,
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                },
+
+                legend: {
+                   enabled: false
+                },
+
+                plotOptions: {
+                    series: {
+                        animation: false
+                    }
+                },
+
+                series: [
+                    {
+                        name: 'Level',
+                        data: [
+                            parseInt(quest.interaction_design),
+                            parseInt(quest.visual_interface_design),
+                            parseInt(quest.frontend_development),
+                            parseInt(quest.content_management),
+                            parseInt(quest.project_management)
+                        ],
+                        color: '#FFCC00',
+                        pointPlacement: 'on'
+                    }
+                ],
+
+                credits: {
+                    text: 'Skill requirements for ' + quest.name,
+                    href: ''
+                }
+
             });
         }
 
