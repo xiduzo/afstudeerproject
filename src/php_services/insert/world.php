@@ -9,7 +9,7 @@
 
     $name = $_GET['name'];
 
-    if(empty($name)) {
+    if(!isset($name)) {
         echo json_encode(false);
         return;
     }

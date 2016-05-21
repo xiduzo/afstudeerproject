@@ -7,7 +7,7 @@
 
     $guildUuid = $_GET['guildUuid'];
 
-    if(empty($guildUuid)) {
+    if(!isset($guildUuid)) {
         echo json_encode(false);
         return;
     }

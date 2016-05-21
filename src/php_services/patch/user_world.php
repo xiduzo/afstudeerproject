@@ -9,7 +9,7 @@
     $worldUuid = $_GET['worldUuid'];
     $oldWorldUuid = $_GET['oldWorldUuid']
 
-    if(empty($userUid) || empty($worldUuid) || empty($oldWorldUuid)) {
+    if(!isset($userUid) || !isset($worldUuid) || !isset($oldWorldUuid)) {
         echo json_encode(false);
         return;
     }

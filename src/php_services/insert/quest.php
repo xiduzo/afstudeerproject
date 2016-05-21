@@ -21,7 +21,7 @@
 
     $worldUuid = $_GET['worldUuid'];
 
-    if(empty($name) || !is_numeric($experience) || empty($description) || !is_numeric($id) || !is_numeric($vid) || !is_numeric($fd) || !is_numeric($cm) || !is_numeric($pm) || empty($worldUuid)) {
+    if(!isset($name) || !is_numeric($experience) || !isset($description) || !is_numeric($id) || !is_numeric($vid) || !is_numeric($fd) || !is_numeric($cm) || !is_numeric($pm) || !isset($worldUuid)) {
         echo json_encode(false);
         return;
     }

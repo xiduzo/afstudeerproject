@@ -8,7 +8,7 @@
     $name = $_GET['name'];
     $uuid = $_GET['uuid'];
 
-    if(empty($name) || empty($uuid)) {
+    if(!isset($name) || !isset($uuid)) {
         echo json_encode(false);
         return;
     }

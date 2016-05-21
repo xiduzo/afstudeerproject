@@ -15,7 +15,7 @@
     $preferredlanguage = $_GET['preferredlanguage'];
     $access            = $_GET['access'];
 
-    if(empty($uid) || empty($hvastudentnumber) || empty($email) || empty($initials) || empty($surname) || empty($displayname) || empty($gender) || empty($preferredlanguage) || empty($access)) {
+    if(!isset($uid) || !isset($hvastudentnumber) || !isset($email) || !isset($initials) || !isset($surname) || !isset($displayname) || !isset($gender) || !isset($preferredlanguage) || !isset($access)) {
         echo json_encode(false);
         return;
     }

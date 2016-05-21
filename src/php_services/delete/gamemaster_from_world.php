@@ -8,7 +8,7 @@
     $userUid = $_GET['userUid'];
     $worldUuid = $_GET['worldUuid'];
 
-    if(empty($userUid) || empty($worldUuid)) {
+    if(!isset($userUid) || !isset($worldUuid)) {
         echo json_encode(false);
         return;
     }

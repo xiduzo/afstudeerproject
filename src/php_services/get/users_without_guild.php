@@ -7,7 +7,7 @@
 
     $worldUuid = $_GET['worldUuid'];
 
-    if(empty($worldUuid)) {
+    if(!isset($worldUuid)) {
         echo json_encode(false);
         return;
     }

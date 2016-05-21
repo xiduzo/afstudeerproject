@@ -7,7 +7,7 @@
 
     $uuid = $_GET['uuid'];
 
-    if(empty($uuid)) {
+    if(!isset($uuid)) {
         echo json_encode(false);
         return;
     }

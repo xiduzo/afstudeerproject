@@ -10,7 +10,7 @@
     $name = $_GET['name'];
     $worldUuid = $_GET['worldUuid'];
 
-    if(empty($name) || empty($worldUuid)) {
+    if(!isset($name) || !isset($worldUuid)) {
         echo json_encode(false);
         return;
     }

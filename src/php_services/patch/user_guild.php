@@ -9,7 +9,7 @@
     $guildUuid = $_GET['guildUuid'];
     $oldGuildUuid = $_GET['oldGuildUuid'];
 
-    if(empty($userUid) || empty($guildUuid) || empty($oldGuildUuid)) {
+    if(!isset($userUid) || !isset($guildUuid) || !isset($oldGuildUuid)) {
         echo json_encode(false);
         return;
     }

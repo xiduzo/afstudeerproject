@@ -9,7 +9,7 @@
     $uid = $_GET['uid'];
     $now = now();
 
-    if(empty($uid)) {
+    if(!isset($uid)) {
         echo json_encode(false);
         return;
     }

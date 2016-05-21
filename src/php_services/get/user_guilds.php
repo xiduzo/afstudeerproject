@@ -6,7 +6,7 @@
 
     $userUid = $_GET['userUid'];
 
-    if(empty($userUid)) {
+    if(!isset($userUid)) {
         echo json_encode(false);
         return;
     }
