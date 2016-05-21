@@ -53,7 +53,7 @@
                             self.world.quests.push(quest);
                             setTimeout(function () {
                                 self.makeSpiderChart(quest);
-                            }, 10);
+                            }, 100);
                         });
                         // _.each(self.world.quests, function(quest) {
                         // });
@@ -107,8 +107,8 @@
                     spacingTop: 25,
                     spacingLeft: 10,
                     spacingRight: 10,
-                    width: 400,
-                    height: 250,
+                    width: 325,
+                    height: 225,
                 },
 
                 title: {
@@ -117,8 +117,7 @@
 
                 exporting: {
                     // Only show the exporting button when you have a higher access level than the student
-                    enabled: Global.getAccess() > 1 ? true : false,
-                    backgroundColor: 'rgba(255, 255, 255, 0)'
+                    enabled: false
                 },
 
                 pane: {
@@ -154,12 +153,6 @@
                    enabled: false
                 },
 
-                plotOptions: {
-                    series: {
-                        animation: false
-                    }
-                },
-
                 series: [
                     {
                         name: 'Level',
@@ -176,8 +169,7 @@
                 ],
 
                 credits: {
-                    text: 'Skill requirements for ' + quest.name,
-                    href: ''
+                    enabled: false
                 }
 
             });

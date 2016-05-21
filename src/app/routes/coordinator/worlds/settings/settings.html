@@ -37,19 +37,76 @@
         <div ng-if="worldsSettingsCtrl.world.quests" flex="33"
             ng-repeat="quest in worldsSettingsCtrl.world.quests">
             <md-card>
-                <section layout layout-align="center center">
-                    <div id="{{ quest.uuid }}"></div>
+
+                <section layout-padding layout-align="end center" layout>
+                    <md-card-title flex>
+                        <md-card-title-text flex>
+                            <span class="md-headline">
+                                {{ quest.name }}
+                            </span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-menu>
+                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                        </md-button>
+                        <md-menu-content width="4" >
+                            <md-menu-item>
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="eye_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            Activate
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="eye_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            View
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="delete_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            Delete
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                 </section>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">
-                            {{ quest.name }}
-                        </span>
-                    </md-card-title-text>
-                </md-card-title>
+
+                <md-divider></md-divider>
+
+                <section layout="column" layout-align="center center">
+                    <div flex id="{{ quest.uuid }}"></div>
+                </section>
+
+                <md-divider></md-divider>
+
                 <md-card-content>
                     {{ quest.description }}
                 </md-card-content>
+
+
             </md-card>
         </div>
     </section>
