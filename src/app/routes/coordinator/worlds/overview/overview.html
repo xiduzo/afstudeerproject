@@ -26,13 +26,62 @@
 
             <md-card>
 
-                <md-card-title>
-                    <md-card-title-text layout="row">
-                        <md-icon md-svg-icon="world_dark"></md-icon>
-                        <span class="md-headline" flex layout-margin>{{world.name}}</span>
-                    </md-card-title-text>
-                    <md-icon md-svg-icon="pencil_dark" ng-click="worldsOverviewCtrl.changeWorldName($event, world)"></md-icon>
-                </md-card-title>
+                <section layout-padding layout-align="end center" layout>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">
+                                {{world.name}}
+                            </span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-menu>
+                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                        </md-button>
+                        <md-menu-content width="4" >
+                            <md-menu-item aria-label="Change world settings" ui-sref="base.worlds.settings({worldUuid: world.uuid})">
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="settings_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            Settings
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item ng-click="worldsOverviewCtrl.changeWorldName($event, world)">
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="pencil_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            Change name
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item ng-click="worldsOverviewCtrl.addGamemaster($event, world)">
+                                <md-button>
+                                    <div layout="row">
+                                        <md-icon
+                                            md-menu-align-target
+                                            md-svg-icon="delete_dark">
+                                        </md-icon>
+                                        <p flex>
+                                            Add gamemaster
+                                        </p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </section>
+
                 <md-divider></md-divider>
 
                 <md-card-content>
@@ -53,20 +102,8 @@
                             </md-icon>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" layout-align="center center">
-                         <md-button ng-click="worldsOverviewCtrl.addGamemaster($event, world)">
-                             Add game master
-                         </md-button>
-                    </div>
                 </md-card-content>
-                <md-divider></md-divider>
 
-                <md-card-actions layout="row" layout-align="end center">
-                    <md-button aria-label="Change world settings" ui-sref="base.worlds.settings({worldUuid: world.uuid})">
-                        <md-icon md-svg-icon="settings_dark"></md-icon>
-                        Settings
-                    </md-button>
-                </md-card-actions>
             </md-card>
 
         </div> <!-- End of worlds -->
