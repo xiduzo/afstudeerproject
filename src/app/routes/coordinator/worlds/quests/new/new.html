@@ -2,7 +2,7 @@
 
     <section layout="row">
         <h2 class="md-headline" flex>
-            Create quest
+            Create quest for {{ worldsQuestsNewCtrl.world.name }}
         </h2>
         <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
             <md-icon md-svg-icon="back_light"></md-icon>
@@ -25,6 +25,12 @@
                 <md-input-container>
                     <label>Experience</label>
                     <input type="number" step="10" name="experience"/>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Description</label>
+                    <textarea ng-model="worldsQuestsNewCtrl.formInput.description" rows="25"></textarea>
                 </md-input-container>
             </div>
         </form>
@@ -120,5 +126,15 @@
         <section flex="50" layout layout-align="center center">
             <div id="spiderChart"></div>
         </section>
+    </md-content>
+
+    <section>
+        <!-- Spacer -->
+    </section>
+
+    <md-content class="md-whiteframe-z2" layout-padding layout="row" layout-align="center center">
+        <md-button class="md-raised success" ng-click="worldsQuestsNewCtrl.addQuest()">
+            Save
+        </md-button>
     </md-content>
 </section>

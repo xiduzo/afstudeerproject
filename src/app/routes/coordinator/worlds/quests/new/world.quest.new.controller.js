@@ -7,10 +7,13 @@
 
     /** @ngInject */
     function WorldsQuestsNewController(
-        $timeout,
+        $mdToast,
+        $state,
         $stateParams,
+        $timeout,
         Global,
         World,
+        Quest,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -25,6 +28,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.makeSpiderChart = makeSpiderChart;
+        self.addQuest = addQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -157,6 +161,34 @@
                 }
 
             });
+        }
+
+        function addQuest() {
+            var quest = {
+                name:        self.formInput.name,
+                experience:  self.formInput.experience,
+                description: self.formInput.description,
+                skills: {
+                    interaction_design:      self.skills.interaction_design.level,
+                    visual_interface_design: self.skills.visual_interface_design.level,
+                    frontend_development:    self.skills.frontend_development.level,
+                    content_management:      self.skills.content_management.level,
+                    project_management:      self.skills.project_management.level
+                }
+            };
+
+            Quest.addQuest(quest, self.world.uuid)
+                .then(function(response) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('Quest ' + response.name + ' added to ' + self.world.name)
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                    $state.go('base.worlds.settings', {"worldUuid" : self.world.uuid});
+                }, function() {
+                    // Err
+                });
         }
 
         // Initiate the first chart
