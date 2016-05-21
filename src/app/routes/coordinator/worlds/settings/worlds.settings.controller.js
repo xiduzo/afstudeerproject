@@ -30,6 +30,12 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteWorld = deleteWorld;
         self.makeSpiderChart = makeSpiderChart;
+        self.changeWorldName = changeWorldName;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.world = [];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -173,6 +179,50 @@
                 }
 
             });
+        }
+
+        function changeWorldName(event) {
+            var dialog = $mdDialog.prompt()
+                        .title('Change the world name of "' +self.world.name+ '"')
+                        .textContent('How would you like to name this world?')
+                        .clickOutsideToClose(true)
+                        .placeholder('World name')
+                        .ariaLabel('World name')
+                        .targetEvent(event)
+                        .ok('Change world name')
+                        .cancel('Cancel');
+
+            $mdDialog.show(dialog)
+                .then(function(result) {
+                    // Ok
+
+                    // Checks for thw world name
+                    if(!result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent('Please enter a worldname')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                        return;
+                    }
+
+                    World.changeWorldName(result, self.world.uuid)
+                        .then(function(response) {
+                            self.world.name = result;
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent('World name change to ' + result)
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+                        }, function() {
+                            // Err
+                        });
+
+                }, function() {
+                    // Cancel
+                });
         }
 
     }

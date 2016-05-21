@@ -3,6 +3,16 @@
     <section layout="row">
         <h2 class="md-headline" flex>
             World settings of: {{ worldsSettingsCtrl.world.name }}
+
+            <md-button ng-click="worldsSettingsCtrl.changeWorldName($event)">
+                <md-icon
+                    md-menu-align-target
+                    md-svg-icon="pencil_dark">
+                </md-icon>
+                <md-tooltip>
+                    Change world name
+                </md-tooltip>
+            </md-button>
         </h2>
         <md-button class="md-raised md-warn md-fab" ng-click="worldsSettingsCtrl.deleteWorld($event)">
             <md-icon md-svg-icon="delete_light"></md-icon>

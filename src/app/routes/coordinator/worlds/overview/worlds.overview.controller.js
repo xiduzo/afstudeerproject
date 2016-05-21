@@ -26,7 +26,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.moveGamemaster = moveGamemaster;
         self.newWorldDialog = newWorldDialog;
-        self.changeWorldName = changeWorldName;
         self.addGamemaster = addGamemaster;
         self.removeGamemaster = removeGamemaster;
 
@@ -136,50 +135,6 @@
                     // Cancel
                 });
 
-        }
-
-        function changeWorldName(event, world) {
-            var dialog = $mdDialog.prompt()
-                        .title('Change the world name of "' +world.name+ '"')
-                        .textContent('How would you like to name this world?')
-                        .clickOutsideToClose(true)
-                        .placeholder('World name')
-                        .ariaLabel('World name')
-                        .targetEvent(event)
-                        .ok('Change world name')
-                        .cancel('Cancel');
-
-            $mdDialog.show(dialog)
-                .then(function(result) {
-                    // Ok
-
-                    // Checks for thw world name
-                    if(!result) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent('Please enter a worldname')
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
-                        return;
-                    }
-
-                    World.changeWorldName(result, world.uuid)
-                        .then(function(response) {
-                            world.name = result;
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent('World name change to ' + result)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
-                        }, function() {
-                            // Err
-                        });
-
-                }, function() {
-                    // Cancel
-                });
         }
 
         function addGamemaster(event, world) {
