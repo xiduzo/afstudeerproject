@@ -33,6 +33,7 @@
         self.world = [];
         self.formInput = {
             name: '',
+            description: '',
             experience: 0
         };
 
@@ -65,7 +66,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
-
+                self.world = response;
             }, function() {
                 // Err
             });
