@@ -31,6 +31,7 @@
         self.deleteWorld = deleteWorld;
         self.makeSpiderChart = makeSpiderChart;
         self.changeWorldName = changeWorldName;
+        self.deleteQuest = deleteQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -122,7 +123,6 @@
                 },
 
                 exporting: {
-                    // Only show the exporting button when you have a higher access level than the student
                     enabled: false
                 },
 
@@ -223,6 +223,40 @@
                 }, function() {
                     // Cancel
                 });
+        }
+
+        function deleteQuest(event, quest) {
+            var dialog = $mdDialog.confirm()
+                        .title('Are you sure you want to delete this quest?')
+                        .textContent('Please consider your answer, this action can not be undone.')
+                        .clickOutsideToClose(true)
+                        .ariaLabel('Delete quest')
+                        .targetEvent(event)
+                        .ok('Yes, I accept the consequences')
+                        .cancel('No, take me back!');
+
+            $mdDialog.show(dialog).then(function() {
+                Quest.deleteQuest(quest.uuid, self.world.uuid)
+                    .then(function(response) {
+                        if(!response) {
+                            return;
+                        }
+
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent(quest.name + ' got removed from ' + self.world.name)
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+
+                        self.world.quests.splice(self.world.quests.indexOf(quest), 1);
+
+                    }, function() {
+                        // Err
+                    });
+            }, function() {
+                // No
+            });
         }
 
     }

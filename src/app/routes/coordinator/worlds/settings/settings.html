@@ -61,33 +61,20 @@
                             <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
                         </md-button>
                         <md-menu-content width="4" >
-                            <md-menu-item>
+                            <md-menu-item ui-sref="base.worlds.quests.edit({questUuid: quest.uuid, worldUuid: worldsSettingsCtrl.world.uuid })">
                                 <md-button>
                                     <div layout="row">
                                         <md-icon
                                             md-menu-align-target
-                                            md-svg-icon="eye_dark">
+                                            md-svg-icon="pencil_dark">
                                         </md-icon>
                                         <p flex>
-                                            Activate
+                                            Edit
                                         </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    <div layout="row">
-                                        <md-icon
-                                            md-menu-align-target
-                                            md-svg-icon="eye_dark">
-                                        </md-icon>
-                                        <p flex>
-                                            View
-                                        </p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
+                            <md-menu-item ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
                                 <md-button>
                                     <div layout="row">
                                         <md-icon
