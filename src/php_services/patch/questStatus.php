@@ -7,18 +7,23 @@
 
     require_once '../config.php';
 
-    $userUid = $_GET['userUid'];
-    $guildUuid = $_GET['guildUuid'];
+    $questUuid = $_GET['questUuid'];
+    $worldUuid = $_GET['worldUuid'];
+    $status = $_GET['status'];
 
-    if(!isset($userUid) || !isset($guildUuid)) {
+    if(!isset($questUuid) || !isset($worldUuid) || !isset($status)) {
         echo json_encode(false);
         return;
     }
 
-    // Insert the house to the database
-    $database->insert("UserInGuild", [
-        "userUid" => $userUid,
-        "guildUuid" => $guildUuid
+    // Update the world name
+    $database->update("Quest", [
+        "active" => $status
+    ], [
+        "AND" => [
+            "uuid" => $questUuid,
+            "worldUuid" => $worldUuid
+        ]
     ]);
 
     echo json_encode(true);
