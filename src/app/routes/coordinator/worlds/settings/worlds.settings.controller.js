@@ -11,7 +11,6 @@
         $mdToast,
         $state,
         $stateParams,
-        $timeout,
         Global,
         Quest,
         Spiderchart,
@@ -82,9 +81,11 @@
                                 pointPlacement: 'on'
                             };
 
+                            // Add a little time for the HTML to render
+                            // Before drawing the chart
                             setTimeout(function () {
                                 Spiderchart.createChart(quest.uuid, '', 300, 250, 80, [questScore], true, true, {enabled: false});
-                            }, 10);
+                            }, 100);
                         });
 
                     }, function() {
