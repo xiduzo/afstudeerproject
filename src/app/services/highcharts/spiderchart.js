@@ -16,19 +16,19 @@
 
         return service;
 
-        function createChart(selector, title, size, categories, series, tooltip, animation, credits) {
+        function createChart(selector, title, width, height, size, series, tooltip, animation, credits) {
 
             Highcharts.chart(selector, {
                 chart: {
                     polar: true,
                     type: 'area',
                     backgroundColor:'rgba(255, 255, 255, 0)',
-                    spacingBottom: 10,
-                    spacingTop: 10,
-                    spacingLeft: 10,
-                    spacingRight: 10,
-                    width: 400,
-                    height: 400,
+                    spacingBottom: 15,
+                    spacingTop: 15,
+                    spacingLeft: 15,
+                    spacingRight: 15,
+                    width: width,
+                    height: height,
                 },
 
                 exporting: {
@@ -49,10 +49,19 @@
                     size: size+'%'
                 },
 
-                tooltip: tooltip,
+                tooltip: {
+                    shared: tooltip,
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                },
 
                 xAxis: {
-                    categories: categories,
+                    categories: [
+                        'Interaction Design',
+                        'Visual Interface Design',
+                        'Frontend Development',
+                        'Content management',
+                        'Project management'
+                    ],
                     tickmarkPlacement: 'on',
                     lineWidth: 0
                 },

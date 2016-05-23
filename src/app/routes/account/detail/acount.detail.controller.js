@@ -55,28 +55,15 @@
             pointPlacement: 'on'
         };
 
-        var skills = [
-            'Interaction Design',
-            'Visual Interface Design',
-            'Frontend Development',
-            'Content management',
-            'Project management'
-        ];
-
         var credits = {
             text: moment().format("DD/MM/YY HH:MM"),
             href: ''
         };
 
-        var tooltip = {
-            shared: true,
-            pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-        };
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Spiderchart.createChart('container', '', 65, skills, [average_score, my_score], tooltip, true, credits);
+        Spiderchart.createChart('container', '', 400, 400, 65, [average_score, my_score], true, true, credits);
 
 
 

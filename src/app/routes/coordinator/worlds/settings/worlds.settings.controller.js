@@ -13,8 +13,9 @@
         $stateParams,
         $timeout,
         Global,
-        World,
         Quest,
+        Spiderchart,
+        World,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -29,7 +30,6 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteWorld = deleteWorld;
-        self.makeSpiderChart = makeSpiderChart;
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
         self.toggleQuest = toggleQuest;
@@ -68,12 +68,24 @@
                             quest.active = parseInt(quest.active) === 1 ? true : false;
 
                             self.world.quests.push(quest);
+
+                            var questScore = {
+                                name: 'Level',
+                                data: [
+                                    parseInt(quest.interaction_design),
+                                    parseInt(quest.visual_interface_design),
+                                    parseInt(quest.frontend_development),
+                                    parseInt(quest.content_management),
+                                    parseInt(quest.project_management)
+                                ],
+                                color: '#FFCC00',
+                                pointPlacement: 'on'
+                            };
+
                             setTimeout(function () {
-                                self.makeSpiderChart(quest);
-                            }, 100);
+                                Spiderchart.createChart(quest.uuid, '', 300, 250, 80, [questScore], true, true, {enabled: false});
+                            }, 10);
                         });
-                        // _.each(self.world.quests, function(quest) {
-                        // });
 
                     }, function() {
                         // Err
@@ -119,88 +131,6 @@
                     });
             }, function() {
                 // No
-            });
-        }
-
-        function makeSpiderChart(quest) {
-            $('#'+quest.uuid).highcharts({
-                chart: {
-                    polar: true,
-                    type: 'area',
-                    spacingBottom: 10,
-                    spacingTop: 25,
-                    spacingLeft: 10,
-                    spacingRight: 10,
-                    width: 325,
-                    height: 225,
-                },
-
-                title: {
-                    text: ''
-                },
-
-                exporting: {
-                    enabled: false
-                },
-
-                pane: {
-                    size: '80%'
-                },
-
-                xAxis: {
-                    categories: [
-                        'Interaction design',
-                        'Visual interface design',
-                        'Frontend development',
-                        'Content management',
-                        'Project management'
-                    ],
-                    tickmarkPlacement: 'on',
-                    lineWidth: 0,
-                },
-
-                yAxis: {
-                    gridLineInterpolation: 'polar',
-                    lineWidth: 0,
-                    min: 0,
-                    max: 100,
-                    tickInterval : 100 / 4
-                },
-
-                tooltip: {
-                    shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-                },
-
-                legend: {
-                   enabled: false
-                },
-
-                plotOptions: {
-                    series: {
-                        animation: false
-                    }
-                },
-
-                series: [
-                    {
-                        name: 'Level',
-                        data: [
-                            parseInt(quest.interaction_design),
-                            parseInt(quest.visual_interface_design),
-                            parseInt(quest.frontend_development),
-                            parseInt(quest.content_management),
-                            parseInt(quest.project_management)
-                        ],
-                        color: '#FFCC00',
-                        pointPlacement: 'on'
-                    }
-                ],
-
-                credits: {
-                    enabled: false
-                }
-
             });
         }
 
