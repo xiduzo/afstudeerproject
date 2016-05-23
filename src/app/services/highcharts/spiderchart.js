@@ -49,6 +49,12 @@
                     size: size+'%'
                 },
 
+                plotOptions: {
+                    series: {
+                        animation: animation
+                    }
+                },
+
                 tooltip: {
                     shared: tooltip,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
