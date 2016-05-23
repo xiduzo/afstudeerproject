@@ -29,7 +29,6 @@
         self.newGuildDialog = newGuildDialog;
         self.addGuildMember = addGuildMember;
         self.removeGuildMember = removeGuildMember;
-        self.changeGuildName = changeGuildName;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -204,50 +203,6 @@
                     guild.members.splice(guild.members.indexOf(user), 1);
                 }, function() {
                     // Err
-                });
-        }
-
-        function changeGuildName(event, guild) {
-            var dialog = $mdDialog.prompt()
-                        .title('Change the guild name of "' +guild.name+ '"')
-                        .textContent('How would you like to name this guild?')
-                        .clickOutsideToClose(true)
-                        .placeholder('Guild name')
-                        .ariaLabel('Guild name')
-                        .targetEvent(event)
-                        .ok('Change guild name')
-                        .cancel('Cancel');
-
-            $mdDialog.show(dialog)
-                .then(function(result) {
-                    // Ok
-
-                    // Checks for thw world name
-                    if(!result) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent('Please enter a guild name')
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
-                        return;
-                    }
-
-                    Guild.patchGuildName(result, guild.uuid)
-                        .then(function(response) {
-                            guild.name = result;
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent('Guild name change to ' + result)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
-                        }, function() {
-                            // Err
-                        });
-
-                }, function() {
-                    // Cancel
                 });
         }
 

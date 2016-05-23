@@ -30,20 +30,67 @@
                             ng-repeat="guild in world.guilds | orderBy: '-created_at'">
 
                             <md-card>
+                                <section layout-padding layout-align="end center" layout>
+                                    <md-card-title>
+                                        <md-card-title-text layout="row">
+                                            <span class="md-headline" flex layout-margin>
+                                                {{guild.name}}
+                                            </span>
+                                        </md-card-title-text>
+                                        <!-- <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)">
+                                            <md-tooltip md-direction="bottom">
+                                                Change guild name
+                                            </md-tooltip>
+                                        </md-icon> -->
+                                    </md-card-title>
+                                    <md-menu>
+                                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                                        </md-button>
+                                        <md-menu-content width="4" >
+                                            <md-menu-item aria-label="View {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.uuid})">
+                                                <md-button>
+                                                    <div layout="row">
+                                                        <md-icon
+                                                            md-menu-align-target
+                                                            md-svg-icon="eye_dark">
+                                                        </md-icon>
+                                                        <p flex>
+                                                            View
+                                                        </p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.uuid})">
+                                                <md-button>
+                                                    <div layout="row">
+                                                        <md-icon
+                                                            md-menu-align-target
+                                                            md-svg-icon="settings_dark">
+                                                        </md-icon>
+                                                        <p flex>
+                                                            Settings
+                                                        </p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
+                                                <md-button>
+                                                    <div layout="row">
+                                                        <md-icon
+                                                            md-menu-align-target
+                                                            md-svg-icon="add_dark">
+                                                        </md-icon>
+                                                        <p flex>
+                                                            Add guild member
+                                                        </p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </section>
 
-                                <md-card-title>
-                                    <md-card-title-text layout="row">
-                                        <md-icon md-svg-icon="guild_dark"></md-icon>
-                                        <span class="md-headline" flex layout-margin>
-                                            {{guild.name}}
-                                        </span>
-                                    </md-card-title-text>
-                                    <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)">
-                                        <md-tooltip md-direction="bottom">
-                                            Change guild name
-                                        </md-tooltip>
-                                    </md-icon>
-                                </md-card-title>
                                 <md-divider></md-divider>
 
                                 <md-card-content>
@@ -64,24 +111,7 @@
                                             </md-icon>
                                         </md-list-item>
                                     </md-list>
-                                    <div layout="row" layout-align="center center">
-                                         <md-button ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
-                                             Add new guild members
-                                         </md-button>
-                                    </div>
                                 </md-card-content>
-                                <md-divider></md-divider>
-
-                                <md-card-actions layout="row" layout-align="end center">
-                                    <md-button aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.uuid})">
-                                        <md-icon md-svg-icon="settings_dark"></md-icon>
-                                        Settings
-                                    </md-button>
-                                    <md-button aria-label="View details of {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.uuid})">
-                                        <md-icon md-svg-icon="eye_dark"></md-icon>
-                                        View
-                                    </md-button>
-                                </md-card-actions>
                             </md-card>
 
                         </div> <!-- End of guilds -->

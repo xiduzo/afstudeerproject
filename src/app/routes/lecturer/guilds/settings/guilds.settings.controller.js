@@ -27,6 +27,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteGuild = deleteGuild;
+        self.changeGuildName = changeGuildName;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -78,6 +79,51 @@
             }, function() {
                 // No
             });
+        }
+
+        function changeGuildName(event, guild) {
+            var dialog = $mdDialog.prompt()
+                        .title('Change the guild name of "' +self.guild.name+ '"')
+                        .textContent('How would you like to name this guild?')
+                        .clickOutsideToClose(true)
+                        .placeholder('Guild name')
+                        .ariaLabel('Guild name')
+                        .targetEvent(event)
+                        .ok('Change guild name')
+                        .cancel('Cancel');
+
+            $mdDialog.show(dialog)
+                .then(function(result) {
+                    // Ok
+
+                    // Checks for thw world name
+                    if(!result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent('Please enter a guild name')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                        return;
+                    }
+
+                    Guild.patchGuildName(result, self.guild.uuid)
+                        .then(function(response) {
+                            $mdToast.show(
+                                $mdToast.simple()
+                                .textContent('Guild name change to ' + result)
+                                .position('bottom right')
+                                .hideDelay(3000)
+                            );
+
+                            $state.go('base.guilds.overview');
+                        }, function() {
+                            // Err
+                        });
+
+                }, function() {
+                    // Cancel
+                });
         }
 
     }
