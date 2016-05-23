@@ -3,24 +3,26 @@
 
     angular
         .module('cmd.services')
-        .factory('Spiderchart', Spiderchart);
+        .factory('Highchart', Highchart);
 
     /** @ngInject */
-    function Spiderchart(
+    function Highchart(
         Global
     ) {
 
         var service = this;
 
-        service.createChart = createChart;
+        service.spiderChart = spiderChart;
 
         return service;
 
-        function createChart(selector, title, categories, series) {
-            $('#'+selector).highcharts({
+        function spiderChart(selector, title, size, categories, series, tooltip, animation, credits) {
+
+            Highcharts.chart(selector, {
                 chart: {
                     polar: true,
                     type: 'area',
+                    backgroundColor:'rgba(255, 255, 255, 0)',
                     spacingBottom: 10,
                     spacingTop: 10,
                     spacingLeft: 10,
@@ -29,24 +31,30 @@
                     height: 400,
                 },
 
-                title: {
-                    text: title
-                },
-
                 exporting: {
                     // Only show the exporting button when you have a higher access level than the student
                     enabled: Global.getAccess() > 1 ? true : false,
                     backgroundColor: 'rgba(255, 255, 255, 0)'
                 },
 
-                pane: {
-                    size: '65%'
+                legend: {
+                   enabled: false
                 },
+
+                title: {
+                    text: title
+                },
+
+                pane: {
+                    size: size+'%'
+                },
+
+                tooltip: tooltip,
 
                 xAxis: {
                     categories: categories,
                     tickmarkPlacement: 'on',
-                    lineWidth: 0,
+                    lineWidth: 0
                 },
 
                 yAxis: {
@@ -57,31 +65,11 @@
                     tickInterval : 100 / 4
                 },
 
-                tooltip: {
-                    shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-                },
-
-                legend: {
-                   enabled: false
-                },
-
-                plotOptions: {
-                    series: {
-                        animation: false
-                    }
-                },
-
                 series: series,
 
-                credits: {
-                    text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
-                    href: ''
-                }
-
+                credits: credits
             });
         }
-
 
     }
 
