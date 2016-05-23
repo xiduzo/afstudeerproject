@@ -10,10 +10,10 @@
         $mdToast,
         $state,
         $stateParams,
-        $timeout,
         Global,
-        World,
         Quest,
+        Spiderchart,
+        World,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -70,88 +70,26 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function makeSpiderChart() {
-            $('#spiderChart').highcharts({
-                chart: {
-                    polar: true,
-                    type: 'area',
-                    spacingBottom: 10,
-                    spacingTop: 10,
-                    spacingLeft: 10,
-                    spacingRight: 10,
-                    width: 400,
-                    height: 400,
-                },
-
-                title: {
-                    text: 'Quest skill level'
-                },
-
-                exporting: {
-                    // Only show the exporting button when you have a higher access level than the student
-                    enabled: Global.getAccess() > 1 ? true : false,
-                    backgroundColor: 'rgba(255, 255, 255, 0)'
-                },
-
-                pane: {
-                    size: '65%'
-                },
-
-                xAxis: {
-                    categories: [
-                        'Interaction Design',
-                        'Visual Interface Design',
-                        'Frontend Development',
-                        'Content management',
-                        'Project management'
-                    ],
-                    tickmarkPlacement: 'on',
-                    lineWidth: 0,
-                },
-
-                yAxis: {
-                    gridLineInterpolation: 'polar',
-                    lineWidth: 0,
-                    min: 0,
-                    max: 100,
-                    tickInterval : 100 / 4
-                },
-
-                tooltip: {
-                    shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-                },
-
-                legend: {
-                   enabled: false
-                },
-
-                plotOptions: {
-                    series: {
-                        animation: false
-                    }
-                },
-
-                series: [
-                    {
-                        name: 'Level',
-                        data: [
-                            self.skills.interaction_design,
-                            self.skills.visual_interface_design,
-                            self.skills.frontend_development,
-                            self.skills.content_management,
-                            self.skills.project_management
-                        ],
-                        color: '#FFCC00',
-                        pointPlacement: 'on'
-                    }
+            var scores = {
+                name: 'Level',
+                data: [
+                    self.skills.interaction_design,
+                    self.skills.visual_interface_design,
+                    self.skills.frontend_development,
+                    self.skills.content_management,
+                    self.skills.project_management
                 ],
+                color: '#FFCC00',
+                pointPlacement: 'on'
+            };
 
-                credits: {
-                    text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
-                    href: ''
-                }
+            var credits = {
+                text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
+                href: ''
+            };
 
-            });
+            Spiderchart.createChart('spiderChart', '', 400, 400, 65, [scores], true, false, credits);
+
         }
 
         function addQuest() {
