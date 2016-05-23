@@ -28,6 +28,7 @@
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
         service.getWorldsOfGamemaster = getWorldsOfGamemaster;
+        service.getTotalExperience = getTotalExperience;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -218,6 +219,23 @@
                     method: "GET",
                     params: {
                         userUid: gamemaster
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function getTotalExperience(world) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'get/world_total_experience.php',
+                    method: "GET",
+                    params: {
+                        worldUuid: world
                     }
                 })
                 .then(function(response) {

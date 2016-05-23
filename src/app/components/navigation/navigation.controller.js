@@ -44,11 +44,6 @@
                         name: 'Worlds',
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
-                    },
-                    {
-                        name: 'Tweak game',
-                        icon: 'build_dark',
-                        link_to: 'base.home',
                     }
                 ],
             },
@@ -61,11 +56,6 @@
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home',
-                    },
-                    {
-                        name: 'Progress',
-                        icon: 'timeline_dark',
-                        link_to: 'base.progress.overview',
                     },
                     {
                         name: 'Guilds',

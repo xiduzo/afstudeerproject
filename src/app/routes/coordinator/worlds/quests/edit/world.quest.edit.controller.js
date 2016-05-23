@@ -172,7 +172,6 @@
 
             Quest.patchQuest(quest, self.worldUuid)
                 .then(function(response) {
-                    console.log(response);
                     $mdToast.show(
                         $mdToast.simple()
                         .textContent('The quest has been updated')

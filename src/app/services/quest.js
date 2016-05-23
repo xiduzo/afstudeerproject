@@ -141,7 +141,7 @@
                     params: {
                         questUuid: quest,
                         worldUuid: world,
-                        active: status ? 1 : 0 
+                        active: status ? 1 : 0
                     }
                 })
                 .then(function(response) {
@@ -151,8 +151,6 @@
                 });
             });
         }
-
-
 
     }
 

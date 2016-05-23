@@ -59,6 +59,8 @@
                     .then(function(response) {
                         _.each(response, function(quest) {
 
+                            // TODO
+                            // Fix below
                             // To lazy to implemnt a directive for ng true / false values
                             // For the next programmer (?)
                             // Take a look at this:
@@ -76,6 +78,13 @@
                     }, function() {
                         // Err
                     });
+            }, function() {
+                // Err
+            });
+
+        World.getTotalExperience($stateParams.worldUuid)
+            .then(function(response) {
+                self.world.total_experience = response;
             }, function() {
                 // Err
             });
