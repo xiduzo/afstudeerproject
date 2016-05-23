@@ -8,7 +8,7 @@
     /** @ngInject */
     function AccountDetailController(
         Global,
-        Highchart,
+        Spiderchart,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -76,7 +76,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Highchart.spiderChart('container', '', 65, skills, [average_score, my_score], tooltip, true, credits);
+        Spiderchart.createChart('container', '', 65, skills, [average_score, my_score], tooltip, true, credits);
 
 
 

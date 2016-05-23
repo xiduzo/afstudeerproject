@@ -3,20 +3,20 @@
 
     angular
         .module('cmd.services')
-        .factory('Highchart', Highchart);
+        .factory('Spiderchart', Spiderchart);
 
-    /** @ngInject */
-    function Highchart(
+    /** @Spiderchart */
+    function Spiderchart(
         Global
     ) {
 
         var service = this;
 
-        service.spiderChart = spiderChart;
+        service.createChart = createChart;
 
         return service;
 
-        function spiderChart(selector, title, size, categories, series, tooltip, animation, credits) {
+        function createChart(selector, title, size, categories, series, tooltip, animation, credits) {
 
             Highcharts.chart(selector, {
                 chart: {
