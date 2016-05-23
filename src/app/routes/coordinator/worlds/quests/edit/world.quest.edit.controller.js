@@ -8,12 +8,11 @@
     /** @ngInject */
     function WorldsQuestsEditController(
         $mdToast,
-        $scope,
         $state,
         $stateParams,
-        $timeout,
         Global,
         Quest,
+        Spiderchart,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -63,6 +62,7 @@
                 self.quest = response;
                 // Initiate the first chart
                 self.makeSpiderChart();
+
             }, function() {
                 // Err
             });
@@ -71,88 +71,25 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function makeSpiderChart() {
-            $('#spiderChart').highcharts({
-                chart: {
-                    polar: true,
-                    type: 'area',
-                    spacingBottom: 10,
-                    spacingTop: 10,
-                    spacingLeft: 10,
-                    spacingRight: 10,
-                    width: 400,
-                    height: 400,
-                },
-
-                title: {
-                    text: 'Quest skill level'
-                },
-
-                exporting: {
-                    // Only show the exporting button when you have a higher access level than the student
-                    enabled: Global.getAccess() > 1 ? true : false,
-                    backgroundColor: 'rgba(255, 255, 255, 0)'
-                },
-
-                pane: {
-                    size: '65%'
-                },
-
-                xAxis: {
-                    categories: [
-                        'Interactien design',
-                        'Visual interface design',
-                        'Frontend development',
-                        'Content management',
-                        'Project management'
-                    ],
-                    tickmarkPlacement: 'on',
-                    lineWidth: 0,
-                },
-
-                yAxis: {
-                    gridLineInterpolation: 'polar',
-                    lineWidth: 0,
-                    min: 0,
-                    max: 100,
-                    tickInterval : 100 / 4
-                },
-
-                tooltip: {
-                    shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-                },
-
-                legend: {
-                   enabled: false
-                },
-
-                plotOptions: {
-                    series: {
-                        animation: false
-                    }
-                },
-
-                series: [
-                    {
-                        name: 'Level',
-                        data: [
-                            self.quest.interaction_design,
-                            self.quest.visual_interface_design,
-                            self.quest.frontend_development,
-                            self.quest.content_management,
-                            self.quest.project_management
-                        ],
-                        color: '#FFCC00',
-                        pointPlacement: 'on'
-                    }
+            var scores = {
+                name: 'Level',
+                data: [
+                    self.quest.interaction_design,
+                    self.quest.visual_interface_design,
+                    self.quest.frontend_development,
+                    self.quest.content_management,
+                    self.quest.project_management
                 ],
+                color: '#FFCC00',
+                pointPlacement: 'on'
+            };
 
-                credits: {
-                    text: 'Skill requirements for ' + (self.quest.name ? self.quest.name : 'unknown quest'),
-                    href: ''
-                }
+            var credits = {
+                text: 'Skill requirements for ' + (self.quest.name ? self.quest.name : 'unknown quest'),
+                href: ''
+            };
 
-            });
+            Spiderchart.createChart('spiderChart', '', 400, 400, 65, [scores], true, false, credits);
         }
 
         function patchQuest() {
@@ -183,7 +120,6 @@
                     // Err
                 });
         }
-
 
     }
 
