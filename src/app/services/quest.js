@@ -22,6 +22,7 @@
         service.deleteQuest = deleteQuest;
         service.getQuest = getQuest;
         service.patchQuest = patchQuest;
+        service.toggleQuest = toggleQuest; // Active / inactive.. Naming should be better ಠ▃ಠ
 
         return service;
 
@@ -122,6 +123,25 @@
                         cm: quest.skills.content_management,
                         pm: quest.skills.project_management,
                         worldUuid: world
+                    }
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        function toggleQuest(quest, world, status) {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: API_URL + 'patch/questStatus.php',
+                    method: "GET",
+                    params: {
+                        questUuid: quest,
+                        worldUuid: world,
+                        active: status ? 1 : 0 
                     }
                 })
                 .then(function(response) {

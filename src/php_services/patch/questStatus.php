@@ -9,16 +9,16 @@
 
     $questUuid = $_GET['questUuid'];
     $worldUuid = $_GET['worldUuid'];
-    $status = $_GET['status'];
+    $active = $_GET['active'];
 
-    if(!isset($questUuid) || !isset($worldUuid) || !isset($status)) {
+    if(!isset($questUuid) || !isset($worldUuid) || !isset($active)) {
         echo json_encode(false);
         return;
     }
 
     // Update the world name
     $database->update("Quest", [
-        "active" => $status
+        "active" => $active
     ], [
         "AND" => [
             "uuid" => $questUuid,

@@ -32,6 +32,7 @@
         self.makeSpiderChart = makeSpiderChart;
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
+        self.toggleQuest = toggleQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -57,6 +58,13 @@
                 Quest.getQuests(response.uuid)
                     .then(function(response) {
                         _.each(response, function(quest) {
+
+                            // To lazy to implemnt a directive for ng true / false values
+                            // For the next programmer (?)
+                            // Take a look at this:
+                            // http://stackoverflow.com/a/28866031/4655177
+                            quest.active = parseInt(quest.active) === 1 ? true : false;
+
                             self.world.quests.push(quest);
                             setTimeout(function () {
                                 self.makeSpiderChart(quest);
@@ -159,6 +167,12 @@
                    enabled: false
                 },
 
+                plotOptions: {
+                    series: {
+                        animation: false
+                    }
+                },
+
                 series: [
                     {
                         name: 'Level',
@@ -257,6 +271,20 @@
             }, function() {
                 // No
             });
+        }
+
+        function toggleQuest(quest) {
+            Quest.toggleQuest(quest.uuid, quest.worldUuid, quest.active)
+                .then(function(response) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('Quest ' + (quest.active ? 'activated' : 'deactivated'))
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                }, function() {
+                    // Err
+                });
         }
 
     }

@@ -48,7 +48,7 @@
             ng-repeat="quest in worldsSettingsCtrl.world.quests">
             <md-card>
 
-                <section layout-padding layout-align="end center" layout>
+                <section layout-padding layout-align="end start" layout>
                     <md-card-title flex>
                         <md-card-title-text flex>
                             <span class="md-headline">
@@ -102,6 +102,15 @@
                 <md-card-content>
                     {{ quest.description }}
                 </md-card-content>
+
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-switch class="md-primary"
+                        ng-change="worldsSettingsCtrl.toggleQuest(quest)"
+                        md-no-ink
+                        aria-label="Toggle quest"
+                        ng-model="quest.active">
+                    </md-switch>
+                </md-card-actions>
 
 
             </md-card>

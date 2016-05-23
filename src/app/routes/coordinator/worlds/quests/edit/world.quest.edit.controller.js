@@ -175,7 +175,7 @@
                     console.log(response);
                     $mdToast.show(
                         $mdToast.simple()
-                        .textContent('Quest ' + self.quest.name + ' has been updated')
+                        .textContent('The quest has been updated')
                         .position('bottom right')
                         .hideDelay(3000)
                     );
