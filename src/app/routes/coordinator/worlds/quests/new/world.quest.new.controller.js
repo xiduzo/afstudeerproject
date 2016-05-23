@@ -40,29 +40,13 @@
             description: '',
             experience: 0
         };
-
+        self.quests = [];
         self.skills = {
-            interaction_design: {
-                level: 0,
-                label: 'Interaction Design'
-            },
-            visual_interface_design: {
-                level: 0,
-                label: 'Visual Interface Design'
-            },
-            frontend_development: {
-                level: 0,
-                label: 'Frontend Development'
-            },
-            content_management: {
-                level: 0,
-                label: 'Content management'
-            },
-            project_management: {
-                level: 0,
-                label: 'Project management'
-            }
-
+            interaction_design: 0,
+            visual_interface_design: 0,
+            frontend_development: 0,
+            content_management: 0,
+            project_management: 0
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,6 +57,13 @@
                 self.world = response;
             }, function() {
                 // Err
+            });
+
+        Quest.getQuests($stateParams.worldUuid)
+            .then(function(response) {
+                self.quests= response;
+            }, function() {
+                // Err`
             });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,11 +98,11 @@
 
                 xAxis: {
                     categories: [
-                        self.skills.interaction_design.label,
-                        self.skills.visual_interface_design.label,
-                        self.skills.frontend_development.label,
-                        self.skills.content_management.label,
-                        self.skills.project_management.label
+                        'Interaction Design',
+                        'Visual Interface Design',
+                        'Frontend Development',
+                        'Content management',
+                        'Project management'
                     ],
                     tickmarkPlacement: 'on',
                     lineWidth: 0,
@@ -144,11 +135,11 @@
                     {
                         name: 'Level',
                         data: [
-                            self.skills.interaction_design.level,
-                            self.skills.visual_interface_design.level,
-                            self.skills.frontend_development.level,
-                            self.skills.content_management.level,
-                            self.skills.project_management.level
+                            self.skills.interaction_design,
+                            self.skills.visual_interface_design,
+                            self.skills.frontend_development,
+                            self.skills.content_management,
+                            self.skills.project_management
                         ],
                         color: '#FFCC00',
                         pointPlacement: 'on'
@@ -169,11 +160,11 @@
                 experience:  self.formInput.experience,
                 description: self.formInput.description,
                 skills: {
-                    interaction_design:      self.skills.interaction_design.level,
-                    visual_interface_design: self.skills.visual_interface_design.level,
-                    frontend_development:    self.skills.frontend_development.level,
-                    content_management:      self.skills.content_management.level,
-                    project_management:      self.skills.project_management.level
+                    interaction_design:      self.skills.interaction_design,
+                    visual_interface_design: self.skills.visual_interface_design,
+                    frontend_development:    self.skills.frontend_development,
+                    content_management:      self.skills.content_management,
+                    project_management:      self.skills.project_management
                 }
             };
 
@@ -193,7 +184,6 @@
 
         // Initiate the first chart
         self.makeSpiderChart();
-
 
     }
 

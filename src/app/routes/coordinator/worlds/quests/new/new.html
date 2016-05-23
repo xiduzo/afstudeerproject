@@ -53,7 +53,7 @@
                     </span>
                 </div>
                 <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.interaction_design.level"
+                    ng-model="worldsQuestsNewCtrl.skills.interaction_design"
                     ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
                     md-discrete
                     step="5"
@@ -69,7 +69,7 @@
                     </span>
                 </div>
                 <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.visual_interface_design.level"
+                    ng-model="worldsQuestsNewCtrl.skills.visual_interface_design"
                     ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
                     md-discrete
                     step="5"
@@ -85,7 +85,7 @@
                     </span>
                 </div>
                 <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.frontend_development.level"
+                    ng-model="worldsQuestsNewCtrl.skills.frontend_development"
                     ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
                     md-discrete
                     step="5"
@@ -101,7 +101,7 @@
                     </span>
                 </div>
                 <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.content_management.level"
+                    ng-model="worldsQuestsNewCtrl.skills.content_management"
                     ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
                     md-discrete
                     step="5"
@@ -117,7 +117,7 @@
                     </span>
                 </div>
                 <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.project_management.level"
+                    ng-model="worldsQuestsNewCtrl.skills.project_management"
                     ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
                     md-discrete
                     step="5"
@@ -132,13 +132,25 @@
         </section>
     </md-content>
 
-    <section>
-        <!-- Spacer -->
+    <section layout="row">
+        <h3 class="md-title" flex>
+            Quest requirements
+        </h3>
+        <md-button class="md-raised md-accent md-fab" ng-click="worldsQuestsNewCtrl.addRequiredQuest()">
+            <md-icon md-svg-icon="add_light"></md-icon>
+            <md-tooltip md-direction="left">
+                Add requirement
+            </md-tooltip>
+        </md-button>
     </section>
 
-    <md-content class="md-whiteframe-z2" layout-padding layout="row" layout-align="center center">
+    This quest does not require any other quests
+    {{ worldsQuestsNewCtrl.quests }}
+
+    <section layout-padding layout="row" layout-align="center center">
         <md-button class="md-raised success" ng-click="worldsQuestsNewCtrl.addQuest()">
             Save
         </md-button>
-    </md-content>
+    </section>
+
 </section>
