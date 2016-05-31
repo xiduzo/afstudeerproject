@@ -25,90 +25,56 @@
         service.deleteWorld = deleteWorld;
         service.getLecturers = getLecturers;
         service.addGamemasterToWorld = addGamemasterToWorld;
-        service.getGamemasters = getGamemasters;
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
         service.getWorldsOfGamemaster = getWorldsOfGamemaster;
         service.getTotalExperience = getTotalExperience;
-        service.getRestWorlds = getRestWorlds;
 
+        return service;
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-        return service;
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // TODO
-        // FIX NEW API ROUTE
         function addWorld(name) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'insert/world.php',
-                    method: "GET",
-                    params: {
-                        name: name
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'world/worlds/',
+                method: "POST",
+                data: {
+                    name: name
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getWorld(uuid) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/world.php',
-                    method: "GET",
-                    params: {
-                        uuid: uuid
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'world/worlds/'+uuid,
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getWorlds() {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/worlds.php',
-                    method: "GET"
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
-        function getRestWorlds() {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: REST_API_URL + 'world/worlds',
-                    method: "GET"
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'world/worlds/',
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
@@ -179,25 +145,6 @@
                     method: "GET",
                     params: {
                         userUid:   user,
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
-        function getGamemasters(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/gamemasters.php',
-                    method: "GET",
-                    params: {
                         worldUuid: world
                     }
                 })

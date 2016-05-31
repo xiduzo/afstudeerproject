@@ -40,25 +40,8 @@
         World.getWorlds()
             .then(function(response) {
                 _.each(response, function(world) {
-                    world.gamemasters = [];
                     self.worlds.push(world);
-                    World.getGamemasters(world.uuid)
-                        .then(function(response) {
-                            _.each(response, function(gamemaster) {
-                                gamemaster.worldUuid = world.uuid;
-                                world.gamemasters.push(gamemaster);
-                            });
-                        }, function() {
-                            // Err
-                        });
                 });
-            }, function() {
-                // Err
-            });
-
-        World.getRestWorlds()
-            .then(function(response) {
-                console.log(response);
             }, function() {
                 // Err
             });
@@ -135,7 +118,7 @@
                                 .hideDelay(3000)
                             );
                         }, function() {
-
+                            // Err
                         });
 
                 }, function() {

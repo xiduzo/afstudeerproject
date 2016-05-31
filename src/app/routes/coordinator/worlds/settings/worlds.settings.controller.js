@@ -43,7 +43,8 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
-                if(!response) {
+                console.log(response);
+                if(response.status === 404) {
                     $mdToast.show(
                         $mdToast.simple()
                         .textContent('World ' + $stateParams.worldUuid + ' does not exist')
@@ -52,45 +53,28 @@
                     );
                     $state.go('base.guilds.overview');
                 }
-                response.quests = [];
+                // response.quests = [];
                 self.world = response;
-                Quest.getQuests(response.uuid)
-                    .then(function(response) {
-                        _.each(response, function(quest) {
+                _.each(response.quests, function(quest) {
+                    var questScore = {
+                        name: 'Level',
+                        data: [
+                            parseInt(quest.interaction_design),
+                            parseInt(quest.visual_interface_design),
+                            parseInt(quest.frontend_development),
+                            parseInt(quest.content_management),
+                            parseInt(quest.project_management)
+                        ],
+                        color: '#FFCC00',
+                        pointPlacement: 'on'
+                    };
 
-                            // TODO
-                            // Fix below
-                            // To lazy to implemnt a directive for ng true / false values
-                            // For the next programmer (?)
-                            // Take a look at this:
-                            // http://stackoverflow.com/a/28866031/4655177
-                            quest.active = parseInt(quest.active) === 1 ? true : false;
-
-                            self.world.quests.push(quest);
-
-                            var questScore = {
-                                name: 'Level',
-                                data: [
-                                    parseInt(quest.interaction_design),
-                                    parseInt(quest.visual_interface_design),
-                                    parseInt(quest.frontend_development),
-                                    parseInt(quest.content_management),
-                                    parseInt(quest.project_management)
-                                ],
-                                color: '#FFCC00',
-                                pointPlacement: 'on'
-                            };
-
-                            // Add a little time for the HTML to render
-                            // Before drawing the chart
-                            setTimeout(function () {
-                                Spiderchart.createChart(quest.uuid, '', 300, 250, 80, [questScore], true, true, {enabled: false});
-                            }, 100);
-                        });
-
-                    }, function() {
-                        // Err
-                    });
+                    // Add a little time for the HTML to render
+                    // Before drawing the chart
+                    setTimeout(function () {
+                        Spiderchart.createChart(quest.id, '', 300, 250, 80, [questScore], true, true, {enabled: false});
+                    }, 100);
+                });
             }, function() {
                 // Err
             });
