@@ -43,7 +43,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
-                console.log(response);
                 if(response.status === 404) {
                     $mdToast.show(
                         $mdToast.simple()
@@ -79,14 +78,6 @@
                 // Err
             });
 
-        World.getTotalExperience($stateParams.worldUuid)
-            .then(function(response) {
-                self.world.total_experience = response;
-            }, function() {
-                // Err
-            });
-
-
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -102,7 +93,7 @@
                         .cancel('No, take me back!');
 
             $mdDialog.show(dialog).then(function() {
-                World.deleteWorld(self.world.uuid)
+                World.deleteWorld(self.world.id)
                     .then(function(response) {
                         $mdToast.show(
                             $mdToast.simple()
@@ -145,7 +136,7 @@
                         return;
                     }
 
-                    World.changeWorldName(result, self.world.uuid)
+                    World.changeWorldName(result, self.world.id)
                         .then(function(response) {
                             self.world.name = result;
                             $mdToast.show(

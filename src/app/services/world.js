@@ -78,43 +78,31 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function changeWorldName(name, uuid) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/world_name.php',
-                    method: "GET",
-                    params: {
-                        name: name,
-                        uuid: uuid
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'world/worlds/'+uuid+'/',
+                method: "PUT",
+                data: {
+                    name: name
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function deleteWorld(uuid) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'delete/world.php',
-                    method: "GET",
-                    params: {
-                        uuid: uuid
-                    }
+            return $http({
+                    url: REST_API_URL + 'world/worlds/'+uuid+'/',
+                    method: "DELETE"
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response.data;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
-            });
         }
 
         // TODO
@@ -206,25 +194,6 @@
                     method: "GET",
                     params: {
                         userUid: gamemaster
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
-        function getTotalExperience(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/world_total_experience.php',
-                    method: "GET",
-                    params: {
-                        worldUuid: world
                     }
                 })
                 .then(function(response) {
