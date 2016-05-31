@@ -40,6 +40,10 @@
         World.getWorlds()
             .then(function(response) {
                 _.each(response, function(world) {
+                    // Add the world to the gamemaster
+                    _.each(world.gamemasters, function(gamemaster) {
+                        gamemaster.worldId = world.id;
+                    });
                     self.worlds.push(world);
                 });
             }, function() {
@@ -50,27 +54,27 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function moveGamemaster(event, world, gamemaster) {
-            if(world.uuid === gamemaster.worldUuid) {
+            if(world.id === gamemaster.worldId) {
                 return;
             }
 
-            if((_.where(world.gamemasters, { uid: gamemaster.uid })).length >=2) {
+            if((_.where(world.gamemasters, { id: gamemaster.id })).length >=2) {
                 // Remove duplicate gamemasters in world
-                World.removeGamemasterFromWorld(gamemaster.uid, gamemaster.worldUuid);
+                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
             } else {
-                World.patchGamemasterWorld(gamemaster.uid, gamemaster.worldUuid, world.uuid)
+                World.patchGamemasterWorld(gamemaster.id, gamemaster.woldId, world)
                     .then(function(response) {
-                        if(!response) {
+                        if(response.status !== 200) {
                             return;
                         }
 
-                        gamemaster.worldUuid = world.uuid;
+                        gamemaster.worldId = world.id;
                         $mdToast.show(
                             $mdToast
                             .simple()
                             .position('bottom right')
-                            .textContent(gamemaster.displayname + ' moved to ' + world.name)
+                            .textContent(gamemaster.first_name + ' moved to ' + world.name)
                             .hideDelay(1000)
                         );
                     }, function() {

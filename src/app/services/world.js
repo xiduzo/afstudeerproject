@@ -28,7 +28,6 @@
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
         service.getWorldsOfGamemaster = getWorldsOfGamemaster;
-        service.getTotalExperience = getTotalExperience;
 
         return service;
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,44 +143,56 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function removeGamemasterFromWorld(gamemaster, world) {
-            return $q(function(resolve, reject) {
+            return $http({
+                url: REST_API_URL + 'world/userInWorld/',
+                method: "GET",
+                params: {
+                    user: gamemaster,
+                    world: world
+                }
+            })
+            .then(function(response) {
                 $http({
-                    url: API_URL + 'delete/gamemaster_from_world.php',
-                    method: "GET",
-                    params: {
-                        userUid: gamemaster,
-                        worldUuid: world
-                    }
+                    url: response.data[0].url,
+                    method: "DELETE"
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function patchGamemasterWorld(gamemaster, oldWorld, world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/user_world.php',
-                    method: "GET",
-                    params: {
-                        userUid: gamemaster,
-                        worldUuid: world,
-                        oldWorldUuid: oldWorld
+        function patchGamemasterWorld(gamemaster, oldWorld, newWorld) {
+            return $http({
+                url: REST_API_URL + 'world/userInWorld/',
+                method: "GET",
+                params: {
+                    user: gamemaster,
+                    world: oldWorld,
+                    oldWorldUuid: newWorld
+                }
+            })
+            .then(function(response) {
+                return $http({
+                    url: response.data[0].url,
+                    method: "PATCH",
+                    data: {
+                        world: newWorld.id
                     }
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
+                // return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
