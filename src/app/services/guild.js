@@ -40,6 +40,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // TODO
+        // FIX NEW API ROUTE
         function getGuilds(world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -57,6 +59,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getGuild(guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -74,6 +78,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function addGuild(name, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -92,6 +98,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getUsersWithoutGuild(world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -109,6 +117,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function addUserToGuild(user, guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -127,6 +137,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function removeUserFromGuild(user, guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -145,6 +157,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getGuildMembers(guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -162,6 +176,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function patchPlayersGuild(user, oldGuild, guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -181,6 +197,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function patchGuildName(name, guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -199,6 +217,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function deleteGuild(guild) {
             return $q(function(resolve, reject) {
                 $http({
@@ -216,6 +236,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getUserGuilds(user) {
             return $q(function(resolve, reject) {
                 $http({

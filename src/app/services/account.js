@@ -14,7 +14,8 @@
         $state,
         localStorageService,
         LDAP_LOGIN_API,
-        API_URL
+        API_URL,
+        REST_API_URL
     ) {
 
         var service = this;
@@ -28,7 +29,6 @@
         service.setUser = setUser;
         service.getAccessLevel = getAccessLevel;
         service.createUser = createUser;
-        service.patchLastLogin = patchLastLogin;
 
         return service;
 
@@ -37,8 +37,7 @@
             Method declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function login(username, password, context) {
-            return $q(function(resolve, reject) {
-                $http({
+            return $http({
                     url: LDAP_LOGIN_API,
                     method: "GET",
                     params: {
@@ -48,17 +47,15 @@
                     }
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response.data;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
-            });
         }
 
         function logout() {
-            $rootScope.Global.setUser({});
-            $rootScope.Global.setAccess(0);
             localStorageService.clearAll();
+            $rootScope.Global.clearUser();
             $rootScope.$broadcast('user-changed');
 
             // Close the sidenav for the login page
@@ -69,19 +66,17 @@
         }
 
         function checkForExistingUser(uid) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'validate/user_exists.php',
-                    method: "GET",
-                    params: {
-                        uid: uid
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'user/users/',
+                method: "GET",
+                params: {
+                    uid: uid
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
@@ -90,71 +85,45 @@
             $rootScope.Global.setUser(user);
 
             // Get the access level from the DB just to be sure no one will give himself access
-            service.getAccessLevel(user.uid)
-                .then(function(response) {
-                    $rootScope.Global.setAccess(response);
-                    $rootScope.$broadcast('user-changed');
-                    $state.go('base.home');
-                });
+            $rootScope.$broadcast('user-changed');
+            $state.go('base.home');
 
         }
 
         function getAccessLevel(uid) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/access_level.php',
-                    method: "GET",
-                    params: {
-                        uid: uid
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'user/users/',
+                method: "GET",
+                params: {
+                    uid: uid
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
         function createUser(user) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'insert/user.php',
-                    method: "GET",
-                    params: {
-                        uid:               user.uid,
-                        hvastudentnumber:  user.hvastudentnumber,
-                        email:             user.email,
-                        initials:          user.initials,
-                        surname:           user.surname,
-                        displayname:       user.displayname,
-                        gender:            user.gender,
-                        preferredlanguage: user.preferredlanguage,
-                        access:            user.access
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        function patchLastLogin(user) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/last_login.php',
-                    method: "GET",
-                    params: {
-                        uid: user,
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'user/users/',
+                method: "POST",
+                data: {
+                    uid:               user.uid,
+                    student_number:    user.hvastudentnumber,
+                    email:             user.email,
+                    initials:          user.initials,
+                    first_name:        user.displayname,
+                    surname:           user.surname,
+                    gender:            user.gender,
+                    is_staff:          user.access
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 

@@ -56,6 +56,13 @@
                 // Err
             });
 
+        World.getRestWorlds()
+            .then(function(response) {
+                console.log(response);
+            }, function() {
+                // Err
+            });
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

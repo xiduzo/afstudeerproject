@@ -9,7 +9,8 @@
     function World(
         $http,
         $q,
-        API_URL
+        API_URL,
+        REST_API_URL
     ) {
 
         var service = this;
@@ -29,6 +30,7 @@
         service.patchGamemasterWorld = patchGamemasterWorld;
         service.getWorldsOfGamemaster = getWorldsOfGamemaster;
         service.getTotalExperience = getTotalExperience;
+        service.getRestWorlds = getRestWorlds;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -40,6 +42,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // TODO
+        // FIX NEW API ROUTE
         function addWorld(name) {
             return $q(function(resolve, reject) {
                 $http({
@@ -57,6 +61,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getWorld(uuid) {
             return $q(function(resolve, reject) {
                 $http({
@@ -74,6 +80,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getWorlds() {
             return $q(function(resolve, reject) {
                 $http({
@@ -88,6 +96,24 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
+        function getRestWorlds() {
+            return $q(function(resolve, reject) {
+                $http({
+                    url: REST_API_URL + 'world/worlds',
+                    method: "GET"
+                })
+                .then(function(response) {
+                    resolve(response.data);
+                }, function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        // TODO
+        // FIX NEW API ROUTE
         function changeWorldName(name, uuid) {
             return $q(function(resolve, reject) {
                 $http({
@@ -106,6 +132,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function deleteWorld(uuid) {
             return $q(function(resolve, reject) {
                 $http({
@@ -123,6 +151,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getLecturers(world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -140,6 +170,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function addGamemasterToWorld(user, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -158,6 +190,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getGamemasters(world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -175,6 +209,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function removeGamemasterFromWorld(gamemaster, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -193,6 +229,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function patchGamemasterWorld(gamemaster, oldWorld, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -212,6 +250,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getWorldsOfGamemaster(gamemaster) {
             return $q(function(resolve, reject) {
                 $http({
@@ -229,6 +269,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getTotalExperience(world) {
             return $q(function(resolve, reject) {
                 $http({

@@ -30,6 +30,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // TODO
+        // FIX NEW API ROUTE
         function addQuest(quest, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -55,6 +57,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getQuests(world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -72,6 +76,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function deleteQuest(quest, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -90,6 +96,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function getQuest(quest) {
             return $q(function(resolve, reject) {
                 $http({
@@ -107,6 +115,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function patchQuest(quest, world) {
             return $q(function(resolve, reject) {
                 $http({
@@ -133,6 +143,8 @@
             });
         }
 
+        // TODO
+        // FIX NEW API ROUTE
         function toggleQuest(quest, world, status) {
             return $q(function(resolve, reject) {
                 $http({
