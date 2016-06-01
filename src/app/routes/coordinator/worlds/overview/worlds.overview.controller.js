@@ -9,6 +9,7 @@
     function WorldsOverviewController(
         $mdDialog,
         $mdToast,
+        Account,
         Global,
         World,
         COORDINATOR_ACCESS_LEVEL
@@ -39,6 +40,12 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorlds()
             .then(function(response) {
+
+                if(response.status === -1) {
+                    Global.noConnection();
+                    return;
+                }
+
                 _.each(response, function(world) {
                     // Add the world to the gamemaster
                     _.each(world.gamemasters, function(gamemaster) {
@@ -65,7 +72,8 @@
             } else {
                 World.patchGamemasterWorld(gamemaster.id, gamemaster.woldId, world)
                     .then(function(response) {
-                        if(response.status !== 200) {
+                        if(response.status >= 400) {
+                            Global.statusCode(response);
                             return;
                         }
 
@@ -132,8 +140,15 @@
         }
 
         function addGamemaster(event, world) {
-            World.getLecturers(world.uuid)
+            Account.getLecturers()
                 .then(function(response) {
+
+                    // Filter out the gamemaster allready in the world
+                    response = _.filter(response, function(user) {
+                        if(_.where(world.gamemasters, { id: user.id }).length === 0) {
+                            return user;
+                        }
+                    });
 
                     $mdDialog.show({
                         controller: 'AasController',
@@ -155,26 +170,25 @@
                             }
 
                             _.each(response, function(user) {
-                                // Do not add lecturers which allready are lecturers in this world
-                                // TODO
-                                // dont give the option of selecting this users in the first place
-                                if(_.where(world.gamemasters, { uid: user.uid }).length === 0) {
-                                    World.addGamemasterToWorld(user.uid, world.uuid)
-                                        .then(function(response) {
-                                            user.worldUuid = world.uuid;
-                                            world.gamemasters.push(user);
-                                        }, function() {
-                                            // Err
-                                        });
-                                }
+                                World.addGamemasterToWorld(user.url, world.url)
+                                    .then(function(response) {
+                                        if(response.status >= 400) {
+                                            Global.statusCode(response);
+                                            return;
+                                        }
+                                        user.worldId = world.id;
+                                        world.gamemasters.push(user);
+                                        $mdToast.show(
+                                            $mdToast.simple()
+                                            .textContent(user.first_name + ' added to ' + world.name)
+                                            .position('bottom right')
+                                            .hideDelay(3000)
+                                        );
+                                    }, function() {
+                                        // Err
+                                    });
                             });
 
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent(response.length + ' gamemaster(s) added to ' + world.name)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
 
                         }, function() {
                             // Err

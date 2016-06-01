@@ -49,6 +49,22 @@
                     .hideDelay(3000)
                 );
                 $state.go('base.home');
+            },
+            noConnection: function() {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('There seems to be a problem establishing a database connection')
+                    .position('bottom right')
+                    .hideDelay(3000)
+                );
+            },
+            statusCode: function(response) {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent(response.status+': '+response.statusText)
+                    .position('bottom right')
+                    .hideDelay(5000)
+                );
             }
         };
 
@@ -57,6 +73,10 @@
 
             Account.getAccessLevel(self.user.uid)
                 .then(function(response) {
+                    if(response.status === -1) {
+                        self.functions.noConnection();
+                        return;
+                    }
                     if(response.is_superuser) {
                         self.acccess = 3;
                     } else if (response.is_staff) {
@@ -64,7 +84,7 @@
                     } else {
                         self.access = 1;
                     }
-                    self.access = 3;
+                    self.access = 2;
                 });
 
             // $state.go('base.home');

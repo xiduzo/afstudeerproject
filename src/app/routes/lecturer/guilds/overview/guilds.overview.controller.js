@@ -38,30 +38,44 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorldsOfGamemaster(Global.getUser().uid)
+        World.getWorldsOfGamemaster(Global.getUser().id)
             .then(function(response) {
-                _.each(response, function(world) {
-                    world.guilds = [];
-                    self.worlds.push(world);
-                    Guild.getGuilds(world.uuid)
+                if(response.status >= 400) {
+                    Global.statusCode(response);
+                    return;
+                }
+
+                _.each(response.worlds, function(world) {
+                    World.getWorld(world)
                         .then(function(response) {
-                            _.each(response, function(guild) {
-                                guild.members = [];
-                                world.guilds.push(guild);
-                                Guild.getGuildMembers(guild.uuid)
-                                    .then(function(response) {
-                                        _.each(response, function(member) {
-                                            member.guildUuid = guild.uuid;
-                                            guild.members.push(member);
-                                        });
-                                    }, function() {
-                                        // Err
-                                    });
-                            });
+                            console.log(response);
                         }, function() {
                             // Err
                         });
                 });
+                // console.log(response);
+                // _.each(response, function(world) {
+                //     world.guilds = [];
+                //     self.worlds.push(world);
+                //     Guild.getGuilds(world.uuid)
+                //         .then(function(response) {
+                //             _.each(response, function(guild) {
+                //                 guild.members = [];
+                //                 world.guilds.push(guild);
+                //                 Guild.getGuildMembers(guild.uuid)
+                //                     .then(function(response) {
+                //                         _.each(response, function(member) {
+                //                             member.guildUuid = guild.uuid;
+                //                             guild.members.push(member);
+                //                         });
+                //                     }, function() {
+                //                         // Err
+                //                     });
+                //             });
+                //         }, function() {
+                //             // Err
+                //         });
+                // });
             }, function() {
                 // Err
             });

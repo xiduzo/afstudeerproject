@@ -23,7 +23,6 @@
         service.getWorld = getWorld;
         service.changeWorldName = changeWorldName;
         service.deleteWorld = deleteWorld;
-        service.getLecturers = getLecturers;
         service.addGamemasterToWorld = addGamemasterToWorld;
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
@@ -53,9 +52,9 @@
             });
         }
 
-        function getWorld(uuid) {
+        function getWorld(id) {
             return $http({
-                url: REST_API_URL + 'world/worlds/'+uuid,
+                url: REST_API_URL + 'world/worlds/'+id,
                 method: "GET"
             })
             .then(function(response) {
@@ -104,42 +103,19 @@
                 });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function getLecturers(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/lecturers.php',
-                    method: "GET",
-                    params: {
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
         function addGamemasterToWorld(user, world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'insert/gamemaster_in_world.php',
-                    method: "GET",
-                    params: {
-                        userUid:   user,
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'world/userInWorld/',
+                method: "POST",
+                data: {
+                    user: user,
+                    world: world
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
@@ -196,22 +172,15 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getWorldsOfGamemaster(gamemaster) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/worlds_of_gamemaster.php',
-                    method: "GET",
-                    params: {
-                        userUid: gamemaster
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'user/users/'+gamemaster+'/',
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 

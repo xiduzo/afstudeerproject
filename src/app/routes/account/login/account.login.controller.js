@@ -59,6 +59,10 @@
 
                         Account.checkForExistingUser(logged_in_user.uid)
                             .then(function(response) {
+                                if(response.status === -1) {
+                                    Global.noConnection();
+                                    return;
+                                }
                                 if(response.length) {
                                     Account.setUser(response[0]);
                                 } else {
