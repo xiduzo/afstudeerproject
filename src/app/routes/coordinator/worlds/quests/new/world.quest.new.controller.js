@@ -40,7 +40,6 @@
             description: '',
             experience: 0
         };
-        self.quests = [];
         self.skills = {
             interaction_design: 0,
             visual_interface_design: 0,
@@ -57,13 +56,6 @@
                 self.world = response;
             }, function() {
                 // Err
-            });
-
-        Quest.getQuests($stateParams.worldUuid)
-            .then(function(response) {
-                self.quests= response;
-            }, function() {
-                // Err`
             });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +98,7 @@
                 }
             };
 
-            Quest.addQuest(quest, self.world.uuid)
+            Quest.addQuest(quest, self.world.url)
                 .then(function(response) {
                     $mdToast.show(
                         $mdToast.simple()
@@ -114,7 +106,7 @@
                         .position('bottom right')
                         .hideDelay(3000)
                     );
-                    $state.go('base.worlds.settings', {"worldUuid" : self.world.uuid});
+                    $state.go('base.worlds.settings', {"worldUuid" : self.world.id});
                 }, function() {
                     // Err
                 });

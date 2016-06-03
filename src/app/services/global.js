@@ -84,7 +84,7 @@
                     } else {
                         self.access = 1;
                     }
-                    self.access = 2;
+                    self.access = 3;
                 });
 
             // $state.go('base.home');
