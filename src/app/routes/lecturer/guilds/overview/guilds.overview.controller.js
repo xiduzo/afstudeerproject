@@ -9,6 +9,7 @@
     function GuildsOverviewController(
         $mdDialog,
         $mdToast,
+        Account,
         Guild,
         Global,
         World,
@@ -46,36 +47,15 @@
                 }
 
                 _.each(response.worlds, function(world) {
-                    World.getWorld(world)
-                        .then(function(response) {
-                            console.log(response);
-                        }, function() {
-                            // Err
+                    // Adding the world to the frontend
+                    _.each(world.world.guilds, function(guild) {
+                        _.each(guild.members, function(member) {
+                            // Adding guild id for moving players around
+                            member.guildId = guild.id;
                         });
+                    });
+                    self.worlds.push(world.world);
                 });
-                // console.log(response);
-                // _.each(response, function(world) {
-                //     world.guilds = [];
-                //     self.worlds.push(world);
-                //     Guild.getGuilds(world.uuid)
-                //         .then(function(response) {
-                //             _.each(response, function(guild) {
-                //                 guild.members = [];
-                //                 world.guilds.push(guild);
-                //                 Guild.getGuildMembers(guild.uuid)
-                //                     .then(function(response) {
-                //                         _.each(response, function(member) {
-                //                             member.guildUuid = guild.uuid;
-                //                             guild.members.push(member);
-                //                         });
-                //                     }, function() {
-                //                         // Err
-                //                     });
-                //             });
-                //         }, function() {
-                //             // Err
-                //         });
-                // });
             }, function() {
                 // Err
             });
@@ -84,26 +64,28 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function movePlayer(event, guild, user) {
-            if(guild.uuid === user.guildUuid) {
+            if(guild.id === user.guildId) {
                 return;
             }
-
-            Guild.patchPlayersGuild(user.uid, user.guildUuid, guild.uuid)
-                .then(function(response) {
-                    user.guildUuid = guild.uuid;
-                    $mdToast.show(
-                        $mdToast
-                        .simple()
-                        .position('bottom right')
-                        .textContent(user.displayname + ' moved to ' + guild.name)
-                        .hideDelay(1000)
-                    );
-                }, function() {
-                    // Err
-                });
-
-            // player.guildUuid = guild.uuid;
-            //
+            if((_.where(guild.members, { id: user.id })).length >=2) {
+                // Remove duplicate members in world
+                Guild.removeUserFromGuild(user.id, user.guilId);
+                guild.members.splice(guild.members.indexOf(user), 1);
+            } else {
+                Guild.patchPlayersGuild(user.id, user.guildId, guild)
+                    .then(function(response) {
+                        user.guildId = guild.id;
+                        $mdToast.show(
+                            $mdToast
+                            .simple()
+                            .position('bottom right')
+                            .textContent(user.first_name + ' moved to ' + guild.name)
+                            .hideDelay(1000)
+                        );
+                    }, function() {
+                        // Err
+                    });
+            }
         }
 
 
@@ -133,8 +115,9 @@
                         return;
                     }
 
-                    Guild.addGuild(result, world.uuid)
+                    Guild.addGuild(result, world.url)
                         .then(function(response) {
+                            console.log(response);
                             response.members = [];
                             world.guilds.unshift(response);
                             $mdToast.show(
@@ -154,9 +137,15 @@
 
         function addGuildMember(event, world, guild) {
 
-            Guild.getUsersWithoutGuild(world.uuid)
+            Account.getStudents()
                 .then(function(response) {
 
+                    // Filter out the users allready in the guild
+                    response = _.filter(response, function(user) {
+                        if(_.where(guild.members, { id: user.id }).length === 0) {
+                            return user;
+                        }
+                    });
                     $mdDialog.show({
                         controller: 'AasController',
                         controllerAs: 'aasCtrl',
@@ -177,9 +166,9 @@
 
                             // Adding each lecturer to the world
                             _.each(response, function(user) {
-                                Guild.addUserToGuild(user.uid, guild.uuid)
+                                Guild.addUserToGuild(user.url, guild.url)
                                     .then(function(response) {
-                                        user.guildUuid = guild.uuid;
+                                        user.guildId = guild.id;
                                         guild.members.push(user);
                                     }, function() {
                                         // Err
@@ -203,14 +192,11 @@
         }
 
         function removeGuildMember(user, guild) {
-            Guild.removeUserFromGuild(user.uid, guild.uuid)
+            Guild.removeUserFromGuild(user.id, guild.id)
                 .then(function(response) {
-                    if(!response) {
-                        return;
-                    }
                     $mdToast.show(
                         $mdToast.simple()
-                        .textContent(user.displayname + ' got removed from ' + guild.name)
+                        .textContent(user.first_name + ' got removed from ' + guild.name)
                         .position('bottom right')
                         .hideDelay(3000)
                     );

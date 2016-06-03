@@ -10,7 +10,8 @@
         $http,
         $q,
         Account,
-        API_URL
+        API_URL,
+        REST_API_URL
     ) {
 
         var service = this;
@@ -21,7 +22,6 @@
         service.getGuilds = getGuilds;
         service.getGuild = getGuild;
         service.addGuild = addGuild;
-        service.getUsersWithoutGuild = getUsersWithoutGuild;
         service.addUserToGuild = addUserToGuild;
         service.removeUserFromGuild = removeUserFromGuild;
         service.getGuildMembers = getGuildMembers;
@@ -59,101 +59,71 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getGuild(guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/guild.php',
-                    method: "GET",
-                    params: {
-                        uuid: guild
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'guild/guilds/'+guild+'/',
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function addGuild(name, world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'insert/guild.php',
-                    method: "GET",
-                    params: {
-                        name: name,
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'guild/guilds/',
+                method: "POST",
+                data: {
+                    name: name,
+                    world: world
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function getUsersWithoutGuild(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/users_without_guild.php',
-                    method: "GET",
-                    params: {
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
         function addUserToGuild(user, guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'insert/user_in_guild.php',
-                    method: "GET",
-                    params: {
-                        userUid: user,
-                        guildUuid: guild
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'guild/userInGuild/',
+                method: "POST",
+                data: {
+                    user: user,
+                    guild: guild
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function removeUserFromGuild(user, guild) {
-            return $q(function(resolve, reject) {
+            return $http({
+                url: REST_API_URL + 'guild/userInGuild',
+                method: "GET",
+                params: {
+                    user: user,
+                    guild: guild
+                }
+            })
+            .then(function(response) {
                 $http({
-                    url: API_URL + 'delete/user_from_guild.php',
-                    method: "GET",
-                    params: {
-                        userUid: user,
-                        guildUuid: guild
-                    }
+                    url: response.data[0].url,
+                    method: "DELETE"
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
+            }, function(error) {
+                return error;
             });
         }
 
@@ -176,63 +146,57 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function patchPlayersGuild(user, oldGuild, guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/user_guild.php',
-                    method: "GET",
-                    params: {
-                        userUid: user,
-                        oldGuildUuid: oldGuild,
-                        guildUuid: guild
+        function patchPlayersGuild(user, oldGuild, newGuild) {
+            return $http({
+                url: REST_API_URL + 'guild/userInGuild/',
+                method: "GET",
+                params: {
+                    user: user,
+                    guild: oldGuild
+                }
+            })
+            .then(function(response) {
+                return $http({
+                    url: response.data[0].url,
+                    method: "PATCH",
+                    data: {
+                        guild: newGuild.url
                     }
                 })
                 .then(function(response) {
-                    resolve(response.data);
+                    return response;
                 }, function(error) {
-                    reject(error);
+                    return error;
                 });
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function patchGuildName(name, guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/guild_name.php',
-                    method: "GET",
-                    params: {
-                        name: name,
-                        uuid: guild
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'guild/guilds/'+guild+'/',
+                method: "PATCH",
+                data: {
+                    name: name,
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function deleteGuild(guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'delete/guild.php',
-                    method: "GET",
-                    params: {
-                        uuid: guild
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'guild/guilds/'+guild+'/',
+                method: "DELETE"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 

@@ -34,7 +34,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
-                if(!response) {
+                if(response.status === 404) {
                     $mdToast.show(
                         $mdToast.simple()
                         .textContent('Guild ' + $stateParams.guildUuid + ' does not exist')
@@ -64,7 +64,7 @@
                         .cancel('No, take me back!');
 
             $mdDialog.show(dialog).then(function() {
-                Guild.deleteGuild(self.guild.uuid)
+                Guild.deleteGuild(self.guild.id)
                     .then(function(response) {
                         $mdToast.show(
                             $mdToast.simple()
@@ -107,7 +107,7 @@
                         return;
                     }
 
-                    Guild.patchGuildName(result, self.guild.uuid)
+                    Guild.patchGuildName(result, self.guild.id)
                         .then(function(response) {
                             $mdToast.show(
                                 $mdToast.simple()
@@ -116,7 +116,8 @@
                                 .hideDelay(3000)
                             );
 
-                            $state.go('base.guilds.overview');
+                            self.guild.name = result;
+                            // $state.go('base.guilds.overview');
                         }, function() {
                             // Err
                         });

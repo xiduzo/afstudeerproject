@@ -157,7 +157,7 @@
                     url: response.data[0].url,
                     method: "PATCH",
                     data: {
-                        world: newWorld.id
+                        world: newWorld.url
                     }
                 })
                 .then(function(response) {
@@ -173,7 +173,7 @@
 
         function getWorldsOfGamemaster(gamemaster) {
             return $http({
-                url: REST_API_URL + 'user/users/'+gamemaster+'/',
+                url: REST_API_URL + 'user/userWorlds/'+gamemaster+'/',
                 method: "GET"
             })
             .then(function(response) {

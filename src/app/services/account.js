@@ -29,6 +29,7 @@
         service.getAccessLevel = getAccessLevel;
         service.createUser = createUser;
         service.getLecturers = getLecturers;
+        service.getStudents = getStudents;
 
         return service;
 
@@ -133,6 +134,21 @@
                 method: "GET",
                 params: {
                     is_staff: 1
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function getStudents() {
+            return $http({
+                url: REST_API_URL + 'user/users/',
+                method: "GET",
+                params: {
+                    is_staff: 0
                 }
             })
             .then(function(response) {
