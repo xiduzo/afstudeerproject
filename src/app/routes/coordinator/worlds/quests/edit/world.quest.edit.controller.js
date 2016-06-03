@@ -48,7 +48,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Quest.getQuest($stateParams.questUuid)
             .then(function(response) {
-
                 if(!response) {
                     return;
                 }
@@ -94,7 +93,7 @@
 
         function patchQuest() {
             var quest = {
-                uuid:        self.quest.uuid,
+                id:          self.quest.id,
                 name:        self.quest.name,
                 experience:  self.quest.experience,
                 description: self.quest.description,
@@ -107,7 +106,7 @@
                 }
             };
 
-            Quest.patchQuest(quest, self.worldUuid)
+            Quest.patchQuest(quest)
                 .then(function(response) {
                     $mdToast.show(
                         $mdToast.simple()

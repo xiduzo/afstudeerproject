@@ -89,8 +89,6 @@
                         // Err
                     });
             }
-
-
         }
 
         function newWorldDialog(event) {

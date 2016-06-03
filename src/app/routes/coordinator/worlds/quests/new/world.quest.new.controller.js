@@ -38,7 +38,7 @@
         self.formInput = {
             name: '',
             description: '',
-            experience: 0
+            experience: null
         };
         self.skills = {
             interaction_design: 0,

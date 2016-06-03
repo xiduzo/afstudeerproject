@@ -9,7 +9,6 @@
     function World(
         $http,
         $q,
-        API_URL,
         REST_API_URL
     ) {
 
@@ -76,10 +75,10 @@
             });
         }
 
-        function changeWorldName(name, uuid) {
+        function changeWorldName(name, id) {
             return $http({
-                url: REST_API_URL + 'world/worlds/'+uuid+'/',
-                method: "PUT",
+                url: REST_API_URL + 'world/worlds/'+id+'/',
+                method: "PATCH",
                 data: {
                     name: name
                 }

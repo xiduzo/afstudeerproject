@@ -165,9 +165,10 @@
                         .cancel('No, take me back!');
 
             $mdDialog.show(dialog).then(function() {
-                Quest.deleteQuest(quest.uuid, self.world.uuid)
+                Quest.deleteQuest(quest.id)
                     .then(function(response) {
-                        if(!response) {
+                        if(response.status >= 400) {
+                            Global.statusCode(response);
                             return;
                         }
 
@@ -178,6 +179,7 @@
                             .hideDelay(3000)
                         );
 
+                        // Remove the quest in the frontend
                         self.world.quests.splice(self.world.quests.indexOf(quest), 1);
 
                     }, function() {
@@ -189,7 +191,7 @@
         }
 
         function toggleQuest(quest) {
-            Quest.toggleQuest(quest.uuid, quest.worldUuid, quest.active)
+            Quest.toggleQuest(quest.id, quest.active)
                 .then(function(response) {
                     $mdToast.show(
                         $mdToast.simple()

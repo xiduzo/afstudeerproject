@@ -73,91 +73,64 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function deleteQuest(quest, world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'delete/quest.php',
-                    method: "GET",
-                    params: {
-                        questUuid: quest,
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+        function deleteQuest(quest) {
+            return $http({
+                url: REST_API_URL + 'quest/quests/'+quest+'/',
+                method: "DELETE"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getQuest(quest) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/quest.php',
-                    method: "GET",
-                    params: {
-                        questUuid: quest
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'quest/quests/'+quest+'/',
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function patchQuest(quest, world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/quest.php',
-                    method: "GET",
-                    params: {
-                        questUuid: quest.uuid,
-                        name: quest.name,
-                        experience: quest.experience,
-                        description: quest.description,
-                        id: quest.skills.interaction_design,
-                        vid: quest.skills.visual_interface_design,
-                        fd: quest.skills.frontend_development,
-                        cm: quest.skills.content_management,
-                        pm: quest.skills.project_management,
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+        function patchQuest(quest) {
+            return $http({
+                url: REST_API_URL + 'quest/quests/'+quest.id+'/',
+                method: "PATCH",
+                data: {
+                    name: quest.name,
+                    description: quest.description,
+                    experience: quest.experience,
+                    interaction_design: quest.skills.interaction_design,
+                    visual_interface_design: quest.skills.visual_interface_design,
+                    frontend_development: quest.skills.frontend_development,
+                    content_management: quest.skills.content_management,
+                    project_management: quest.skills.project_management
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function toggleQuest(quest, world, status) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'patch/questStatus.php',
-                    method: "GET",
-                    params: {
-                        questUuid: quest,
-                        worldUuid: world,
-                        active: status ? 1 : 0
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+        function toggleQuest(quest, status) {
+            return $http({
+                url: REST_API_URL + 'quest/quests/'+quest+'/',
+                method: "PATCH",
+                data: {
+                    active: status
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
 

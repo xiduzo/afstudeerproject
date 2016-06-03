@@ -14,7 +14,6 @@
         $state,
         localStorageService,
         LDAP_LOGIN_API,
-        API_URL,
         REST_API_URL
     ) {
 
