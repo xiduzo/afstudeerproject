@@ -9,6 +9,7 @@
     function Global(
         $mdToast,
         $state,
+        $rootScope,
         localStorageService,
         Account
     ) {
@@ -66,6 +67,7 @@
                     .hideDelay(5000)
                 );
             }
+
         };
 
         if(localStorageService.get('user')) {
@@ -84,7 +86,7 @@
                     } else {
                         self.access = 1;
                     }
-                    self.access = 2;
+                    self.access = 3;
                 });
 
             // $state.go('base.home');

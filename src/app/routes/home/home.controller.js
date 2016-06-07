@@ -6,9 +6,10 @@
         .controller('HomeController', HomeController);
 
     /** @ngInject */
-    function HomeController($scope) {
+    function HomeController($scope, Account) {
 
         var self = this;
+
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables

@@ -37,18 +37,13 @@
                                                 {{guild.name}}
                                             </span>
                                         </md-card-title-text>
-                                        <!-- <md-icon md-svg-icon="pencil_dark" ng-click="guildsOverviewCtrl.changeGuildName($event, guild)">
-                                            <md-tooltip md-direction="bottom">
-                                                Change guild name
-                                            </md-tooltip>
-                                        </md-icon> -->
                                     </md-card-title>
                                     <md-menu>
                                         <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                                             <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
                                         </md-button>
                                         <md-menu-content width="4" >
-                                            <md-menu-item aria-label="View {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.uuid})">
+                                            <md-menu-item aria-label="View {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.id})">
                                                 <md-button>
                                                     <div layout="row">
                                                         <md-icon

@@ -71,7 +71,7 @@
                     // Add a little time for the HTML to render
                     // Before drawing the chart
                     setTimeout(function () {
-                        Spiderchart.createChart(quest.id, '', 300, 250, 80, [questScore], true, true, {enabled: false});
+                        Spiderchart.createChart(quest.id, '', 350, 250, 80, [questScore], true, true, {enabled: false});
                     }, 100);
                 });
             }, function() {
