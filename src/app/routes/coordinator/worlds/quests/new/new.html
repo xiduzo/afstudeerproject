@@ -136,21 +136,6 @@
         </section>
     </md-content>
 
-    <section layout="row">
-        <h3 class="md-title" flex>
-            Quest requirements
-        </h3>
-        <md-button class="md-raised md-accent md-fab" ng-click="worldsQuestsNewCtrl.addRequiredQuest()">
-            <md-icon md-svg-icon="add_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Add requirement
-            </md-tooltip>
-        </md-button>
-    </section>
-
-    This quest does not require any other quests
-    {{ worldsQuestsNewCtrl.quests }}
-
     <section layout-padding layout="row" layout-align="center center">
         <md-button class="md-raised success" ng-click="worldsQuestsNewCtrl.addQuest()">
             Save

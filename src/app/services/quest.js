@@ -19,7 +19,6 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         service.addQuest = addQuest;
-        service.getQuests = getQuests;
         service.deleteQuest = deleteQuest;
         service.getQuest = getQuest;
         service.patchQuest = patchQuest;
@@ -51,25 +50,6 @@
                 return response.data;
             }, function(error) {
                 return error;
-            });
-        }
-
-        // TODO
-        // FIX NEW API ROUTE
-        function getQuests(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/quests.php',
-                    method: "GET",
-                    params: {
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
             });
         }
 

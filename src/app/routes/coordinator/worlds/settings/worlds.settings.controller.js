@@ -52,8 +52,9 @@
                     );
                     $state.go('base.guilds.overview');
                 }
-                // response.quests = [];
+
                 self.world = response;
+                
                 _.each(response.quests, function(quest) {
                     var questScore = {
                         name: 'Level',

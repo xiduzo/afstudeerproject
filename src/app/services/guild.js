@@ -24,7 +24,6 @@
         service.addGuild = addGuild;
         service.addUserToGuild = addUserToGuild;
         service.removeUserFromGuild = removeUserFromGuild;
-        service.getGuildMembers = getGuildMembers;
         service.patchPlayersGuild = patchPlayersGuild;
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
@@ -127,25 +126,6 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
-        function getGuildMembers(guild) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/guild_members.php',
-                    method: "GET",
-                    params: {
-                        guildUuid: guild
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
         function patchPlayersGuild(user, oldGuild, newGuild) {
             return $http({
                 url: REST_API_URL + 'guild/userInGuild/',
@@ -200,22 +180,15 @@
             });
         }
 
-        // TODO
-        // FIX NEW API ROUTE
         function getUserGuilds(user) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/user_guilds.php',
-                    method: "GET",
-                    params: {
-                        userUid: user
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
+            return $http({
+                url: REST_API_URL + 'user/userGuilds/'+user+'/',
+                method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
             });
         }
     }

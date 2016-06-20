@@ -33,22 +33,19 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.uid)
+        Guild.getUserGuilds(self.user.id)
             .then(function(response) {
-                _.each(response, function(guild) {
-                    guild.members = [];
-                    self.guilds.push(guild);
-                    Guild.getGuildMembers(guild.uuid)
-                        .then(function(response) {
-                            _.each(response, function(member) {
-                                guild.members.push(member);
-                            });
+                _.each(response.guilds, function(guild) {
 
-                            // Create the experience table shit
-                            self.createExperienceChart(guild);
-                        }, function() {
-                            // Err
-                        });
+                    _.each(guild.guild.members, function(member) {
+                        member.guildId = guild.guild.id;
+                    });
+
+                    self.guilds.push(guild.guild);
+
+                    setTimeout(function () {
+                        self.createExperienceChart(guild.guild.id);
+                    }, 100);
                 });
             }, function() {
                 // Err
@@ -70,7 +67,7 @@
         }
 
         function createExperienceChart(guild) {
-            $('#'+guild.uuid).highcharts({
+            $('#'+guild).highcharts({
 
                 chart: {
                     backgroundColor: 'rgba(0,0,0,0)'
