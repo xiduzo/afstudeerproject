@@ -5,18 +5,16 @@
             World settings of: {{ worldsSettingsCtrl.world.name }}
 
             <md-button ng-click="worldsSettingsCtrl.changeWorldName($event)">
-                <md-icon
-                    md-menu-align-target
-                    md-svg-icon="pencil_dark">
+                <md-icon md-svg-icon="pencil_dark">
                 </md-icon>
-                <md-tooltip>
+                <md-tooltip md-direction="right" md-delay="1000">
                     Change world name
                 </md-tooltip>
             </md-button>
         </h2>
         <md-button class="md-raised md-warn md-fab" ng-click="worldsSettingsCtrl.deleteWorld($event)">
             <md-icon md-svg-icon="delete_light"></md-icon>
-            <md-tooltip md-direction="left">
+            <md-tooltip md-direction="left" md-delay="1000">
                 Delete world
             </md-tooltip>
         </md-button>
@@ -28,14 +26,8 @@
         </h3>
         <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
             <md-icon md-svg-icon="book_light"></md-icon>
-            <md-tooltip md-direction="bottom">
-                Create new quest
-            </md-tooltip>
-        </md-button>
-        <md-button class="md-raised md-accent md-fab" ng-click="">
-            <md-icon md-svg-icon="refresh_light"></md-icon>
-            <md-tooltip md-direction="bottom">
-                Sync with moodle
+            <md-tooltip md-direction="left" md-delay="1000">
+                New quest
             </md-tooltip>
         </md-button>
     </section>
@@ -117,4 +109,17 @@
         </div>
     </section>
 
+    <section layout="row">
+        <h3 class="md-title" flex>
+            Rewards and punishments
+        </h3>
+        <md-button class="md-raised md-accent md-fab">
+            <md-icon
+                md-svg-icon="pencil_light">
+            </md-icon>
+            <md-tooltip md-direction="right" md-delay="1000">
+                New reward / punishment
+            </md-tooltip>
+        </md-button>
+    </section>
 </section>
