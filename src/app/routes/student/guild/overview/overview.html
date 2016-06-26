@@ -7,28 +7,13 @@
             </md-tab-label>
 
             <md-tab-body>
-                <section layout-padding>
+                <section layout-margin>
                     <md-content layout="row" class="md-whiteframe-z2">
                         <div id="{{guild.id}}" flex="100"></div>
                     </md-content>
-                    <div layout="row" layout-wrap>
-                        <div flex="33" ng-repeat="member in guild.members">
-                            <md-card>
-                                <md-card-title layout="column" layout-align="center center">
-                                    <img gravatar-src="member.email" class="round icon--size--96" gravatar-size="96" />
-                                    <md-card-title-text>
-                                        <h2 class="md-headline" flex layout-margin>
-                                            {{ member.displayname }} {{ member.surname }}
-                                        </h2>
-                                    </md-card-title-text>
-                                </md-card-title>
 
-                                <md-card-content>
-                                    {{ member.uid }}
-                                </md-card-content>
-                            </md-card>
-                        </div>
-                    </div>
+
+
                 </section>
             </md-tab-body>
 

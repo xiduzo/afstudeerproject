@@ -88,7 +88,7 @@
             //         }
             //         self.access = 3;
             //     });
-            self.access = 3;
+            self.access = 1;
             $state.go('base.home');
         }
 

@@ -23,6 +23,7 @@
         service.getQuest = getQuest;
         service.patchQuest = patchQuest;
         service.toggleQuest = toggleQuest; // Active / inactive.. Naming should be better ಠ▃ಠ
+        service.addObjective = addObjective;
 
         return service;
 
@@ -105,6 +106,24 @@
                 method: "PATCH",
                 data: {
                     active: status
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function addObjective(quest, objective) {
+            return $http({
+                url: REST_API_URL + 'quest/objectives/',
+                method: "POST",
+                data: {
+                    quest: quest,
+                    name: objective.name,
+                    objective: objective.objective,
+                    points: objective.points
                 }
             })
             .then(function(response) {

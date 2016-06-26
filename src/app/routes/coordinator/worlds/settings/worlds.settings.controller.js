@@ -54,7 +54,7 @@
                 }
 
                 self.world = response;
-                
+
                 _.each(response.quests, function(quest) {
                     var questScore = {
                         name: 'Level',

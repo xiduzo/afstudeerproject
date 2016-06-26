@@ -37,10 +37,6 @@
             .then(function(response) {
                 _.each(response.guilds, function(guild) {
 
-                    _.each(guild.guild.members, function(member) {
-                        member.guildId = guild.guild.id;
-                    });
-
                     self.guilds.push(guild.guild);
 
                     setTimeout(function () {
@@ -55,15 +51,39 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         var exp_data = [];
-        var predicted_data = [];
+        var quest_points = [];
+        var categories = [];
+        var weeknumber = 0;
 
-        for(var i = 0; i <= 7; i++) {
-            var exp = Math.floor(Math.random() * 10000 + 10000 * i);
-            if(i < 5) {
-                exp_data.push(exp);
+        quest_points = [
+            1000, 1000, 970, 940, 930, 930, 930,
+            930, 930, 840, 840, 840, 760, 730,
+            700, 700, 700, 700, 600, 600, 600,
+            600, 600, 580, 520, 420, 420, 420,
+            420, 420, 420, 400, 400, 300, 200,
+            200, 200, 200, 200, 150, 150, 150,
+            150, 150, 150, 150, 150, 150, 100,
+            100
+        ];
+
+        exp_data = [
+            0, 20, 60, 60, 60, 60, 60,
+            140, 155, 140, 140, 140, 140, 140,
+            200, 230, 245, 245, 245, 245, 245,
+            245, 270, 280, 280, 280, 280, 280,
+            400, 430, 430, 430, 430, 430, 430,
+            570, 580, 590, 590, 590, 590, 590,
+            750, 780, 760, 760, 760, 760, 760,
+            760
+        ];
+
+        for(var c = 0; c <= 49; c++) {
+            if(c === 0 || c % 7 === 0) {
+                categories.push('Week ' + weeknumber);
+                weeknumber++;
+            } else {
+                categories.push(c);
             }
-
-            predicted_data.push(exp);
         }
 
         function createExperienceChart(guild) {
@@ -74,33 +94,31 @@
                 },
 
                 title: {
-                    text: 'Experience for ' +guild.name
+                    text: 'Progress'
                 },
 
                 xAxis: {
                     title: {
-                        text: 'Weken'
+                        text: 'Dagen'
                     },
-                    categories: ['Week 0', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Herkansing']
+                    categories: categories
                 },
 
-                yAxis: {
-                    title: {
-                        text: 'Experience'
+                yAxis: [
+                    {
+                        title: {
+                            text: 'Experience'
+                        },
+                        min: 0
                     },
-                    plotLines: [{
-                        value: 55000,
-                        width: 1,
-                        color: '#808080',
-                        label: {
-                            text: 'Minimal experience needed to pass'
-                        }
-                    }],
-                    // TODO
-                    // Set max exp for a grade 10
-                    min: 0,
-                    max: 100000
-                },
+                    {
+                        title: {
+                            text: 'Remaning quest points'
+                        },
+                        min: 0,
+                        opposite: true
+                    },
+                ],
 
                 exporting: {
                     // Only show the exporting button when you have a higher access level than the student
@@ -118,15 +136,15 @@
 
                 series: [
                     {
-                        name: 'Predicted experience',
-                        data: predicted_data,
-                        color: 'rgba(0,0,0,0.25)',
-                        dashStyle: 'ShortDash'
-                    },
-                    {
                         name: 'Experience',
                         data: exp_data,
                         color: '#FFCC00'
+                    },
+                    {
+                        name: 'Remaining quest points',
+                        data: quest_points,
+                        color: '#cd2327',
+                        yAxis: 1
                     }
                 ],
 

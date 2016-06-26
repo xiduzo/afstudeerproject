@@ -12,7 +12,8 @@
                 </md-tooltip>
             </md-button>
         </h2>
-        <md-button class="md-raised md-warn md-fab" ng-click="worldsSettingsCtrl.deleteWorld($event)">
+        <md-button class="md-raised md-warn md-fab"
+            ng-click="worldsSettingsCtrl.deleteWorld($event)">
             <md-icon md-svg-icon="delete_light"></md-icon>
             <md-tooltip md-direction="left" md-delay="1000">
                 Delete world
@@ -24,7 +25,8 @@
         <h3 class="md-title" flex>
             Quests
         </h3>
-        <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
+        <md-button class="md-raised md-accent md-fab"
+            ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
             <md-icon md-svg-icon="book_light"></md-icon>
             <md-tooltip md-direction="left" md-delay="1000">
                 New quest
@@ -36,21 +38,24 @@
         <div ng-if="worldsSettingsCtrl.world.quests.length <= 0">
             Er zijn op het moment geen quests beschikbaar voor {{ worldsSettingsCtrl.world.name }}
         </div>
-        <div ng-if="worldsSettingsCtrl.world.quests" flex="33"
+        <div ng-if="worldsSettingsCtrl.world.quests" flex="25" layout-wrap
             ng-repeat="quest in worldsSettingsCtrl.world.quests">
             <md-card>
-
-                <section layout-padding layout-align="end start" layout>
+                <md-toolbar layout="row">
                     <md-card-title flex>
-                        <md-card-title-text flex>
+                        <md-card-title-text flex layout="column" layout-align="space-between">
                             <span class="md-headline">
                                 {{ quest.name }}
+                            </span>
+                            <span class="md-subhead">
+                                Experience: {{ quest.experience | number }}
                             </span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-menu>
-                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                        <md-button aria-label="Open menu" class="md-icon-button"
+                            ng-click="$mdOpenMenu($event)">
+                            <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
                         </md-button>
                         <md-menu-content width="4" >
                             <md-menu-item ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
@@ -60,9 +65,7 @@
                                             md-menu-align-target
                                             md-svg-icon="pencil_dark">
                                         </md-icon>
-                                        <p flex>
-                                            Edit
-                                        </p>
+                                        <p flex> Edit </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -73,27 +76,59 @@
                                             md-menu-align-target
                                             md-svg-icon="delete_dark">
                                         </md-icon>
-                                        <p flex>
-                                            Delete
-                                        </p>
+                                        <p flex> Delete </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-                </section>
+                </md-toolbar>
 
-                <md-divider></md-divider>
-
-                <section layout="column" layout-align="center center">
-                    <div flex id="{{ quest.id }}"></div>
-                </section>
-
-                <md-divider></md-divider>
-
-                <md-card-content>
-                    {{ quest.description }}
+                <md-card-content style="padding: 0;">
+                    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
+                        <md-tab>
+                            <md-tab-label>
+                                Description
+                            </md-tab-label>
+                            <md-tab-body>
+                                <section layout-padding>
+                                    {{ quest.description }}
+                                </section>
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                Focus
+                            </md-tab-label>
+                            <md-tab-body>
+                                <section layout-padding>
+                                    <div flex id="{{ quest.id }}"></div>
+                                </section>
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                Objectives
+                            </md-tab-label>
+                            <md-tab-body>
+                                <md-list layout-padding>
+                                    <md-list-item layout="column"
+                                        ng-repeat="objective in quest.objectives"
+                                        layout-align="flex-start center">
+                                        <div class="md-title">
+                                            {{ objective.name }}
+                                        </div>
+                                        <div class="md-caption">
+                                            {{ objective.objective }}
+                                        </div>
+                                    </md-list-item>
+                                </md-list>
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
                 </md-card-content>
+
+                <md-divider></md-divider>
 
                 <md-card-actions layout="row" layout-align="end center">
                     <md-switch class="md-primary"

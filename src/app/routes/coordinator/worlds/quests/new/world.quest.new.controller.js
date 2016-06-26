@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function WorldsQuestsNewController(
+        $mdDialog,
         $mdToast,
         $state,
         $stateParams,
@@ -29,6 +30,8 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.makeSpiderChart = makeSpiderChart;
         self.addQuest = addQuest;
+        self.addObjective = addObjective;
+        self.removeObjective = removeObjective;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -47,6 +50,7 @@
             content_management: 0,
             project_management: 0
         };
+        self.objectives = [];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -100,6 +104,12 @@
 
             Quest.addQuest(quest, self.world.url)
                 .then(function(response) {
+
+                    // Add all the objectives
+                    _.each(self.objectives, function(objective) {
+                        Quest.addObjective(response.url, objective);
+                    });
+
                     $mdToast.show(
                         $mdToast.simple()
                         .textContent('Quest ' + response.name + ' added to ' + self.world.name)
@@ -110,6 +120,34 @@
                 }, function() {
                     // Err
                 });
+        }
+
+        function addObjective() {
+            $mdDialog.show({
+                controller: 'addObjectiveController',
+                controllerAs: 'addObjectiveCtrl',
+                templateUrl: 'app/routes/coordinator/worlds/quests/new/objectives/objectives.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    title: 'Add objective to ' + self.formInput.name,
+                    about: 'quest objective',
+                }
+            })
+                .then(function(response) {
+                    if(!response || !response.name || !response.objective || !response.points) {
+                        return;
+                    }
+
+                    self.objectives.push(response);
+
+                }, function() {
+                    // Err
+                });
+        }
+
+        function removeObjective(objective) {
+            self.objectives.splice(self.objectives.indexOf(component), 1);
         }
 
         // Initiate the first chart
