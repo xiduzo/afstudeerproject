@@ -8,56 +8,49 @@
 
         <md-toolbar class="md-primary">
             <md-card-title>
-                <md-card-title-text layout="row">
-                    <h2 class="md-headline" flex layout-margin>Login to [PLATFORM NAME]</h2>
+                <md-card-title-text class="md-headline" flex layout-margin>
+                    Login to [PLATFORM NAME]
                 </md-card-title-text>
             </md-card-title>
         </md-toolbar>
+
+        <md-card-content>
+
+            <!-- User login -->
+            <div layout="column">
+                <md-input-container>
+                    <label>HvA-ID</label>
+                    <input type="text" ng-model="accountLoginCtrl.login_form.username">
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input type="password" ng-model="accountLoginCtrl.login_form.password">
+                </md-input-container>
+            </div>
+
+            <!-- What kind of account do you want to login to -->
+            <md-radio-group layout="row" ng-model="accountLoginCtrl.login_form.login_type">
+                <md-radio-button value="student">
+                    Student
+                </md-radio-button>
+                <md-radio-button value="lecturer">
+                    Lecturer
+                </md-radio-button>
+            </md-radio-group>
+
+        </md-card-content>
         <md-divider></md-divider>
 
-        <form name="loginForm">
-
-            <md-card-content>
-
-                <!-- User login -->
-                <div layout="column">
-                    <md-input-container>
-                        <label>Username</label>
-                        <input type="text" ng-model="accountLoginCtrl.login_form.username">
-                    </md-input-container>
-                    <md-input-container>
-                        <label>Password</label>
-                        <input type="password" ng-model="accountLoginCtrl.login_form.password">
-                    </md-input-container>
-                </div>
-
-                Login as
-                <hr/>
-
-                <!-- What kind of account do you want to login to -->
-                <md-radio-group layout="row" ng-model="accountLoginCtrl.login_form.login_type">
-                    <md-radio-button value="student">
-                        Student
-                    </md-radio-button>
-                    <md-radio-button value="lecturer">
-                        Lecturer
-                    </md-radio-button>
-                </md-radio-group>
-
-            </md-card-content>
-            <md-divider></md-divider>
-
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button aria-label="Change world settings" ng-click="accountLoginCtrl.login()">
-                    <md-icon md-svg-icon="world_dark"></md-icon>
-                    Enter [PLATFORM NAME] / world
-                </md-button>
-                <md-button ui-sref="base.account.forgot">
-                    <md-icon md-svg-icon="help_dark"></md-icon>
-                    Forgot password
-                </md-button>
-            </md-card-actions>
-        </form>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button aria-label="Change world settings" ng-click="accountLoginCtrl.login()">
+                <md-icon md-svg-icon="world_dark"></md-icon>
+                Enter [PLATFORM NAME]
+            </md-button>
+            <md-button ui-sref="base.account.forgot">
+                <md-icon md-svg-icon="help_dark"></md-icon>
+                Forgot password
+            </md-button>
+        </md-card-actions>
 
     </md-card>
 </section>
