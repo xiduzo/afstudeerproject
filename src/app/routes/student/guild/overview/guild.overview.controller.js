@@ -12,7 +12,7 @@
         STUDENT_ACCESS_LEVEL
     ) {
 
-        if(Global.getAccess() !== STUDENT_ACCESS_LEVEL) {
+        if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
             Global.notAllowed();
             return;
         }

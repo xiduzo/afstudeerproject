@@ -16,7 +16,7 @@
         LECTURER_ACCESS_LEVEL
     ) {
 
-        if(Global.getAccess() !== LECTURER_ACCESS_LEVEL) {
+        if(Global.getAccess() < LECTURER_ACCESS_LEVEL) {
             Global.notAllowed();
             return;
         }

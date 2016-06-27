@@ -18,7 +18,7 @@
         COORDINATOR_ACCESS_LEVEL
     ) {
 
-        if(Global.getAccess() !== COORDINATOR_ACCESS_LEVEL) {
+        if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
             Global.notAllowed();
             return;
         }
