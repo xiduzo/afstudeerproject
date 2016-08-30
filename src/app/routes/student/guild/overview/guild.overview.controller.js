@@ -9,6 +9,7 @@
     function GuildOverviewController(
         Guild,
         Global,
+        World,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -71,20 +72,37 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
             .then(function(response) {
-                _.each(response.guilds, function(guild) {
+                _.each(response.guilds, function(guildObject) {
 
-                    self.guilds.push(guild.guild);
+                    var guild = guildObject.guild;
+
+                    self.guilds.push(guild);
 
                     setTimeout(function () {
-                        self.createExperienceChart(guild.guild.id);
+                        self.createExperienceChart(guild.id);
                     }, 100);
 
-                    console.log(guild);
-                    // TODO
-                    // check if the guild has the latest quests
-                    // if not, add them
-                    // if so, check for completion and build the chart
-                    // Getting all the quest for this guild.
+
+                    World.getWorld(guild.world)
+                        .then(function(response) {
+                            // Filter out all the quests which
+                            // the guild allready has
+                            response.quests = _.filter(response.quests, function(quest) {
+                                if(!_.findWhere(guild.quests, {id: quest.id})) {
+                                    return quest;
+                                }
+                            });
+
+                            // Add all the new quests to the guild
+                            _.each(response.quests, function(quest) {
+                                Guild.addQuest(guild.url, quest.url)
+                                    .then(function(response) {
+                                        console.log(response);
+                                    }, function(error) {
+                                        // Err
+                                    });
+                            });
+                        });
                 });
             }, function() {
                 // Err

@@ -28,6 +28,7 @@
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
+        service.addQuest = addQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -184,6 +185,22 @@
             return $http({
                 url: REST_API_URL + 'user/userGuilds/'+user+'/',
                 method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function addQuest(guild, quest) {
+            return $http({
+                url: REST_API_URL + 'guild/guildQuest/',
+                method: "POST",
+                data: {
+                    guild: guild,
+                    quest: quest
+                }
             })
             .then(function(response) {
                 return response.data;
