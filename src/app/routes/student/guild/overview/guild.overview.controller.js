@@ -76,12 +76,6 @@
 
                     var guild = guildObject.guild;
 
-                    self.guilds.push(guild);
-
-                    setTimeout(function () {
-                        self.createExperienceChart(guild.id);
-                    }, 100);
-
 
                     World.getWorld(guild.world)
                         .then(function(response) {
@@ -102,6 +96,15 @@
                                         // Err
                                     });
                             });
+
+                            // Finaly display all the data to the user
+                            self.guilds.push(guild);
+
+                            setTimeout(function () {
+                                self.createExperienceChart(guild.id);
+                            }, 100);
+
+
                         });
                 });
             }, function() {
