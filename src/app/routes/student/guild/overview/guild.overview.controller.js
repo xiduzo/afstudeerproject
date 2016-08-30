@@ -30,26 +30,6 @@
         self.user = Global.getUser();
         self.guilds = [];
 
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Services
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.id)
-            .then(function(response) {
-                _.each(response.guilds, function(guild) {
-
-                    self.guilds.push(guild.guild);
-
-                    setTimeout(function () {
-                        self.createExperienceChart(guild.guild.id);
-                    }, 100);
-                });
-            }, function() {
-                // Err
-            });
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Method Declarations
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         var exp_data = [];
         var quest_points = [];
         var categories = [];
@@ -86,6 +66,33 @@
             }
         }
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        Guild.getUserGuilds(self.user.id)
+            .then(function(response) {
+                _.each(response.guilds, function(guild) {
+
+                    self.guilds.push(guild.guild);
+
+                    setTimeout(function () {
+                        self.createExperienceChart(guild.guild.id);
+                    }, 100);
+
+                    console.log(guild);
+                    // TODO
+                    // check if the guild has the latest quests
+                    // if not, add them
+                    // if so, check for completion and build the chart
+                    // Getting all the quest for this guild.
+                });
+            }, function() {
+                // Err
+            });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Method Declarations
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function createExperienceChart(guild) {
             $('#'+guild).highcharts({
 
