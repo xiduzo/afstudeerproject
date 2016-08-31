@@ -7,8 +7,11 @@
 
     /** @ngInject */
     function GuildOverviewController(
+        $mdDialog,
+        $mdToast,
         Guild,
         Global,
+        Quest,
         World,
         STUDENT_ACCESS_LEVEL
     ) {
@@ -24,6 +27,8 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.createExperienceChart = createExperienceChart;
+        self.addObjective = addObjective;
+        self.removeObjective = removeObjective;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -71,49 +76,114 @@
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
-            .then(function(response) {
-                _.each(response.guilds, function(guildObject) {
+        .then(function(response) {
+            _.each(response.guilds, function(guildObject) {
+                var guild = guildObject.guild;
 
-                    var guild = guildObject.guild;
+                World.getWorld(guild.world)
+                .then(function(response) {
+                    var worldQuests = response.quests;
 
+                    Guild.getQuests(guild.id)
+                    .then(function(response) {
+                        guild.quests = response;
 
-                    World.getWorld(guild.world)
-                        .then(function(response) {
-                            // Filter out all the quests which
-                            // the guild allready has
-                            response.quests = _.filter(response.quests, function(quest) {
-                                if(!_.findWhere(guild.quests, {id: quest.id})) {
-                                    return quest;
-                                }
-                            });
-
-                            // Add all the new quests to the guild
-                            _.each(response.quests, function(quest) {
-                                Guild.addQuest(guild.url, quest.url)
-                                    .then(function(response) {
-                                        console.log(response);
-                                    }, function(error) {
-                                        // Err
-                                    });
-                            });
-
-                            // Finaly display all the data to the user
-                            self.guilds.push(guild);
-
-                            setTimeout(function () {
-                                self.createExperienceChart(guild.id);
-                            }, 100);
-
-
+                        // Filter out all the quest we allready have
+                        // For this guild
+                        worldQuests = _.filter(worldQuests, function(quest) {
+                            if(!_.findWhere(guild.quests, {quest: quest.url})) {
+                                return quest;
+                            }
                         });
+
+                        // Add all the new quests
+                        _.each(worldQuests, function(quest) {
+                            Guild.addQuest(guild.url, quest.url)
+                            .then(function(response) {
+                                guild.quests.push(response);
+                            }, function(error) {
+                                // Err add quest
+                            });
+                        });
+
+                    }, function(error) {
+                        // Err get quests
+                    });
+
+                    // Finaly display all the data to the user
+                    self.guilds.push(guild);
+
+                    setTimeout(function () {
+                        self.createExperienceChart(guild.id);
+                    }, 100);
                 });
-            }, function() {
-                // Err
             });
+        }, function() {
+            // Err get user guilds
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function addObjective(guild) {
+            $mdDialog.show({
+                controller: 'addObjectiveController',
+                controllerAs: 'addObjectiveCtrl',
+                templateUrl: 'app/routes/coordinator/worlds/quests/new/objectives/objectives.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    title: 'Add objective for ' + guild.name,
+                    about: 'quest objective',
+                }
+            })
+            .then(function(response) {
+                if(!response ||
+                    !response.name ||
+                    !response.objective ||
+                    !response.points) {
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('Fill in all the fields to add an objective')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                    return;
+                }
+
+                Guild.addObjective(guild.url, response)
+                .then(function(response) {
+                    guild.objectives.push(response);
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('Objective ' + response.name + ' is added')
+                        .position('bottom right')
+                        .hideDelay(3000)
+                    );
+                }, function(error) {
+                    // Err add objective
+                });
+            }, function() {
+                // Err dialog
+            });
+        }
+
+        function removeObjective(guild, objective) {
+            Guild.removeObjective(objective.id)
+            .then(function(response) {
+                guild.objectives.splice(guild.objectives.indexOf(objective), 1);
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('Objective ' + response.name + ' removed')
+                    .position('bottom right')
+                    .hideDelay(3000)
+                );
+                console.log(response);
+            }, function(error) {
+                // Err remove objective
+            });
+        }
+
         function createExperienceChart(guild) {
             $('#'+guild).highcharts({
 

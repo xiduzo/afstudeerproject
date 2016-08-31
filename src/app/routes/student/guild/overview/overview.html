@@ -7,14 +7,79 @@
             </md-tab-label>
 
             <md-tab-body>
-                <section layout-margin>
-                    <md-content layout="row" class="md-whiteframe-z2">
-                        <div id="{{guild.id}}" flex="100"></div>
+                <section layout-margin layout="row">
+                    <md-content flex="60" layout="row" class="md-whiteframe-z2">
+                        <div id="{{guild.id}}" style="min-height: 300px;" flex="100"></div>
                     </md-content>
+                    <md-content flex="40" layout="column" class="md-whiteframe-z2">
+                        <div ng-repeat="quest in guild.quests">
+                            {{ quest }}
+                        </div>
 
-
-
+                    </br/>
+                    </md-content>
                 </section>
+
+                <section layout-margin layout="row">
+                    <h2 class="md-title" flex>
+                        Objectives
+                    </h2>
+                    <md-button class="md-raised md-accent md-fab" ng-click="guildOverviewCtrl.addObjective(guild)">
+                        <md-icon md-svg-icon="add_light"></md-icon>
+                        <md-tooltip md-direction="left">
+                            Add objective
+                        </md-tooltip>
+                    </md-button>
+                </section>
+
+                <md-content layout-margin layout="row" layout-wrap class="md-whiteframe-z2">
+                    <section ng-if="guild.objectives.length < 1">
+                        No objectives have been set for this guild yet.
+                    </section>
+
+
+                    <section flex="100" ng-if="guild.objectives.length">
+                        <md-list>
+                            <md-toolbar layout="row" layout-padding>
+                                <span flex="20" layout-padding>
+                                    Name
+                                </span>
+                                <span flex="50" layout-padding>
+                                    Objective
+                                </span>
+                                <span flex="20" layout-padding>
+                                    Points
+                                </span>
+                                <span flex="10" layout-padding>
+                                    <!-- placeholder -->
+                                </span>
+                            </md-toolbar>
+                            <md-list-item layout="row" layout-padding
+                                ng-repeat="objective in guild.objectives">
+                                <span flex="20" layout-padding>
+                                    {{ objective.name }}
+                                </span>
+                                <span flex="50" layout-padding>
+                                    {{ objective.objective }}
+                                </span>
+                                <span flex="20" layout-padding>
+                                    {{ objective.points | number  }}
+                                </span>
+                                <span flex="10" layout-padding>
+                                    <md-button class="md-icon-button"
+                                        ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
+                                        <md-icon md-svg-icon="delete_dark">
+                                            <md-tooltip>
+                                                Remove objective
+                                            </md-tooltip>
+                                        </md-icon>
+                                    </md-button>
+                                </span>
+                            </md-list-item>
+                        </md-list>
+                    </section>
+                </md-content>
+
             </md-tab-body>
 
         </md-tab>

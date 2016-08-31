@@ -19,7 +19,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        service.getGuilds = getGuilds;
         service.getGuild = getGuild;
         service.addGuild = addGuild;
         service.addUserToGuild = addUserToGuild;
@@ -28,7 +27,10 @@
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
+        service.getQuests = getQuests;
         service.addQuest = addQuest;
+        service.addObjective = addObjective;
+        service.removeObjective = removeObjective;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -40,35 +42,13 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // TODO
-        // FIX NEW API ROUTE
-        function getGuilds(world) {
-            return $q(function(resolve, reject) {
-                $http({
-                    url: API_URL + 'get/guilds.php',
-                    method: "GET",
-                    params: {
-                        worldUuid: world
-                    }
-                })
-                .then(function(response) {
-                    resolve(response.data);
-                }, function(error) {
-                    reject(error);
-                });
-            });
-        }
-
         function getGuild(guild) {
             return $http({
                 url: REST_API_URL + 'guild/guilds/'+guild+'/',
                 method: "GET"
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function addGuild(name, world) {
@@ -80,11 +60,8 @@
                     world: world
                 }
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function addUserToGuild(user, guild) {
@@ -96,11 +73,8 @@
                     guild: guild
                 }
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function removeUserFromGuild(user, guild) {
@@ -117,14 +91,9 @@
                     url: response.data[0].url,
                     method: "DELETE"
                 })
-                .then(function(response) {
-                    return response;
-                }, function(error) {
-                    return error;
-                });
-            }, function(error) {
-                return error;
-            });
+                .then(function(response) { return response;
+                }, function(error) { return error; });
+            }, function(error) { return error; });
         }
 
         function patchPlayersGuild(user, oldGuild, newGuild) {
@@ -144,14 +113,9 @@
                         guild: newGuild.url
                     }
                 })
-                .then(function(response) {
-                    return response;
-                }, function(error) {
-                    return error;
-                });
-            }, function(error) {
-                return error;
-            });
+                .then(function(response) { return response;
+                }, function(error) { return error; });
+            }, function(error) { return error; });
         }
 
         function patchGuildName(name, guild) {
@@ -162,11 +126,8 @@
                     name: name,
                 }
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function deleteGuild(guild) {
@@ -174,11 +135,8 @@
                 url: REST_API_URL + 'guild/guilds/'+guild+'/',
                 method: "DELETE"
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function getUserGuilds(user) {
@@ -186,11 +144,20 @@
                 url: REST_API_URL + 'user/userGuilds/'+user+'/',
                 method: "GET"
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function getQuests(guild) {
+            return $http({
+                url: REST_API_URL + 'guild/guildQuest/',
+                method: "GET",
+                params: {
+                    guild: guild
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
         }
 
         function addQuest(guild, quest) {
@@ -202,11 +169,32 @@
                     quest: quest
                 }
             })
-            .then(function(response) {
-                return response.data;
-            }, function(error) {
-                return error;
-            });
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function addObjective(guild, objective) {
+            return $http({
+                url: REST_API_URL + 'guild/guildObjective/',
+                method: "POST",
+                data: {
+                    guild: guild,
+                    name: objective.name,
+                    objective: objective.objective,
+                    points: objective.points
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function removeObjective(objective) {
+            return $http({
+                url: REST_API_URL + 'guild/guildObjective/'+objective+'/',
+                method: "DELETE"
+            })
+            .then(function(response) { return response;
+            }, function(error) { return error; });
         }
     }
 
