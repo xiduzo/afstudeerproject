@@ -40,17 +40,7 @@
         var quest_points = [];
         var categories = [];
         var weeknumber = 0;
-
-        quest_points = [
-            1000, 1000, 970, 940, 930, 930, 930,
-            930, 930, 840, 840, 840, 760, 730,
-            700, 700, 700, 700, 600, 600, 600,
-            600, 600, 580, 520, 420, 420, 420,
-            420, 420, 420, 400, 400, 300, 200,
-            200, 200, 200, 200, 150, 150, 150,
-            150, 150, 150, 150, 150, 150, 100,
-            100
-        ];
+        var objectivesGraphLine = [];
 
         exp_data = [
             0, 20, 60, 60, 60, 60, 60,
@@ -109,6 +99,58 @@
                     }, function(error) {
                         // Err get quests
                     });
+
+                    // Building the scrum chart
+                    var objectivePoints = [];
+                    _.each(guild.objectives, function(objective) {
+                        var tempObject = {
+                            date: moment(objective.created_at).format(),
+                            points: objective.points,
+                            completed_at: objective.completed_at
+                        };
+                        objectivePoints.push(tempObject);
+                    });
+
+                    objectivePoints = _.groupBy(objectivePoints, function(op) {
+                        return moment(op.date).format('DD/MM/YY');
+                    });
+
+
+                    // TODO
+                    // Make the graph work
+                    // Step 1: just add all the values with corrosponding date
+                    // Step 2: adding the last days points to this days points
+                    // Step 3: if you are on / over de completion date of an
+                    // previous objetive -> substract the points of this
+                    // Step 4: Add the new data on the chart (use only the
+                    // objectivesGraphLine var)
+                    // Step 5: drink beer, you deserve one ;)
+
+
+                    // Adding all the values together
+                    _.each(objectivePoints, function(objectivePoint) {
+                        var reduced = { date: null, points: 0 };
+                        _.each(objectivePoint, function(dateAndPoints) {
+                            reduced = {
+                                date: moment(dateAndPoints.date).format('DD/MM/YY'),
+                                points: reduced.points + dateAndPoints.points
+                            };
+                        });
+                        objectivesGraphLine.push(reduced);
+                    });
+
+                    console.log(objectivesGraphLine);
+
+                    quest_points = [
+                        1000, 1000, 970, 940, 930, 930, 930,
+                        930, 930, 840, 840, 840, 760, 730,
+                        700, 700, 700, 700, 600, 600, 600,
+                        600, 600, 580, 520, 420, 420, 420,
+                        420, 420, 420, 400, 400, 300, 200,
+                        200, 200, 200, 200, 150, 150, 150,
+                        150, 150, 150, 150, 150, 150, 100,
+                        100
+                    ];
 
                     // Finaly display all the data to the user
                     self.guilds.push(guild);
