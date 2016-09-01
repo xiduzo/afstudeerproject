@@ -51,7 +51,7 @@
                                 </span>
                             </md-toolbar>
                             <md-list-item layout="row" layout-padding
-                                ng-repeat="objective in guild.objectives">
+                                ng-repeat="objective in guild.objectives | orderBy: '-created_at'">
                                 <span flex="20" layout-padding>
                                     {{ objective.name }}
                                 </span>

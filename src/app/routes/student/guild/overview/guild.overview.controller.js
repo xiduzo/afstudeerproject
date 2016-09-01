@@ -81,8 +81,11 @@
                         // Err get quests
                     });
 
+                    guild.world_start_date = moment(response.start).format();
+                    guild.course_duration = response.course_duration;
+
                     self.guilds.push(guild);
-                    self.buildGraphData(response, guild);
+                    self.buildGraphData(guild);
 
                 });
             });
@@ -93,18 +96,19 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function buildGraphData(world, guild) {
+        function buildGraphData(guild) {
             var objectives = guild.objectives;
             var objective_groups = [];
             var previous_day_data = [];
             var objectives_graph_items = [];
-            var starting_date = moment(world.start).format();
-            var course_duration = world.course_duration;
+            var starting_date = guild.world_start_date;
+            var course_duration = guild.course_duration;
             var weeknumber = 1;
             var previous_points = null;
             guild.objective_points = 0;
             guild.completed_objective_points = 0;
-
+            objectives_graph_line = [];
+            var test_data = [];
 
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= course_duration; i++) {
@@ -125,34 +129,17 @@
                 objective_groups.push(tempObj);
             }
 
-            var test_data = [
-
-                {
+            for(i = 0; i < 2; i++) {
+                var temp = {
                     completed: true,
-                    completed_at: "2016-08-28T14:36:38+02:00",
-                    created_at: "2016-08-25T14:36:38+02:00",
+                    completed_at: "2016-08-"+Math.ceil(Math.random() * 20 + 10)+"T14:36:38+02:00",
+                    created_at: "2016-08-0"+Math.ceil(Math.random() * 3 + 1)+"T14:36:38+02:00",
                     points: 200,
                     "name": "name",
                     "objective": "description"
-                },
-                {
-                    completed: false,
-                    completed_at: null,
-                    created_at: "2016-08-26T14:36:38+02:00",
-                    points: 200,
-                    "name": "name",
-                    "objective": "description"
-                },
-                {
-                    completed: false,
-                    completed_at: null,
-                    created_at: "2016-08-27T14:36:38+02:00",
-                    points: 200,
-                    "name": "name",
-                    "objective": "description"
-                },
-
-            ];
+                };
+                test_data.push(temp);
+            }
 
             _.each(test_data, function(objective) {
                 objectives.push(objective);
@@ -219,30 +206,21 @@
                     objectives_graph_items,
                     {date: date.format('DD/MM')}
                 );
-                if(match) {
-                    if(moment().isBefore(date)) {
-                        objectives_graph_line.push(null);
-                    } else {
-                        previous_points = match.points;
-                        objectives_graph_line.push(match.points);
-                    }
+                if(moment().isBefore(date)) {
+                    objectives_graph_line.push(null);
+                } else if (match) {
+                    previous_points = match.points;
+                    objectives_graph_line.push(match.points);
                 } else {
-                    if(moment().isBefore(date)) {
-                        objectives_graph_line.push(null);
-                    } else {
-                        objectives_graph_line.push(previous_points);
-                    }
+                    objectives_graph_line.push(previous_points);
                 }
             }
 
             setTimeout(function () {
                 self.createExperienceChart(guild);
             }, 100);
-
         }
 
-        // TODO
-        // Update graph on success
         function addObjective(guild) {
             $mdDialog.show({
                 controller: 'addObjectiveController',
@@ -271,13 +249,14 @@
 
                 Guild.addObjective(guild.url, response)
                 .then(function(response) {
-                    guild.objectives.push(response);
+                    guild.objectives.unshift(response);
                     $mdToast.show(
                         $mdToast.simple()
                         .textContent('Objective ' + response.name + ' is added')
                         .position('bottom right')
                         .hideDelay(3000)
                     );
+                    self.buildGraphData(guild);
                 }, function(error) {
                     // Err add objective
                 });
@@ -286,8 +265,6 @@
             });
         }
 
-        // TODO
-        // Update graph on success
         function removeObjective(guild, objective) {
             Guild.removeObjective(objective.id)
             .then(function(response) {
@@ -298,6 +275,7 @@
                     .position('bottom right')
                     .hideDelay(3000)
                 );
+                self.buildGraphData(guild);
             }, function(error) {
                 // Err remove objective
             });
@@ -322,6 +300,11 @@
                 tooltip: {
                     shared: false,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong>'
+                },
+                plotOptions: {
+                    series: {
+                        animation: false
+                    }
                 },
                 series: [
                     {
