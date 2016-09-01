@@ -95,6 +95,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function buildGraphData(world, guild) {
             var objectives = guild.objectives;
+            var objective_groups = [];
             var previous_day_data = [];
             var objectives_graph_items = [];
             var starting_date = moment(world.start).format();
@@ -112,110 +113,103 @@
                     weeknumber++;
                 } else {
                     horizontal_axis.push(moment(starting_date)
-                        .add(i, 'day')
+                        .add(i, 'days')
                         .format('DD/MM')
                     );
                 }
                 var tempObj = {
-                    date: moment(starting_date)
+                    created_at: moment(starting_date)
                         .add(i, 'day')
-                        .format('DD/MM'),
-                    points: null
+                        .format()
                 };
+                objective_groups.push(tempObj);
             }
 
             var test_data = [
-                {
-                    "completed": true,
-                    "completed_at": "2016-08-21T14:36:38+02:00",
-                    created_at: "2016-08-10T14:36:38+02:00",
-                    "points": 200,
-                    "name": "name",
-                    "description": "description"
-                },
+
                 {
                     completed: true,
-                    completed_at: "2016-08-23T14:36:38+02:00",
-                    created_at: "2016-08-11T14:36:38+02:00",
+                    completed_at: "2016-08-28T14:36:38+02:00",
+                    created_at: "2016-08-25T14:36:38+02:00",
                     points: 200,
                     "name": "name",
-                    "description": "description"
-                },
-                {
-                    completed: true,
-                    completed_at: "2016-08-27T14:36:38+02:00",
-                    created_at: "2016-08-12T14:36:38+02:00",
-                    points: 200,
-                    "name": "name",
-                    "description": "description"
+                    "objective": "description"
                 },
                 {
                     completed: false,
                     completed_at: null,
-                    created_at: "2016-08-13T14:36:38+02:00",
+                    created_at: "2016-08-26T14:36:38+02:00",
                     points: 200,
                     "name": "name",
-                    "description": "description"
+                    "objective": "description"
                 },
                 {
                     completed: false,
                     completed_at: null,
-                    created_at: "2016-08-14T14:36:38+02:00",
+                    created_at: "2016-08-27T14:36:38+02:00",
                     points: 200,
                     "name": "name",
-                    "description": "description"
+                    "objective": "description"
                 },
-                {
-                    completed: false,
-                    completed_at: null,
-                    created_at: "2016-08-14T14:36:38+02:00",
-                    points: 200,
-                    "name": "name",
-                    "description": "description"
-                },
+
             ];
 
-            _.each(test_data, function(data) {
-                objectives.push(data);
+            _.each(test_data, function(objective) {
+                objectives.push(objective);
             });
 
-            // Group the points by date
+            // Grouping the arrays
             objectives = _.groupBy(objectives, function(objective) {
                 return moment(objective.created_at).format('DD/MM/YY');
             });
+            objective_groups = _.groupBy(objective_groups, function(objective) {
+                return moment(objective.created_at).format('DD/MM/YY');
+            });
 
-            // Union all the objectives when time progresses
-            _.each(objectives, function(objective, index) {
+            // Overwrite the objective_groups
+            _.each(objectives, function(objective) {
+                var date = moment(objective[0].created_at).format('DD/MM/YY');
+                _.each(objective,function(group) {
+                    var objective_group = objective_groups[date];
+                    if(objective_group[0].points) {
+                        objective_group.push(group);
+                    } else {
+                        objective_group = [group];
+                    }
+                    objective_groups[date] = objective_group;
+                });
+            });
+
+            // Combine the day with all the previous days
+            _.each(objective_groups, function(objective, index) {
                 if(previous_day_data.length) {
                     objective = _.union(previous_day_data, objective);
                 }
                 previous_day_data = objective;
-
                 // Overwrite the objectives
-                objectives[index] = objective;
+                objective_groups[index] = objective;
             });
 
-            // Adding all the values together
-            _.each(objectives, function(group) {
-                var reduced = _.reduce(group, function(memo, num) {
-                    memo.date = _.last(group).created_at;
-
-                    // Only add the points if the objective isnt completed yet OR
-                    // if the completion date is after the group date
-                    if(num.completed &&
-                        moment(num.completed_at)
-                        .isSameOrBefore(memo.date)
-                    ) {
-                        memo.points += 0;
-                    } else {
-                        memo.points += num.points;
+            // Reduce the groups to single objects for the chart
+            _.each(objective_groups, function(group) {
+                var reduced = _.reduce(group, function(memo, objective) {
+                    if(objective.points) {
+                        memo.date = _.last(group).created_at;
+                        // Only add the points if the objective isnt completed yet OR
+                        // if the completion date is after the group date
+                        if(objective.completed &&
+                            moment(objective.completed_at)
+                            .isSameOrBefore(memo.date)
+                        ) {
+                            memo.points += 0;
+                        } else {
+                            memo.points += objective.points;
+                        }
                     }
                     return memo;
                 }, { date: null, points: 0 });
-
-                reduced.date = moment(reduced.date).format('DD/MM');
-                // Add the item to the grapsh items
-                console.log(reduced);
+                reduced.date = reduced.date ? moment(reduced.date).format('DD/MM') : null;
+                // Add the item to the graph items
                 objectives_graph_items.push(reduced);
             });
 
@@ -229,6 +223,7 @@
                     previous_points = match.points;
                     objectives_graph_line.push(match.points);
                 } else {
+                    console.log(moment().unix(), moment(date).unix());
                     if(moment().isBefore(date)) {
                         objectives_graph_line.push(null);
                     } else {
