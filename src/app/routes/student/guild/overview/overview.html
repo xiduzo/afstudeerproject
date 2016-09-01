@@ -9,10 +9,28 @@
             <md-tab-body>
                 <section layout-margin layout="row">
                     <md-content flex="60" layout="row" class="md-whiteframe-z2">
-                        <div id="{{guild.id}}" style="min-height: 300px;" flex="100"></div>
+                        <div id="{{guild.id}}" style="height: 300px;" flex="100"></div>
                     </md-content>
-                    <md-content flex="40" layout="column" class="md-whiteframe-z2">
-                    </br/>
+                    <md-content style="height: 300px;" flex="40" layout="column" class="md-whiteframe-z2">
+                        <md-toolbar>
+                            <h1 layout-padding class="md-title">
+                                Latest news
+                            </h1>
+                        </md-toolbar>
+                        <md-list>
+                            <md-list-item>
+                                xx completed xx
+                            </md-list-item>
+                            <md-list-item>
+                                xx added xx
+                            </md-list-item>
+                            <md-list-item>
+                                xx deleted xx
+                            </md-list-item>
+                            <md-list-item>
+                                xx completed xx
+                            </md-list-item>
+                        </md-list>
                     </md-content>
                 </section>
 
@@ -37,28 +55,37 @@
                     <section flex="100" ng-if="guild.objectives.length">
                         <md-list>
                             <md-toolbar layout="row" layout-padding>
+                                <span flex="10" layout-padding>
+                                    Completed
+                                </span>
                                 <span flex="20" layout-padding>
                                     Name
                                 </span>
                                 <span flex="50" layout-padding>
                                     Objective
                                 </span>
-                                <span flex="20" layout-padding>
+                                <span flex="10" layout-padding>
                                     Points
                                 </span>
                                 <span flex="10" layout-padding>
                                     <!-- placeholder -->
                                 </span>
                             </md-toolbar>
-                            <md-list-item layout="row" layout-padding
-                                ng-repeat="objective in guild.objectives | orderBy: '-created_at'">
+                            <md-list-item layout="row"
+                                ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
+                                <span flex="10" layout-padding>
+                                    <md-checkbox ng-model="objective.completed"
+                                    aria-label="Toggle status"
+                                    ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
+                                    </md-checkbox>
+                                </span>
                                 <span flex="20" layout-padding>
                                     {{ objective.name }}
                                 </span>
                                 <span flex="50" layout-padding>
                                     {{ objective.objective }}
                                 </span>
-                                <span flex="20" layout-padding>
+                                <span flex="10" layout-padding>
                                     {{ objective.points | number  }}
                                 </span>
                                 <span flex="10" layout-padding>

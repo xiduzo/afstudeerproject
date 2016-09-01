@@ -31,6 +31,7 @@
         service.addQuest = addQuest;
         service.addObjective = addObjective;
         service.removeObjective = removeObjective;
+        service.patchObjective = patchObjective;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -194,6 +195,19 @@
                 method: "DELETE"
             })
             .then(function(response) { return response;
+            }, function(error) { return error; });
+        }
+
+        function patchObjective(objective) {
+            return $http({
+                url: REST_API_URL + 'guild/guildObjective/'+objective.id+'/',
+                method: "PATCH",
+                data:  {
+                    completed: !objective.completed,
+                    completed_at: !objective.completed ? moment().format() : null
+                }
+            })
+            .then(function(response) { return response.data;
             }, function(error) { return error; });
         }
     }

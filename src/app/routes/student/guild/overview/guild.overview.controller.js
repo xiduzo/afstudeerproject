@@ -30,6 +30,7 @@
         self.addObjective = addObjective;
         self.removeObjective = removeObjective;
         self.buildGraphData = buildGraphData;
+        self.updateStatus = updateStatus;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -105,8 +106,6 @@
             var course_duration = guild.course_duration;
             var weeknumber = 1;
             var previous_points = null;
-            guild.objective_points = 0;
-            guild.completed_objective_points = 0;
             objectives_graph_line = [];
             var test_data = [];
 
@@ -129,7 +128,7 @@
                 objective_groups.push(tempObj);
             }
 
-            for(i = 0; i < 2; i++) {
+            for(i = 0; i < 0; i++) {
                 var temp = {
                     completed: true,
                     completed_at: "2016-08-"+Math.ceil(Math.random() * 20 + 10)+"T14:36:38+02:00",
@@ -281,6 +280,17 @@
             });
         }
 
+        // TODO
+        // Update the graph on response
+        function updateStatus(guild, objective) {
+            Guild.patchObjective(objective)
+            .then(function(response) {
+                console.log(guild.objectives);
+            }, function(error) {
+                // Err patch objective
+            });
+        }
+
         function createExperienceChart(guild) {
             $('#'+guild.id).highcharts({
                 chart: { backgroundColor: 'rgba(0,0,0,0)' },
@@ -310,7 +320,7 @@
                     {
                         name: 'Remaining quest points',
                         data: objectives_graph_line,
-                        color: '#cd2327'
+                        color: '#616161'
                     }
                 ],
                 credits: {
