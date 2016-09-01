@@ -220,10 +220,13 @@
                     {date: date.format('DD/MM')}
                 );
                 if(match) {
-                    previous_points = match.points;
-                    objectives_graph_line.push(match.points);
+                    if(moment().isBefore(date)) {
+                        objectives_graph_line.push(null);
+                    } else {
+                        previous_points = match.points;
+                        objectives_graph_line.push(match.points);
+                    }
                 } else {
-                    console.log(moment().unix(), moment(date).unix());
                     if(moment().isBefore(date)) {
                         objectives_graph_line.push(null);
                     } else {
