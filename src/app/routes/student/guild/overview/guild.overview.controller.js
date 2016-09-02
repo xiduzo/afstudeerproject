@@ -233,7 +233,8 @@
                         .position('bottom right')
                         .hideDelay(3000)
                     );
-                    self.buildGraphData(guild);
+                    var update = '\'' +response.name + '\' has been added';
+                    self.guildHistoryUpdate(guild, update);
                 }, function(error) {
                     // Err add objective
                 });
@@ -253,6 +254,8 @@
                     .hideDelay(3000)
                 );
                 self.buildGraphData(guild);
+                var update = '\'' + objective.name + '\' has been removed';
+                self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err remove objective
             });
@@ -263,10 +266,9 @@
                 moment().utc().format() : null;
             Guild.patchObjective(objective)
             .then(function(response) {
-                var user = Global.getUser().first_name;
                 var update;
                 update = response.completed ? 'done' : 'undone';
-                update = user+' has marked objective \''+response.name+'\' as '+update;
+                update = '\''+response.name+'\' has been marked as '+update;
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
