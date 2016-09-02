@@ -312,7 +312,7 @@
                 },
                 series: [
                     {
-                        name: 'Remaining quest points',
+                        name: 'Remaining objective points',
                         data: objectives_graph_line,
                         color: '#616161'
                     }

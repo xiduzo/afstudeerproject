@@ -50,46 +50,52 @@
 
 
                     <md-content flex="100" ng-if="guild.objectives.length" class="md-whiteframe-z2">
-                        <md-toolbar layout="row" layout-padding>
-                            <span flex="10" layout-padding>
-                                Completed
-                            </span>
-                            <span flex="20" layout-padding>
-                                Name
-                            </span>
-                            <span flex="50" layout-padding>
-                                Objective
-                            </span>
-                            <span flex="10" layout-padding>
-                                Points
-                            </span>
-                            <span flex="10" layout-padding>
-                                <!-- placeholder -->
-                            </span>
+                        <md-toolbar>
+                            <md-list>
+                                <md-list-item>
+                                    <span flex="10" layout="row" layout-align="center">
+                                        Completed
+                                    </span>
+                                    <span flex="20">
+                                        Name
+                                    </span>
+                                    <span flex="55">
+                                        Objective
+                                    </span>
+                                    <span flex="10">
+                                        Points
+                                    </span>
+                                    <span flex="5">
+                                        <!-- placeholder -->
+                                    </span>
+                                </md-list-item>
+                            </md-list>
                         </md-toolbar>
                         <md-list>
-                            <md-list-item layout="row"
+                            <md-list-item
                                 ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
-                                <span flex="10" layout-padding>
-                                    <md-checkbox ng-model="objective.completed"
+                                <span flex="10" ng-repeat="v in [0]"
+                                    layout="row" layout-align="center">
+                                    <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
+                                    <md-checkbox style="margin-bottom: 0;" ng-model="objective.completed"
                                         aria-label="Toggle status"
                                         ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
                                     </md-checkbox>
                                 </span>
-                                <span flex="20" layout-padding>
+                                <span flex="20">
                                     {{ objective.name }}
                                 </span>
-                                <span flex="50" layout-padding>
+                                <span flex="55">
                                     {{ objective.objective }}
                                 </span>
-                                <span flex="10" layout-padding>
+                                <span flex="10">
                                     {{ objective.points | number  }}
                                 </span>
-                                <span flex="10" layout-padding>
+                                <span flex="5">
                                     <md-button class="md-icon-button"
                                         ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
                                         <md-icon md-svg-icon="delete_dark">
-                                            <md-tooltip>
+                                            <md-tooltip md-direction="left">
                                                 Remove objective
                                             </md-tooltip>
                                         </md-icon>
