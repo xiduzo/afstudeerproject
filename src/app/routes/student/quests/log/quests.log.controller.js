@@ -37,8 +37,6 @@
             _.each(response.guilds, function(guild) {
                 console.log(guild);
                 self.guilds.push(guild.guild);
-
-                console.log(guild.guild.quests);
             });
         },function(error) {
             // Err get user guilds
