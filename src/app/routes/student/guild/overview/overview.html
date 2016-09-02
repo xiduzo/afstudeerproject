@@ -11,22 +11,27 @@
                     <md-content flex="60" layout="row" class="md-whiteframe-z2">
                         <div id="{{guild.id}}" style="height: 300px;" flex="100"></div>
                     </md-content>
-                    <md-content style="height: 300px;" flex="40" layout="column" class="md-whiteframe-z2">
+                    <md-content class="md-whiteframe-z2"
+                        style="height: 300px;" flex="40"
+                        layout="column" layout-align="space-between stretch">
                         <md-toolbar>
                             <h1 layout-padding class="md-title">
                                 Latest news
                             </h1>
                         </md-toolbar>
-                        <md-list>
-                            <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at' | limitTo: 4">
-                                <span flex>
-                                    {{ update.action }}
-                                </span>
-                                <span>
-                                    {{ update.created_at | date : 'dd/MM @ HH:mm' }}
-                                </span>
-                            </md-list-item>
-                        </md-list>
+                        <md-virtual-repeat-container flex>
+                            <md-list>
+                                <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
+                                    <span flex>
+                                        {{ update.action }}
+                                    </span>
+                                    <span>
+                                        {{ update.created_at | date : 'dd/MM @ HH:mm' }}
+                                    </span>
+                                </md-list-item>
+                            </md-list>
+
+                        </md-virtual-repeat-container>
                     </md-content>
                 </section>
 

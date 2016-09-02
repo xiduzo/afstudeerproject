@@ -186,7 +186,7 @@
                     {date: date.format('DD/MM')}
                 );
 
-                if(moment().add(1, 'days').isBefore(date)) {
+                if(moment().add(5, 'hours').isBefore(date)) {
                     objectives_graph_line.push(null);
                 } else if(match) {
                     previous_points = match.points;
