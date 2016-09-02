@@ -42,31 +42,31 @@
                     </md-button>
                 </section>
 
-                <md-content layout-margin layout="row" layout-wrap class="md-whiteframe-z2">
+                <section layout-margin layout="row">
                     <section ng-if="guild.objectives.length < 1">
                         No objectives have been set for this guild yet.
                     </section>
 
 
-                    <section flex="100" ng-if="guild.objectives.length">
+                    <md-content flex="100" ng-if="guild.objectives.length" class="md-whiteframe-z2">
+                        <md-toolbar layout="row" layout-padding>
+                            <span flex="10" layout-padding>
+                                Completed
+                            </span>
+                            <span flex="20" layout-padding>
+                                Name
+                            </span>
+                            <span flex="50" layout-padding>
+                                Objective
+                            </span>
+                            <span flex="10" layout-padding>
+                                Points
+                            </span>
+                            <span flex="10" layout-padding>
+                                <!-- placeholder -->
+                            </span>
+                        </md-toolbar>
                         <md-list>
-                            <md-toolbar layout="row" layout-padding>
-                                <span flex="10" layout-padding>
-                                    Completed
-                                </span>
-                                <span flex="20" layout-padding>
-                                    Name
-                                </span>
-                                <span flex="50" layout-padding>
-                                    Objective
-                                </span>
-                                <span flex="10" layout-padding>
-                                    Points
-                                </span>
-                                <span flex="10" layout-padding>
-                                    <!-- placeholder -->
-                                </span>
-                            </md-toolbar>
                             <md-list-item layout="row"
                                 ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
                                 <span flex="10" layout-padding>
@@ -96,8 +96,8 @@
                                 </span>
                             </md-list-item>
                         </md-list>
-                    </section>
-                </md-content>
+                    </md-content>
+                </section>
 
             </md-tab-body>
 

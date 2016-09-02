@@ -153,8 +153,12 @@
                 return moment(objective.created_at).format('DD/MM/YY');
             });
 
+            // TODO
+            // Check why this shit isnt working anymore
+            // Goddamnit it just worked
             // Overwrite the objective_groups
             _.each(objectives, function(objective) {
+                console.log(objective);
                 var date = moment(objective[0].created_at).format('DD/MM/YY');
                 _.each(objective,function(group) {
                     var objective_group = objective_groups[date];
@@ -289,8 +293,10 @@
             Guild.patchObjective(objective)
             .then(function(response) {
                 var update;
+                var user = Global.getUser();
+                user = user.first_name;
                 update = response.completed ? 'done' : 'undone';
-                update = 'objective \'' + response.name + '\' marked as ' + update;
+                update = user + ' has marked objective \'' + response.name + '\' as ' + update;
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
