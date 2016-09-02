@@ -18,17 +18,13 @@
                             </h1>
                         </md-toolbar>
                         <md-list>
-                            <md-list-item>
-                                xx completed xx
-                            </md-list-item>
-                            <md-list-item>
-                                xx added xx
-                            </md-list-item>
-                            <md-list-item>
-                                xx deleted xx
-                            </md-list-item>
-                            <md-list-item>
-                                xx completed xx
+                            <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at' | limitTo: 4">
+                                <span flex>
+                                    {{ update.action }}
+                                </span>
+                                <span>
+                                    {{ update.created_at | date : 'dd/MM @ HH:mm' }}
+                                </span>
                             </md-list-item>
                         </md-list>
                     </md-content>
@@ -75,8 +71,8 @@
                                 ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
                                 <span flex="10" layout-padding>
                                     <md-checkbox ng-model="objective.completed"
-                                    aria-label="Toggle status"
-                                    ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
+                                        aria-label="Toggle status"
+                                        ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
                                     </md-checkbox>
                                 </span>
                                 <span flex="20" layout-padding>

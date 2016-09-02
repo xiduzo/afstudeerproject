@@ -31,6 +31,7 @@
         self.removeObjective = removeObjective;
         self.buildGraphData = buildGraphData;
         self.updateStatus = updateStatus;
+        self.guildHistoryUpdate = guildHistoryUpdate;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -196,6 +197,7 @@
                 }, { date: null, points: 0 });
                 reduced.date = reduced.date ? moment(reduced.date).format('DD/MM') : null;
                 // Add the item to the graph items
+                // console.log(reduced);
                 objectives_graph_items.push(reduced);
             });
 
@@ -208,6 +210,7 @@
                 if(moment().isBefore(date)) {
                     objectives_graph_line.push(null);
                 } else if (match) {
+                    console.log(match);
                     previous_points = match.points;
                     objectives_graph_line.push(match.points);
                 } else {
@@ -285,9 +288,21 @@
         function updateStatus(guild, objective) {
             Guild.patchObjective(objective)
             .then(function(response) {
-                console.log(guild.objectives);
+                var update;
+                update = response.completed ? 'done' : 'undone';
+                update = 'objective \'' + response.name + '\' marked as ' + update;
+                self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
+            });
+        }
+
+        function guildHistoryUpdate(guild, update) {
+            Guild.addHistoryUpdate(Global.getUser().url, guild.url, update)
+            .then(function(response) {
+                guild.history_updates.push(response);
+            }, function(error) {
+                // Err adding history update
             });
         }
 

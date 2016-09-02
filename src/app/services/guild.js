@@ -32,6 +32,7 @@
         service.addObjective = addObjective;
         service.removeObjective = removeObjective;
         service.patchObjective = patchObjective;
+        service.addHistoryUpdate = addHistoryUpdate;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -205,6 +206,20 @@
                 data:  {
                     completed: !objective.completed,
                     completed_at: !objective.completed ? moment().format() : null
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function addHistoryUpdate(user, guild, update) {
+            return $http({
+                url:  REST_API_URL + 'guild/guildHistory/',
+                method: "POST",
+                data: {
+                    user: user,
+                    guild: guild,
+                    action: update
                 }
             })
             .then(function(response) { return response.data;
