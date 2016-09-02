@@ -57,6 +57,10 @@
                 .then(function(response) {
                     var worldQuests = response.quests;
 
+                    // Quick fix bc I changed the serializer
+                    _.each(guild.quests, function(quest) {
+                        quest.quest = quest.quest.url;
+                    });
                     // Filter out all the quest we allready have
                     // For this guild
                     worldQuests = _.filter(worldQuests, function(quest) {

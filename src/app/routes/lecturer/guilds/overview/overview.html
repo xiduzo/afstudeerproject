@@ -8,18 +8,18 @@
                 <section layout-padding>
                     <div layout="row">
                         <h2 class="md-headline" flex>
-                            Guilds overview of {{ world.name }}
+                            Groups overview of {{ world.name }}
                         </h2>
                         <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
                             <md-icon md-svg-icon="guild_light"></md-icon>
                             <md-tooltip md-direction="left">
-                                Create new guild for "{{ world.name }}"
+                                Create new group
                             </md-tooltip>
                         </md-button>
                     </div>
                     <div layout="row" layout-wrap>
                         <h3 ng-if="world.guilds.length < 1" class="md-title">
-                            No guilds have come to conquer {{ world.name }}.
+                            No groups yet
                         </h3>
                         <div flex="100"
                             flex-gt-xs="50"
@@ -30,7 +30,7 @@
                             ng-repeat="guild in world.guilds | orderBy: '-created_at'">
 
                             <md-card>
-                                <section layout-padding layout-align="end center" layout>
+                                <md-toolbar layout-align="end center" layout>
                                     <md-card-title>
                                         <md-card-title-text layout="row">
                                             <span class="md-headline" flex layout-margin>
@@ -40,7 +40,7 @@
                                     </md-card-title>
                                     <md-menu>
                                         <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                                            <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
                                         </md-button>
                                         <md-menu-content width="4" >
                                             <md-menu-item aria-label="View {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.id})">
@@ -77,14 +77,14 @@
                                                             md-svg-icon="add_dark">
                                                         </md-icon>
                                                         <p flex>
-                                                            Add guild member
+                                                            Add student
                                                         </p>
                                                     </div>
                                                 </md-button>
                                             </md-menu-item>
                                         </md-menu-content>
                                     </md-menu>
-                                </section>
+                                </md-toolbar>
 
                                 <md-divider></md-divider>
 

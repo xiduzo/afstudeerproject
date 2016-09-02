@@ -8,15 +8,40 @@
     /** @ngInject */
     function QuestsLogController(
         Global,
+        Guild,
         STUDENT_ACCESS_LEVEL
     ) {
 
-        var vm = this;
-
-        if(Global.getAccess() !== STUDENT_ACCESS_LEVEL) {
+        if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
             Global.notAllowed();
             return;
         }
+
+        var self = this;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Methods
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.user = Global.getUser();
+        self.guilds = [];
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        Guild.getUserGuilds(self.user.id)
+        .then(function(response) {
+            _.each(response.guilds, function(guild) {
+                self.guilds.push(guild.guild);
+
+                console.log(guild.guild.quests);
+            });
+        },function(error) {
+            // Err get user guilds
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations

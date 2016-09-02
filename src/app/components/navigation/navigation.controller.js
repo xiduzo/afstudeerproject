@@ -32,7 +32,7 @@
         self.main_navigation = [
             {
                 subgroup: 'coordinator',
-                verbose: 'God',
+                verbose: 'Coordinator',
                 access_level: COORDINATOR_ACCESS_LEVEL,
                 items: [
                     {
@@ -41,7 +41,7 @@
                         link_to: 'base.home',
                     },
                     {
-                        name: 'Worlds',
+                        name: 'Classes',
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
                     }
@@ -49,7 +49,7 @@
             },
             {
                 subgroup: 'lecturer',
-                verbose: 'Game master',
+                verbose: 'Lecturer',
                 access_level: LECTURER_ACCESS_LEVEL,
                 items: [
                     {
@@ -58,7 +58,7 @@
                         link_to: 'base.home',
                     },
                     {
-                        name: 'Guilds',
+                        name: 'Groups',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
                     },
@@ -66,7 +66,7 @@
             },
             {
                 subgroup: 'student',
-                verbose: 'Player',
+                verbose: 'Student',
                 access_level: STUDENT_ACCESS_LEVEL,
                 items: [
                     {
@@ -75,12 +75,12 @@
                         link_to: 'base.home',
                     },
                     {
-                        name: 'Guild',
+                        name: 'Group',
                         icon: 'guild_dark',
                         link_to: 'base.guild.overview',
                     },
                     {
-                        name: 'Questlog',
+                        name: 'Assignments',
                         icon: 'book_dark',
                         link_to: 'base.quests.log',
                     },

@@ -1,8 +1,25 @@
-<section layout-padding>
-    <div layout="row">
-        <h2 class="md-headline" flex>
-            Quest log
-        </h2>
-    </div>
+<section>
+    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
+        <md-tab ng-repeat="guild in questsLogCtrl.guilds">
+            <md-tab-label>
+                {{ guild.name }}
+            </md-tab-label>
+
+            <md-tab-body>
+                <md-list>
+                    <md-list-item ng-repeat="quest in guild.quests">
+                        {{ quest.completed }}
+                        {{ quest.quest.name }}
+                        <md-list>
+                            <md-list-item ng-repeat="objective in quest.quest.objectives">
+                                {{ objective.name }}
+                            </md-list-item>
+                        </md-list>
+                    </md-list-item>
+                </md-list>
+            </md-tab-body>
+
+        </md-tab>
+    </md-tabs>
 
 </section>

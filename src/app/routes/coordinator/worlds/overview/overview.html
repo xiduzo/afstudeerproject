@@ -2,19 +2,19 @@
 
     <section layout="row">
         <h2 class="md-headline" flex>
-            Worlds overview
+            Classes overview
         </h2>
         <md-button class="md-raised md-accent md-fab" ng-click="worldsOverviewCtrl.newWorldDialog()">
             <md-icon md-svg-icon="world_light"></md-icon>
             <md-tooltip md-direction="left">
-                Create new world
+                Create new class
             </md-tooltip>
         </md-button>
     </section>
 
     <section layout="row" layout-wrap>
         <h3 ng-if="worldsOverviewCtrl.worlds.length < 1" class="md-title">
-            No worlds have been found, add a new world by clicking on the 'Create new world' button.
+            No classes have been found, add a new world by clicking on the 'Create new class' button.
         </h3>
         <div flex="100"
             flex-gt-xs="50"
@@ -25,8 +25,7 @@
             ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: '-created_at'">
 
             <md-card>
-
-                <section layout-padding layout-align="end center" layout>
+                <md-toolbar layout-padding layout-align="end center" layout>
                     <md-card-title>
                         <md-card-title-text>
                             <span class="md-headline">
@@ -36,7 +35,7 @@
                     </md-card-title>
                     <md-menu>
                         <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin md-svg-icon="more_vert_dark"></md-icon>
+                            <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
                         </md-button>
                         <md-menu-content width="4" >
                             <md-menu-item aria-label="Change world settings" ui-sref="base.worlds.settings({worldUuid: world.id})">
@@ -60,14 +59,14 @@
                                             md-svg-icon="add_dark">
                                         </md-icon>
                                         <p flex>
-                                            Add gamemaster
+                                            Add lecturer
                                         </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-                </section>
+                </md-toolbar>
 
                 <md-divider></md-divider>
 
@@ -84,7 +83,7 @@
                             </span>
                             <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
                                 <md-tooltip md-direction="bottom">
-                                    Remove gamemaster from {{ world.name }}
+                                    Remove lecturer from {{ world.name }}
                                 </md-tooltip>
                             </md-icon>
                         </md-list-item>

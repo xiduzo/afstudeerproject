@@ -2,13 +2,13 @@
 
     <section layout="row">
         <h2 class="md-headline" flex>
-            World settings of: {{ worldsSettingsCtrl.world.name }}
+            Class settings of: {{ worldsSettingsCtrl.world.name }}
 
             <md-button ng-click="worldsSettingsCtrl.changeWorldName($event)">
                 <md-icon md-svg-icon="pencil_dark">
                 </md-icon>
                 <md-tooltip md-direction="right" md-delay="1000">
-                    Change world name
+                    Change class name
                 </md-tooltip>
             </md-button>
         </h2>
@@ -16,27 +16,27 @@
             ng-click="worldsSettingsCtrl.deleteWorld($event)">
             <md-icon md-svg-icon="delete_light"></md-icon>
             <md-tooltip md-direction="left" md-delay="1000">
-                Delete world
+                Delete class
             </md-tooltip>
         </md-button>
     </section>
 
     <section layout="row">
         <h3 class="md-title" flex>
-            Quests
+            Assignments
         </h3>
         <md-button class="md-raised md-accent md-fab"
             ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
             <md-icon md-svg-icon="book_light"></md-icon>
             <md-tooltip md-direction="left" md-delay="1000">
-                New quest
+                New assignment
             </md-tooltip>
         </md-button>
     </section>
 
     <section layout="row" layout-wrap>
         <div ng-if="worldsSettingsCtrl.world.quests.length <= 0">
-            Er zijn op het moment geen quests beschikbaar voor {{ worldsSettingsCtrl.world.name }}
+            Er zijn op het moment geen assignments voor {{ worldsSettingsCtrl.world.name }}
         </div>
         <div ng-if="worldsSettingsCtrl.world.quests" flex="25" layout-wrap
             ng-repeat="quest in worldsSettingsCtrl.world.quests">

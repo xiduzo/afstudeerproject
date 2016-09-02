@@ -153,9 +153,9 @@
                         targetEvent: event,
                         clickOutsideToClose: true,
                         locals: {
-                            title: 'Add members to this guild',
-                            subtitle: 'Please select the players you would like to add.',
-                            about: 'members',
+                            title: 'Add students to ' + guild.name,
+                            subtitle: 'Please select the students you would like to add.',
+                            about: 'students',
                             players: response
                         }
                     })

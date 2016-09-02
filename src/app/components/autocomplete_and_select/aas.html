@@ -1,9 +1,11 @@
-<md-dialog md-theme="default" aria-label="{{ aasCtrl.about }}">
+<md-dialog flex="30" md-theme="default" aria-label="{{ aasCtrl.about }}">
 
-    <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title ng-binding">
+    <md-toolbar class="md-title ng-binding" layout="row" layout-align="center center">
+        <span class="md-headline">
             {{ aasCtrl.title }}
-        </h2>
+        </span>
+    </md-toolbar>
+    <md-dialog-content class="md-dialog-content">
 
         <div class="md-dialog-content-body">
             <p>
