@@ -57,30 +57,22 @@
                 .then(function(response) {
                     var worldQuests = response.quests;
 
-                    Guild.getQuests(guild.id)
-                    .then(function(response) {
-                        guild.quests = response;
+                    // Filter out all the quest we allready have
+                    // For this guild
+                    worldQuests = _.filter(worldQuests, function(quest) {
+                        if(!_.findWhere(guild.quests, {quest: quest.url})) {
+                            return quest;
+                        }
+                    });
 
-                        // Filter out all the quest we allready have
-                        // For this guild
-                        worldQuests = _.filter(worldQuests, function(quest) {
-                            if(!_.findWhere(guild.quests, {quest: quest.url})) {
-                                return quest;
-                            }
+                    // Add all the new quests
+                    _.each(worldQuests, function(quest) {
+                        Guild.addQuest(guild.url, quest.url)
+                        .then(function(response) {
+                            guild.quests.push(response);
+                        }, function(error) {
+                            // Err add quest
                         });
-
-                        // Add all the new quests
-                        _.each(worldQuests, function(quest) {
-                            Guild.addQuest(guild.url, quest.url)
-                            .then(function(response) {
-                                guild.quests.push(response);
-                            }, function(error) {
-                                // Err add quest
-                            });
-                        });
-
-                    }, function(error) {
-                        // Err get quests
                     });
 
                     guild.world_start_date = moment(response.start).format();
@@ -108,7 +100,6 @@
             var weeknumber = 1;
             var previous_points = null;
             objectives_graph_line = [];
-            var test_data = [];
 
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= course_duration; i++) {
@@ -129,22 +120,6 @@
                 objective_groups.push(tempObj);
             }
 
-            for(i = 0; i < 0; i++) {
-                var temp = {
-                    completed: true,
-                    completed_at: "2016-08-"+Math.ceil(Math.random() * 20 + 10)+"T14:36:38+02:00",
-                    created_at: "2016-08-0"+Math.ceil(Math.random() * 3 + 1)+"T14:36:38+02:00",
-                    points: 200,
-                    "name": "name",
-                    "objective": "description"
-                };
-                test_data.push(temp);
-            }
-
-            _.each(test_data, function(objective) {
-                objectives.push(objective);
-            });
-
             // Grouping the arrays
             objectives = _.groupBy(objectives, function(objective) {
                 return moment(objective.created_at).format('DD/MM/YY');
@@ -153,12 +128,8 @@
                 return moment(objective.created_at).format('DD/MM/YY');
             });
 
-            // TODO
-            // Check why this shit isnt working anymore
-            // Goddamnit it just worked
             // Overwrite the objective_groups
             _.each(objectives, function(objective) {
-                console.log(objective);
                 var date = moment(objective[0].created_at).format('DD/MM/YY');
                 _.each(objective,function(group) {
                     var objective_group = objective_groups[date];
@@ -184,13 +155,13 @@
             // Reduce the groups to single objects for the chart
             _.each(objective_groups, function(group) {
                 var reduced = _.reduce(group, function(memo, objective) {
-                    if(objective.points) {
+                    if(objective.id) {
                         memo.date = _.last(group).created_at;
                         // Only add the points if the objective isnt completed yet OR
                         // if the completion date is after the group date
                         if(objective.completed &&
                             moment(objective.completed_at)
-                            .isSameOrBefore(memo.date)
+                            .isSameOrBefore(memo.date, 'day')
                         ) {
                             memo.points += 0;
                         } else {
@@ -201,7 +172,6 @@
                 }, { date: null, points: 0 });
                 reduced.date = reduced.date ? moment(reduced.date).format('DD/MM') : null;
                 // Add the item to the graph items
-                // console.log(reduced);
                 objectives_graph_items.push(reduced);
             });
 
@@ -211,16 +181,17 @@
                     objectives_graph_items,
                     {date: date.format('DD/MM')}
                 );
-                if(moment().isBefore(date)) {
+
+                if(moment().add(1, 'days').isBefore(date)) {
                     objectives_graph_line.push(null);
-                } else if (match) {
-                    console.log(match);
+                } else if(match) {
                     previous_points = match.points;
                     objectives_graph_line.push(match.points);
                 } else {
                     objectives_graph_line.push(previous_points);
                 }
             }
+
 
             setTimeout(function () {
                 self.createExperienceChart(guild);
@@ -287,16 +258,15 @@
             });
         }
 
-        // TODO
-        // Update the graph on response
         function updateStatus(guild, objective) {
+            objective.completed_at = !objective.completed ?
+                moment().utc().format() : null;
             Guild.patchObjective(objective)
             .then(function(response) {
+                var user = Global.getUser().first_name;
                 var update;
-                var user = Global.getUser();
-                user = user.first_name;
                 update = response.completed ? 'done' : 'undone';
-                update = user + ' has marked objective \'' + response.name + '\' as ' + update;
+                update = user+' has marked objective \''+response.name+'\' as '+update;
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
@@ -307,6 +277,7 @@
             Guild.addHistoryUpdate(Global.getUser().url, guild.url, update)
             .then(function(response) {
                 guild.history_updates.push(response);
+                self.buildGraphData(guild);
             }, function(error) {
                 // Err adding history update
             });

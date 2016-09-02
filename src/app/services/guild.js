@@ -205,7 +205,7 @@
                 method: "PATCH",
                 data:  {
                     completed: !objective.completed,
-                    completed_at: !objective.completed ? moment().format() : null
+                    completed_at: objective.completed_at
                 }
             })
             .then(function(response) { return response.data;
