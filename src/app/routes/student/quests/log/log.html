@@ -7,14 +7,22 @@
 
             <md-tab-body>
                 <md-list>
-                    <md-list-item ng-repeat="quest in guild.quests">
-                        {{ quest.completed }}
-                        {{ quest.quest.name }}
-                        <md-list>
-                            <md-list-item ng-repeat="objective in quest.quest.objectives">
-                                {{ objective.name }}
-                            </md-list-item>
-                        </md-list>
+                    <md-list-item ng-repeat="quest in guild.quests  | orderBy : 'created_at'" layout-wrap>
+                        <md-toolbar flex=100>
+                            <div class="md-toolbar-tools">
+                                {{ quest.quest.name }}
+                            </div>
+                        </md-toolbar>
+                        <md-content flex=100>
+                            <md-list>
+                                <md-list-item ng-repeat="objective in quest.quest.objectives | orderBy : 'created_at'">
+                                    {{ objective.name }}
+                                    <div class="md-caption">
+                                        {{ objective.objective }}
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
                     </md-list-item>
                 </md-list>
             </md-tab-body>
