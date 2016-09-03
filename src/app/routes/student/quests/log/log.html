@@ -6,69 +6,30 @@
             </md-tab-label>
 
             <md-tab-body>
-                <section layout="row" layout-wrap>
-                    <div ng-if="guild.quests" flex="25" layout-wrap
-                        ng-repeat="guildQuest in guild.quests">
-                        <md-card>
-                            <md-toolbar layout="row">
-                                <md-card-title flex>
-                                    <md-card-title-text flex layout="column" layout-align="space-between">
-                                        <span class="md-headline">
-                                            {{ guildQuest.quest.name }}
-                                        </span>
-                                        <span class="md-subhead">
-                                            Experience: {{ guildQuest.quest.experience | number }}
-                                        </span>
-                                    </md-card-title-text>
-                                </md-card-title>
-                            </md-toolbar>
-
-                            <md-card-content style="padding: 0;">
-                                <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-                                    <md-tab>
-                                        <md-tab-label>
-                                            Description
-                                        </md-tab-label>
-                                        <md-tab-body>
-                                            <section layout-padding>
-                                                {{ guildQuest.quest.description }}
-                                            </section>
-                                        </md-tab-body>
-                                    </md-tab>
-                                    <md-tab>
-                                        <md-tab-label>
-                                            Focus
-                                        </md-tab-label>
-                                        <md-tab-body>
-                                            <section layout-padding>
-                                                <div flex id="{{ guildQuest.quest.id }}"></div>
-                                            </section>
-                                        </md-tab-body>
-                                    </md-tab>
-                                    <md-tab>
-                                        <md-tab-label>
-                                            Objectives
-                                        </md-tab-label>
-                                        <md-tab-body>
-                                            <md-list layout-padding>
-                                                <md-list-item layout="column"
-                                                    ng-repeat="objective in guildQuest.quest.objectives"
-                                                    layout-align="flex-start center">
-                                                    <div class="md-title">
-                                                        {{ objective.name }}
-                                                    </div>
-                                                    <div class="md-caption">
-                                                        {{ objective.objective }}
-                                                    </div>
-                                                </md-list-item>
-                                            </md-list>
-                                        </md-tab-body>
-                                    </md-tab>
-                                </md-tabs>
-                            </md-card-content>
-
-                        </md-card>
-                    </div>
+                <section layout-margin layout-wrap layout="column">
+                    <section layout-wrap class="md-whiteframe-z2"
+                        flex=50
+                        ng-repeat="quest in guild.quests  | orderBy : 'created_at'">
+                        <md-toolbar flex=100>
+                            <div class="md-toolbar-tools">
+                                {{ quest.quest.name }}
+                            </div>
+                        </md-toolbar>
+                        <md-content flex=100>
+                            <md-list>
+                                <md-list-item layout="column" layout-padding
+                                    ng-repeat="objective in quest.quest.objectives | orderBy : 'created_at'"
+                                    layout-align="flex-start center">
+                                    <div class="md-title">
+                                        {{ objective.name }}
+                                    </div>
+                                    <div class="md-caption">
+                                        {{ objective.objective }}
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </section>
                 </section>
             </md-tab-body>
 

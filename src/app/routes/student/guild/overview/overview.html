@@ -15,7 +15,7 @@
                         style="height: 300px;" flex="40"
                         layout="column" layout-align="space-between stretch">
                         <md-toolbar>
-                            <h1 layout-padding class="md-title">
+                            <h1 class="md-toolbar-tools">
                                 Latest news
                             </h1>
                         </md-toolbar>
@@ -23,10 +23,10 @@
                             <md-list>
                                 <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
                                     <span flex>
-                                        {{ update.action }}
+                                        {{ update.user | fullUserName }} {{ update.action }}
                                     </span>
                                     <span>
-                                        {{ update.created_at | date : 'dd/MM @ HH:mm' }}
+                                        {{ update.created_at | fromNow }}
                                     </span>
                                 </md-list-item>
                             </md-list>

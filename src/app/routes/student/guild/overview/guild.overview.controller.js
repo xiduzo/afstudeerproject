@@ -26,7 +26,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.createExperienceChart = createExperienceChart;
+        self.createObjectivePointsChart = createObjectivePointsChart;
         self.addObjective = addObjective;
         self.removeObjective = removeObjective;
         self.buildGraphData = buildGraphData;
@@ -198,7 +198,7 @@
 
 
             setTimeout(function () {
-                self.createExperienceChart(guild);
+                self.createObjectivePointsChart(guild);
             }, 100);
         }
 
@@ -219,25 +219,14 @@
                     !response.name ||
                     !response.objective ||
                     !response.points) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Fill in all the fields to add an objective')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Global.simpleToast('Fill in all the fields to add an objective');
                     return;
                 }
 
                 Guild.addObjective(guild.url, response)
                 .then(function(response) {
+                    var update = 'added a new objective: ' + '\'' +response.name + '\'';
                     guild.objectives.unshift(response);
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Objective ' + response.name + ' is added')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
-                    var update = '\'' +response.name + '\' has been added';
                     self.guildHistoryUpdate(guild, update);
                 }, function(error) {
                     // Err add objective
@@ -250,15 +239,8 @@
         function removeObjective(guild, objective) {
             Guild.removeObjective(objective.id)
             .then(function(response) {
+                var update = 'removed objective: \'' + objective.name + '\'';
                 guild.objectives.splice(guild.objectives.indexOf(objective), 1);
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('Objective ' + objective.name + ' removed')
-                    .position('bottom right')
-                    .hideDelay(3000)
-                );
-                self.buildGraphData(guild);
-                var update = '\'' + objective.name + '\' has been removed';
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err remove objective
@@ -270,9 +252,8 @@
                 moment().utc().format() : null;
             Guild.patchObjective(objective)
             .then(function(response) {
-                var update;
-                update = response.completed ? 'done' : 'undone';
-                update = '\''+response.name+'\' has been marked as '+update;
+                var update = response.completed ? 'done' : 'undone';
+                update = 'marked objective \''+response.name+'\' as '+update;
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
@@ -282,14 +263,16 @@
         function guildHistoryUpdate(guild, update) {
             Guild.addHistoryUpdate(Global.getUser().url, guild.url, update)
             .then(function(response) {
+                response.user = self.user;
                 guild.history_updates.push(response);
+                Global.simpleToast(update);
                 self.buildGraphData(guild);
             }, function(error) {
                 // Err adding history update
             });
         }
 
-        function createExperienceChart(guild) {
+        function createObjectivePointsChart(guild) {
             $('#'+guild.id).highcharts({
                 chart: { backgroundColor: 'rgba(0,0,0,0)' },
                 title: { text: 'Progress of ' + guild.name },
