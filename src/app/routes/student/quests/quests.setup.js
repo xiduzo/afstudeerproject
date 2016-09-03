@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.quests', {
-                url: '/quests',
+                url: '/assignments',
                 abstract: true
             })
 

@@ -22,7 +22,7 @@
                 chart: {
                     polar: true,
                     type: 'area',
-                    backgroundColor:'rgba(255, 255, 255, 0)',
+                    backgroundColor:'rgba(255, 255, 255, 1)',
                     spacingBottom: 15,
                     spacingTop: 15,
                     spacingLeft: 15,

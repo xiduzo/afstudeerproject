@@ -1,18 +1,29 @@
 <section layout-padding>
-    <div layout="row">
-        <h2 class="md-headline" flex>
-            Account detail
-        </h2>
-    </div>
-    <div class="row">
-        <div class="radarChart"></div>
 
-        <md-card flex="40">
+    <section layout="row">
+
+        <md-card flex=70 class="md-whiteframe-z2">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    {{ accountDetailCtrl.user | fullUserName }}
+                </div>
+            </md-toolbar>
+            <md-card-content>
+                <md-list>
+                    <md-list-item>
+
+                    </md-list-item>
+                </md-list>
+                {{ accountDetailCtrl.user }}
+            </md-card-content>
+        </md-card>
+
+        <md-card flex=30 class="md-whiteframe-z2" layout="row" layout-align="center center">
             <div id="container"></div>
         </md-card>
 
-        {{ accountDetailCtrl.user }}
+    </section>
 
-        <img gravatar-src="accountDetailCtrl.user.email" />
-    </div>
+    <img class="round" gravatar-size="75" gravatar-src-once="accountDetailCtrl.user.email">
+
 </section>

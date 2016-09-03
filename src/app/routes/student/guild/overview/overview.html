@@ -1,6 +1,6 @@
 <section>
     <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-        <md-tab ng-repeat="guild in guildOverviewCtrl.guilds">
+        <md-tab ng-repeat="guild in guildOverviewCtrl.guilds | orderBy: 'name'">
 
             <md-tab-label>
                 {{ guild.name }}

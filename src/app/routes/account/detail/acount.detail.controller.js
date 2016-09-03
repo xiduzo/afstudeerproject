@@ -28,24 +28,19 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
-        // Chart options
-        var average_score = {
-            name: 'Average score',
-            data: [
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100)
-            ],
-            color: '#95a5a6',
-            pointPlacement: 'on'
-        };
 
-        var credits = {
-            text: moment().format("DD/MM/YY HH:MM"),
-            href: ''
-        };
+        // var average_score = {
+        //     name: 'Average score',
+        //     data: [
+        //         Math.floor(Math.random() * 100),
+        //         Math.floor(Math.random() * 100),
+        //         Math.floor(Math.random() * 100),
+        //         Math.floor(Math.random() * 100),
+        //         Math.floor(Math.random() * 100)
+        //     ],
+        //     color: '#95a5a6',
+        //     pointPlacement: 'on'
+        // };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -59,13 +54,13 @@
                 content_management: 0,
                 project_management: 0,
             };
-            var total_quests = 0;
+            var total_completed_quests = 0;
 
             // Calculate my chart
             _.each(response.guilds, function(guild) {
                 _.each(guild.guild.quests, function(quest) {
                     if(quest.completed) {
-                        total_quests++;
+                        total_completed_quests++;
                         my_scores.interaction_design += quest.quest.interaction_design;
                         my_scores.visual_interface_design += quest.quest.visual_interface_design;
                         my_scores.frontend_development += quest.quest.frontend_development;
@@ -75,7 +70,7 @@
                 });
             });
             my_scores = _.map(my_scores, function(score) {
-                return score / total_quests;
+                return score / total_completed_quests;
             });
 
             my_scores = {
@@ -85,7 +80,22 @@
                 pointPlacement: 'on'
             };
 
-            Spiderchart.createChart('container', '', 400, 400, 65, [average_score, my_scores], true, true, credits);
+            Spiderchart.createChart(
+                'container',
+                '',
+                350,
+                350,
+                65,
+                // [average_score, my_scores],
+                [my_scores],
+                true,
+                true,
+                {
+                    text: moment().format("DD/MM/YY HH:mm"),
+                    href: ''
+                }
+            );
+
         }, function(error) {
             // Error get user guilds
         });

@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.guild', {
-                url: '/guild',
+                url: '/group',
                 abstract: true
             })
 
