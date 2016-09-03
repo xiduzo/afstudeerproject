@@ -97,11 +97,6 @@
                     name: 'Profile',
                     icon: 'person_dark',
                     link_to: 'base.account.detail'
-                },
-                {
-                    name: 'Settings',
-                    icon: 'settings_dark',
-                    link_to: 'base.account.settings'
                 }
             ]
         };
