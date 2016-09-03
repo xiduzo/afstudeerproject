@@ -39,12 +39,6 @@
         self.user = Global.getUser();
         self.guilds = [];
 
-        var quest_points = [];
-        var categories = [];
-        var weeknumber = 0;
-        var objectives_graph_line = [];
-        var horizontal_axis = [];
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -103,7 +97,8 @@
             var course_duration = guild.course_duration;
             var weeknumber = 1;
             var previous_points = null;
-            objectives_graph_line = [];
+            var objectives_graph_line = [];
+            var horizontal_axis = [];
 
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= course_duration; i++) {
@@ -112,17 +107,17 @@
                     weeknumber++;
                 } else {
                     horizontal_axis.push(moment(starting_date)
-                        .add(i, 'days')
-                        .format('DD/MM')
+                        .add(i, 'days').format('DD/MM')
                     );
                 }
                 var tempObj = {
                     created_at: moment(starting_date)
-                        .add(i, 'day')
-                        .format()
+                        .add(i, 'day').format()
                 };
                 objective_groups.push(tempObj);
             }
+
+            guild.horizontal_axis = horizontal_axis;
 
             // Grouping the arrays
             objectives = _.groupBy(objectives, function(objective) {
@@ -161,8 +156,8 @@
                 var reduced = _.reduce(group, function(memo, objective) {
                     if(objective.id) {
                         memo.date = _.last(group).created_at;
-                        // Only add the points if the objective isnt completed yet OR
-                        // if the completion date is after the group date
+                        // Only add the points if the objective isnt completed yet
+                        // OR if the completion date is after the group date
                         if(objective.completed &&
                             moment(objective.completed_at)
                             .isSameOrBefore(memo.date, 'day')
@@ -186,6 +181,8 @@
                     {date: date.format('DD/MM')}
                 );
 
+                // If the date is after now + 5 hours
+                // don't show the chart
                 if(moment().add(5, 'hours').isBefore(date)) {
                     objectives_graph_line.push(null);
                 } else if(match) {
@@ -196,6 +193,7 @@
                 }
             }
 
+            guild.graph_line = objectives_graph_line;
 
             setTimeout(function () {
                 self.createObjectivePointsChart(guild);
@@ -278,7 +276,7 @@
                 title: { text: 'Progress of ' + guild.name },
                 xAxis: {
                     title: { text: 'Dagen' },
-                    categories: horizontal_axis
+                    categories: guild.horizontal_axis
                 },
                 yAxis: {
                     title: { text: 'Remaning objective points' },
@@ -300,7 +298,7 @@
                 series: [
                     {
                         name: 'Remaining objective points',
-                        data: objectives_graph_line,
+                        data: guild.graph_line,
                         color: '#616161'
                     }
                 ],

@@ -59,11 +59,10 @@
                 content_management: 0,
                 project_management: 0,
             };
-            var total_quests;
+            var total_quests = 0;
 
             // Calculate my chart
             _.each(response.guilds, function(guild) {
-                total_quests = 0;
                 _.each(guild.guild.quests, function(quest) {
                     if(quest.completed) {
                         total_quests++;

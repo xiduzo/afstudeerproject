@@ -35,7 +35,6 @@
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
             _.each(response.guilds, function(guild) {
-                console.log(guild);
                 self.guilds.push(guild.guild);
             });
         },function(error) {

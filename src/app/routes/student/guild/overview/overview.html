@@ -8,12 +8,13 @@
 
             <md-tab-body>
                 <section layout-margin layout="row">
-                    <md-content flex="60" layout="row"class="md-whiteframe-z2">
+                    <md-content flex=100 flex-gt-sm="60" layout="row"class="md-whiteframe-z2">
                         <div id="{{guild.id}}" style="height: 300px;" flex="100"></div>
                     </md-content>
                     <md-content class="md-whiteframe-z2"
                         style="height: 300px;" flex="40"
-                        layout="column" layout-align="space-between stretch">
+                        layout="column" layout-align="space-between stretch"
+                        hide show-gt-sm>
                         <md-toolbar>
                             <h1 class="md-toolbar-tools">
                                 Latest news
@@ -35,11 +36,13 @@
                 </section>
 
                 <section layout-margin layout="row">
-                    <md-content flex="100" ng-if="guild.objectives.length" class="md-whiteframe-z2">
+                    <md-content flex="100" class="md-whiteframe-z2">
                         <md-toolbar>
                             <div layout="row" class="md-toolbar-tools">
                                 <span flex="10" layout="row" layout-align="center">
-                                    Completed
+                                    <div hide show-gt-sm>
+                                        Completed
+                                    </div>
                                 </span>
                                 <span flex="20">
                                     Name
@@ -52,9 +55,9 @@
                                 </span>
                                 <span flex="5">
                                     <md-button class="md-icon-button"
-                                    ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
+                                    ng-click="guildOverviewCtrl.addObjective(guild)">
                                         <md-icon md-svg-icon="add_light"></md-icon>
-                                        <md-tooltip md-direction="left">
+                                        <md-tooltip md-direction="left" md-delay="1000">
                                             Add objective
                                         </md-tooltip>
                                     </md-button>
@@ -69,9 +72,9 @@
                             </md-list-item>
                             <md-list-item
                                 ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
+                                <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
                                 <span flex="10" ng-repeat="v in [0]"
                                     layout="row" layout-align="center">
-                                    <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
                                     <md-checkbox style="margin-bottom: 0;" ng-model="objective.completed"
                                         aria-label="Toggle status"
                                         ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
@@ -91,7 +94,7 @@
                                         ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
                                         <md-icon md-svg-icon="delete_dark">
                                         </md-icon>
-                                        <md-tooltip md-direction="left">
+                                        <md-tooltip md-direction="left" md-delay="1000">
                                             Remove objective
                                         </md-tooltip>
                                     </md-button>
