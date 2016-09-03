@@ -110,12 +110,7 @@
                         Quest.addObjective(response.url, objective);
                     });
 
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Quest ' + response.name + ' added to ' + self.world.name)
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Global.simpleToast('Assignment ' + response.name + ' added to ' + self.world.name);
                     $state.go('base.worlds.settings', {"worldUuid" : self.world.id});
                 }, function() {
                     // Err

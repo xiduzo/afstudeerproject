@@ -23,127 +23,71 @@
     </section>
 
     <section layout="row">
-        <h3 class="md-title" flex>
-            Assignments
-        </h3>
-        <md-button class="md-raised md-accent md-fab"
-            ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
-            <md-icon md-svg-icon="book_light"></md-icon>
-            <md-tooltip md-direction="left" md-delay="1000">
-                New assignment
-            </md-tooltip>
-        </md-button>
-    </section>
-
-    <section layout="row" layout-wrap>
-        <div ng-if="worldsSettingsCtrl.world.quests.length <= 0">
-            Er zijn op het moment geen assignments voor {{ worldsSettingsCtrl.world.name }}
-        </div>
-        <div ng-if="worldsSettingsCtrl.world.quests" flex="25" layout-wrap
-            ng-repeat="quest in worldsSettingsCtrl.world.quests">
-            <md-card>
-                <md-toolbar layout="row">
-                    <md-card-title flex>
-                        <md-card-title-text flex layout="column" layout-align="space-between">
-                            <span class="md-headline">
-                                {{ quest.name }}
-                            </span>
-                            <span class="md-subhead">
-                                Experience: {{ quest.experience | number }}
-                            </span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-menu>
-                        <md-button aria-label="Open menu" class="md-icon-button"
-                            ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
+        <section flex class="md-whiteframe-z1">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span flex=20>
+                        Name
+                    </span>
+                    <span flex=50>
+                        Assignment
+                    </span>
+                    <span flex=10>
+                        Active
+                    </span>
+                    <span flex=20 layout="row" layout-align="end">
+                        <md-button class="md-icon-button"
+                        ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
+                            <md-icon md-svg-icon="add_light"></md-icon>
+                            <md-tooltip md-direction="bottom" md-delay=1000>
+                                New assignment
+                            </md-tooltip>
                         </md-button>
-                        <md-menu-content width="4" >
-                            <md-menu-item ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
-                                <md-button>
-                                    <div layout="row">
-                                        <md-icon
-                                            md-menu-align-target
-                                            md-svg-icon="pencil_dark">
-                                        </md-icon>
-                                        <p flex> Edit </p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
-                                <md-button>
-                                    <div layout="row">
-                                        <md-icon
-                                            md-menu-align-target
-                                            md-svg-icon="delete_dark">
-                                        </md-icon>
-                                        <p flex> Delete </p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </md-toolbar>
-
-                <md-card-content style="padding: 0;">
-                    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-                        <md-tab>
-                            <md-tab-label>
-                                Description
-                            </md-tab-label>
-                            <md-tab-body>
-                                <section layout-padding>
-                                    {{ quest.description }}
-                                </section>
-                            </md-tab-body>
-                        </md-tab>
-                        <md-tab>
-                            <md-tab-label>
-                                Focus
-                            </md-tab-label>
-                            <md-tab-body>
-                                <section layout-padding>
-                                    <div flex id="{{ quest.id }}"></div>
-                                </section>
-                            </md-tab-body>
-                        </md-tab>
-                        <md-tab>
-                            <md-tab-label>
-                                Objectives
-                            </md-tab-label>
-                            <md-tab-body>
-                                <md-list layout-padding>
-                                    <md-list-item layout="column"
-                                        ng-repeat="objective in quest.objectives"
-                                        layout-align="flex-start center">
-                                        <div class="md-title">
-                                            {{ objective.name }}
-                                        </div>
-                                        <div class="md-caption">
-                                            {{ objective.objective }}
-                                        </div>
-                                    </md-list-item>
-                                </md-list>
-                            </md-tab-body>
-                        </md-tab>
-                    </md-tabs>
-                </md-card-content>
-
-                <md-divider></md-divider>
-
-                <md-card-actions layout="row" layout-align="end center">
-                    <md-switch class="md-primary"
-                        ng-change="worldsSettingsCtrl.toggleQuest(quest)"
-                        md-no-ink
-                        aria-label="Toggle quest"
-                        ng-model="quest.active">
-                    </md-switch>
-                </md-card-actions>
-
-
-            </md-card>
-        </div>
+                    </span>
+                </div>
+            </md-toolbar>
+            <md-content>
+                <md-list>
+                    <md-list-item
+                    ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'created_at'">
+                        <span flex=20>
+                            {{ quest.name }}
+                        </span>
+                        <span flex=50>
+                            {{ quest.description }}
+                        </span>
+                        <span flex=10>
+                            <div ng-repeat="v in [0]">
+                                <md-switch class="md-primary"
+                                ng-change="worldsSettingsCtrl.toggleQuest(quest)"
+                                md-no-ink
+                                aria-label="Toggle quest"
+                                ng-model="quest.active">
+                                </md-switch>
+                            </div>
+                        </span>
+                        <span flex=20 layout="row">
+                            <md-button class="md-icon-button"
+                             ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
+                                    <md-icon md-svg-icon="pencil_dark"></md-icon>
+                                    <md-tooltip md-delay="1000">
+                                        Edit
+                                    </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button"
+                             ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
+                                <md-icon md-svg-icon="delete_dark"></md-icon>
+                                <md-tooltip md-delay="1000">
+                                    Delete
+                                </md-tooltip>
+                            </md-button>
+                        </span>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </section>
     </section>
+
 
     <section layout="row">
         <h3 class="md-title" flex>
