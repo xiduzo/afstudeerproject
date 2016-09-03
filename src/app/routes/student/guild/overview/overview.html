@@ -8,7 +8,7 @@
 
             <md-tab-body>
                 <section layout-margin layout="row">
-                    <md-content flex="60" layout="row" class="md-whiteframe-z2">
+                    <md-content flex="60" layout="row"class="md-whiteframe-z2">
                         <div id="{{guild.id}}" style="height: 300px;" flex="100"></div>
                     </md-content>
                     <md-content class="md-whiteframe-z2"
@@ -30,53 +30,43 @@
                                     </span>
                                 </md-list-item>
                             </md-list>
-
                         </md-virtual-repeat-container>
                     </md-content>
                 </section>
 
                 <section layout-margin layout="row">
-                    <h2 class="md-title" flex>
-                        Objectives
-                    </h2>
-                    <md-button class="md-raised md-accent md-fab" ng-click="guildOverviewCtrl.addObjective(guild)">
-                        <md-icon md-svg-icon="add_light"></md-icon>
-                        <md-tooltip md-direction="left">
-                            Add objective
-                        </md-tooltip>
-                    </md-button>
-                </section>
-
-                <section layout-margin layout="row">
-                    <section ng-if="guild.objectives.length < 1">
-                        No objectives have been set for this guild yet.
-                        <a href='' ng-click="guildOverviewCtrl.addObjective(guild)">Add objective!</a>
-                    </section>
-
-
                     <md-content flex="100" ng-if="guild.objectives.length" class="md-whiteframe-z2">
                         <md-toolbar>
-                            <md-list>
-                                <md-list-item>
-                                    <span flex="10" layout="row" layout-align="center">
-                                        Completed
-                                    </span>
-                                    <span flex="20">
-                                        Name
-                                    </span>
-                                    <span flex="55">
-                                        Objective
-                                    </span>
-                                    <span flex="10">
-                                        Points
-                                    </span>
-                                    <span flex="5">
-                                        <!-- placeholder -->
-                                    </span>
-                                </md-list-item>
-                            </md-list>
+                            <div layout="row" class="md-toolbar-tools">
+                                <span flex="10" layout="row" layout-align="center">
+                                    Completed
+                                </span>
+                                <span flex="20">
+                                    Name
+                                </span>
+                                <span flex="55">
+                                    Objective
+                                </span>
+                                <span flex="10">
+                                    Points
+                                </span>
+                                <span flex="5">
+                                    <md-button class="md-icon-button"
+                                    ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
+                                        <md-icon md-svg-icon="add_light"></md-icon>
+                                        <md-tooltip md-direction="left">
+                                            Add objective
+                                        </md-tooltip>
+                                    </md-button>
+                                </span>
+                            </div>
                         </md-toolbar>
                         <md-list>
+                            <md-list-item ng-if="guild.objectives.length < 1">
+                                <span flex=100 layout="row" layout-align="center">
+                                    No objectives have been set yet.
+                                </span>
+                            </md-list-item>
                             <md-list-item
                                 ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
                                 <span flex="10" ng-repeat="v in [0]"
@@ -100,10 +90,10 @@
                                     <md-button class="md-icon-button"
                                         ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
                                         <md-icon md-svg-icon="delete_dark">
-                                            <md-tooltip md-direction="left">
-                                                Remove objective
-                                            </md-tooltip>
                                         </md-icon>
+                                        <md-tooltip md-direction="left">
+                                            Remove objective
+                                        </md-tooltip>
                                     </md-button>
                                 </span>
                             </md-list-item>
