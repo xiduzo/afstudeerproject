@@ -49,6 +49,26 @@
 
                 self.world = response;
 
+                _.each(self.world.quests, function(quest) {
+                    Quest.getGuildQuests(quest.id)
+                    .then(function(response) {
+                        quest.total_guilds_conquering_quest = 0;
+                        quest.total_guilds_finished_quest = 0;
+                        quest.completion_percentage = 0;
+                        _.each(response, function(guild_quest) {
+                            quest.total_guilds_conquering_quest++;
+                            if(guild_quest.completed) {
+                                quest.total_guilds_finished_quest++;
+                            }
+                        });
+                        if(quest.total_guilds_conquering_quest) {
+                            quest.completion_percentage = quest.total_guilds_finished_quest * 100 / quest.total_guilds_conquering_quest;
+                        }
+                    }, function(error) {
+                        // Err get guild quests
+                    });
+                });
+
             }, function() {
                 // Err
             });

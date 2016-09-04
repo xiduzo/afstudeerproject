@@ -24,6 +24,7 @@
         service.patchQuest = patchQuest;
         service.toggleQuest = toggleQuest; // Active / inactive.. Naming should be better ಠ▃ಠ
         service.addObjective = addObjective;
+        service.getGuildQuests = getGuildQuests;
 
         return service;
 
@@ -124,6 +125,21 @@
                     name: objective.name,
                     objective: objective.objective,
                     points: objective.points
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function getGuildQuests(quest) {
+            return $http({
+                url: REST_API_URL + 'guild/guildQuest/',
+                method: "GET",
+                params: {
+                    quest: quest
                 }
             })
             .then(function(response) {

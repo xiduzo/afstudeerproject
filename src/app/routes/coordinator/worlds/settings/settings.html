@@ -29,10 +29,13 @@
                     <span flex=20>
                         Name
                     </span>
-                    <span flex=50>
-                        Assignment
-                    </span>
                     <span flex=10>
+                        Guild power
+                    </span>
+                    <span flex=40>
+                        Completion
+                    </span>
+                    <span flex=10 layout="row" layout-align="center center">
                         Active
                     </span>
                     <span flex=20 layout="row" layout-align="end">
@@ -53,9 +56,36 @@
                         <span flex=20>
                             {{ quest.name }}
                         </span>
-                        <span flex=50 ng-bind-html="quest.description">
-                        </span>
                         <span flex=10>
+                            {{ quest.experience | number }}
+                        </span>
+                        <span flex=40 layout-padding>
+                            <div>
+                                <div layout="row" layout-align="space-between">
+                                    <span>0</span>
+                                    <span>{{ quest.total_guilds_conquering_quest }}</span>
+                                </div>
+                                <md-progress-linear
+                                ng-class="{
+                                    'md-warn': quest.completion_percentage <= 20,
+                                    'md-accent': quest.completion_percentage > 40 &&
+                                            quest.completion_percentage <=70,
+                                    'md-primary': quest.completion_percentage > 70,
+                                }"
+                                md-mode="determinate" value="{{quest.completion_percentage}}"></md-progress-linear>
+                                <md-tooltip>
+                                    <strong>
+                                        {{ quest.total_guilds_finished_quest }}
+                                    </strong>
+                                    out of
+                                    <strong>
+                                        {{ quest.total_guilds_conquering_quest }}
+                                    </strong>
+                                    group(s) completed this assignment
+                                </md-tooltip>
+                            </div>
+                        </span>
+                        <span flex=10 layout="row" layout-align="center center">
                             <div ng-repeat="v in [0]">
                                 <md-switch class="md-primary"
                                 ng-change="worldsSettingsCtrl.toggleQuest(quest)"
