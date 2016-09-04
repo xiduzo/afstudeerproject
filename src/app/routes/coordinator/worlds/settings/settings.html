@@ -53,8 +53,7 @@
                         <span flex=20>
                             {{ quest.name }}
                         </span>
-                        <span flex=50>
-                            {{ quest.description }}
+                        <span flex=50 ng-bind-html="quest.description">
                         </span>
                         <span flex=10>
                             <div ng-repeat="v in [0]">

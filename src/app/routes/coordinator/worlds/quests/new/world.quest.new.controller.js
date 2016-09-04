@@ -102,6 +102,8 @@
                 }
             };
 
+            console.log(self.formInput.description);
+
             Quest.addQuest(quest, self.world.url)
                 .then(function(response) {
 

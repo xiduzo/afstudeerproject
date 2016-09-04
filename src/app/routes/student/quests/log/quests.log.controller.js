@@ -22,6 +22,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.selectObjective = selectObjective;
+        self.selectQuest = selectQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -35,7 +37,9 @@
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
             _.each(response.guilds, function(guild) {
-                self.guilds.push(guild.guild);
+                guild = guild.guild;
+                guild.selected_quest = _.first(guild.quests);
+                self.guilds.push(guild);
             });
         },function(error) {
             // Err get user guilds
@@ -44,6 +48,14 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function selectObjective(guild, objective) {
+            guild.selected_objective = objective;
+        }
+
+        function selectQuest(guild, quest) {
+            guild.selected_objective = null;
+            guild.selected_quest = quest;
+        }
 
     }
 

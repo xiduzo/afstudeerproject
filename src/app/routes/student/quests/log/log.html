@@ -6,28 +6,57 @@
             </md-tab-label>
 
             <md-tab-body>
-                <section layout-margin layout-wrap layout="column">
-                    <section layout-wrap class="md-whiteframe-z1"
-                        flex=50
-                        ng-repeat="quest in guild.quests  | orderBy : 'created_at'">
-                        <md-toolbar flex=100>
-                            <div class="md-toolbar-tools">
-                                {{ quest.quest.name }}
-                            </div>
-                        </md-toolbar>
-                        <md-content flex=100>
+                <section layout-padding flex>
+                    <section layout="row" layout-wrap layout-align="start stretch">
+                        <md-content flex="20">
+                            <md-toolbar>
+                                <span class="md-toolbar-tools">
+                                    Assignments
+                                </span>
+                            </md-toolbar>
                             <md-list>
-                                <md-list-item layout="column" layout-padding
-                                    ng-repeat="objective in quest.quest.objectives | orderBy : 'created_at'"
-                                    layout-align="flex-start center">
-                                    <div class="md-title">
-                                        {{ objective.name }}
-                                    </div>
-                                    <div class="md-caption">
-                                        {{ objective.objective }}
-                                    </div>
+                                <md-list-item
+                                data-ng-class="{
+                                    'md-whiteframe-z1':quest == guild.selected_quest,
+                                }"
+                                ng-click="questsLogCtrl.selectQuest(guild, quest)"
+                                ng-repeat="quest in guild.quests | orderBy : 'created_at'">
+                                    {{ quest.quest.name }}
                                 </md-list-item>
                             </md-list>
+                        </md-content>
+                        <md-content flex="20">
+                            <md-toolbar>
+                                <span class="md-toolbar-tools">
+                                    Objectives
+                                </span>
+                            </md-toolbar>
+                            <md-list>
+                                <md-list-item
+                                data-ng-class="{
+                                    'md-whiteframe-z1':objective == guild.selected_objective,
+                                }"
+                                ng-click="questsLogCtrl.selectObjective(guild, objective)"
+                                    {{ objective.name }}
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                        <md-content flex="60">
+                            <md-toolbar>
+                                <div class="md-toolbar-tools">
+                                    <span ng-if="!guild.selected_objective">
+                                        {{ guild.selected_quest.quest.name }}
+                                    </span>
+                                    <span ng-if="guild.selected_objective">
+                                        {{ guild.selected_objective.name }}
+                                    </span>
+                                </div>
+                            </md-toolbar>
+                            <section ng-if="!guild.selected_objective" layout-margin>
+                                <span ng-bind-html="guild.selected_quest.quest.description"></span>
+                            </section>
+                            <section ng-if="guild.selected_objective" layout-margin>
+                            </section>
                         </md-content>
                     </section>
                 </section>

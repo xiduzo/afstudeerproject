@@ -15,6 +15,7 @@
             'ngMaterial',
             'ngScrollbars',
             'dndLists',
+            'textAngular',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters

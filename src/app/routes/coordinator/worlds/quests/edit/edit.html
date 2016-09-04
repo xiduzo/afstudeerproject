@@ -27,12 +27,8 @@
                         step="10" name="experience"/>
                 </md-input-container>
             </div>
-            <div layout="row">
-                <md-input-container flex>
-                    <label>Description</label>
-                    <textarea ng-model="worldsQuestsEditCtrl.quest.description" rows="25"></textarea>
-                </md-input-container>
-            </div>
+            <text-angular flex ng-model="worldsQuestsEditCtrl.quest.description">
+            </text-angular>
         </form>
     </md-content>
 

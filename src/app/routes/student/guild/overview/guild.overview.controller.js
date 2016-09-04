@@ -183,7 +183,7 @@
 
                 // If the date is after now + 5 hours
                 // don't show the chart
-                if(moment().add(5, 'hours').isBefore(date)) {
+                if(moment().add(12, 'hours').isBefore(date)) {
                     objectives_graph_line.push(null);
                 } else if(match) {
                     previous_points = match.points;
