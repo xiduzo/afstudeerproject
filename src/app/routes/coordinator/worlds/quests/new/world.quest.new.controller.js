@@ -102,8 +102,6 @@
                 }
             };
 
-            console.log(self.formInput.description);
-
             Quest.addQuest(quest, self.world.url)
                 .then(function(response) {
 
@@ -121,14 +119,14 @@
 
         function addObjective() {
             $mdDialog.show({
-                controller: 'addObjectiveController',
-                controllerAs: 'addObjectiveCtrl',
+                controller: 'addQuestObjectiveController',
+                controllerAs: 'addQuestObjectiveCtrl',
                 templateUrl: 'app/routes/coordinator/worlds/quests/new/objectives/objectives.html',
                 targetEvent: event,
                 clickOutsideToClose: true,
                 locals: {
                     title: 'Add objective to ' + self.formInput.name,
-                    about: 'quest objective',
+                    about: 'Assignment objective',
                 }
             })
                 .then(function(response) {
@@ -136,6 +134,7 @@
                         return;
                     }
 
+                    response.editing = false;
                     self.objectives.push(response);
 
                 }, function() {
@@ -144,7 +143,7 @@
         }
 
         function removeObjective(objective) {
-            self.objectives.splice(self.objectives.indexOf(component), 1);
+            self.objectives.splice(self.objectives.indexOf(objective), 1);
         }
 
         // Initiate the first chart

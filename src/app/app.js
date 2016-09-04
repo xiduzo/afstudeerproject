@@ -16,6 +16,7 @@
             'ngScrollbars',
             'dndLists',
             'textAngular',
+            'angular-click-outside',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters

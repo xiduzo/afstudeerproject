@@ -91,13 +91,13 @@
 
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
-                        .title('Add a new guild to ' + world.name)
-                        .textContent('How would you like to name the new guild?')
+                        .title('Add a new group to ' + world.name)
+                        .textContent('How would you like to name the new group?')
                         .clickOutsideToClose(true)
-                        .placeholder('New guild name')
-                        .ariaLabel('New guild name')
+                        .placeholder('New group name')
+                        .ariaLabel('New group name')
                         .targetEvent(event)
-                        .ok('Create new guild')
+                        .ok('Create new group')
                         .cancel('Cancel');
 
             $mdDialog.show(dialog)
@@ -106,12 +106,7 @@
 
                     // Checks for the guild name
                     if(!result) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent('Please enter a guild name')
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
+                        Global.simpleToast('Please enter a group name');
                         return;
                     }
 
@@ -122,7 +117,7 @@
                             world.guilds.unshift(response);
                             $mdToast.show(
                                 $mdToast.simple()
-                                .textContent('Guild ' + response.name + ' created')
+                                .textContent('Group ' + response.name + ' created')
                                 .position('bottom right')
                                 .hideDelay(3000)
                             );

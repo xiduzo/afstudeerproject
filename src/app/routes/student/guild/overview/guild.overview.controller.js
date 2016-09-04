@@ -47,7 +47,7 @@
             _.each(response.guilds, function(guildObject) {
                 var guild = guildObject.guild;
 
-                World.getWorld(guild.world)
+                World.getWorld(guild.world.id)
                 .then(function(response) {
                     var worldQuests = response.quests;
 
@@ -132,7 +132,7 @@
                 var date = moment(objective[0].created_at).format('DD/MM/YY');
                 _.each(objective,function(group) {
                     var objective_group = objective_groups[date];
-                    if(objective_group[0].points) {
+                    if(objective_group && objective_group[0].points) {
                         objective_group.push(group);
                     } else {
                         objective_group = [group];
@@ -181,9 +181,9 @@
                     {date: date.format('DD/MM')}
                 );
 
-                // If the date is after now + 5 hours
+                // If the date is after now + 1 day
                 // don't show the chart
-                if(moment().add(12, 'hours').isBefore(date)) {
+                if(moment().add(1, 'day').isBefore(date)) {
                     objectives_graph_line.push(null);
                 } else if(match) {
                     previous_points = match.points;
@@ -204,7 +204,7 @@
             $mdDialog.show({
                 controller: 'addObjectiveController',
                 controllerAs: 'addObjectiveCtrl',
-                templateUrl: 'app/routes/coordinator/worlds/quests/new/objectives/objectives.html',
+                templateUrl: 'app/routes/student/guild/overview/objectives/objectives.html',
                 targetEvent: event,
                 clickOutsideToClose: true,
                 locals: {

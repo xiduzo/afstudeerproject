@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.worlds')
-        .controller('addQuestObjectiveController', addQuestObjectiveController);
+        .controller('addObjectiveController', addObjectiveController);
 
     /** @ngInject */
-    function addQuestObjectiveController(
+    function addObjectiveController(
         $mdDialog,
         title,
         about

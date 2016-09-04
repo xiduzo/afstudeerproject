@@ -24,7 +24,9 @@
         service.patchQuest = patchQuest;
         service.toggleQuest = toggleQuest; // Active / inactive.. Naming should be better ಠ▃ಠ
         service.addObjective = addObjective;
+        service.removeObjective = removeObjective;
         service.getGuildQuests = getGuildQuests;
+        service.getAllGuildQuests = getAllGuildQuests;
 
         return service;
 
@@ -134,6 +136,18 @@
             });
         }
 
+        function removeObjective(objective) {
+            return $http({
+                url: REST_API_URL + 'quest/objectives/'+objective+'/',
+                method: "DELETE"
+            })
+            .then(function(response) {
+                return response;
+            }, function(error) {
+                return error;
+            });
+        }
+
         function getGuildQuests(quest) {
             return $http({
                 url: REST_API_URL + 'guild/guildQuest/',
@@ -141,6 +155,18 @@
                 params: {
                     quest: quest
                 }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function getAllGuildQuests() {
+            return $http({
+                url: REST_API_URL + 'guild/guildQuest/',
+                method: "GET"
             })
             .then(function(response) {
                 return response.data;

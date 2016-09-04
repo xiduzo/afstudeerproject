@@ -132,6 +132,8 @@
             .icon('add_dark', './assets/icons/material/ic_add_black_48px.svg', 48)
             .icon('key_light', './assets/icons/material/ic_vpn_key_white_48px.svg', 48)
             .icon('key_dark', './assets/icons/material/ic_vpn_key_black_48px.svg', 48)
+            .icon('done_light', './assets/icons/material/ic_done_white_48px.svg', 48)
+            .icon('done_dark', './assets/icons/material/ic_done_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

@@ -1,13 +1,13 @@
 <section>
     <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-        <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'">
+        <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'" layout="row">
             <md-tab-label>
                 {{ guild.name }}
             </md-tab-label>
 
             <md-tab-body>
-                <section layout-padding flex>
-                    <section layout="row" layout-wrap layout-align="start stretch">
+                <section layout-padding>
+                    <section layout="row" layout-wrap>
                         <md-content flex="20">
                             <md-toolbar>
                                 <span class="md-toolbar-tools">
@@ -22,6 +22,7 @@
                                 ng-click="questsLogCtrl.selectQuest(guild, quest)"
                                 ng-repeat="quest in guild.quests | orderBy : 'created_at'">
                                     {{ quest.quest.name }}
+                                    <md-icon ng-if="quest.completed" md-svg-icon="done_dark"></md-icon>
                                 </md-list-item>
                             </md-list>
                         </md-content>
@@ -36,7 +37,9 @@
                                 data-ng-class="{
                                     'md-whiteframe-z1':objective == guild.selected_objective,
                                 }"
+                                aria-label="{{objective.name}}"
                                 ng-click="questsLogCtrl.selectObjective(guild, objective)"
+                                ng-repeat="objective in guild.selected_quest.quest.objectives">
                                     {{ objective.name }}
                                 </md-list-item>
                             </md-list>
@@ -52,10 +55,11 @@
                                     </span>
                                 </div>
                             </md-toolbar>
-                            <section ng-if="!guild.selected_objective" layout-margin>
+                            <section ng-if="!guild.selected_objective" layout-margin layout-padding>
                                 <span ng-bind-html="guild.selected_quest.quest.description"></span>
                             </section>
-                            <section ng-if="guild.selected_objective" layout-margin>
+                            <section ng-if="guild.selected_objective" layout-margin layout-padding>
+                                <span ng-bind-html="guild.selected_objective.objective"></span>
                             </section>
                         </md-content>
                     </section>

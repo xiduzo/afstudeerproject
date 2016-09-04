@@ -53,7 +53,7 @@
 
         function getWorld(id) {
             return $http({
-                url: REST_API_URL + 'world/worlds/'+id,
+                url: REST_API_URL + 'world/worlds/'+id+'/',
                 method: "GET"
             })
             .then(function(response) {

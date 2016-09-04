@@ -64,6 +64,7 @@
                         if(quest.total_guilds_conquering_quest) {
                             quest.completion_percentage = quest.total_guilds_finished_quest * 100 / quest.total_guilds_conquering_quest;
                         }
+
                     }, function(error) {
                         // Err get guild quests
                     });

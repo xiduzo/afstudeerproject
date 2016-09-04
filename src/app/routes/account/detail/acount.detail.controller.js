@@ -9,6 +9,8 @@
     function AccountDetailController(
         Global,
         Guild,
+        Quest,
+        World,
         Spiderchart,
         STUDENT_ACCESS_LEVEL
     ) {
@@ -23,24 +25,12 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.createSpiderChart = createSpiderChart;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
-
-        // var average_score = {
-        //     name: 'Average score',
-        //     data: [
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100)
-        //     ],
-        //     color: '#95a5a6',
-        //     pointPlacement: 'on'
-        // };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -54,10 +44,20 @@
                 content_management: 0,
                 project_management: 0,
             };
+            var average = {
+                interaction_design: 0,
+                visual_interface_design: 0,
+                frontend_development: 0,
+                content_management: 0,
+                project_management: 0,
+            };
             var total_completed_quests = 0;
+            var total_completed_quests_average = 0;
+            self.user.worlds = [];
 
             // Calculate my chart
             _.each(response.guilds, function(guild) {
+                self.user.worlds.push(guild.guild.world);
                 _.each(guild.guild.quests, function(quest) {
                     if(quest.completed) {
                         total_completed_quests++;
@@ -72,7 +72,6 @@
             my_scores = _.map(my_scores, function(score) {
                 return score / total_completed_quests;
             });
-
             my_scores = {
                 name: 'My score',
                 data: my_scores,
@@ -80,21 +79,46 @@
                 pointPlacement: 'on'
             };
 
-            Spiderchart.createChart(
-                'container',
-                '',
-                350,
-                350,
-                65,
-                // [average_score, my_scores],
-                [my_scores],
-                true,
-                true,
-                {
-                    text: moment().format("DD/MM/YY HH:mm"),
-                    href: ''
-                }
-            );
+            // console.log(self.user.worlds);
+            self.user.worlds = _.groupBy(self.user.worlds, function(world) {
+                return world.id;
+            });
+
+            // TODO
+            // Fix good average calculations
+            // Calculate the average
+            _.each(self.user.worlds, function(world) {
+                World.getWorld(world[0].id)
+                .then(function(response) {
+                    _.each(response.guilds, function(guild) {
+                        // console.log(guild);
+                        _.each(guild.quests, function(quest) {
+                            if(quest.completed) {
+                                total_completed_quests_average++;
+                                average.interaction_design += quest.quest.interaction_design;
+                                average.visual_interface_design += quest.quest.visual_interface_design;
+                                average.frontend_development += quest.quest.frontend_development;
+                                average.content_management += quest.quest.content_management;
+                                average.project_management += quest.quest.project_management;
+                            }
+                        });
+                    });
+                    // // console.log(average, total_completed_quests_average);
+                    var tmpAverage = _.map(average, function(score) {
+                        return score / total_completed_quests_average;
+                    });
+
+                    tmpAverage = {
+                        name: 'Average score',
+                        data: tmpAverage,
+                        color: '#616161',
+                        pointPlacement: 'on'
+                    };
+
+                    self.createSpiderChart(tmpAverage, my_scores);
+
+                });
+            });
 
         }, function(error) {
             // Error get user guilds
@@ -103,6 +127,22 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function createSpiderChart(average, my_scores) {
+            Spiderchart.createChart(
+                'container',
+                '',
+                350,
+                350,
+                65,
+                [average, my_scores],
+                true,
+                true,
+                {
+                    text: moment().format("DD/MM/YY HH:mm"),
+                    href: ''
+                }
+            );
+        }
 
     }
 

@@ -18,7 +18,8 @@
     "highcharts": "^4.2.5",
     "ngQuill": "ngquill#^1.5.2",
     "textAngular": "^1.5.8",
-    "bootstrap-css-only": "^3.3.7"
+    "bootstrap-css-only": "^3.3.7",
+    "angular-click-outside": "^2.8.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.2"

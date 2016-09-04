@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function WorldsQuestsEditController(
+        $mdDialog,
         $mdToast,
         $state,
         $stateParams,
@@ -28,10 +29,15 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.makeSpiderChart = makeSpiderChart;
         self.patchQuest = patchQuest;
+        self.addObjective = addObjective;
+        self.removeObjective = removeObjective;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.objectives = [];
+        self.objectives_to_remove = [];
+        self.objectives_to_add = [];
         self.questUuid = $stateParams.questUuid;
         self.worldUuid = $stateParams.worldUuid;
         self.quest = {
@@ -61,6 +67,8 @@
                 self.quest = response;
                 // Initiate the first chart
                 self.makeSpiderChart();
+
+                self.objectives = response.objectives;
 
             }, function() {
                 // Err
@@ -92,32 +100,60 @@
         }
 
         function patchQuest() {
-            var quest = {
-                id:          self.quest.id,
-                name:        self.quest.name,
-                experience:  self.quest.experience,
-                description: self.quest.description,
-                skills: {
-                    interaction_design:      self.quest.interaction_design,
-                    visual_interface_design: self.quest.visual_interface_design,
-                    frontend_development:    self.quest.frontend_development,
-                    content_management:      self.quest.content_management,
-                    project_management:      self.quest.project_management
-                }
+            Global.simpleToast('Patching assignment');
+            self.quest.skills = {
+                interaction_design:      self.quest.interaction_design,
+                visual_interface_design: self.quest.visual_interface_design,
+                frontend_development:    self.quest.frontend_development,
+                content_management:      self.quest.content_management,
+                project_management:      self.quest.project_management
             };
 
-            Quest.patchQuest(quest)
+            _.each(self.objectives_to_add, function(objective) {
+                Quest.addObjective(self.quest.url, objective);
+            });
+
+            _.each(self.objectives_to_remove, function(objective) {
+                Quest.removeObjective(objective.id);
+            });
+            Quest.patchQuest(self.quest)
                 .then(function(response) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('The quest has been updated')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Global.simpleToast('The assignment has been updated');
                     $state.go('base.worlds.settings', {"worldUuid" : self.worldUuid});
                 }, function() {
                     // Err
                 });
+        }
+
+        function addObjective() {
+            $mdDialog.show({
+                controller: 'addQuestObjectiveController',
+                controllerAs: 'addQuestObjectiveCtrl',
+                templateUrl: 'app/routes/coordinator/worlds/quests/new/objectives/objectives.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    title: 'Add objective to ' + self.quest.name,
+                    about: 'Assignment objective',
+                }
+            })
+                .then(function(response) {
+                    if(!response || !response.name || !response.objective || !response.points) {
+                        return;
+                    }
+
+                    response.editing = false;
+                    self.objectives_to_add.push(response);
+                    self.objectives.push(response);
+
+                }, function() {
+                    // Err
+                });
+        }
+
+        function removeObjective(objective) {
+            self.objectives_to_remove.push(objective);
+            self.objectives.splice(self.objectives.indexOf(objective), 1);
         }
 
     }
