@@ -26,6 +26,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.patchQuestStatus = patchQuestStatus;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -38,26 +39,22 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(!response) {
-                    $mdToast.show(
-                        $mdToast
-                        .simple()
-                        .position('bottom right')
-                        .textContent('Guild ' + $stateParams.guildUuid + ' does not exist')
-                        .hideDelay(1000)
-                    );
+                    GLobal.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
 
-                response.members = [];
-
                 self.guild = response;
-
-                Guild.getGuildMembers($stateParams.guildUuid)
-                    .then(function(response) {
-                        self.guild.members = response;
-                    }, function() {
-                        // Err
-                    });
+                console.log(self.guild);
+                // response.members = [];
+                //
+                // self.guild = response;
+                //
+                // Guild.getGuildMembers($stateParams.guildUuid)
+                //     .then(function(response) {
+                //         self.guild.members = response;
+                //     }, function() {
+                //         // Err
+                //     });
 
             }, function() {
                 // Err
@@ -66,6 +63,18 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function patchQuestStatus(quest) {
+            Guild.patchQuestStatus(quest)
+            .then(function(response) {
+                if(response.completed) {
+                    Global.simpleToast('Asignment marked as completed');
+                } else {
+                    Global.simpleToast('Asignment marked as uncompleted');
+                }
+            }, function(error) {
+                // Err patch quest completion status
+            });
+        }
 
 
     }

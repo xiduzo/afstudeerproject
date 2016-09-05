@@ -78,6 +78,8 @@
                 color: '#FFCC00',
                 pointPlacement: 'on'
             };
+            
+            console.log(self.user.worlds);
 
             // console.log(self.user.worlds);
             self.user.worlds = _.groupBy(self.user.worlds, function(world) {

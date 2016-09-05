@@ -22,7 +22,7 @@
                         <md-virtual-repeat-container flex>
                             <md-list>
                                 <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
-                                    <span flex>
+                                    <span flex=80 layout-padding>
                                         {{ update.user | fullUserName }} {{ update.action }}
                                     </span>
                                     <span>

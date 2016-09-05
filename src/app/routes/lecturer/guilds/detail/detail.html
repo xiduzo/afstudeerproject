@@ -22,4 +22,33 @@
             </md-card-content>
         </md-card>
     </div>
+
+    <section>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <span flex=10 layout="row" layout-align="center">
+                    Completed
+                </span>
+                <span flex=80>
+                    Assignment
+                </span>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <md-list>
+                <md-list-item ng-repeat="quest in guildDetailCtrl.guild.quests">
+                    <span flex="10" ng-repeat="v in [0]"
+                        layout="row" layout-align="center">
+                        <md-checkbox style="margin-bottom: 0;" ng-model="quest.completed"
+                            aria-label="Toggle status"
+                            ng-click="guildDetailCtrl.patchQuestStatus(quest)">
+                        </md-checkbox>
+                    </span>
+                    <span flex=80>
+                        {{ quest.quest.name}}
+                    </span>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </section>
 </section>
