@@ -33,6 +33,9 @@
                         </md-toolbar>
                         <md-virtual-repeat-container flex>
                             <md-list>
+                                <md-list-item ng-if="guild.history_updates.length < 1">
+                                    Updates will appear in this box when you perform an action on this page.
+                                </md-list-item>
                                 <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
                                     <span flex=80 layout-padding>
                                         {{ update.user | fullUserName }} {{ update.action }}
@@ -78,7 +81,7 @@
                         <md-list>
                             <md-list-item ng-if="guild.objectives.length < 1">
                                 <span flex=100 layout="row" layout-align="center">
-                                    No objectives have been set yet.
+                                    No objectives have been set (yet).
                                 </span>
                             </md-list-item>
                             <md-list-item
