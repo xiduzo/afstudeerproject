@@ -18,6 +18,7 @@
 
         self.user = {};
         self.access = null;
+        self.active_page = '';
 
         self.functions = {
             setUser: function(user) {
@@ -74,6 +75,12 @@
                     .position('bottom right')
                     .hideDelay(5000)
                 );
+            },
+            setActivePage: function(page) {
+                self.page = page;
+            },
+            getAcitvePage: function() {
+                return self.page;
             }
 
         };

@@ -7,6 +7,9 @@
             a {
                 margin: 0;
             }
+            &.active_menu_item {
+                background-color: #ECF0F1;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@
     function NavigationController(
         $rootScope,
         $mdSidenav,
+        $state,
         Account,
         STUDENT_ACCESS_LEVEL,
         LECTURER_ACCESS_LEVEL,
@@ -22,6 +23,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.toggleNavigation = toggleNavigation;
         self.logout = logout;
+        self.active_menu_item = $state.current.name;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables

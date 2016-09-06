@@ -1,38 +1,36 @@
 <md-toolbar layout="row"
-    layout-padding
     md-component-id="main__toolbar"
     id="main__toolbar">
-    <md-button aria-label="toggle menu"
-        ng-click="toolbarCtrl.toggleNavigation()"
-        ng-if="toolbarCtrl.access >= 1"
-        hide-gt-sm>
-        <md-icon
-            md-svg-icon="menu_light">
+    <div class="md-toolbar-tools">
+        <md-button aria-label="toggle menu"
+            ng-click="toolbarCtrl.toggleNavigation()"
+            ng-if="toolbarCtrl.access >= 1"
+            hide-gt-sm>
+            <md-icon
+                md-svg-icon="menu_light">
+            </md-icon>
+        </md-button>
+        <h1 class="md-title" flex>
+            [PLATFORM NAME]
+        </h1>
+        <md-icon md-svg-icon="school_light"
+            ng-if="toolbarCtrl.access === toolbarCtrl.LECTURER_ACCESS_LEVEL">
+            <md-tooltip md-direction="left">
+                You have game master access
+            </md-tooltip>
         </md-icon>
-    </md-button>
-    <h1 class="md-title" flex>
-        [PLATFORM NAME]
-    </h1>
-    <md-icon md-svg-icon="school_light"
-        ng-if="toolbarCtrl.access === toolbarCtrl.LECTURER_ACCESS_LEVEL"
-        class="icon--size--36">
-        <md-tooltip md-direction="left">
-            You have game master access
-        </md-tooltip>
-    </md-icon>
-    <!-- <md-icon md-svg-icon="research_light"
-        ng-if="toolbarCtrl.user.uid === 'boera006'"
-        class="icon--size--36"
-        ui-sref="base.research">
-        <md-tooltip md-direction="left">
-            Research
-        </md-tooltip>
-    </md-icon> -->
-    <md-icon md-svg-icon="gavel_light"
-        ng-if="toolbarCtrl.access === toolbarCtrl.COORDINATOR_ACCESS_LEVEL"
-        class="icon--size--36">
-        <md-tooltip md-direction="left">
-            You have god access
-        </md-tooltip>
-    </md-icon>
+        <!-- <md-icon md-svg-icon="research_light"
+            ng-if="toolbarCtrl.user.uid === 'boera006'"
+            ui-sref="base.research">
+            <md-tooltip md-direction="left">
+                Research
+            </md-tooltip>
+        </md-icon> -->
+        <md-icon md-svg-icon="gavel_light"
+            ng-if="toolbarCtrl.access === toolbarCtrl.COORDINATOR_ACCESS_LEVEL">
+            <md-tooltip md-direction="left">
+                You have god access
+            </md-tooltip>
+        </md-icon>
+    </div>
 </md-toolbar>

@@ -31,7 +31,10 @@
             </md-subheader>
             <md-list>
                 <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items"
-                    ng-click="navigationCtrl.toggleNavigation()">
+                    ng-class="{
+                        'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
+                    }"
+                    ng-click="navigationCtrl.toggleNavigation();  navigationCtrl.active_menu_item = item.link_to">
                     <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
                     <span flex>{{ item.name }}</span>
                 </md-list-item>
@@ -46,7 +49,10 @@
             <md-list>
                 <md-list-item ng-repeat="item in navigationCtrl.account_navigation.items"
                     ui-sref="{{ item.link_to }}"
-                    ng-click="navigationCtrl.toggleNavigation()">
+                    ng-class="{
+                        'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
+                    }"
+                    ng-click="navigationCtrl.toggleNavigation(); navigationCtrl.active_menu_item = item.link_to">
                     <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
                     <span flex>{{ item.name }}</span>
                 </md-list-item>

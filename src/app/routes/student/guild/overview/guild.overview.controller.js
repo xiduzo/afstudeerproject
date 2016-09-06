@@ -181,9 +181,9 @@
                     {date: date.format('DD/MM')}
                 );
 
-                // If the date is after now + 1 day
-                // don't show the chart
-                if(moment().add(1, 'day').isBefore(date)) {
+                // If the date is after now
+                if(moment().isSameOrBefore(date)) {
+                    // don't show the chart
                     objectives_graph_line.push(null);
                 } else if(match) {
                     previous_points = match.points;
@@ -196,7 +196,12 @@
             guild.graph_line = objectives_graph_line;
 
             setTimeout(function () {
-                self.createObjectivePointsChart(guild);
+                guild.graph_data_loaded = true;
+                if(_.filter(objectives_graph_line, function(num) { return num !== null; }).length) {
+                    self.createObjectivePointsChart(guild);
+                } else {
+                    guild.no_graph_data = true;
+                }
             }, 100);
         }
 

@@ -9,7 +9,19 @@
             <md-tab-body>
                 <section layout-margin layout="row">
                     <md-content flex=100 flex-gt-sm="60" layout="row" class="md-whiteframe-z1">
-                        <div id="{{guild.id}}" style="height: 300px;" flex="100"></div>
+                        <div id="{{guild.id}}" style="height: 300px;" flex="100"
+                            layout="row" layout-align="center center">
+                            <span ng-if="!guild.graph_data_loaded">
+                                Loading objective data
+                            </span>
+                            <span ng-if="guild.no_graph_data">
+                                No data available,
+                                <a href="" ng-click="guildOverviewCtrl.addObjective(guild)">
+                                    add an objective
+                                </a>
+                                to get a fancy graph ╚(•⌂•)╝
+                            </span>
+                        </div>
                     </md-content>
                     <md-content class="md-whiteframe-z1"
                         style="height: 300px;" flex="40"
@@ -52,7 +64,7 @@
                                 <span flex="10">
                                     Points
                                 </span>
-                                <span flex="5">
+                                <span flex="5" layout="row" layout-align="end">
                                     <md-button class="md-icon-button"
                                     ng-click="guildOverviewCtrl.addObjective(guild)">
                                         <md-icon md-svg-icon="add_light"></md-icon>
@@ -88,7 +100,7 @@
                                 <span flex="10">
                                     {{ objective.points | number  }}
                                 </span>
-                                <span flex="5">
+                                <span flex="5" layout="row" layout-align="end">
                                     <md-button class="md-icon-button"
                                         ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
                                         <md-icon md-svg-icon="delete_dark">
