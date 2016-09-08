@@ -51,11 +51,14 @@
                             hvastudentnumber:  response.hvastudentnumber[0],
                             email:             response.mail[0].toLowerCase(),
                             initials:          response.initials[0],
-                            surname:           response.sn[0],
                             displayname:       response.displayname[0],
+                            surname_prefix:    response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
+                            surname:           response.sn[0],
                             gender:            response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
                             is_staff:          self.login_form.login_type === 'student' ? false : true
                         };
+
+                        console.log(logged_in_user);
 
                         Account.checkForExistingUser(logged_in_user.uid)
                             .then(function(response) {
