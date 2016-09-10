@@ -1,11 +1,15 @@
 .dndPlaceholder {
     background: $dndPlaceholder;
-    height: 48px;
+    height: 61px;
     list-style: none;
 }
 
 .dndDragging {
     border: 1px solid #BDBDBD;
+    opacity: 0.5;
+    md-icon {
+        display: none;
+    }
 }
 
 .dndDraggingSource {

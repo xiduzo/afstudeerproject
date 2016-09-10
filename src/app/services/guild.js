@@ -34,6 +34,8 @@
         service.removeObjective = removeObjective;
         service.patchObjective = patchObjective;
         service.addHistoryUpdate = addHistoryUpdate;
+        service.addObjectiveAssignment = addObjectiveAssignment;
+        service.removeObjectiveAssignment = removeObjectiveAssignment;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -239,6 +241,31 @@
             .then(function(response) { return response.data;
             }, function(error) { return error; });
         }
+
+        function addObjectiveAssignment(objective, user) {
+            return $http({
+                url: REST_API_URL + 'guild/guildObjectiveAssignment/',
+                method: "POST",
+                data: {
+                    objective: objective,
+                    user: user
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function removeObjectiveAssignment(assignment) {
+            return $http({
+                url: REST_API_URL + 'guild/guildObjectiveAssignment/'+assignment+'/',
+                method: "DELETE"
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+
+
     }
 
 }());

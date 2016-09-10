@@ -1,124 +1,162 @@
-<section>
-    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-        <md-tab ng-repeat="guild in guildOverviewCtrl.guilds | orderBy: 'name'">
+<section flex layout="column" >
+    <md-tabs md-border-bottom class="md-primary" flex layout="column" layout-fill>
+        <md-tab ng-repeat="guild in guildOverviewCtrl.guilds | orderBy: 'name'"
+            flex layout="column" label="{{guild.name}}">
 
-            <md-tab-label>
-                {{ guild.name }}
-            </md-tab-label>
-
-            <md-tab-body>
-                <section layout-margin layout="row">
-                    <md-content flex=100 flex-gt-sm="60" layout="row" class="md-whiteframe-z1">
-                        <div id="{{guild.id}}" style="height: 300px;" flex="100"
-                            layout="row" layout-align="center center">
-                            <span ng-if="!guild.graph_data_loaded">
-                                Loading objective data
-                            </span>
-                            <span ng-if="guild.no_graph_data">
-                                No data available,
-                                <a href="" ng-click="guildOverviewCtrl.addObjective(guild)">
-                                    add an objective
-                                </a>
-                                to get a fancy graph ╚(•⌂•)╝
-                            </span>
-                        </div>
-                    </md-content>
-                    <md-content class="md-whiteframe-z1"
-                        style="height: 300px;" flex="40"
-                        layout="column" layout-align="space-between stretch">
-                        <md-toolbar>
-                            <h1 class="md-toolbar-tools">
-                                Latest news
-                            </h1>
-                        </md-toolbar>
-                        <md-virtual-repeat-container flex>
-                            <md-list>
-                                <md-list-item ng-if="guild.history_updates.length < 1">
-                                    Updates will appear in this box when you perform an action on this page.
-                                </md-list-item>
-                                <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
-                                    <span flex=80 layout-padding>
-                                        {{ update.user | fullUserName }} {{ update.action }}
-                                    </span>
-                                    <span>
-                                        {{ update.created_at | fromNow }}
-                                    </span>
-                                </md-list-item>
-                            </md-list>
-                        </md-virtual-repeat-container>
-                    </md-content>
-                </section>
-
-                <section layout-margin layout="row">
-                    <md-content flex="100" class="md-whiteframe-z1">
-                        <md-toolbar>
-                            <div layout="row" class="md-toolbar-tools">
-                                <span flex="10" layout="row" layout-align="center">
-                                    <div>
-                                        Completed
-                                    </div>
+            <md-tab-content layout="row" layout-align="start stretch">
+                <section flex layout="column">
+                    <section flex=40 layout="row" layout-margin>
+                        <md-content flex=100 flex-gt-sm="60" layout="row" class="md-whiteframe-z1">
+                            <div id="{{guild.id}}" flex="100"
+                                layout="row" layout-align="center center">
+                                <span ng-if="!guild.graph_data_loaded">
+                                    Loading objective data
                                 </span>
-                                <span flex="20">
-                                    Name
-                                </span>
-                                <span flex="55">
-                                    Objective
-                                </span>
-                                <span flex="10">
-                                    Points
-                                </span>
-                                <span flex="5" layout="row" layout-align="end">
-                                    <md-button class="md-icon-button"
-                                    ng-click="guildOverviewCtrl.addObjective(guild)">
-                                        <md-icon md-svg-icon="add_light"></md-icon>
-                                        <md-tooltip md-direction="left" md-delay="1000">
-                                            Add objective
-                                        </md-tooltip>
-                                    </md-button>
+                                <span ng-if="guild.no_graph_data">
+                                    No data available,
+                                    <a href="" ng-click="guildOverviewCtrl.addObjective(guild)">
+                                        add an objective
+                                    </a>
+                                    to get a awesome graph ╚(•⌂•)╝
                                 </span>
                             </div>
-                        </md-toolbar>
-                        <md-list>
-                            <md-list-item ng-if="guild.objectives.length < 1">
-                                <span flex=100 layout="row" layout-align="center">
-                                    No objectives have been set (yet).
-                                </span>
-                            </md-list-item>
-                            <md-list-item
-                                ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
-                                <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
-                                <span flex="10" ng-repeat="v in [0]"
-                                    layout="row" layout-align="center">
-                                    <md-checkbox style="margin-bottom: 0;" ng-model="objective.completed"
-                                        aria-label="Toggle status"
-                                        ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
-                                    </md-checkbox>
-                                </span>
-                                <span flex="20">
-                                    {{ objective.name }}
-                                </span>
-                                <span flex="55">
-                                    {{ objective.objective }}
-                                </span>
-                                <span flex="10">
-                                    {{ objective.points | number  }}
-                                </span>
-                                <span flex="5" layout="row" layout-align="end">
-                                    <md-button class="md-icon-button"
-                                        ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
-                                        <md-icon md-svg-icon="delete_dark">
-                                        </md-icon>
-                                        <md-tooltip md-direction="left" md-delay="1000">
-                                            Remove objective
-                                        </md-tooltip>
-                                    </md-button>
-                                </span>
-                            </md-list-item>
-                        </md-list>
-                    </md-content>
+                        </md-content>
+                        <md-content class="md-whiteframe-z1" flex="40"
+                            layout="column" layout-align="space-between stretch">
+                            <md-toolbar>
+                                <h1 class="md-toolbar-tools">
+                                    Latest news
+                                </h1>
+                            </md-toolbar>
+                            <div layout="row" flex>
+                                <md-content ng-scrollbars flex>
+                                    <md-list>
+                                        <md-list-item ng-if="guild.history_updates.length < 1">
+                                            <span>
+                                                Updates will appear in this box when you perform an action on this page.
+                                            </span>
+                                        </md-list-item>
+                                        <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
+                                            <span flex=80 layout-padding>
+                                                {{ update.user | fullUserName }} {{ update.action }}
+                                            </span>
+                                            <span>
+                                                {{ update.created_at | fromNow }}
+                                            </span>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-content>
+                            </div>
+                        </md-content>
+                    </section>
+                    <section flex=60 layout="row" layout-margin>
+                        <md-content flex="100" class="md-whiteframe-z1" layout="column">
+                            <md-toolbar>
+                                <div layout="row" class="md-toolbar-tools">
+                                    <span flex="10" layout="row" layout-align="center">
+                                        <div>
+                                            Completed
+                                        </div>
+                                    </span>
+                                    <span flex="20">
+                                        Name
+                                    </span>
+                                    <span flex="40" layout-padding>
+                                        Objective
+                                    </span>
+                                    <span flex="15" layout-padding>
+                                        Assigned to
+                                    </span>
+                                    <span flex="5">
+                                        Points
+                                    </span>
+                                    <span flex="10" layout="row" layout-align="end">
+                                        <md-button class="md-icon-button"
+                                        ng-click="guildOverviewCtrl.addObjective(guild)">
+                                            <md-icon md-svg-icon="add_light"></md-icon>
+                                            <md-tooltip md-direction="left" md-delay="1000">
+                                                Add objective
+                                            </md-tooltip>
+                                        </md-button>
+                                    </span>
+                                </div>
+                            </md-toolbar>
+                            <div layout="row" flex>
+                                <md-content ng-scrollbars flex>
+                                    <md-list>
+                                        <md-list-item ng-if="guild.objectives.length < 1" layout="row" layout-align="center center">
+                                            <span>
+                                                No objectives have been set (yet).
+                                                Add an objective by clicking on the
+                                                <md-button class="md-icon-button"
+                                                ng-click="guildOverviewCtrl.addObjective(guild)">
+                                                    <md-icon md-svg-icon="add_dark"></md-icon>
+                                                    <md-tooltip md-direction="right" md-delay="1000">
+                                                        Add objective
+                                                    </md-tooltip>
+                                                </md-button>
+                                            </span>
+                                        </md-list-item>
+                                        <div ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
+                                            <md-list-item>
+                                                <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
+                                                <span flex="10" ng-repeat="v in [0]"
+                                                    layout="row" layout-align="center">
+                                                    <md-checkbox style="margin-bottom: 0;" ng-model="objective.completed"
+                                                        aria-label="Toggle status"
+                                                        ng-click="guildOverviewCtrl.updateStatus(guild, objective)">
+                                                    </md-checkbox>
+                                                </span>
+                                                <span flex="20">
+                                                    {{ objective.name }}
+                                                </span>
+                                                <span flex="40" layout-padding>
+                                                    {{ objective.objective }}
+                                                </span>
+                                                <span flex="15" layout="row" layout-wrap layout-padding>
+                                                    <span ng-if="objective.assignments.length < 1">
+                                                        -
+                                                    </span>
+                                                    <span flex=33 ng-repeat="assignment in objective.assignments"
+                                                        ng-click="guildOverviewCtrl.removeObjectiveAssignment(guild, objective, assignment, $index)">
+                                                        <img class="round" gravatar-size="40" gravatar-src-once="assignment.user.email">
+                                                        <md-tooltip md-delay="1000">
+                                                            Remove {{ assignment.user | fullUserName}}
+                                                        </md-tooltip>
+                                                    </span>
+                                                </span>
+                                                <span flex="5">
+                                                    {{ objective.points | number  }}
+                                                </span>
+                                                <span flex="10" layout="row" layout-align="end">
+                                                    <md-button class="md-icon-button"
+                                                        ng-click="guildOverviewCtrl.assignMemberToObjective(guild, objective)">
+                                                        <md-icon md-svg-icon="add_person_dark">
+                                                        </md-icon>
+                                                        <md-tooltip md-direction="bottom" md-delay="1000">
+                                                            Assign person
+                                                        </md-tooltip>
+                                                    </md-button>
+                                                    <md-button class="md-icon-button"
+                                                        ng-click="guildOverviewCtrl.removeObjective(guild, objective)">
+                                                        <md-icon md-svg-icon="delete_dark">
+                                                        </md-icon>
+                                                        <md-tooltip md-direction="bottom" md-delay="1000">
+                                                            Remove objective
+                                                        </md-tooltip>
+                                                    </md-button>
+                                                </span>
+                                            </md-list-item>
+                                            <md-divider ng-if="!$last"></md-divider>
+                                        </div>
+                                    </md-list>
+                                </md-content>
+                            </div>
+                        </md-content>
+                    </section>
                 </section>
 
-            </md-tab-body>
+            </md-tab-content>
 
         </md-tab>
     </md-tabs>

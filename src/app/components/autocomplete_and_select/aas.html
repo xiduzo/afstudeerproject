@@ -22,14 +22,12 @@
                     md-items="player in aasCtrl.filter_users | orderBy:['displayname', 'surname']"
                     placeholder="Search {{ aasCtrl.about }}"
                     md-menu-class="aas__autocomplete">
-                    <md-item-template
-                        <span class="item--metadata">
-                            <span class="item--metastat">
-                                <img class="round" gravatar-size="45" gravatar-src="player.email">
-                            </span>
-                            <span class="item--metastat" md-highlight-text="aasCtrl.search_text" md-highlight-flags="^i">
-                                {{ player.filter_name }}
-                            </span>
+                    <md-item-template class="item--metadata"
+                        <span class="item--metastat">
+                            <img class="round" gravatar-size="35" gravatar-src="player.email">
+                        </span>
+                        <span class="item--metastat" md-highlight-text="aasCtrl.search_text" md-highlight-flags="^i">
+                            {{ player.filter_name }}
                         </span>
                     </md-item-template>
                     <md-not-found>

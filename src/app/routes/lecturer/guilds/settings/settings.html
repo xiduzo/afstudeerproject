@@ -2,7 +2,7 @@
 
     <section layout="row">
         <h2 class="md-headline" flex>
-            Guild settings of: {{ guildSettingsCtrl.guild.name }}
+            Group settings of: {{ guildSettingsCtrl.guild.name }}
 
             <md-button class="md-icon-button"
             ng-click="guildSettingsCtrl.changeGuildName($event)">
@@ -19,7 +19,7 @@
         <md-button class="md-raised md-warn md-fab" ng-click="guildSettingsCtrl.deleteGuild($event)">
             <md-icon md-svg-icon="delete_light"></md-icon>
             <md-tooltip md-direction="left">
-                Delete guild
+                Delete group
             </md-tooltip>
         </md-button>
     </section>

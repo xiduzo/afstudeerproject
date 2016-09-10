@@ -45,7 +45,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         _.each(self.players, function(player) {
             player.selected = false;
-            player.filter_name = player.first_name + ' ' + player.surname;
+            if(player.surname_prefix) {
+                player.filter_name = player.first_name + ' ' + player.surname_prefix + ' ' + player.surname;
+            } else {
+                player.filter_name = player.first_name + ' ' + player.surname;
+            }
         });
 
 

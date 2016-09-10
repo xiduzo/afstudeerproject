@@ -37,7 +37,7 @@
                 if(response.status === 404) {
                     $mdToast.show(
                         $mdToast.simple()
-                        .textContent('Guild ' + $stateParams.guildUuid + ' does not exist')
+                        .textContent('Group ' + $stateParams.guildUuid + ' does not exist')
                         .position('bottom right')
                         .hideDelay(3000)
                     );
@@ -55,10 +55,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteGuild(event) {
             var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this guild?')
+                        .title('Are you sure you want to delete this group?')
                         .textContent('Please consider your answer, this action can not be undone.')
                         .clickOutsideToClose(true)
-                        .ariaLabel('Delete guil')
+                        .ariaLabel('Delete group')
                         .targetEvent(event)
                         .ok('Yes, I accept the consequences')
                         .cancel('No, take me back!');

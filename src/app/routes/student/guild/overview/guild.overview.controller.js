@@ -32,6 +32,8 @@
         self.buildGraphData = buildGraphData;
         self.updateStatus = updateStatus;
         self.guildHistoryUpdate = guildHistoryUpdate;
+        self.assignMemberToObjective = assignMemberToObjective;
+        self.removeObjectiveAssignment = removeObjectiveAssignment;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -182,7 +184,7 @@
                 );
 
                 // If the date is after now
-                if(moment().isSameOrBefore(date)) {
+                if(moment().add(1, 'days').isSameOrBefore(date)) {
                     // don't show the chart
                     objectives_graph_line.push(null);
                 } else if(match) {
@@ -311,6 +313,68 @@
                     text: moment().format("DD/MM/YY HH:MM"),
                     href: ''
                 }
+            });
+        }
+
+        function assignMemberToObjective(guild, objective) {
+            _.each(objective.assignments, function(assignment) {
+                assignment.user_id = assignment.user.id;
+            });
+
+            var members = guild.members;
+
+            members = _.filter(guild.members, function(member) {
+                var temp = _.where(objective.assignments, {user_id: member.id});
+                if(temp.length === 0) {
+                    return temp;
+                }
+            });
+
+
+            $mdDialog.show({
+                controller: 'AasController',
+                controllerAs: 'aasCtrl',
+                templateUrl: 'app/components/autocomplete_and_select/aas.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    title: 'Assign to ' + objective.name,
+                    subtitle: 'Please select who you would like to assign.',
+                    about: 'group member',
+                    players: members
+                }
+            })
+            .then(function(response) {
+                if(!response) {
+                    return;
+                }
+
+                _.each(response, function(user) {
+                    Guild.addObjectiveAssignment(objective.url, user.url)
+                    .then(function(response) {
+                        var update = 'assigned ' + user.first_name + ' to \'' + objective.name + '\'';
+                        self.guildHistoryUpdate(guild, update);
+                        Global.simpleToast(user.first_name + ' assigned to \'' + objective.name + '\'');
+                        objective.assignments.push({id: response.id, user: user, user_id: user.id});
+                    }, function(error) {
+                        // Err add objective assignment
+                    });
+                });
+
+            }, function() {
+                // Err md dialog
+            });
+        }
+
+        function removeObjectiveAssignment(guild, objective, assignment, index) {
+            Guild.removeObjectiveAssignment(assignment.id)
+            .then(function(response) {
+                var update = 'removed ' + assignment.user.first_name + ' from \'' + objective.name + '\'';
+                self.guildHistoryUpdate(guild, update);
+                Global.simpleToast(assignment.user.first_name + ' removed from \'' + objective.name + '\'');
+                objective.assignments.splice(index, 1);
+            }, function(error) {
+                // Err remove objective assignment
             });
         }
 
