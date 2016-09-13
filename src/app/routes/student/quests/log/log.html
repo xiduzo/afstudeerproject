@@ -1,50 +1,56 @@
-<section>
-    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-        <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'" layout="row">
-            <md-tab-label>
-                {{ guild.name }}
-            </md-tab-label>
+<section flex layout="column" >
+    <md-tabs md-border-bottom class="md-primary" flex layout="column" layout-fill>
+        <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'"
+            flex layout="column" label="{{guild.name}}">
 
-            <md-tab-body>
-                <section layout-padding>
-                    <section layout="row" layout-wrap>
-                        <md-content flex="20">
+            <md-tab-content layout layout-align="start stretch">
+                <section flex layout layout-margin>
+                    <section flex=100 layout="row" class="md-whiteframe-z1">
+                        <md-content layout="column" flex=20>
                             <md-toolbar>
                                 <span class="md-toolbar-tools">
                                     Assignments
                                 </span>
                             </md-toolbar>
-                            <md-list>
-                                <md-list-item
-                                data-ng-class="{
-                                    'md-whiteframe-z1':quest == guild.selected_quest,
-                                }"
-                                ng-click="questsLogCtrl.selectQuest(guild, quest)"
-                                ng-repeat="quest in guild.quests | orderBy : 'created_at'">
-                                    {{ quest.quest.name }}
-                                    <md-icon ng-if="quest.completed" md-svg-icon="done_dark"></md-icon>
-                                </md-list-item>
-                            </md-list>
+                            <div layout="row" flex>
+                                <md-content ng-scrollbars flex>
+                                    <md-list>
+                                        <md-list-item
+                                        data-ng-class="{
+                                            'md-whiteframe-z1':quest == guild.selected_quest,
+                                        }"
+                                        ng-click="questsLogCtrl.selectQuest(guild, quest)"
+                                        ng-repeat="quest in guild.quests | orderBy : 'created_at'">
+                                            {{ quest.quest.name }}
+                                            <md-icon ng-if="quest.completed" md-svg-icon="done_dark"></md-icon>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-content>
+                            </div>
                         </md-content>
-                        <md-content flex="20">
+                        <md-content layout="column" flex=20>
                             <md-toolbar>
                                 <span class="md-toolbar-tools">
                                     Objectives
                                 </span>
                             </md-toolbar>
-                            <md-list>
-                                <md-list-item
-                                data-ng-class="{
-                                    'md-whiteframe-z1':objective == guild.selected_objective,
-                                }"
-                                aria-label="{{objective.name}}"
-                                ng-click="questsLogCtrl.selectObjective(guild, objective)"
-                                ng-repeat="objective in guild.selected_quest.quest.objectives">
-                                    {{ objective.name }}
-                                </md-list-item>
-                            </md-list>
+                            <div layout="row" flex>
+                                <md-content ng-scrollbars flex>
+                                    <md-list>
+                                        <md-list-item
+                                        data-ng-class="{
+                                            'md-whiteframe-z1':objective == guild.selected_objective,
+                                        }"
+                                        aria-label="{{objective.name}}"
+                                        ng-click="questsLogCtrl.selectObjective(guild, objective)"
+                                        ng-repeat="objective in guild.selected_quest.quest.objectives">
+                                            {{ objective.name }}
+                                        </md-list-item>
+                                    </md-list>
+                                </md-content>
+                            </div>
                         </md-content>
-                        <md-content flex="60">
+                        <md-content layout="column" flex=60>
                             <md-toolbar>
                                 <div class="md-toolbar-tools">
                                     <span ng-if="!guild.selected_objective">
@@ -55,16 +61,20 @@
                                     </span>
                                 </div>
                             </md-toolbar>
-                            <section ng-if="!guild.selected_objective" layout-margin layout-padding>
-                                <span ng-bind-html="guild.selected_quest.quest.description"></span>
-                            </section>
-                            <section ng-if="guild.selected_objective" layout-margin layout-padding>
-                                <span ng-bind-html="guild.selected_objective.objective"></span>
-                            </section>
+                            <div layout="row" flex>
+                                <md-content ng-scrollbars flex>
+                                    <section ng-if="!guild.selected_objective" layout-margin layout-padding>
+                                        <span ng-bind-html="guild.selected_quest.quest.description"></span>
+                                    </section>
+                                    <section ng-if="guild.selected_objective" layout-margin layout-padding>
+                                        <span ng-bind-html="guild.selected_objective.objective"></span>
+                                    </section>
+                                </md-content>
+                            </div>
                         </md-content>
                     </section>
                 </section>
-            </md-tab-body>
+            </md-tab-content>
 
         </md-tab>
     </md-tabs>
