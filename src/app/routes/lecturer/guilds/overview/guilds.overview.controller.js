@@ -115,12 +115,7 @@
                             console.log(response);
                             response.members = [];
                             world.guilds.unshift(response);
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent('Group ' + response.name + ' created')
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
+                            Global.simpleToast('Group ' + response.name + ' created');
                         }, function() {
 
                         });
@@ -170,12 +165,7 @@
                                     });
                             });
 
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent(response.length + ' member(s) added to ' + guild.name)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
+                            Global.simpleToast(response.length + ' member(s) added to ' + guild.name);
 
                         }, function() {
                             // Err
@@ -189,12 +179,7 @@
         function removeGuildMember(user, guild) {
             Guild.removeUserFromGuild(user.id, guild.id)
                 .then(function(response) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent(user.first_name + ' got removed from ' + guild.name)
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Global.simpleToast(user.first_name + ' got removed from ' + guild.name);
                     guild.members.splice(guild.members.indexOf(user), 1);
                 }, function() {
                     // Err

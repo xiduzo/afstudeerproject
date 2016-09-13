@@ -15,6 +15,7 @@
         gravatarServiceProvider,
         localStorageServiceProvider,
         ScrollBarsProvider,
+        ngOnboardingDefaultsProvider,
         DEBUG_ENABLED
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +45,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
         $mdThemingProvider
             // Add palettes
             .definePalette('cmd', $mdThemingProvider.extendPalette('amber', {
@@ -84,7 +84,6 @@
         // I actualy love this one b/c I won't be using
         // a fontset with 80% unused shit I don't need .__.
         $mdIconProvider
-
             // Material icons @ https://design.google.com/icons/
             .icon('menu_light', './assets/icons/material/ic_menu_white_48px.svg', 48)
             .icon('menu_dark', './assets/icons/material/ic_menu_black_48px.svg', 48)
@@ -136,6 +135,8 @@
             .icon('done_dark', './assets/icons/material/ic_done_black_48px.svg', 48)
             .icon('add_person_light', './assets/icons/material/ic_person_add_white_48px.svg', 48)
             .icon('add_person_dark', './assets/icons/material/ic_person_add_black_48px.svg', 48)
+            .icon('close_light', './assets/icons/material/ic_close_white_48px.svg', 48)
+            .icon('close_dark', './assets/icons/material/ic_close_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)
@@ -172,6 +173,14 @@
             // blank:     a transparent PNG image (border added to HTML below for demonstration purposes)
             "default": "monsterid"
         };
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Onboarding
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        ngOnboardingDefaultsProvider.set({
+            closeButtonText: 'x',
+            overlayOpacity: 0.8,
+        });
 
 
     }

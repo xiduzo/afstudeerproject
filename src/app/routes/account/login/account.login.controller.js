@@ -92,12 +92,7 @@
                             });
 
                     } else {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent(response.message)
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
+                        Global.simpleToast(response.message);
                     }
                 });
         }

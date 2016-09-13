@@ -1,4 +1,5 @@
-<section flex layout="column" >
+<section flex layout="column">
+
     <md-tabs class="md-primary" flex layout="column" layout-fill>
         <md-tab ng-repeat="guild in guildOverviewCtrl.guilds | orderBy: 'name'"
             flex layout="column" label="{{guild.name}}">
@@ -49,7 +50,7 @@
                             </div>
                         </md-content>
                     </section>
-                    <section flex=60 layout="row" layout-margin>
+                    <section flex=60 layout="row" layout-margin id="account_form">
                         <md-content flex="100" class="md-whiteframe-z1" layout="column">
                             <md-toolbar>
                                 <div layout="row" class="md-toolbar-tools">

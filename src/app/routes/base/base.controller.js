@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function BaseController(
+        localStorageService,
         $rootScope
     ) {
 
@@ -25,7 +26,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
+        
     }
 
 }());

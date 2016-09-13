@@ -58,7 +58,7 @@
 
         function addGuild(name, world) {
             return $http({
-                url: REST_API_URL + 'guild/guilds/',
+                url: REST_API_URL + 'guild/newGuild/',
                 method: "POST",
                 data: {
                     name: name,

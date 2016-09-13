@@ -16,7 +16,7 @@
             'ngScrollbars',
             'dndLists',
             'textAngular',
-            'angular-click-outside',
+            'ngOnboarding',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
