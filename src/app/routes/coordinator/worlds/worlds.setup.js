@@ -54,7 +54,7 @@
             })
 
             .state('base.worlds.quests.edit', {
-                url: '/:worldUuid/:questUuid/edit',
+                url: '/:worldUuid/edit/:questUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/worlds/quests/edit/edit.html',
