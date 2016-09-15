@@ -1,18 +1,31 @@
-<section layout-padding flex>
-
-    <div layout="row">
-        <h2 class="md-headline" flex>
+<section flex>
+    <md-toolbar>
+        <span class="md-toolbar-tools">
             {{ guildDetailCtrl.guild.name }}
-        </h2>
-    </div>
+        </span>
+    </md-toolbar>
+
+    <section layout="row">
+        <section flex=60 layout-margin>
+            <div id="completed__tasks" class="md-whiteframe-z1"></div>
+        </section>
+        <section flex layout-margin>
+            <div id="completed__tasks__explained" class="md-whiteframe-z1"></div>
+        </section>
+    </section>
 
     <div layout="row">
         <md-card flex="33" ng-repeat="member in guildDetailCtrl.guild.members">
+            <md-toolbar style="background : {{guildDetailCtrl.colors[$index]}};">
+                <span class="md-toolbar-tools">
+                    {{ member | fullUserName }}
+                </span>
+            </md-toolbar>
             <md-card-title layout="column" layout-align="center center">
                 <img gravatar-src="member.email" class="round icon--size--96" gravatar-size="96" />
                 <md-card-title-text>
                     <h2 class="md-headline" flex layout-margin>
-                        {{ member.displayname }} {{ member.surname }}
+                        {{ member | fullUserName }}
                     </h2>
                 </md-card-title-text>
             </md-card-title>
