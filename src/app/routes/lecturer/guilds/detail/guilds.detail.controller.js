@@ -8,7 +8,6 @@
     /** @ngInject */
     function GuildDetailController(
         $stateParams,
-        $mdToast,
         $state,
         Guild,
         Global,
@@ -27,13 +26,32 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.patchQuestStatus = patchQuestStatus;
-        self.makeObjectivesGraph = makeObjectivesGraph;
+        self.prepareGraphData = prepareGraphData;
+        self.buildGraphs = buildGraphs;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.guild = [];
-        self.colors = ['#e67e22', '#3498db', '#16a085', '#34495e'];
+        self.colors = [
+            '#2196F3',
+            '#4CAF50',
+            '#f44336',
+            '#795548',
+            '#E91E63',
+            '#03A9F4',
+            '#673AB7',
+            '#00BCD4',
+            '#8BC34A',
+            '#9E9E9E',
+            '#9C27B0',
+            '#FF9800',
+            '#009688',
+            '#3F51B5',
+            '#FF5722',
+            '#607D8B',
+            '#FFC107',
+        ];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -46,18 +64,14 @@
                 }
 
                 self.guild = response;
-                console.log(self.guild);
-                self.makeObjectivesGraph(response.objectives);
-                // response.members = [];
-                //
-                // self.guild = response;
-                //
-                // Guild.getGuildMembers($stateParams.guildUuid)
-                //     .then(function(response) {
-                //         self.guild.members = response;
-                //     }, function() {
-                //         // Err
-                //     });
+
+                World.getWorld(response.world.id)
+                .then(function(response) {
+                    self.guild.world = response;
+                    self.prepareGraphData(self.guild);
+                }, function(error) {
+                    // Err get world
+                });
 
             }, function() {
                 // Err
@@ -79,345 +93,183 @@
             });
         }
 
-        function makeObjectivesGraph(objectives) {
-            console.log(objectives);
-            var tempData = [
-                {
-                    by: 'sander',
+        function prepareGraphData(guild) {
+            var course_duration = guild.world.course_duration;
+            var starting_date = guild.world.start;
 
+            var pie_graph_data = [];
+            var bar_graph_data = [];
+
+            var weeknumber = 0;
+            var total_points = 0;
+
+            var column_dates = [];
+            var user_groups = [];
+
+            bar_graph_data.horizontal_axis = [];
+            bar_graph_data.series = [];
+            // Only need the completed objectives
+            guild.objectives = _.filter(guild.objectives, {completed: true});
+
+            // Prepare the points per person
+            _.each(guild.members, function(member) {
+                var tempObj = { id: member.id, points: 0 };
+                if(member.surname_prefix) {
+                    tempObj.name = member.first_name + ' ' + member.surname_prefix + ' ' + member.surname;
+                } else {
+                    tempObj.name = member.first_name + ' ' + member.surname;
                 }
-            ];
-                $('#completed__tasks').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Completed tasks'
-                    },
-                    xAxis: {
-                        categories: [
-                            'Week 1',
-                            '02/09',
-                            '03/09',
-                            '04/09',
-                            '05/09',
-                            '06/09',
-                            'Week 2',
-                            '08/09',
-                            '09/09',
-                            '11/09',
-                            '12/09',
-                            '13/09',
-                            'Week 3',
-                            '15/09',
-                            '16/09',
-                            '17/09',
-                            '18/09',
-                            '19/09',
-                            'Week 4',
-                            '20/09',
-                            '21/09',
-                            '22/09',
-                            '23/09',
-                            '24/09',
-                            'Week 5',
-                            '26/09',
-                            '27/09',
-                            '28/09',
-                            '29/09',
-                            '30/09',
-                            'Week 6',
-                            '02/10',
-                            '03/10',
-                            '04/10',
-                            '05/10',
-                            '06/10',
-                            'Week 7',
-                            '08/10',
-                            '09/10',
-                            '10/10',
-                            '11/10',
-                            '12/10',
-                            '13/10',
-                        ]
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Total fruit consumption'
-                        },
-                        stackLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'bold',
-                                color: 'gray'
-                            }
-                        }
-                    },
-                    legend: {
-                        align: 'right',
-                        x: -30,
-                        verticalAlign: 'top',
-                        y: 25,
-                        floating: true,
-                        backgroundColor: 'white',
-                        borderColor: '#CCC',
-                        borderWidth: 1,
-                        shadow: false
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{point.x}</b><br/>',
-                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-                    },
-                    plotOptions: {
-                        column: {
-                            stacking: 'normal',
-                            dataLabels: {
-                                enabled: true,
-                                color: 'white',
-                                style: {
-                                    textShadow: '0 0 3px black'
-                                }
-                            },
-                            events: {
-                                click: function(event) {
-                                    console.log(event);
-                                }
-                            }
-                        }
-                    },
-                    series: [
-                        {
-                            name: 'Nicolas Burton',
-                            color: '#e67e22',
-                            data: [
-                                null,
-                                1,
-                                null,
-                                2,
-                                2,
-                                3,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                1,
-                                null,
-                                1,
-                                2,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                4,
-                                2,
-                                2,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                2,
-                                4,
-                                3,
-                                null,
-                                null,
-                                4,
-                                3,
-                                null,
-                                null,
-                            ]
-                        },
-                        {
-                            name: 'Carol Armstrong',
-                            color: '#3498db',
-                            data: [
-                                1,
-                                2,
-                                2,
-                                4,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                1,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                2,
-                                1,
-                                null,
-                                null,
-                                null,
-                                1,
-                                3,
-                                5,
-                                null,
-                                null,
-                                null,
-                                3,
-                                3,
-                                3,
-                                null,
-                                null,
-                                null,
-                                null,
-                                2,
-                                3,
-                                1,
-                                null,
-                                null,
-                                4,
-                                3,
-                                null,
-                            ]
-                        },
-                        {
-                            name: 'Pablo Escabar',
-                            color: '#16a085',
-                            data: [
-                                1,
-                                2,
-                                null,
-                                null,
-                                3,
-                                3,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                1,
-                                2,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                4,
-                                4,
-                                2,
-                                4,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                1,
-                                1,
-                                1,
-                                null,
-                                null,
-                                1,
-                                null,
-                                null,
-                                3,
-                                3,
-                                2,
-                                3,
-                            ]
-                        },
-                        {
-                            name: 'Don Pablo',
-                            color: '#34495e',
-                            data: [
-                                1,
-                                null,
-                                null,
-                                3,
-                                2,
-                                null,
-                                null,
-                                null,
-                                1,
-                                3,
-                                3,
-                                5,
-                                3,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                2,
-                                1,
-                                2,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                3,
-                                3,
-                                6,
-                                1,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                1,
-                                2,
-                                2,
-                                1,
-                                1,
-                                1,
-                            ]
-                        }
-                    ]
+                user_groups.push(tempObj);
+            });
+
+            // Building the horizontal axis of the graph (date)
+            for(var i = 0; i <= course_duration; i++) {
+                if(i === 0 || i % 7 === 0) {
+                    bar_graph_data.horizontal_axis.push('<b>Week ' + weeknumber + '</b>');
+                    weeknumber++;
+                } else {
+                    bar_graph_data.horizontal_axis.push(moment(starting_date)
+                        .add(i, 'days').format('DD/MM')
+                    );
+                }
+                var tempObj = {
+                    date: moment(starting_date)
+                        .add(i, 'day').format(),
+                };
+                column_dates.push(tempObj);
+            }
+
+            // Fill in the bar graph series
+            _.each(user_groups, function(person, index) {
+                var tempObj = {
+                    user_id: person.id,
+                    name: person.name,
+                    color: self.colors[index],
+                    data: [],
+                };
+                bar_graph_data.series.push(tempObj);
+            });
+
+            _.map(column_dates, function(date, index) {
+                // Building the base
+                _.each(bar_graph_data.series, function(serie) {
+                    serie.data.push(null);
                 });
 
-                $('#completed__tasks__explained').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Completion by user'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: 'black'
+                _.each(guild.objectives, function(objective) {
+                    if(moment(date.date).isSame(objective.completed_at, 'day')) {
+                        _.each(objective.assignments, function(assigned) {
+                            var serie = _.find(bar_graph_data.series, {
+                                user_id: assigned.user.id
+                            });
+                            serie.data[index] += objective.points / objective.assignments.length;
+                        });
+                    }
+                });
+
+            });
+
+            _.each(guild.objectives, function(objective) {
+                total_points += objective.points;
+                if(objective.assignments.length < 1) {
+                    _.map(user_groups, function(user, key) {
+                        return user.points += objective.points;
+                    });
+                } else {
+                    _.each(objective.assignments, function(assigned) {
+                        // Adding the points to the user
+                        _.map(user_groups, function(person) {
+                            if(assigned.user.id == person.id) {
+                                person.points += objective.points / objective.assignments.length;
+                            }
+                            return person;
+                        });
+                    });
+                }
+            });
+
+            _.map(user_groups, function(person, index) {
+                var tempObj = {
+                    name: person.name,
+                    y: person.points * 100 / total_points,
+                    points: person.points,
+                    color: self.colors[index],
+                };
+                pie_graph_data.push(tempObj);
+            });
+
+            self.buildGraphs(bar_graph_data, pie_graph_data);
+        }
+
+        function buildGraphs(bar_data, pie_data) {
+            $('#completed__tasks').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Completed tasks'
+                },
+                xAxis: {
+                    categories: bar_data.horizontal_axis
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total points earned'
+                    },
+                },
+                legend: {
+                    align: 'right',
+                    x: -30,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        groupPadding: 0,
+                        pointPadding: 0,
+                        stacking: 'normal',
+                    }
+                },
+                series: bar_data.series
+            });
+
+            $('#completed__tasks__explained').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Completion by user'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.points}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        // Maybe for future use
+                        // allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                         }
                     }
-                }
-            },
-            series: [{
-                name: 'Brands',
-                data: [
-                    { name: 'Nicolas Burton', y: 26, 'color': '#e67e22' },
-                    { name: 'Carol Armstrong', y: 35, 'color': '#3498db' },
-                    { name: 'Pablo Escabar', y: 21, 'color': '#16a085' },
-                    { name: 'Don Pablo', y: 28, 'color': '#34495e' },
+                },
+                series: [
+                    {
+                        name: 'Points',
+                        data: pie_data
+                    }
                 ]
-            }]
-        });
+            });
         }
 
 

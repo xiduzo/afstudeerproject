@@ -7,10 +7,20 @@
 
         <div class="md-dialog-content-body">
             <form layout="column">
-                <md-input-container flex>
-                    <label>Name</label>
-                    <input ng-model="addObjectiveCtrl.formInput.name" />
-                </md-input-container>
+                <div layout>
+                    <md-input-container flex>
+                        <label>Name</label>
+                        <input ng-model="addObjectiveCtrl.formInput.name" />
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Points</label>
+                        <md-select ng-model="addObjectiveCtrl.formInput.points">
+                            <md-option ng-repeat="points in [1,2,3,5,8,13,21,34,55,89]" value="{{points}}">
+                            {{ points }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
                 <md-input-container flex>
                     <label>Objective</label>
                     <textarea
@@ -18,14 +28,6 @@
                         rows="25"
                         md-maxlength="400">
                     </textarea>
-                </md-input-container>
-                <md-input-container>
-                    <label>Points</label>
-                    <input
-                        ng-model="addObjectiveCtrl.formInput.points"
-                        type="number"
-                        step="10"
-                        name="experience"/>
                 </md-input-container>
             </form>
         </div>
