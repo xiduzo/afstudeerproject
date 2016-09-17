@@ -206,8 +206,12 @@
                 chart: {
                     type: 'column'
                 },
+                exporting: {
+                    // Only show the exporting button when you have a higher access level than the student
+                    enabled: Global.getAccess() > 1 ? true : false
+                },
                 title: {
-                    text: 'Completed tasks'
+                    text: 'Completed tasks ' + self.guild.name
                 },
                 xAxis: {
                     categories: bar_data.horizontal_axis
@@ -240,15 +244,23 @@
                         stacking: 'normal',
                     }
                 },
-                series: bar_data.series
+                series: bar_data.series,
+                credits: {
+                    text: moment().format("DD/MM/YY HH:mm"),
+                    href: ''
+                }
             });
 
             $('#completed__tasks__explained').highcharts({
                 chart: {
                     type: 'pie'
                 },
+                exporting: {
+                    // Only show the exporting button when you have a higher access level than the student
+                    enabled: Global.getAccess() > 1 ? true : false
+                },
                 title: {
-                    text: 'Completion by user'
+                    text: 'Completion per user'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.points}</b>'
@@ -268,7 +280,11 @@
                         name: 'Points',
                         data: pie_data
                     }
-                ]
+                ],
+                credits: {
+                    text: moment().format("DD/MM/YY HH:mm"),
+                    href: ''
+                }
             });
         }
 

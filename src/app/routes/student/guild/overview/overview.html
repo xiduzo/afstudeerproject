@@ -7,7 +7,7 @@
             <md-tab-content layout="row" layout-align="start stretch">
                 <section flex layout="column">
                     <section flex=40 layout="row" layout-margin>
-                        <md-content flex=100 flex-gt-sm="60" layout="row" class="md-whiteframe-z1">
+                        <md-content flex=100 flex-gt-sm="60" layout="row" md-whiteframe=1>
                             <div id="{{guild.id}}" flex="100"
                                 layout="row" layout-align="center center">
                                 <span ng-if="!guild.graph_data_loaded">
@@ -22,7 +22,7 @@
                                 </span>
                             </div>
                         </md-content>
-                        <md-content class="md-whiteframe-z1" flex="40"
+                        <md-content md-whiteframe=1 flex="40"
                             layout="column" layout-align="space-between stretch">
                             <md-toolbar>
                                 <h1 class="md-toolbar-tools">
@@ -51,7 +51,7 @@
                         </md-content>
                     </section>
                     <section flex=60 layout="row" layout-margin id="account_form">
-                        <md-content flex="100" class="md-whiteframe-z1" layout="column">
+                        <md-content flex="100" md-whiteframe=1 layout="column">
                             <md-toolbar>
                                 <div layout="row" class="md-toolbar-tools">
                                     <span flex="10" layout="row" layout-align="center">
