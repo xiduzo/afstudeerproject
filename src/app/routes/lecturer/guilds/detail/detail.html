@@ -1,67 +1,61 @@
-<section flex>
+<section flex layout="column">
     <md-toolbar>
         <span class="md-toolbar-tools">
             {{ guildDetailCtrl.guild.name }}
         </span>
     </md-toolbar>
 
-    <section layout="row">
-        <section flex=60 layout-margin>
-            <div id="completed__tasks" class="md-whiteframe-z1"></div>
+    <section flex layout="column" layout-fill layout-align="start stretch">
+        <section flex=40 layout="row" layout-margin>
+            <section flex=60 id="completed__tasks" class="md-whiteframe-z1">
+            </section>
+            <section flex id="completed__tasks__explained" class="md-whiteframe-z1">
+            </section>
         </section>
-        <section flex layout-margin>
-            <div id="completed__tasks__explained" class="md-whiteframe-z1"></div>
+        <section flex=30 ng-scrollbars>
+            <section layout="row" flex layout-wrap>
+                <div flex="20" ng-repeat="member in guildDetailCtrl.guild.members">
+                    <md-card>
+                        <md-toolbar style="background : {{guildDetailCtrl.colors[$index]}};">
+                            <span class="md-toolbar-tools">
+                                {{ member | fullUserName }}
+                            </span>
+                        </md-toolbar>
+                        <md-card-content layout="column" layout-align="center center">
+                            <img gravatar-src="member.email" class="round" gravatar-size="96" />
+                        </md-card-content>
+                    </md-card>
+
+            </section>
         </section>
-    </section>
-
-    <div layout="row">
-        <md-card flex="33" ng-repeat="member in guildDetailCtrl.guild.members">
-            <md-toolbar style="background : {{guildDetailCtrl.colors[$index]}};">
-                <span class="md-toolbar-tools">
-                    {{ member | fullUserName }}
-                </span>
-            </md-toolbar>
-            <md-card-title layout="column" layout-align="center center">
-                <img gravatar-src="member.email" class="round icon--size--96" gravatar-size="96" />
-                <md-card-title-text>
-                    <h2 class="md-headline" flex layout-margin>
-                        {{ member | fullUserName }}
-                    </h2>
-                </md-card-title-text>
-            </md-card-title>
-
-            <md-card-content>
-                {{ member.uid }}
-            </md-card-content>
-        </md-card>
-    </div>
-
-    <section>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <span flex=10 layout="row" layout-align="center">
-                    Completed
-                </span>
-                <span flex=80>
-                    Assignment
-                </span>
-            </div>
-        </md-toolbar>
-        <md-content>
-            <md-list>
-                <md-list-item ng-repeat="quest in guildDetailCtrl.guild.quests">
-                    <span flex="10" ng-repeat="v in [0]"
-                        layout="row" layout-align="center">
-                        <md-checkbox style="margin-bottom: 0;" ng-model="quest.completed"
-                            aria-label="Toggle status"
-                            ng-click="guildDetailCtrl.patchQuestStatus(quest)">
-                        </md-checkbox>
+        <section flex=30 layout-padding>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <span flex=10 layout="row" layout-align="center">
+                        Completed
                     </span>
                     <span flex=80>
-                        {{ quest.quest.name}}
+                        Assignment
                     </span>
-                </md-list-item>
-            </md-list>
-        </md-content>
+                </div>
+            </md-toolbar>
+            <md-content>
+                <md-list>
+                    <md-list-item ng-repeat="quest in guildDetailCtrl.guild.quests">
+                        <span flex="10" ng-repeat="v in [0]"
+                            layout="row" layout-align="center">
+                            <md-checkbox style="margin-bottom: 0;" ng-model="quest.completed"
+                                aria-label="Toggle status"
+                                ng-click="guildDetailCtrl.patchQuestStatus(quest)">
+                            </md-checkbox>
+                        </span>
+                        <span flex=80>
+                            {{ quest.quest.name}}
+                        </span>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </section>
     </section>
+
 </section>
