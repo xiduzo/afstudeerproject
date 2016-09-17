@@ -282,11 +282,10 @@
                 chart: { backgroundColor: 'rgba(0,0,0,0)' },
                 title: { text: 'Progress of ' + guild.name },
                 xAxis: {
-                    title: { text: 'Dagen' },
                     categories: guild.horizontal_axis
                 },
                 yAxis: {
-                    title: { text: 'Remaning objective points' },
+                    title: { text: 'Remaning task points' },
                     min: 0
                 },
                 // Only show the exporting button when you have

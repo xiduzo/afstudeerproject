@@ -11,7 +11,7 @@
                             <div id="{{guild.id}}" flex="100"
                                 layout="row" layout-align="center center">
                                 <span ng-if="!guild.graph_data_loaded">
-                                    Loading objective data
+                                    Loading task data
                                 </span>
                                 <span ng-if="guild.no_graph_data">
                                     No data available,
@@ -55,15 +55,13 @@
                             <md-toolbar>
                                 <div layout="row" class="md-toolbar-tools">
                                     <span flex="10" layout="row" layout-align="center">
-                                        <div>
-                                            Completed
-                                        </div>
+                                        Completed
                                     </span>
                                     <span flex="20">
                                         Name
                                     </span>
                                     <span flex="40" layout-padding>
-                                        Objective
+                                        Task
                                     </span>
                                     <span flex="15" layout-padding>
                                         Assigned to
@@ -76,7 +74,7 @@
                                         ng-click="guildOverviewCtrl.addObjective(guild)">
                                             <md-icon md-svg-icon="add_light"></md-icon>
                                             <md-tooltip md-direction="left" md-delay="1000">
-                                                Add objective
+                                                Add task
                                             </md-tooltip>
                                         </md-button>
                                     </span>
@@ -87,13 +85,13 @@
                                     <md-list>
                                         <md-list-item ng-if="guild.objectives.length < 1" layout="row" layout-align="center center">
                                             <span>
-                                                No objectives have been set (yet).
-                                                Add an objective by clicking on the
+                                                No tasks have been set (yet).
+                                                Add an task by clicking on the
                                                 <md-button class="md-icon-button"
                                                 ng-click="guildOverviewCtrl.addObjective(guild)">
                                                     <md-icon md-svg-icon="add_dark"></md-icon>
                                                     <md-tooltip md-direction="right" md-delay="1000">
-                                                        Add objective
+                                                        Add task
                                                     </md-tooltip>
                                                 </md-button>
                                             </span>

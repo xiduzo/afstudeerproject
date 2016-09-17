@@ -82,7 +82,7 @@
                         link_to: 'base.guild.overview',
                     },
                     {
-                        name: 'Assignments',
+                        name: 'Assessments',
                         icon: 'book_dark',
                         link_to: 'base.quests.log',
                     },

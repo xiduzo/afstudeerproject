@@ -43,7 +43,7 @@
                         ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
                             <md-icon md-svg-icon="add_light"></md-icon>
                             <md-tooltip md-direction="left" md-delay=1000>
-                                New assignment
+                                New assessment
                             </md-tooltip>
                         </md-button>
                     </span>
@@ -52,7 +52,7 @@
             <md-content>
                 <md-list>
                     <md-list-item ng-if="worldsSettingsCtrl.world.quests.length < 1">
-                        No assignments set for this class yet.
+                        No assessments set for this class yet.
                     </md-list-item>
                     <md-list-item
                     ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'created_at'">
@@ -100,7 +100,7 @@
                                 </md-switch>
                             </div>
                         </span>
-                        <span flex=20 layout="row">
+                        <span flex=20 layout="row" layout-align="end">
                             <md-button class="md-icon-button"
                              ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
                                     <md-icon md-svg-icon="pencil_dark"></md-icon>

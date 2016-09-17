@@ -182,7 +182,6 @@
                             if(assigned.user.id == person.id) {
                                 person.points += objective.points / objective.assignments.length;
                             }
-                            return person;
                         });
                     });
                 }
@@ -191,7 +190,7 @@
             _.map(user_groups, function(person, index) {
                 var tempObj = {
                     name: person.name,
-                    y: person.points * 100 / total_points,
+                    y: Math.random() * 25 + 5,
                     points: person.points,
                     color: self.colors[index],
                 };
