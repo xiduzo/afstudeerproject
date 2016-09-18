@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function Notifications(
+        $mdDialog,
         $mdToast
     ) {
 
@@ -16,6 +17,8 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         services.simpleToast = simpleToast;
+        services.confirmation = confirmation;
+        services.prompt = prompt;
 
         return services;
 
@@ -29,6 +32,33 @@
                 .position('bottom right')
                 .hideDelay(duration || 3000)
             );
+        }
+
+        function confirmation(title, context, label, event) {
+            var dialog = $mdDialog.confirm()
+                .title(title)
+                .textContent(context)
+                .clickOutsideToClose(true)
+                .ariaLabel(label)
+                .targetEvent(event)
+                .ok('Yes, I accept the consequences')
+                .cancel('No, take me back!');
+
+            return $mdDialog.show(dialog);
+        }
+
+        function prompt(title, context, label, event) {
+            var dialog = $mdDialog.prompt()
+                .title(title)
+                .textContent(context)
+                .clickOutsideToClose(true)
+                .placeholder(label)
+                .ariaLabel(label)
+                .targetEvent(event)
+                .ok('Ok')
+                .cancel('Cancel');
+
+            return $mdDialog.show(dialog);
         }
     }
 

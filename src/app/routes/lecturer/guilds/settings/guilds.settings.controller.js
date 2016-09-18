@@ -12,6 +12,7 @@
         $state,
         $stateParams,
         Global,
+        Notifications,
         Guild,
         LECTURER_ACCESS_LEVEL
     ) {
@@ -35,12 +36,7 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(response.status === 404) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Group ' + $stateParams.guildUuid + ' does not exist')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
 
@@ -54,77 +50,47 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteGuild(event) {
-            var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this group?')
-                        .textContent('Please consider your answer, this action can not be undone.')
-                        .clickOutsideToClose(true)
-                        .ariaLabel('Delete group')
-                        .targetEvent(event)
-                        .ok('Yes, I accept the consequences')
-                        .cancel('No, take me back!');
-
-            $mdDialog.show(dialog).then(function() {
+            Notifications.confirmation(
+                'Are you sure you want to delete this group?',
+                'Please consider your answer, this action can not be undone.',
+                'Delete group',
+                event
+            ).then(function() {
                 Guild.deleteGuild(self.guild.id)
-                    .then(function(response) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent('Guild ' + self.guild.name + ' has been deleted')
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
-                        $state.go('base.guilds.overview');
-                    }, function() {
-                        // Err
-                    });
+                .then(function(response) {
+                    Notifications.simpleToast('Group ' + self.guild.name + ' has been deleted');
+                    $state.go('base.guilds.overview');
+                }, function() {
+                    // Err deleting guild
+                });
             }, function() {
-                // No
+                // Nope Nope Nope Nope
             });
         }
 
-        function changeGuildName(event, guild) {
-            var dialog = $mdDialog.prompt()
-                        .title('Change the guild name of "' +self.guild.name+ '"')
-                        .textContent('How would you like to name this guild?')
-                        .clickOutsideToClose(true)
-                        .placeholder('Guild name')
-                        .ariaLabel('Guild name')
-                        .targetEvent(event)
-                        .ok('Change guild name')
-                        .cancel('Cancel');
+        function changeGuildName(event) {
+            Notifications.prompt(
+                'Change the group name of "' +self.guild.name+ '"',
+                'How would you like to name this group?',
+                'Group name',
+                event
+            )
+            .then(function(result) {
+                // Checks for thw world name
+                if(!result) {
+                    return Notifications.simpleToast('Please enter a group name');
+                }
 
-            $mdDialog.show(dialog)
-                .then(function(result) {
-                    // Ok
-
-                    // Checks for thw world name
-                    if(!result) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent('Please enter a guild name')
-                            .position('bottom right')
-                            .hideDelay(3000)
-                        );
-                        return;
-                    }
-
-                    Guild.patchGuildName(result, self.guild.id)
-                        .then(function(response) {
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent('Guild name change to ' + result)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
-
-                            self.guild.name = result;
-                            // $state.go('base.guilds.overview');
-                        }, function() {
-                            // Err
-                        });
-
+                Guild.patchGuildName(result, self.guild.id)
+                .then(function(response) {
+                    Notifications.simpleToast('Group name change to ' + result);
+                    self.guild.name = result;
                 }, function() {
-                    // Cancel
+                    // Err patch guild name
                 });
+            }, function() {
+                // Cancel
+            });
         }
 
     }

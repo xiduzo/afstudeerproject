@@ -49,7 +49,7 @@
                 }
 
                 self.world = response;
-
+                
                 _.each(self.world.quests, function(quest) {
                     Quest.getGuildQuests(quest.id)
                     .then(function(response) {
@@ -80,16 +80,13 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteWorld(event) {
-            var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this Class?')
-                        .textContent('Please consider your answer, this action can not be undone.')
-                        .clickOutsideToClose(true)
-                        .ariaLabel('Delete world')
-                        .targetEvent(event)
-                        .ok('Yes, I accept the consequences')
-                        .cancel('No, take me back!');
-
-            $mdDialog.show(dialog).then(function() {
+            Notifications.confirmation(
+                'Are you sure you want to delete this class?',
+                'Please consider your answer, this action can not be undone.',
+                'Delete class',
+                event
+            )
+            .then(function() {
                 World.deleteWorld(self.world.id)
                     .then(function(response) {
                         Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
@@ -103,64 +100,52 @@
         }
 
         function changeWorldName(event) {
-            var dialog = $mdDialog.prompt()
-                        .title('Change the class name of "' +self.world.name+ '"')
-                        .textContent('How would you like to name this class?')
-                        .clickOutsideToClose(true)
-                        .placeholder('Class name')
-                        .ariaLabel('Class name')
-                        .targetEvent(event)
-                        .ok('Change class name')
-                        .cancel('Cancel');
+            Notifications.prompt(
+                'Change the class name of \'' +self.world.name+ '\'',
+                'How would you like to name this class?',
+                'Class name',
+                event
+            )
+            .then(function(result) {
+                if(!result) {
+                    return Notifications.simpleToast('Please enter a name');
+                }
 
-            $mdDialog.show(dialog)
-                .then(function(result) {
-                    // Ok
-
-                    // Checks for thw world name
-                    if(!result) {
-                        Notifications.simpleToast('Please enter a name');
-                        return;
-                    }
-
-                    World.changeWorldName(result, self.world.id)
-                        .then(function(response) {
-                            self.world.name = result;
-                            Notifications.simpleToast('Name change to ' + result);
-                        }, function() {
-                            // Err
-                        });
-
+                World.changeWorldName(result, self.world.id)
+                .then(function(response) {
+                    self.world.name = result;
+                    Notifications.simpleToast('Name change to ' + result);
                 }, function() {
-                    // Cancel
+                    // Err
                 });
+
+            }, function() {
+                // Cancel
+            });
         }
 
         function deleteQuest(event, quest) {
-            var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this assignment?')
-                        .textContent('Please consider your answer, this action can not be undone.')
-                        .clickOutsideToClose(true)
-                        .ariaLabel('Delete quest')
-                        .targetEvent(event)
-                        .ok('Yes, I accept the consequences')
-                        .cancel('No, take me back!');
-
-            $mdDialog.show(dialog).then(function() {
+            Notifications.confirmation(
+                'Are you sure you want to delete this assessment?',
+                'Please consider your answer, this action can not be undone.',
+                'Delete quest',
+                event
+            )
+            .then(function() {
                 Quest.deleteQuest(quest.id)
-                    .then(function(response) {
-                        if(response.status >= 400) {
-                            Global.statusCode(response);
-                            return;
-                        }
+                .then(function(response) {
+                    if(response.status >= 400) {
+                        Global.statusCode(response);
+                        return;
+                    }
 
-                        Notifications.simpleToast(quest.name + ' got removed from ' + self.world.name);
-                        // Remove the quest in the frontend
-                        self.world.quests.splice(self.world.quests.indexOf(quest), 1);
+                    Notifications.simpleToast(quest.name + ' got removed from ' + self.world.name);
+                    // Remove the quest in the frontend
+                    self.world.quests.splice(_.indexOf(self.world.quests, quest), 1);
 
-                    }, function() {
-                        // Err
-                    });
+                }, function() {
+                    // Err delete quest
+                });
             }, function() {
                 // No
             });
@@ -168,11 +153,11 @@
 
         function toggleQuest(quest) {
             Quest.toggleQuest(quest.id, quest.active)
-                .then(function(response) {
-                    Notifications.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
-                }, function() {
-                    // Err
-                });
+            .then(function(response) {
+                Notifications.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
+            }, function() {
+                // Err toggle quest
+            });
         }
 
     }
