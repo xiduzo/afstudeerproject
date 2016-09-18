@@ -11,6 +11,7 @@
         $mdToast,
         Guild,
         Global,
+        Notifications,
         Quest,
         World,
         STUDENT_ACCESS_LEVEL
@@ -224,7 +225,7 @@
                     !response.name ||
                     !response.objective ||
                     !response.points) {
-                    Global.simpleToast('Fill in all the fields to add an objective');
+                    Notifications.simpleToast('Fill in all the fields to add an objective');
                     return;
                 }
 
@@ -270,7 +271,7 @@
             .then(function(response) {
                 response.user = self.user;
                 guild.history_updates.push(response);
-                Global.simpleToast(update);
+                Notifications.simpleToast(update);
                 self.buildGraphData(guild);
             }, function(error) {
                 // Err adding history update
@@ -353,7 +354,7 @@
                     .then(function(response) {
                         var update = 'assigned ' + user.first_name + ' to \'' + objective.name + '\'';
                         self.guildHistoryUpdate(guild, update);
-                        Global.simpleToast(user.first_name + ' assigned to \'' + objective.name + '\'');
+                        Notifications.simpleToast(user.first_name + ' assigned to \'' + objective.name + '\'');
                         objective.assignments.push({id: response.id, user: user, user_id: user.id});
                     }, function(error) {
                         // Err add objective assignment
@@ -370,7 +371,7 @@
             .then(function(response) {
                 var update = 'removed ' + assignment.user.first_name + ' from \'' + objective.name + '\'';
                 self.guildHistoryUpdate(guild, update);
-                Global.simpleToast(assignment.user.first_name + ' removed from \'' + objective.name + '\'');
+                Notifications.simpleToast(assignment.user.first_name + ' removed from \'' + objective.name + '\'');
                 objective.assignments.splice(index, 1);
             }, function(error) {
                 // Err remove objective assignment

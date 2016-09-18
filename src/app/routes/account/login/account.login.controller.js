@@ -10,7 +10,8 @@
         $mdToast,
         $state,
         Account,
-        Global
+        Global,
+        Notifications
     ) {
 
         // If the user is logged in send him back to the homepage
@@ -92,7 +93,7 @@
                             });
 
                     } else {
-                        Global.simpleToast(response.message);
+                        Notifications.simpleToast(response.message);
                     }
                 });
         }

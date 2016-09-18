@@ -12,6 +12,7 @@
         $state,
         $stateParams,
         Global,
+        Notifications,
         Quest,
         Spiderchart,
         World,
@@ -110,7 +111,7 @@
                         Quest.addObjective(response.url, objective);
                     });
 
-                    Global.simpleToast('Assignment ' + response.name + ' added to ' + self.world.name);
+                    Notifications.simpleToast('Assignment ' + response.name + ' added to ' + self.world.name);
                     $state.go('base.worlds.settings', {"worldUuid" : self.world.id});
                 }, function() {
                     // Err

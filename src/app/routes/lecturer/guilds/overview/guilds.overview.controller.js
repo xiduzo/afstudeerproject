@@ -12,6 +12,7 @@
         Account,
         Guild,
         Global,
+        Notifications,
         World,
         LECTURER_ACCESS_LEVEL
     ) {
@@ -75,13 +76,7 @@
                 Guild.patchPlayersGuild(user.id, user.guildId, guild)
                     .then(function(response) {
                         user.guildId = guild.id;
-                        $mdToast.show(
-                            $mdToast
-                            .simple()
-                            .position('bottom right')
-                            .textContent(user.first_name + ' moved to ' + guild.name)
-                            .hideDelay(1000)
-                        );
+                        Notifications.simpleToast(user.first_name + ' moved to ' + guild.name);
                     }, function() {
                         // Err
                     });
@@ -106,7 +101,7 @@
 
                     // Checks for the guild name
                     if(!result) {
-                        Global.simpleToast('Please enter a group name');
+                        Notifications.simpleToast('Please enter a group name');
                         return;
                     }
 
@@ -115,7 +110,7 @@
                             console.log(response);
                             response.members = [];
                             world.guilds.unshift(response);
-                            Global.simpleToast('Group ' + response.name + ' created');
+                            Notifications.simpleToast('Group ' + response.name + ' created');
                         }, function() {
 
                         });
@@ -165,7 +160,7 @@
                                     });
                             });
 
-                            Global.simpleToast(response.length + ' member(s) added to ' + guild.name);
+                            Notifications.simpleToast(response.length + ' member(s) added to ' + guild.name);
 
                         }, function() {
                             // Err
@@ -179,7 +174,7 @@
         function removeGuildMember(user, guild) {
             Guild.removeUserFromGuild(user.id, guild.id)
                 .then(function(response) {
-                    Global.simpleToast(user.first_name + ' got removed from ' + guild.name);
+                    Notifications.simpleToast(user.first_name + ' got removed from ' + guild.name);
                     guild.members.splice(guild.members.indexOf(user), 1);
                 }, function() {
                     // Err

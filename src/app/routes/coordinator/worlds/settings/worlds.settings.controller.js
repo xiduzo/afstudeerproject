@@ -12,6 +12,7 @@
         $state,
         $stateParams,
         Global,
+        Notifications,
         Quest,
         World,
         COORDINATOR_ACCESS_LEVEL
@@ -43,7 +44,7 @@
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
                 if(response.status === 404) {
-                    Global.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
+                    Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
 
@@ -91,7 +92,7 @@
             $mdDialog.show(dialog).then(function() {
                 World.deleteWorld(self.world.id)
                     .then(function(response) {
-                        Global.simpleToast('Class ' + self.world.name + ' has been deleted');
+                        Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
                         $state.go('base.worlds.overview');
                     }, function() {
                         // Err
@@ -103,13 +104,13 @@
 
         function changeWorldName(event) {
             var dialog = $mdDialog.prompt()
-                        .title('Change the world name of "' +self.world.name+ '"')
-                        .textContent('How would you like to name this world?')
+                        .title('Change the class name of "' +self.world.name+ '"')
+                        .textContent('How would you like to name this class?')
                         .clickOutsideToClose(true)
-                        .placeholder('World name')
-                        .ariaLabel('World name')
+                        .placeholder('Class name')
+                        .ariaLabel('Class name')
                         .targetEvent(event)
-                        .ok('Change world name')
+                        .ok('Change class name')
                         .cancel('Cancel');
 
             $mdDialog.show(dialog)
@@ -118,14 +119,14 @@
 
                     // Checks for thw world name
                     if(!result) {
-                        Global.simpleToast('Please enter a name');
+                        Notifications.simpleToast('Please enter a name');
                         return;
                     }
 
                     World.changeWorldName(result, self.world.id)
                         .then(function(response) {
                             self.world.name = result;
-                            Global.simpleToast('Name change to ' + result);
+                            Notifications.simpleToast('Name change to ' + result);
                         }, function() {
                             // Err
                         });
@@ -153,7 +154,7 @@
                             return;
                         }
 
-                        Global.simpleToast(quest.name + ' got removed from ' + self.world.name);
+                        Notifications.simpleToast(quest.name + ' got removed from ' + self.world.name);
                         // Remove the quest in the frontend
                         self.world.quests.splice(self.world.quests.indexOf(quest), 1);
 
@@ -168,7 +169,7 @@
         function toggleQuest(quest) {
             Quest.toggleQuest(quest.id, quest.active)
                 .then(function(response) {
-                    Global.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
+                    Notifications.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
                 }, function() {
                     // Err
                 });

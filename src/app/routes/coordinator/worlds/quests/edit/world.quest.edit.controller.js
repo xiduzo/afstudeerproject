@@ -12,6 +12,7 @@
         $state,
         $stateParams,
         Global,
+        Notifications,
         Quest,
         Spiderchart,
         COORDINATOR_ACCESS_LEVEL
@@ -100,7 +101,7 @@
         }
 
         function patchQuest() {
-            Global.simpleToast('Patching assignment');
+            Notifications.simpleToast('Patching assignment');
             self.quest.skills = {
                 interaction_design:      self.quest.interaction_design,
                 visual_interface_design: self.quest.visual_interface_design,
@@ -118,7 +119,7 @@
             });
             Quest.patchQuest(self.quest)
                 .then(function(response) {
-                    Global.simpleToast('The assignment has been updated');
+                    Notifications.simpleToast('The assignment has been updated');
                     $state.go('base.worlds.settings', {"worldUuid" : self.worldUuid});
                 }, function() {
                     // Err

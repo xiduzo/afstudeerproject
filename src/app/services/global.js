@@ -68,14 +68,6 @@
                     .hideDelay(5000)
                 );
             },
-            simpleToast: function(toast) {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent(toast)
-                    .position('bottom right')
-                    .hideDelay(5000)
-                );
-            },
             setActivePage: function(page) {
                 self.page = page;
             },
