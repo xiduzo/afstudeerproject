@@ -29,6 +29,7 @@
         self.patchQuestStatus = patchQuestStatus;
         self.prepareGraphData = prepareGraphData;
         self.buildGraphs = buildGraphs;
+        self.total_completed_objectives = 0;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -105,6 +106,7 @@
 
             // Only need the completed objectives
             guild.objectives = _.filter(guild.objectives, {completed: true});
+            self.total_completed_objectives = guild.objectives.length;
 
             // Prepare the graph data points
             _.each(guild.members, function(member, index) {
@@ -112,7 +114,7 @@
                     id: member.id,
                     color: self.colors[index],
                     name: member.first_name + ' ' + member.surname_prefix + ' ' + member.surname,
-                    y: 0, // Pie chart
+                    points: 0, // Pie chart
                     data: [], // Column graph
                 };
 
@@ -171,11 +173,18 @@
                         // Adding the points to the user
                         _.each(graph_data.points, function(person) {
                             if(assigned.user.id == person.id) {
-                                person.y += objective.points / objective.assignments.length;
+                                person.points += objective.points / objective.assignments.length;
                             }
                         });
                     });
                 }
+            });
+
+            // Fixing the Y of each team member on the pie chart
+            _.each(graph_data.points, function(point) {
+                point.y = point.points ?
+                point.points :
+                100 / self.guild.members.length;
             });
 
             self.buildGraphs(graph_data);
@@ -207,7 +216,7 @@
                 chart: { type: 'pie' },
                 exporting: { enabled: Global.getAccess() > 1 ? true : false },
                 title: { text: 'Completion per user' },
-                tooltip: { pointFormat: '{series.name}: <b>{point.y}</b>' },
+                tooltip: { pointFormat: '{series.name}: <b>{point.points}</b>' },
                 plotOptions: {
                     pie: {
                         // Maybe for future use

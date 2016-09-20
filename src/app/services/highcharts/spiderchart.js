@@ -17,7 +17,6 @@
         return service;
 
         function createChart(selector, title, width, height, size, series, tooltip, animation, credits) {
-
             Highcharts.chart(selector, {
                 chart: {
                     polar: true,
@@ -65,8 +64,8 @@
                         'Interaction Design',
                         'Visual Interface Design',
                         'Frontend Development',
-                        'Content management',
-                        'Project management'
+                        // 'Content management',
+                        // 'Project management'
                     ],
                     tickmarkPlacement: 'on',
                     lineWidth: 0

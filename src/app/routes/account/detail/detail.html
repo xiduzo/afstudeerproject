@@ -1,8 +1,8 @@
-<section layout-padding>
+<section flex>
 
     <section layout="row">
 
-        <md-card flex=70 md-whiteframe=1>
+        <md-card flex=50 md-whiteframe=1>
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     {{ accountDetailCtrl.user | fullUserName }}
@@ -19,9 +19,14 @@
             </md-card-content>
         </md-card>
 
-        <md-card flex=30 md-whiteframe=1 layout="row" layout-align="center center">
-            <div id="container"></div>
+        <md-card flex=40 md-whiteframe=1 layout="row" layout-align="center center">
+            <div id="testContainer"></div>
         </md-card>
+
+    </section>
+
+    <section>
+        <div id="container"></div>
 
     </section>
 
