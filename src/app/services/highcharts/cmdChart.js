@@ -260,17 +260,17 @@
                         data: techniek_circle,
                         color: Highcharts.Color('#ffcc00').setOpacity(0.33).get(),
                         enableMouseTracking: false,
-                        dataLabels: {
-                            enabled: true,
-                            rotation: 45,
-                            x: 20,
-                            y: 0,
-                            formatter: function() {
-                                if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.6)) {
-                                    return "TECHIEK";
-                                }
-                            },
-                        }
+dataLabels: {
+    enabled: true,
+    rotation: 45,
+    x: 20,
+    y: 0,
+    formatter: function() {
+        if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.6)) {
+            return "TECHIEK";
+        }
+    },
+}
                     },
                     {
                         name: 'Visual design',
