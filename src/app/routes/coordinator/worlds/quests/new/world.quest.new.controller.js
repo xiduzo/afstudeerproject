@@ -11,6 +11,7 @@
         $mdToast,
         $state,
         $stateParams,
+        CMDChart,
         Global,
         Notifications,
         Quest,
@@ -29,7 +30,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.makeSpiderChart = makeSpiderChart;
+        self.updateChart = updateChart;
         self.addQuest = addQuest;
         self.addObjective = addObjective;
         self.removeObjective = removeObjective;
@@ -45,13 +46,13 @@
             experience: null
         };
         self.skills = {
-            interaction_design: 0,
-            visual_interface_design: 0,
-            frontend_development: 0,
-            content_management: 0,
-            project_management: 0
+            interaction: 0,
+            visual: 0,
+            techniek: 0
         };
         self.objectives = [];
+
+        CMDChart.createChart('cmd__profile', self.skills, 'small');
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -66,28 +67,33 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function makeSpiderChart() {
-            var scores = {
-                name: 'Level',
-                data: [
-                    self.skills.interaction_design,
-                    self.skills.visual_interface_design,
-                    self.skills.frontend_development,
-                    self.skills.content_management,
-                    self.skills.project_management
-                ],
-                color: '#FFCC00',
-                pointPlacement: 'on'
-            };
-
-            var credits = {
-                text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
-                href: ''
-            };
-
-            Spiderchart.createChart('spiderChart', '', 400, 400, 65, [scores], true, false, credits);
-
+        function updateChart() {
+            CMDChart.createChart('cmd__profile', self.skills, 'small');
         }
+        // function makeChart() {
+        //     var scores = {
+        //         name: 'Level',
+        //         data: [
+        //             self.skills.interaction_design,
+        //             self.skills.visual_design,
+        //             self.skills.techniek,
+        //             self.skills.content_management,
+        //             self.skills.project_management
+        //         ],
+        //         color: '#FFCC00',
+        //         pointPlacement: 'on'
+        //     };
+        //
+        //     var credits = {
+        //         text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
+        //         href: ''
+        //     };
+        //
+        //     var test = Spiderchart.createChart('spiderChart', '', 400, 400, 65, [scores], true, false, credits);
+        //
+        //     console.log(test);
+        //
+        // }
 
         function addQuest() {
             var quest = {
@@ -146,9 +152,6 @@
         function removeObjective(objective) {
             self.objectives.splice(self.objectives.indexOf(objective), 1);
         }
-
-        // Initiate the first chart
-        self.makeSpiderChart();
 
     }
 

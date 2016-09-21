@@ -97,7 +97,7 @@
 
         function prepareGraphData(guild) {
             var graph_data = {
-                weeknumber: 0,
+                weeknumber: 1,
                 column_dates: [],
                 horizontal_axis: [],
                 series: [],

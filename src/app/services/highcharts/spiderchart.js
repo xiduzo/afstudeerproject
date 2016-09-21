@@ -17,7 +17,7 @@
         return service;
 
         function createChart(selector, title, width, height, size, series, tooltip, animation, credits) {
-            Highcharts.chart(selector, {
+            return new Highcharts.chart(selector, {
                 chart: {
                     polar: true,
                     type: 'area',

@@ -1,199 +1,106 @@
-<section layout-margin flex>
+<section flex layout="column">
+    <md-toolbar>
+        <span class="md-toolbar-tools">
+            <span flex>
+                Create assessment for {{ worldsQuestsNewCtrl.world.name }}
+            </span>
+            <md-button class="md-icon-button" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
+                <md-icon md-svg-icon="back_light"></md-icon>
+                <md-tooltip md-direction="left">
+                    Take me back
+                </md-tooltip>
+            </md-button>
+        </span>
+    </md-toolbar>
 
-    <section layout="row">
-        <h1 class="md-headline" flex>
-            Create quest for {{ worldsQuestsNewCtrl.world.name }}
-        </h1>
-        <md-button class="md-raised md-accent md-fab" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
-            <md-icon md-svg-icon="back_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Take me back
-            </md-tooltip>
-        </md-button>
-    </section>
+    <section flex layout="row" layout-fill layout-align="start stretch">
+        <section flex=70 flex layout="column">
+            <md-content flex=45 layout-margin md-whiteframe=1>
 
-    <md-content md-whiteframe=1 layout-padding>
-        <form>
-            <div layout="row">
-                <md-input-container flex>
-                    <label>Quest name</label>
-                    <input
-                        ng-model="worldsQuestsNewCtrl.formInput.name"
-                        required
-                        ng-change="worldsQuestsNewCtrl.makeSpiderChart()">
-                </md-input-container>
-                <md-input-container>
-                    <label>Group power</label>
-                    <input
-                        ng-model="worldsQuestsNewCtrl.formInput.experience"
-                        type="number"
-                        step="10"
-                        name="experience"/>
-                </md-input-container>
-            </div>
-            <!-- TODO -->
-            <!-- FIX FONT AWESOME -->
-            <text-angular flex ng-model="worldsQuestsNewCtrl.formInput.description">
-            </text-angular>
-        </form>
-    </md-content>
+            </md-content>
+            <md-content flex=55 layout layout-margin md-whiteframe=1>
+                <section flex="50" layout="column" layout-align="space-around">
+                    <div layout>
+                        <div flex="25" layout layout-align="left center">
+                            <span class="md-body-1"> Interaction Design </span>
+                        </div>
+                        <md-slider flex class="md-primary"
+                        ng-model="worldsQuestsNewCtrl.skills.interaction"
+                        ng-change="worldsQuestsNewCtrl.updateChart()"
+                        md-discrete
+                        step="5"
+                        min="0"
+                        max="100"
+                        aria-label="Interaction Design">
+                        </md-slider>
+                    </div>
+                    <div layout>
+                        <div flex="25" layout layout-align="left center">
+                            <span class="md-body-1"> Visual Design </span>
+                        </div>
+                        <md-slider flex class="md-primary"
+                        ng-model="worldsQuestsNewCtrl.skills.visual"
+                        ng-change="worldsQuestsNewCtrl.updateChart()"
+                        md-discrete
+                        step="5"
+                        min="0"
+                        max="100"
+                        aria-label="Visual Design">
+                        </md-slider>
+                    </div>
+                    <div layout>
+                        <div flex="25" layout layout-align="left center">
+                            <span class="md-body-1"> Frontend Development </span>
+                        </div>
+                        <md-slider flex class="md-primary"
+                        ng-model="worldsQuestsNewCtrl.skills.techniek"
+                        ng-change="worldsQuestsNewCtrl.updateChart()"
+                        md-discrete
+                        step="5"
+                        min="0"
+                        max="100"
+                        aria-label="Frontend Development">
+                        </md-slider>
+                    </div>
+                </section>
+                <section flex=50 layout layout-align="center center">
+                    <div id="cmd__profile"></div>
+                </section>
+            </md-content>
+        </section>
+        <section flex layout-margin>
+            <md-content md-whiteframe=1 layout-fill layout="column">
+                <md-toolbar>
+                    <span class="md-toolbar-tools">
+                        Assessment settings
+                    </span>
+                </md-toolbar>
+                <md-subheader>
+                    Settings
+                </md-subheader>
+                <section layout="column" layout-padding>
+                    <md-input-container>
+                        <label>Quest name</label>
+                        <input ng-model="worldsQuestsNewCtrl.formInput.name">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Group power</label>
+                        <input
+                            ng-model="worldsQuestsNewCtrl.formInput.experience"
+                            type="number"
+                            step="10"
+                            name="experience"/>
+                    </md-input-container>
+                </section>
+                <md-subheader>
+                    Assessments
+                </md-subheader>
+                <section>
+                </section>
 
-    <md-content md-whiteframe=1>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                Assessment focus
-            </div>
-        </md-toolbar>
-        <md-content layout="row" layout-wrap layout-padding>
-            <section flex="50" layout="column" layout-align="space-around">
-                <div layout>
-                    <div flex="25" layout layout-align="left center">
-                        <span class="md-body-1"> Interaction Design </span>
-                    </div>
-                    <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.interaction_design"
-                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
-                    md-discrete
-                    step="5"
-                    min="0"
-                    max="100"
-                    aria-label="Interaction Design">
-                    </md-slider>
-                </div>
-                <div layout>
-                    <div flex="25" layout layout-align="left center">
-                        <span class="md-body-1"> Visual Interface Design </span>
-                    </div>
-                    <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.visual_interface_design"
-                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
-                    md-discrete
-                    step="5"
-                    min="0"
-                    max="100"
-                    aria-label="Visual Interface Design">
-                    </md-slider>
-                </div>
-                <div layout>
-                    <div flex="25" layout layout-align="left center">
-                        <span class="md-body-1"> Frontend Development </span>
-                    </div>
-                    <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.frontend_development"
-                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
-                    md-discrete
-                    step="5"
-                    min="0"
-                    max="100"
-                    aria-label="Frontend Development">
-                    </md-slider>
-                </div>
-                <div layout>
-                    <div flex="25" layout layout-align="left center">
-                        <span class="md-body-1"> Content management </span>
-                    </div>
-                    <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.content_management"
-                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
-                    md-discrete
-                    step="5"
-                    min="0"
-                    max="100"
-                    aria-label="Content management">
-                    </md-slider>
-                </div>
-                <div layout>
-                    <div flex="25" layout layout-align="left center">
-                        <span class="md-body-1"> Project management </span>
-                    </div>
-                    <md-slider flex class="md-primary"
-                    ng-model="worldsQuestsNewCtrl.skills.project_management"
-                    ng-change="worldsQuestsNewCtrl.makeSpiderChart()"
-                    md-discrete
-                    step="5"
-                    min="0"
-                    max="100"
-                    aria-label="Project management">
-                    </md-slider>
-                </div>
-            </section>
-            <section flex="50" layout layout-align="center center">
-                <div id="spiderChart"></div>
-            </section>
-        </md-content>
-    </md-content>
+            </md-content>
 
-    <section layout="column" md-whiteframe=1>
-        <md-toolbar>
-            <div class="md-toolbar-tools" layout-padding>
-                <span flex="20">
-                    Name
-                </span>
-                <span flex="50">
-                    Objective
-                </span>
-                <span flex="20">
-                    Points
-                </span>
-                <span flex="10" layout="row" layout-align="end">
-                    <md-button class="md-icon-button" ng-click="worldsQuestsNewCtrl.addObjective()">
-                        <md-icon md-svg-icon="add_light"></md-icon>
-                        <md-tooltip md-direction="left">
-                            Add objective
-                        </md-tooltip>
-                    </md-button>
-                    <!-- placeholder -->
-                </span>
-            </div>
-        </md-toolbar>
-        <md-content>
-            <md-list>
-                <md-list-item ng-if="worldsQuestsNewCtrl.objectives.length < 1">
-                    No objectives have been set for this assignment
-                </md-list-item>
-                <div ng-repeat="objective in worldsQuestsNewCtrl.objectives">
-                        <md-list-item layout="row" layout-padding layout-align="center start">
-                            <span flex="20">
-                                {{ objective.name }}
-                            </span>
-                            <span flex="50">
-                                <div ng-if="!objective.editing">
-                                    <span ng-bind-html="objective.objective"
-                                    ng-click="objective.editing = true">
-                                    </span>
-                                </div>
-                                <div ng-if="objective.editing">
-                                    <text-angular flex ng-model="objective.objective">
-                                    </text-angular>
-                                    <md-button ng-click="objective.editing = false">
-                                        Done editing
-                                    </md-button>
-                                </div>
-                            </span>
-                            <span flex="20">
-                                {{ objective.points | number  }}
-                            </span>
-                            <span flex="10" layout="row" layout-align="end">
-                                <md-button class="md-icon-button"
-                                    ng-click="worldsQuestsNewCtrl.removeObjective(objective)">
-                                    <md-icon md-svg-icon="delete_dark">
-                                        <md-tooltip>
-                                            Remove objective
-                                        </md-tooltip>
-                                    </md-icon>
-                                </md-button>
-                            </span>
-                        </md-list-item>
-                    <md-divider ></md-divider>
-                </div>
-            </md-list>
-        </md-content>
-    </section>
-
-    <section layout-padding layout="row" layout-align="center center">
-        <md-button class="md-raised success" ng-click="worldsQuestsNewCtrl.addQuest()">
-            Add assignment
-        </md-button>
+        </section>
     </section>
 
 </section>

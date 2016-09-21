@@ -35,7 +35,7 @@
             });
         }
 
-        function createChart(container, data) {
+        function createChart(container, data, size) {
             Highcharts.Series.prototype.drawDataLabels = (function (func) {
                 return function () {
                     func.apply(this, arguments);
@@ -102,8 +102,9 @@
                 visual_interaction: { active: false, data: [] },
             };
 
-            var treshold = 60;
+            var treshold = 55;
 
+            // Which part of the diagram should be lit up green
             if(data.techniek >= treshold && data.interaction >= treshold && data.visual >= treshold) {
                 profiles.unicorn.active = true;
             } else {
@@ -231,12 +232,28 @@
                 profiles.visual_interaction.data.push(interaction_circle[i]);
             }
 
-            $('#'+container).highcharts({
+            var chart_size = {
+                width: null,
+                height: null
+            };
+
+            switch (size) {
+                case 'small':
+                    chart_size.width = circle_template.radius * 2.25;
+                    chart_size.height = circle_template.radius * 2;
+                    break;
+                default:
+                    chart_size.width = circle_template.radius * 2.75;
+                    chart_size.height = circle_template.radius * 2.5;
+
+            }
+
+            Highcharts.chart(container, {
                 chart: {
-                    width: circle_template.radius * 2.75,
-                    height: circle_template.radius * 2.5,
+                    width: chart_size.width,
+                    height: chart_size.height,
                 },
-                title: { text: 'My CMD profile' },
+                title: { text: 'CMD profile' },
                 xAxis: {
                     max: circle_template.radius * 2 * 2,
                     lineWidth: 0,
@@ -253,6 +270,16 @@
                     labels: { enabled:false },
                 },
                 legend: { enabled: false },
+                plotOptions: {
+                    series: {
+                        animation: false,
+                        dataLabels: {
+                            style: {
+                                fontSize: size === 'small' ? 10 : 12
+                            },
+                        }
+                    }
+                },
                 series: [
                     {
                         name: 'Techniek',
@@ -260,17 +287,17 @@
                         data: techniek_circle,
                         color: Highcharts.Color('#ffcc00').setOpacity(0.33).get(),
                         enableMouseTracking: false,
-dataLabels: {
-    enabled: true,
-    rotation: 45,
-    x: 20,
-    y: 0,
-    formatter: function() {
-        if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.6)) {
-            return "TECHIEK";
-        }
-    },
-}
+                        dataLabels: {
+                            enabled: true,
+                            rotation: 45,
+                            x: 20,
+                            y: 0,
+                            formatter: function() {
+                                if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.6)) {
+                                    return "TECHIEK";
+                                }
+                            },
+                        }
                     },
                     {
                         name: 'Visual design',
@@ -308,6 +335,7 @@ dataLabels: {
                         }
                     },
                     {
+                        name: 'profile_tech',
                         visible: profiles.tech.active,
                         type: 'polygon',
                         data: profiles.tech.data,
