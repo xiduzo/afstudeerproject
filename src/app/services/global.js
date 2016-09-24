@@ -80,22 +80,24 @@
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
 
-            // Account.getAccessLevel(self.user.uid)
-            //     .then(function(response) {
-            //         if(response.status === -1) {
-            //             self.functions.noConnection();
-            //             return;
-            //         }
-            //         if(response.is_superuser) {
-            //             self.acccess = 3;
-            //         } else if (response.is_staff) {
-            //             self.access = 2;
-            //         } else {
-            //             self.access = 1;
-            //         }
-            //         self.access = 3;
-            //     });
-            self.access = 3;
+            Account.getAccessLevel(self.user.uid)
+            .then(function(response) {
+                if(response.status === -1) {
+                    self.functions.noConnection();
+                    return;
+                }
+                switch (response) {
+                    case response.is_superuser:
+                        self.access = 3;
+                        break;
+                    case response.is_staff:
+                        self.access = 2;
+                        break;
+                    default:
+                        self.access = 1;
+                }
+                self.access = 3;
+            });
             $state.go('base.home');
         }
 

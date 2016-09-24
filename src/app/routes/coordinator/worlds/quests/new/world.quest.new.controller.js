@@ -43,6 +43,7 @@
         self.formInput = {
             name: '',
             description: '',
+            moodle: '',
             experience: null
         };
         self.skills = {
@@ -136,17 +137,17 @@
                     about: 'Assignment objective',
                 }
             })
-                .then(function(response) {
-                    if(!response || !response.name || !response.objective || !response.points) {
-                        return;
-                    }
+            .then(function(response) {
+                if(!response || !response.name || !response.objective) {
+                    return Notifications.simpleToast('Please fill in all the fields');
+                }
 
-                    response.editing = false;
-                    self.objectives.push(response);
+                response.editing = false;
+                self.objectives.push(response);
 
-                }, function() {
-                    // Err
-                });
+            }, function() {
+                // Err
+            });
         }
 
         function removeObjective(objective) {

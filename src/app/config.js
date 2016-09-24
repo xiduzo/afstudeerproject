@@ -16,6 +16,7 @@
         localStorageServiceProvider,
         ScrollBarsProvider,
         ngOnboardingDefaultsProvider,
+        cfpLoadingBarProvider,
         DEBUG_ENABLED
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -181,6 +182,12 @@
             closeButtonText: 'x',
             overlayOpacity: 0.8,
         });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Loading bar provier
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // How many miliseconds before showing the loading bar
+        cfpLoadingBarProvider.latencyThreshold = 100;
 
 
     }

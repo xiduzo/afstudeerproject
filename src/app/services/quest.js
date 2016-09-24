@@ -126,7 +126,6 @@
                     quest: quest,
                     name: objective.name,
                     objective: objective.objective,
-                    points: objective.points
                 }
             })
             .then(function(response) {

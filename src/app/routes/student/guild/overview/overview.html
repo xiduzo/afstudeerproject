@@ -96,7 +96,7 @@
                                                 </md-button>
                                             </span>
                                         </md-list-item>
-                                        <div ng-repeat="objective in guild.objectives | orderBy: ['completed', '-created_at']">
+                                        <div ng-repeat="objective in guild.objectives | orderBy: ['completed', '-completed_at', '-created_at']">
                                             <md-list-item>
                                                 <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
                                                 <span flex="10" ng-repeat="v in [0]"

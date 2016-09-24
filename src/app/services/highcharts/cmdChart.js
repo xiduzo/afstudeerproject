@@ -239,8 +239,8 @@
 
             switch (size) {
                 case 'small':
-                    chart_size.width = circle_template.radius * 2.25;
-                    chart_size.height = circle_template.radius * 2;
+                    chart_size.width = circle_template.radius * 2.2;
+                    chart_size.height = circle_template.radius * 1.95;
                     break;
                 default:
                     chart_size.width = circle_template.radius * 2.75;
@@ -325,7 +325,7 @@
                         enableMouseTracking: false,
                         dataLabels: {
                             enabled: true,
-                            x: 40,
+                            x: size === 'small' ? 30 : 40,
                             y: 40,
                             formatter: function() {
                                 if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.3)) {

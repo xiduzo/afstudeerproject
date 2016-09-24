@@ -7,22 +7,12 @@
 
         <div class="md-dialog-content-body">
             <form layout="column">
-                <div layout="row">
-                    <md-input-container flex=class="md-block">
-                        <label>Name</label>
-                        <input ng-model="addQuestObjectiveCtrl.formInput.name" />
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>Points</label>
-                        <input
-                        ng-model="addQuestObjectiveCtrl.formInput.points"
-                        type="number"
-                        step="10"
-                        name="experience"/>
-                    </md-input-container>
-                </div>
+                <md-input-container flex=class="md-block">
+                    <label>Name</label>
+                    <input ng-model="addQuestObjectiveCtrl.formInput.name" />
+                </md-input-container>
 
-                <h2 class="md-title">Description</h2>
+                <h2 class="md-subhead">Description</h2>
                 <text-angular flex ng-model="addQuestObjectiveCtrl.formInput.objective">
                 </text-angular>
 

@@ -62,35 +62,37 @@
                         console.log(logged_in_user);
 
                         Account.checkForExistingUser(logged_in_user.uid)
-                            .then(function(response) {
-                                if(response.status === -1) {
-                                    Global.noConnection();
-                                    return;
-                                }
-                                if(response.length) {
-                                    Account.setUser(response[0]);
-                                } else {
-                                    // TODO
-                                    // When the user is logging in for the first times
-                                    // I think they can give themself access level 2 when they
-                                    // Manipulate the logged_in_user object before this service is fired
-                                    //
-                                    // On the other hand, they are first year students so let's just assume
-                                    // They do not have the expertice to do this (yet...)
+                        .then(function(response) {
+                            if(response.status === -1) {
+                                Global.noConnection();
+                                return;
+                            }
+                            if(response.length) {
+                                Account.setUser(response[0]);
+                                $state.go('base.home');
+                            } else {
+                                // TODO
+                                // When the user is logging in for the first times
+                                // I think they can give themself access level 2 when they
+                                // Manipulate the logged_in_user object before this service is fired
+                                //
+                                // On the other hand, they are first year students so let's just assume
+                                // They do not have the expertice to do this (yet...)
 
 
-                                    // Create user into the database
-                                    Account.createUser(logged_in_user)
-                                        .then(function(response) {
-                                            if(response) {
-                                                Account.setUser(logged_in_user);
-                                            }
-                                        })
-                                        .catch(function() {
-                                            // Err
-                                        });
-                                }
-                            });
+                                // Create user into the database
+                                Account.createUser(logged_in_user)
+                                .then(function(response) {
+                                    if(response) {
+                                        Account.setUser(logged_in_user);
+                                        $state.go('base.home');
+                                    }
+                                })
+                                .catch(function() {
+                                    // Err
+                                });
+                            }
+                        });
 
                     } else {
                         Notifications.simpleToast(response.message);

@@ -17,6 +17,7 @@
             'dndLists',
             'textAngular',
             'ngOnboarding',
+            'angular-loading-bar',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters

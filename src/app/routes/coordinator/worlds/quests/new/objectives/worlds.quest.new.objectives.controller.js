@@ -29,7 +29,6 @@
         self.formInput = {
             name: '',
             objective: '',
-            points: ''
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
