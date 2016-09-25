@@ -36,30 +36,32 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.worlds = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorldsOfGamemaster(Global.getUser().id)
-            .then(function(response) {
-                if(response.status >= 400) {
-                    Global.statusCode(response);
-                    return;
-                }
+        .then(function(response) {
+            if(response.status >= 400) {
+                Global.statusCode(response);
+                return;
+            }
 
-                _.each(response.worlds, function(world) {
-                    // Adding the world to the frontend
-                    _.each(world.world.guilds, function(guild) {
-                        _.each(guild.members, function(member) {
-                            // Adding guild id for moving players around
-                            member.guildId = guild.id;
-                        });
+            _.each(response.worlds, function(world) {
+                // Adding the world to the frontend
+                _.each(world.world.guilds, function(guild) {
+                    _.each(guild.members, function(member) {
+                        // Adding guild id for moving players around
+                        member.guildId = guild.id;
                     });
-                    self.worlds.push(world.world);
                 });
-            }, function() {
-                // Err
+                self.worlds.push(world.world);
             });
+            self.loading_page = false
+        }, function() {
+            // Err
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations

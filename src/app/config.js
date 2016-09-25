@@ -138,6 +138,10 @@
             .icon('add_person_dark', './assets/icons/material/ic_person_add_black_48px.svg', 48)
             .icon('close_light', './assets/icons/material/ic_close_white_48px.svg', 48)
             .icon('close_dark', './assets/icons/material/ic_close_black_48px.svg', 48)
+            .icon('rules_light', './assets/icons/material/ic_receipt_white_48px.svg', 48)
+            .icon('rules_dark', './assets/icons/material/ic_receipt_black_48px.svg', 48)
+            .icon('warning_light', './assets/icons/material/ic_report_problem_white_48px.svg', 48)
+            .icon('warning_dark', './assets/icons/material/ic_report_problem_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

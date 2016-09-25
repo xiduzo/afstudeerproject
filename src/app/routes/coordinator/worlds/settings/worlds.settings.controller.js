@@ -37,6 +37,7 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.world = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -48,8 +49,9 @@
                     $state.go('base.guilds.overview');
                 }
 
+                response.rules = [];
                 self.world = response;
-                
+
                 _.each(self.world.quests, function(quest) {
                     Quest.getGuildQuests(quest.id)
                     .then(function(response) {
@@ -70,6 +72,8 @@
                         // Err get guild quests
                     });
                 });
+
+                self.loading_page = false;
 
             }, function() {
                 // Err

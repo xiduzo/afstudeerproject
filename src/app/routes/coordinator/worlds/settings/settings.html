@@ -1,22 +1,41 @@
 <section flex layout="column">
     <md-toolbar>
         <div class="md-toolbar-tools" layout>
-            <span flex>
-                Class settings of: {{ worldsSettingsCtrl.world.name }}
-            </span>
             <md-button class="md-icon-button" ui-sref="base.worlds.overview">
                 <md-icon md-svg-src="back_light"></md-icon>
-                <md-tooltip md-direction="left" md-delay="1000">
+                <md-tooltip md-direction="top" md-delay="1000">
                     Take me back
                 </md-tooltip>
             </md-button>
+            <span flex>
+                Class settings of: {{ worldsSettingsCtrl.world.name }}
+            </span>
         </div>
     </md-toolbar>
-
-    <section flex layout="row" layout-fill layout-align="start stretch">
-        <section flex=80 layout flex>
-            <section ng-scrollbars flex>
-                <section layout-margin>
+    <section flex layout layout-fill>
+        <section flex=80 layout="column">
+            <section flex ng-if="worldsSettingsCtrl.loading_page" layout-fill layout="column" layout-align="center center">
+                <span>
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </span>
+                <span>
+                    loading page
+                </span>
+            </section>
+            <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
+                <section flex=50 ng-if="worldsSettingsCtrl.world.quests.length < 1" layout="column" layout-align="center center">
+                    <span>
+                        <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="book_dark">
+                        </md-icon>
+                    </span>
+                    <span class="md-headline">
+                        No assessments in this class.
+                    </span>
+                    <span class="md-title text--color--blueGrey">
+                        Add a new assessments to your right.
+                    </span>
+                </section>
+                <section layout-margin flex=50 ng-if="worldsSettingsCtrl.world.quests.length >= 1">
                     <md-content layout="column" md-whiteframe=1 >
                         <md-toolbar>
                             <div class="md-toolbar-tools">
@@ -34,7 +53,8 @@
                                 <span flex=30> {{ quest.name }} </span>
                                 <span flex=20> {{ quest.experience | number }} </span>
                                 <span flex=30 layout-padding>
-                                    <div ng-if="!quest.total_guilds_conquering_quest">
+                                    <div ng-if="!quest.total_guilds_conquering_quest"
+                                    class="text--color--grey">
                                         No groups have seen this quest yet.
                                     </div>
                                     <div ng-if="quest.total_guilds_conquering_quest">
@@ -76,31 +96,40 @@
                                     <md-button class="md-icon-button"
                                      ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
                                         <md-icon md-svg-icon="pencil_dark"></md-icon>
-                                        <md-tooltip md-delay="1000">
-                                            Edit
-                                        </md-tooltip>
+                                        <md-tooltip md-delay="1000"> Edit </md-tooltip>
                                     </md-button>
                                     <md-button class="md-icon-button"
                                      ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
                                         <md-icon md-svg-icon="delete_dark"></md-icon>
-                                        <md-tooltip md-delay="1000">
-                                            Delete
-                                        </md-tooltip>
+                                        <md-tooltip md-delay="1000"> Delete </md-tooltip>
                                     </md-button>
                                 </span>
                             </md-list-item>
                         </md-list>
                     </md-content>
                 </section>
+                <md-divider></md-divider>
+                <section flex=50 ng-if="worldsSettingsCtrl.world.rules.length < 1"
+                layout="column" layout-align="center center">
+                    <span>
+                        <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="rules_dark">
+                        </md-icon>
+                    </span>
+                    <span class="md-headline">
+                        Dobby has no master!
+                    </span>
+                    <span class="md-title text--color--blueGrey">
+                        Dobby is a free elf...
+                    </span>
+                    <span class="md-subtitle text--color--grey">
+                        ...Or add some rules on the right.
+                    </span>
+                </section>
             </section>
         </section>
-        <section flex=20 layout-margin>
-            <md-content md-whiteframe=1 layout-fill layout="column">
-                <md-toolbar>
-                    <span class="md-toolbar-tools">
-                        {{ worldsSettingsCtrl.world.name }}
-                    </span>
-                </md-toolbar>
+
+        <md-content flex=20 layout="column" style="overflow-x: hidden;">
+            <section>
                 <md-subheader>
                     Actions
                 </md-subheader>
@@ -116,7 +145,13 @@
                     ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})" layout>
                         <md-icon md-svg-src="book_light"></md-icon>
                         <span flex>
-                            Create assessment
+                            New assessment
+                        </span>
+                    </md-button>
+                    <md-button class="md-raised success" layout>
+                        <md-icon md-svg-src="rules_light"></md-icon>
+                        <span flex>
+                            New rule
                         </span>
                     </md-button>
                     <md-button class="md-warn md-raised"
@@ -127,7 +162,9 @@
                         </span>
                     </md-button>
                 </section>
+            </section>
 
+            <section>
                 <md-subheader>
                     Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
                 </md-subheader>
@@ -140,7 +177,9 @@
                         </md-tooltip>
                     </span>
                 </section>
+            </section>
 
+            <section>
                 <md-subheader>
                     Groups ({{worldsSettingsCtrl.world.guilds.length}})
                 </md-subheader>
@@ -155,9 +194,7 @@
                         </md-list-item>
                     </md-list>
                 </section>
-            </md-content>
-
-        </section>
+            </section>
+        </md-content>
     </section>
-
 </section>

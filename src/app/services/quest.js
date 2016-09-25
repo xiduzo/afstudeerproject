@@ -9,7 +9,6 @@
     function Quest(
         $http,
         $q,
-        API_URL,
         REST_API_URL
     ) {
 
@@ -42,11 +41,10 @@
                     name: quest.name,
                     description: quest.description,
                     experience: quest.experience,
+                    moodle_link: quest.moodle_link,
                     interaction_design: quest.skills.interaction_design,
-                    visual_interface_design: quest.skills.visual_interface_design,
-                    frontend_development: quest.skills.frontend_development,
-                    content_management: quest.skills.content_management,
-                    project_management: quest.skills.project_management,
+                    visual_design: quest.skills.visual_design,
+                    techniek: quest.skills.techniek,
                     world: world
                 }
             })

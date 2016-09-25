@@ -71,42 +71,17 @@
         function updateChart() {
             CMDChart.createChart('cmd__profile', self.skills, 'small');
         }
-        // function makeChart() {
-        //     var scores = {
-        //         name: 'Level',
-        //         data: [
-        //             self.skills.interaction_design,
-        //             self.skills.visual_design,
-        //             self.skills.techniek,
-        //             self.skills.content_management,
-        //             self.skills.project_management
-        //         ],
-        //         color: '#FFCC00',
-        //         pointPlacement: 'on'
-        //     };
-        //
-        //     var credits = {
-        //         text: 'Skill requirements for ' + (self.formInput.name ? self.formInput.name : 'unknown quest'),
-        //         href: ''
-        //     };
-        //
-        //     var test = Spiderchart.createChart('spiderChart', '', 400, 400, 65, [scores], true, false, credits);
-        //
-        //     console.log(test);
-        //
-        // }
 
         function addQuest() {
             var quest = {
                 name:        self.formInput.name,
                 experience:  self.formInput.experience,
                 description: self.formInput.description,
+                moodle_link: self.formInput.moodle,
                 skills: {
-                    interaction_design:      self.skills.interaction_design,
-                    visual_interface_design: self.skills.visual_interface_design,
-                    frontend_development:    self.skills.frontend_development,
-                    content_management:      self.skills.content_management,
-                    project_management:      self.skills.project_management
+                    interaction_design: self.skills.interaction,
+                    visual_design:      self.skills.visual,
+                    techniek:           self.skills.techniek
                 }
             };
 

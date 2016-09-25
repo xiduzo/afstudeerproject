@@ -10,7 +10,6 @@
         $http,
         $q,
         Account,
-        API_URL,
         REST_API_URL
     ) {
 
