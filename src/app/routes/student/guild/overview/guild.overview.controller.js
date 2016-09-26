@@ -52,30 +52,6 @@
 
                 World.getWorld(guild.world.id)
                 .then(function(response) {
-                    var worldQuests = response.quests;
-
-                    // Quick fix bc I changed the serializer
-                    _.each(guild.quests, function(quest) {
-                        quest.quest = quest.quest.url;
-                    });
-                    // Filter out all the quest we allready have
-                    // For this guild
-                    worldQuests = _.filter(worldQuests, function(quest) {
-                        if(!_.findWhere(guild.quests, {quest: quest.url})) {
-                            return quest;
-                        }
-                    });
-
-                    // Add all the new quests
-                    _.each(worldQuests, function(quest) {
-                        Guild.addQuest(guild.url, quest.url)
-                        .then(function(response) {
-                            guild.quests.push(response);
-                        }, function(error) {
-                            // Err add quest
-                        });
-                    });
-
                     guild.world_start_date = moment(response.start).format();
                     guild.course_duration = response.course_duration;
 

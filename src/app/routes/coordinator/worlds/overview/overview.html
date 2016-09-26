@@ -13,14 +13,7 @@
 
     <section flex layout>
         <section ng-if="worldsOverviewCtrl.worlds.length < 1" layout-fill layout="column" layout-align="center center">
-            <section ng-if="worldsOverviewCtrl.loading_page" layout="column" layout-align="center center">
-                <span>
-                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-                </span>
-                <span>
-                    loading page
-                </span>
-            </section>
+            <cmd-loading-page ng-if="worldsOverviewCtrl.loading_page"></cmd-loading-page>
             <section ng-if="!worldsOverviewCtrl.loading_page" layout="column" layout-align="center center">
                 <span>
                     <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="world_dark">

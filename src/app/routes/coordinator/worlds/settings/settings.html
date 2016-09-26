@@ -14,14 +14,7 @@
     </md-toolbar>
     <section flex layout layout-fill>
         <section flex=80 layout="column">
-            <section flex ng-if="worldsSettingsCtrl.loading_page" layout-fill layout="column" layout-align="center center">
-                <span>
-                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-                </span>
-                <span>
-                    loading page
-                </span>
-            </section>
+            <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
             <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
                 <section flex=50 ng-if="worldsSettingsCtrl.world.quests.length < 1" layout="column" layout-align="center center">
                     <span>
@@ -191,6 +184,7 @@
                             <md-tooltip md-delay="1000">
                                 View {{ guild.name }}
                             </md-tooltip>
+                            <md-divider></md-divider>
                         </md-list-item>
                     </md-list>
                 </section>

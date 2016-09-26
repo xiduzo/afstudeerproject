@@ -1,13 +1,6 @@
 <section flex layout="column">
     <section ng-if="guildsOverviewCtrl.worlds.length < 1" layout-fill layout="column" layout-align="center center">
-        <section ng-if="guildsOverviewCtrl.loading_page" layout="column" layout-align="center center">
-            <span>
-                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-            </span>
-            <span>
-                loading page
-            </span>
-        </section>
+        <cmd-loading-page ng-if="guildsOverviewCtrl.loading_page"></cmd-loading-page>
         <section ng-if="!guildsOverviewCtrl.loading_page" layout="column" layout-align="center center">
             <span>
                 <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="world_dark">
@@ -17,7 +10,7 @@
                 No classes found.
             </span>
             <span class="md-title text--color--blueGrey">
-                Wait for an co&ouml;rdiantor to add you as a class lecturer.
+                Wait for a co&ouml;rdiantor to add you as a class lecturer.
             </span>
         </section>
     </section>
@@ -105,15 +98,15 @@
                                         </md-toolbar>
 
                                         <md-card-content>
-                                            <section ng-if="guild.members.length < 1">
-                                                <span class="text--color--grey" layout layout-align="center">
-                                                    No students in this group yet.
-                                                </span>
-                                            </section>
-                                            <md-list ng-if="guild.members.length >= 1"
+                                            <md-list
                                                 dnd-list="guild.members"
                                                 dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
+                                                <md-list-item ng-if="guild.members.length < 1"
+                                                     class="text--color--grey" layout layout-align="center center">
+                                                    No students in this group yet.
+                                                </md-list-item>
                                                 <md-list-item ng-repeat="player in guild.members"
+                                                    ng-if="guild.members.length >= 1"
                                                     dnd-draggable="player"
                                                     dnd-moved="guild.members.splice($index, 1)"
                                                     dnd-effect-allowed="move">

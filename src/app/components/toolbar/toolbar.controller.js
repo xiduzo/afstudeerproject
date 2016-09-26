@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.components')
-        .controller('Toolbarontroller', Toolbarontroller);
+        .controller('Toolbarcontroller', Toolbarcontroller);
 
     /** @ngInject */
-    function Toolbarontroller(
+    function Toolbarcontroller(
         $scope,
         $mdMedia,
         $rootScope,
