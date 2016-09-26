@@ -1,33 +1,43 @@
 <section flex layout="column">
     <cmd-loading-page ng-if="questsLogCtrl.loading_page"></cmd-loading-page>
-    <section flex ng-if="questsLogCtrl.guilds.length < 1 && !questsLogCtrl.loading_page" layout-fill layout="column" layout-align="center center">
-        <span>
-            <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="guild_dark">
-            </md-icon>
-        </span>
-        <span class="md-headline">
-            No group found.
-        </span>
-        <span class="md-title text--color--blueGrey">
-            Wait for a lecturer to add you to a group.
-        </span>
-    </section>
+    <cmd-empty-state ng-if="questsLogCtrl.guilds.length < 1 && !questsLogCtrl.loading_page"
+    icon="guild_dark"
+    headline="No group found."
+    title="Wait for a lecturer to add you to a group.">
+    </cmd-empty-state>
 
     <md-tabs ng-if="questsLogCtrl.guilds.length >= 1 && !questsLogCtrl.loading_page"
     class="md-primary" flex layout="column" layout-fill>
         <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'"
             flex layout="column" label="{{guild.name}}">
-
             <md-tab-content layout-margin>
-                <md-content layout-fill>
+                <cmd-empty-state ng-if="guild.active_quests.length < 1"
+                icon="book_dark"
+                headline="No assessments found."
+                title="There are no assessments vissible at this moment."
+                subtitle="Be sure to check again later">
+                </cmd-empty-state>
+                <md-content layout-fill ng-if="guild.active_quests.length >= 1">
                     <md-toolbar>
                         <span class="md-toolbar-tools" layout>
                             <span flex=20>
                                 Assessments
                             </span>
                             <span flex=80>
-                                <span ng-if="!guild.selected_objective"
-                                ng-bind-html="guild.selected_quest.quest.name">
+                                <span layout ng-if="!guild.selected_objective">
+                                    <span flex layout layout-align="start center">
+                                        {{ guild.selected_quest.quest.name }}
+                                    </span>
+                                    <md-button class="md-icon-button"
+                                    ng-if="guild.selected_quest.quest.moodle_link"
+                                    href="{{guild.selected_quest.quest.moodle_link}}"
+                                    target="_BLANK">
+                                        <md-icon md-svg-icon="external_link_light"></md-icon>
+                                        <md-tooltip md-delay="1000" md-direction="left">
+                                            Goto moodle
+                                        </md-tooltip>
+                                    </md-button>
+                                </span>
                                 </span>
                                 <span ng-if="guild.selected_objective"
                                 ng-bind-html="guild.selected_objective.name">
@@ -37,7 +47,8 @@
                     </md-toolbar>
                     <section layout flex>
                         <section flex=20>
-                            <section ng-repeat="quest in guild.quests">
+                            <section ng-repeat="quest in guild.active_quests"
+                            ng-if="quest.quest.active">
                                 <md-subheader ng-click="questsLogCtrl.selectQuest(guild, quest)">
                                     <span layout>
                                         <span flex>
@@ -64,17 +75,16 @@
                             </section>
                         </section>
                         <section flex=80>
-                            <div layout-margin ng-if="!guild.selected_objective">
+                            <div layout-padding ng-if="!guild.selected_objective">
                                 <span ng-bind-html="guild.selected_quest.quest.description"></span>
                             </div>
-                            <div layout-margin ng-if="guild.selected_objective">
+                            <div layout-padding ng-if="guild.selected_objective">
                                 <span ng-bind-html="guild.selected_objective.objective"></span>
                             </div>
                         </section>
                     </section>
                 </md-content>
             </md-tab-content>
-
         </md-tab>
     </md-tabs>
 </section>

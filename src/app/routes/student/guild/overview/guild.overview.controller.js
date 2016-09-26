@@ -41,6 +41,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
         self.guilds = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -48,6 +49,7 @@
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
             _.each(response.guilds, function(guildObject) {
+                self.loading_page = true;
                 var guild = guildObject.guild;
 
                 World.getWorld(guild.world.id)
@@ -58,8 +60,11 @@
                     self.guilds.push(guild);
                     self.buildGraphData(guild);
 
+                    self.loading_page = false;
                 });
             });
+
+
         }, function() {
             // Err get user guilds
         });

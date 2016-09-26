@@ -77,6 +77,17 @@
 
                     guild.world_start_date = moment(response.start).format();
                     guild.course_duration = response.course_duration;
+                    guild.active_quests = [];
+
+                    _.each(guild.quests, function(quest) {
+                        if(quest.quest.active) {
+                            guild.active_quests.push(quest);
+                        }
+                    });
+
+                    guild.selected_quest = _.first(guild.active_quests);
+
+                    console.log(guild.active_quests);
 
                     self.guilds.push(guild);
                     self.loading_page = false;
@@ -97,6 +108,7 @@
         function selectQuest(guild, quest) {
             guild.selected_objective = null;
             guild.selected_quest = quest;
+            console.log(guild.selected_quest);
         }
 
     }

@@ -1,19 +1,10 @@
 <section flex layout="column">
-    <section ng-if="guildsOverviewCtrl.worlds.length < 1" layout-fill layout="column" layout-align="center center">
-        <cmd-loading-page ng-if="guildsOverviewCtrl.loading_page"></cmd-loading-page>
-        <section ng-if="!guildsOverviewCtrl.loading_page" layout="column" layout-align="center center">
-            <span>
-                <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="world_dark">
-                </md-icon>
-            </span>
-            <span class="md-headline">
-                No classes found.
-            </span>
-            <span class="md-title text--color--blueGrey">
-                Wait for a co&ouml;rdiantor to add you as a class lecturer.
-            </span>
-        </section>
-    </section>
+    <cmd-loading-page ng-if="guildsOverviewCtrl.loading_page"></cmd-loading-page>
+    <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1 && !guildsOverviewCtrl.loading_page"
+    icon="world_dark"
+    headline="No classes found."
+    title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
+    </cmd-empty-state>
     <md-tabs class="md-primary" flex layout="column" layout-fill
         ng-if="guildsOverviewCtrl.worlds.length >= 1">
         <md-tab ng-repeat="world in guildsOverviewCtrl.worlds | orderBy: 'name'"
@@ -27,21 +18,12 @@
                 </md-button>
                 <section flex layout="column">
                     <section flex layout="row" layout-margin>
-                        <section ng-if="world.guilds.length < 1" layout-fill layout="column" layout-align="center center">
-                            <span>
-                                <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="guild_dark">
-                                </md-icon>
-                                <md-tooltip md-direction="top">
-                                    Nope, the one in the corner
-                                </md-tooltip>
-                            </span>
-                            <span class="md-headline">
-                                No groups found.
-                            </span>
-                            <span class="md-title text--color--blueGrey">
-                                Add a new group by clicking on the shield.
-                            </span>
-                        </section>
+                        <cmd-empty-state ng-if="world.guilds.length < 1"
+                        icon="guild_dark"
+                        tooltip="Nope, the one in the corner"
+                        headline="No groups found."
+                        title="Add a new group by clicking on the shield.">
+                        </cmd-empty-state>
                         <div ng-scrollbars flex>
                             <div layout="row" layout-wrap>
                                 <div flex=33

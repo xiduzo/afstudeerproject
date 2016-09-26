@@ -12,24 +12,17 @@
             </span>
         </div>
     </md-toolbar>
-    <section flex layout layout-fill>
+    <section flex layout>
         <section flex=80 layout="column">
             <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
             <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
-                <section flex=50 ng-if="worldsSettingsCtrl.world.quests.length < 1" layout="column" layout-align="center center">
-                    <span>
-                        <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="book_dark">
-                        </md-icon>
-                    </span>
-                    <span class="md-headline">
-                        No assessments in this class.
-                    </span>
-                    <span class="md-title text--color--blueGrey">
-                        Add a new assessments to your right.
-                    </span>
-                </section>
-                <section layout-margin flex=50 ng-if="worldsSettingsCtrl.world.quests.length >= 1">
-                    <md-content layout="column" md-whiteframe=1 >
+                <cmd-empty-state flex ng-if="worldsSettingsCtrl.world.quests.length < 1"
+                    icon="book_dark"
+                    headline="No assessments in this class."
+                    title="Add a new assessments to your right.">
+                </cmd-empty-state>
+                <section layout-margin flex ng-if="worldsSettingsCtrl.world.quests.length >= 1">
+                    <md-content flex="100" md-whiteframe=1 layout="column">
                         <md-toolbar>
                             <div class="md-toolbar-tools">
                                 <span flex=30> Assessment </span>
@@ -41,83 +34,81 @@
                                 <span flex=10> <!-- placeholder --> </span>
                             </div>
                         </md-toolbar>
-                        <md-list>
-                            <md-list-item ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'created_at'">
-                                <span flex=30> {{ quest.name }} </span>
-                                <span flex=20> {{ quest.experience | number }} </span>
-                                <span flex=30 layout-padding>
-                                    <div ng-if="!quest.total_guilds_conquering_quest"
-                                    class="text--color--grey">
-                                        No groups have seen this quest yet.
-                                    </div>
-                                    <div ng-if="quest.total_guilds_conquering_quest">
-                                        <section layout="row" layout-align="space-between">
-                                            <span>0</span>
-                                            <span>{{ quest.total_guilds_conquering_quest }}</span>
-                                        </section>
-                                        <md-progress-linear md-mode="determinate"
-                                        ng-class="{
-                                            'md-warn': quest.completion_percentage <= 20,
-                                            'md-accent': quest.completion_percentage > 40 &&
-                                            quest.completion_percentage <=70,
-                                        }"
-                                        value="{{quest.completion_percentage}}">
-                                        </md-progress-linear>
-                                        <md-tooltip>
-                                            <strong>
-                                                {{ quest.total_guilds_finished_quest }}
-                                            </strong>
-                                            out of
-                                            <strong>
-                                                {{ quest.total_guilds_conquering_quest }}
-                                            </strong>
-                                            group(s) completed this assessment
-                                        </md-tooltip>
-                                    </div>
-                                </span>
-                                <span flex=10 layout="row" layout-align="center center">
-                                    <div ng-repeat="v in [0]">
-                                        <md-switch class="md-primary"
-                                        ng-change="worldsSettingsCtrl.toggleQuest(quest)"
-                                        md-no-ink
-                                        aria-label="Toggle quest"
-                                        ng-model="quest.active">
-                                        </md-switch>
-                                    </div>
-                                </span>
-                                <span flex=10 layout="row" layout-align="end">
-                                    <md-button class="md-icon-button"
-                                     ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
-                                        <md-icon md-svg-icon="pencil_dark"></md-icon>
-                                        <md-tooltip md-delay="1000"> Edit </md-tooltip>
-                                    </md-button>
-                                    <md-button class="md-icon-button"
-                                     ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
-                                        <md-icon md-svg-icon="delete_dark"></md-icon>
-                                        <md-tooltip md-delay="1000"> Delete </md-tooltip>
-                                    </md-button>
-                                </span>
-                            </md-list-item>
-                        </md-list>
+                        <div layout="row" flex>
+                            <md-content ng-scrollbars flex>
+                                <md-list>
+                                    <md-list-item ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'completion_percentage'">
+                                        <span flex=30> {{ quest.name }} </span>
+                                        <span flex=20> {{ quest.experience | number }} </span>
+                                        <span flex=30 layout-padding>
+                                            <div ng-if="!quest.total_guilds_conquering_quest"
+                                            class="text--color--grey">
+                                                No groups have seen this quest yet.
+                                            </div>
+                                            <div ng-if="quest.total_guilds_conquering_quest">
+                                                <section layout="row" layout-align="space-between">
+                                                    <span>0</span>
+                                                    <span>{{ quest.total_guilds_conquering_quest }}</span>
+                                                </section>
+                                                <md-progress-linear md-mode="determinate"
+                                                ng-class="{
+                                                    'md-warn': quest.completion_percentage <= 20,
+                                                    'md-accent': quest.completion_percentage > 40 &&
+                                                    quest.completion_percentage <=70,
+                                                }"
+                                                value="{{quest.completion_percentage}}">
+                                                </md-progress-linear>
+                                                <md-tooltip>
+                                                    <strong>
+                                                        {{ quest.total_guilds_finished_quest }}
+                                                    </strong>
+                                                    out of
+                                                    <strong>
+                                                        {{ quest.total_guilds_conquering_quest }}
+                                                    </strong>
+                                                    group(s) completed this assessment
+                                                </md-tooltip>
+                                            </div>
+                                        </span>
+                                        <span flex=10 layout="row" layout-align="center center">
+                                            <div ng-repeat="v in [0]">
+                                                <md-switch class="md-primary"
+                                                ng-change="worldsSettingsCtrl.toggleQuest(quest)"
+                                                md-no-ink
+                                                aria-label="Toggle quest"
+                                                ng-model="quest.active">
+                                                </md-switch>
+                                            </div>
+                                        </span>
+                                        <span flex=10 layout="row" layout-align="end">
+                                            <md-button class="md-icon-button"
+                                             ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
+                                                <md-icon md-svg-icon="pencil_dark"></md-icon>
+                                                <md-tooltip md-delay="1000"> Edit </md-tooltip>
+                                            </md-button>
+                                            <md-button class="md-icon-button"
+                                             ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
+                                                <md-icon md-svg-icon="delete_dark"></md-icon>
+                                                <md-tooltip md-delay="1000"> Delete </md-tooltip>
+                                            </md-button>
+                                        </span>
+                                    </md-list-item>
+                                </md-list>
+                            </md-content>
+                        </div>
                     </md-content>
                 </section>
-                <md-divider></md-divider>
-                <section flex=50 ng-if="worldsSettingsCtrl.world.rules.length < 1"
-                layout="column" layout-align="center center">
-                    <span>
-                        <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="rules_dark">
-                        </md-icon>
-                    </span>
-                    <span class="md-headline">
-                        Dobby has no master!
-                    </span>
-                    <span class="md-title text--color--blueGrey">
-                        Dobby is a free elf...
-                    </span>
-                    <span class="md-subtitle text--color--grey">
-                        ...Or add some rules on the right.
-                    </span>
+
+                <section layout-margin>
+                    <md-divider></md-divider>
                 </section>
+
+                <cmd-empty-state flex ng-if="worldsSettingsCtrl.world.rules.length < 1"
+                    icon="rules_dark"
+                    headline="Dobby has no master!"
+                    title="Dobby is a free elf..."
+                    subtitle="...Or add some rules on the right.">
+                </cmd-empty-state>
             </section>
         </section>
 

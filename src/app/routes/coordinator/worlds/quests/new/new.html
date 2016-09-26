@@ -1,15 +1,15 @@
 <section flex layout="column">
     <md-toolbar>
         <span class="md-toolbar-tools">
-            <span flex>
-                Create assessment for {{ worldsQuestsNewCtrl.world.name }}
-            </span>
             <md-button class="md-icon-button" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
                 <md-icon md-svg-icon="back_light"></md-icon>
-                <md-tooltip md-direction="left" md-delay="1000">
+                <md-tooltip md-direction="top" md-delay="1000">
                     Take me back
                 </md-tooltip>
             </md-button>
+            <span flex>
+                Create assessment for {{ worldsQuestsNewCtrl.world.name }}
+            </span>
         </span>
     </md-toolbar>
 

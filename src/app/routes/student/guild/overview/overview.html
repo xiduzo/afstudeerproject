@@ -1,9 +1,9 @@
 <section flex layout="column">
-
-    <md-tabs class="md-primary" flex layout="column" layout-fill>
+    <cmd-loading-page ng-if="guildOverviewCtrl.loading_page"></cmd-loading-page>
+    <md-tabs ng-if="!guildOverviewCtrl.loading_page"
+    class="md-primary" flex layout="column" layout-fill>
         <md-tab ng-repeat="guild in guildOverviewCtrl.guilds | orderBy: 'name'"
             flex layout="column" label="{{guild.name}}">
-
             <md-tab-content layout="row" layout-align="start stretch">
                 <section flex layout="column">
                     <section flex=40 layout="row" layout-margin>
