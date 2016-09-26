@@ -16,13 +16,13 @@
             'ngScrollbars',
             'dndLists',
             'textAngular',
-            'ngOnboarding',
             'angular-loading-bar',
+            'ngOnboarding',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-            'secondsToDateTime',
+            'filters',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Config

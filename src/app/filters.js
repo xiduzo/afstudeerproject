@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('secondsToDateTime', [])
+        .module('filters', [])
 
         .filter('secondsToDateTime', function() {
             return function(seconds) {

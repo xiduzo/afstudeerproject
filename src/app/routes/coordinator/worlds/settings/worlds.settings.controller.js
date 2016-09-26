@@ -53,11 +53,13 @@
                 self.world = response;
 
                 _.each(self.world.quests, function(quest) {
+                    quest.total_guilds_conquering_quest = 0;
+                    quest.total_guilds_finished_quest = 0;
+                    quest.completion_percentage = 0;
+
                     Quest.getGuildQuests(quest.id)
                     .then(function(response) {
-                        quest.total_guilds_conquering_quest = 0;
-                        quest.total_guilds_finished_quest = 0;
-                        quest.completion_percentage = 0;
+
                         _.each(response, function(guild_quest) {
                             quest.total_guilds_conquering_quest++;
                             if(guild_quest.completed) {

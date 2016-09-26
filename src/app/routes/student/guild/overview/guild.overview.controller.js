@@ -11,6 +11,7 @@
         $mdToast,
         Guild,
         Global,
+        localStorageService,
         Notifications,
         Quest,
         World,
@@ -42,6 +43,86 @@
         self.user = Global.getUser();
         self.guilds = [];
         self.loading_page = true;
+        self.first_time = false;
+        self.onboarding_enabled = false;
+        self.onboarding_step_index = 0;
+        self.onboarding_steps = [
+            {
+                title: "Oh, hello "+self.user.first_name+"!",
+                description: "I can't help to notice this is your first time over here. Follow this steps and I'll show you how to get around.",
+                position: "centered"
+            },
+            {
+                title: "Group progress",
+                position: "bottom",
+                description: "Over here you will see your group progress, this will indicate the amount of work your team will have to do. It will also indicate the amount of work your group has been doing over time.",
+                attachTo: "#step1",
+                width: 300
+            },
+            {
+                title: "Objectives",
+                position: "top",
+                description: "The group progress will be influenced by the groups' objectives. Objectives can be added by everybody in the group.",
+                attachTo: "#step2",
+            },
+            {
+                title: "Adding an objective",
+                position: "centered",
+                description: "By clicking on bottom right button you can add an objective for your group. Let's add one ourself, shall we?",
+                attachTo: "#step3",
+            },
+        ];
+
+        self.callback = function() {
+            var guild = _.first(self.guilds);
+
+            var tempObj = {
+                name: 'My first objective',
+                objective: 'This is my first objective, this objective was added automaticly by following the onboarding',
+                points: 1
+            };
+            Guild.addObjective(guild.url, tempObj)
+            .then(function(response) {
+                var update = 'added a new objective: ' + '\'' +response.name + '\'';
+                guild.objectives.unshift(response);
+                self.guildHistoryUpdate(guild, update);
+                self.onboarding_steps_2_enabled = false;
+                nextSteps();
+            }, function(error) {
+                // Err add objective
+            });
+        };
+
+
+        self.steps_2_callback = function() {
+            var guild = _.first(self.guilds);
+            var objective = _.first(guild.objectives);
+
+            Guild.addObjectiveAssignment(objective.url, self.user.url)
+            .then(function(response) {
+                var update = 'assigned ' + self.user.first_name + ' to \'' + objective.name + '\'';
+                self.guildHistoryUpdate(guild, update);
+                Notifications.simpleToast(self.user.first_name + ' assigned to \'' + objective.name + '\'');
+                objective.assignments.push({id: response.id, user: self.user, user_id: self.user.id});
+                self.first_time = false;
+                localStorageService.set('guild_overview_first_time', false);
+            }, function(error) {
+                // Err add objective assignment
+            });
+        };
+
+        function nextSteps() {
+            self.onboarding_steps_2_enabled = true;
+            self.onboarding_steps_2_index = 0;
+            self.onboarding_steps_2 = [
+                {
+                    title: "Assigning persons to an objective",
+                    position: "top",
+                    description: "As you can see, your new objective is added to the list. Let me assign you to this objective. You can assign multiple people to one objective, but for now let's just assign you.",
+                    attachTo: "#step4",
+                }
+            ];
+        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -54,20 +135,39 @@
 
                 World.getWorld(guild.world.id)
                 .then(function(response) {
-                    guild.world_start_date = moment(response.start).format();
+                    if(response.start) {
+                        guild.world_start_date = moment(response.start).format();
+                    } else {
+                        guild.world_start_date = moment(response.created_at).format();
+                    }
+
                     guild.course_duration = response.course_duration;
 
                     self.guilds.push(guild);
                     self.buildGraphData(guild);
 
                     self.loading_page = false;
+
+                    switch (localStorageService.get('guild_overview_first_time')) {
+                        case true:
+                            self.first_time = true;
+                            self.onboarding_enabled = true;
+                            break;
+                        case false:
+                            // You've been here before
+                            break;
+                        default:
+                            localStorageService.set('guild_overview_first_time', true);
+                            self.first_time = true;
+                            self.onboarding_enabled = true;
+                    }
                 });
             });
-
 
         }, function() {
             // Err get user guilds
         });
+
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -78,7 +178,7 @@
             var previous_day_data = [];
             var objectives_graph_items = [];
             var starting_date = guild.world_start_date;
-            var course_duration = guild.course_duration;
+            var course_duration = guild.course_duration || 7 * 6;
             var weeknumber = 1;
             var previous_points = null;
             var objectives_graph_line = [];
@@ -189,7 +289,13 @@
             }, 100);
         }
 
-        function addObjective(guild) {
+        function addObjective(event, guild) {
+            if(self.first_time) {
+                self.onboarding_enabled = false;
+                self.callback();
+                return;
+            }
+
             $mdDialog.show({
                 controller: 'addObjectiveController',
                 controllerAs: 'addObjectiveCtrl',
@@ -215,6 +321,7 @@
                     var update = 'added a new objective: ' + '\'' +response.name + '\'';
                     guild.objectives.unshift(response);
                     self.guildHistoryUpdate(guild, update);
+                    guild.no_graph_data = false;
                 }, function(error) {
                     // Err add objective
                 });
@@ -229,6 +336,9 @@
                 var update = 'removed objective: \'' + objective.name + '\'';
                 guild.objectives.splice(guild.objectives.indexOf(objective), 1);
                 self.guildHistoryUpdate(guild, update);
+                if(!guild.objectives.length) {
+                    guild.no_graph_data = true;
+                }
             }, function(error) {
                 // Err remove objective
             });

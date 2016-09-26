@@ -24,9 +24,14 @@
                                 Assessments
                             </span>
                             <span flex=80>
-                                <span layout ng-if="!guild.selected_objective">
-                                    <span flex layout layout-align="start center">
+                                <span layout>
+                                    <span ng-if="!guild.selected_objective"
+                                    flex layout layout-align="start center">
                                         {{ guild.selected_quest.quest.name }}
+                                    </span>
+                                    <span ng-if="guild.selected_objective"
+                                    flex layout layout-align="start center">
+                                        {{ guild.selected_objective.name }}
                                     </span>
                                     <md-button class="md-icon-button"
                                     ng-if="guild.selected_quest.quest.moodle_link"
@@ -37,10 +42,6 @@
                                             Goto moodle
                                         </md-tooltip>
                                     </md-button>
-                                </span>
-                                </span>
-                                <span ng-if="guild.selected_objective"
-                                ng-bind-html="guild.selected_objective.name">
                                 </span>
                             </span>
                         </span>

@@ -14,8 +14,8 @@
         $urlRouterProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
-        ScrollBarsProvider,
         ngOnboardingDefaultsProvider,
+        ScrollBarsProvider,
         cfpLoadingBarProvider,
         DEBUG_ENABLED
     ) {
@@ -144,6 +144,8 @@
             .icon('warning_dark', './assets/icons/material/ic_report_problem_black_48px.svg', 48)
             .icon('external_link_light', './assets/icons/material/ic_open_in_new_white_48px.svg', 48)
             .icon('external_link_dark', './assets/icons/material/ic_open_in_new_black_48px.svg', 48)
+            .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
+            .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)
@@ -185,7 +187,7 @@
             Onboarding
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         ngOnboardingDefaultsProvider.set({
-            closeButtonText: 'x',
+            closeButtonText: '',
             overlayOpacity: 0.8,
         });
 
