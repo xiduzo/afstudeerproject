@@ -102,7 +102,7 @@
                                 headline="No objectives found."
                                 title="Add objectives so your group knows what to do.">
                                 </cmd-empty-state>
-                                <md-content ng-scrollbars flext ng-if="guild.objectives.length >= 1">
+                                <md-content ng-scrollbars flex ng-if="guild.objectives.length >= 1">
                                     <md-list>
                                         <div ng-repeat="objective in guild.objectives | orderBy: ['completed', '-completed_at', '-created_at']">
                                             <md-list-item>

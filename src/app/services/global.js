@@ -43,6 +43,9 @@
             getAccess: function() {
                 return Number(self.access);
             },
+            setAccess: function(access) {
+                self.access = acccess;
+            },
             notAllowed: function() {
                 $mdToast.show(
                     $mdToast.simple()
@@ -73,33 +76,35 @@
             },
             getAcitvePage: function() {
                 return self.page;
+            },
+            getAccessLevel: function(user) {
+                Account.getAccessLevel(user.uid)
+                .then(function(response) {
+                    var user = response[0];
+                    if(response.status === -1) {
+                        return self.functions.noConnection();
+                    }
+                    if(user.is_superuser) {
+                        self.access = 3;
+                    } else if(user.is_staff) {
+                        self.access = 2;
+                    } else {
+                        self.access = 1;
+                    }
+                    $rootScope.$broadcast('user-changed');
+                    $state.go('base.home');
+                });
             }
 
         };
 
+        $rootScope.$on('new-user-login', function(event, user) {
+            self.functions.getAccessLevel(user);
+        });
+
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
-
-            // Account.getAccessLevel(self.user.uid)
-            // .then(function(response) {
-            //     if(response.status === -1) {
-            //         self.functions.noConnection();
-            //         return;
-            //     }
-            //     switch (response) {
-            //         case response.is_superuser:
-            //             self.access = 3;
-            //             break;
-            //         case response.is_staff:
-            //             self.access = 2;
-            //             break;
-            //         default:
-            //             self.access = 1;
-            //     }
-            //     self.access = 3;
-            // });
-            self.access = 3;
-            $state.go('base.home');
+            self.functions.getAccessLevel(self.user);
         }
 
         return self.functions;

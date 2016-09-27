@@ -51,6 +51,7 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
+            console.log($rootScope.Global.getAccess());
             if($rootScope.Global.getAccess() < 1) {
                 $state.go('base.account.login');
             }

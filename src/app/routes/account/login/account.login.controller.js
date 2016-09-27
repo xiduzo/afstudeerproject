@@ -59,17 +59,13 @@
                             is_staff:          self.login_form.login_type === 'student' ? false : true
                         };
 
-                        console.log(logged_in_user);
-
                         Account.checkForExistingUser(logged_in_user.uid)
                         .then(function(response) {
                             if(response.status === -1) {
-                                Global.noConnection();
-                                return;
+                                return Global.noConnection();
                             }
                             if(response.length) {
                                 Account.setUser(response[0]);
-                                $state.go('base.home');
                             } else {
                                 // TODO
                                 // When the user is logging in for the first times
@@ -83,9 +79,11 @@
                                 // Create user into the database
                                 Account.createUser(logged_in_user)
                                 .then(function(response) {
+                                    if(response.status === -1) {
+                                        return Global.noConnection();
+                                    }
                                     if(response) {
                                         Account.setUser(logged_in_user);
-                                        $state.go('base.home');
                                     }
                                 })
                                 .catch(function() {

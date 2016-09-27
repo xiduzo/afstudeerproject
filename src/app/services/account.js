@@ -86,9 +86,7 @@
             $rootScope.Global.setUser(user);
 
             // Get the access level from the DB just to be sure no one will give himself access
-            $rootScope.$broadcast('user-changed');
-            $state.go('base.home');
-
+            $rootScope.$broadcast('new-user-login', user);
         }
 
         function getAccessLevel(uid) {
