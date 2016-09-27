@@ -4,27 +4,43 @@
     id="main__navigation"
     layout="column">
 
-    <md-toolbar ng-if="navigationCtrl.user.email" flex="none">
-        <div class="user__information" layout="row">
-            <div flex="30" layout-margin layout="row" layout-align="center center">
-                <img class="round" gravatar-size="75" gravatar-src-once="navigationCtrl.user.email">
+    <md-toolbar ng-if="navigationCtrl.user.email" flex="none" layout="column">
+        <section layout>
+            <div flex=30 layout-padding layout layout-align="center center">
+                <img class="round" gravatar-size=75 gravatar-src-once="navigationCtrl.user.email">
             </div>
             <div flex layout="column" layout-align="center start">
                 <div class="md-headline">
-                    {{ navigationCtrl.user.first_name }} {{ navigationCtrl.user.surname }}
+                    {{ navigationCtrl.user | fullUserName }}
                 </div>
                 <div class="md-subhead">
                     [PLACEHOLDER]
                 </div>
             </br/>
             </div>
-        </div>
+        </section>
+        <section layout-margin>
+            <md-select ng-model="navigationCtrl.selected_world" placeholder="Select world">
+                <md-option ng-repeat="world in navigationCtrl.worlds"
+                value="{{world.id}}">
+                    {{ world.name }}
+                </md-option>
+            </md-select>
+        </section>
+        <section layout-margin>
+            <md-select ng-model="navigationCtrl.selected_guild" placeholder="Select group">
+                <md-option ng-repeat="guild in navigationCtrl.guilds"
+                value="{{guild.id}}">
+                    {{ guild.name }}
+                </md-option>
+            </md-select>
+        </section>
     </md-toolbar>
 
     <!-- Adding ng-scrollbars over here will overrule the subheader effect -->
     <md-content flex>
         <section ng-repeat="group in navigationCtrl.main_navigation"
-            ng-if="navigationCtrl.access >= group.access_level">
+            ng-if="_.contains(group.access_levels, navigationCtrl.access)">
             <md-subheader>
                 {{ group.verbose }}
             </md-subheader>
@@ -33,7 +49,8 @@
                     ng-class="{
                         'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
                     }"
-                    ng-click="navigationCtrl.toggleNavigation();  navigationCtrl.active_menu_item = item.link_to">
+                    ng-if="_.contains(item.access_levels, navigationCtrl.access)"
+                    ng-click="navigationCtrl.toggleNavigation(); navigationCtrl.active_menu_item = item.link_to">
                     <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
                     <span flex>{{ item.name }}</span>
                 </md-list-item>

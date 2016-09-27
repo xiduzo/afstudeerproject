@@ -150,9 +150,9 @@
             // );
         }
         var user = {
-            techniek: 60,
-            interaction: 30,
-            visual: 30
+            techniek: Math.random() * 30 + 40,
+            interaction: Math.random() * 30 + 40,
+            visual: Math.random() * 30 + 40
         };
 
         CMDChart.createChart('testContainer', user);

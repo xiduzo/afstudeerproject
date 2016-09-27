@@ -11,6 +11,9 @@
         $mdSidenav,
         $state,
         Account,
+        Global,
+        Guild,
+        World,
         STUDENT_ACCESS_LEVEL,
         LECTURER_ACCESS_LEVEL,
         COORDINATOR_ACCESS_LEVEL
@@ -25,66 +28,112 @@
         self.logout = logout;
         self.active_menu_item = $state.current.name;
 
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = $rootScope.Global.getUser();
-        self.access = $rootScope.Global.getAccess();
+        self.user = Global.getUser();
+        self.access = Global.getAccess();
+        self.worlds = [];
+        self.guilds = [];
+        self.selected_world = null;
+        self.selected_guild = null;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		      Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        World.getWorldsOfGamemaster(self.user.id)
+        .then(function(response) {
+            _.each(response.worlds, function(world) {
+                self.worlds.push({id: world.world.id, name: world.world.name});
+            });
+            self.selected_world = _.first(self.worlds).id;
+        })
+        .catch(function() {
+
+        });
+
+        Guild.getUserGuilds(self.user.id)
+        .then(function(response) {
+            _.each(response.guilds, function(guild) {
+                self.guilds.push({id: guild.guild.id, name: guild.guild.name});
+            });
+            self.selected_guild = _.first(self.guilds).id;
+        })
+        .catch(function() {
+
+        });
+
 
         self.main_navigation = [
             {
                 subgroup: 'coordinator',
                 verbose: 'Coordinator',
-                access_level: COORDINATOR_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
                     {
                         name: 'Classes',
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
                     }
                 ],
             },
             {
                 subgroup: 'lecturer',
                 verbose: 'Lecturer',
-                access_level: LECTURER_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home',
+                        access_levels: [LECTURER_ACCESS_LEVEL],
                     },
                     {
                         name: 'Groups',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                 ],
             },
             {
                 subgroup: 'student',
                 verbose: 'Student',
-                access_level: STUDENT_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL, STUDENT_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home',
+                        access_levels: [STUDENT_ACCESS_LEVEL]
                     },
                     {
                         name: 'Group',
                         icon: 'guild_dark',
                         link_to: 'base.guild.overview',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                     {
                         name: 'Assessments',
                         icon: 'book_dark',
                         link_to: 'base.quests.log',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                 ],
             },

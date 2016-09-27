@@ -285,7 +285,7 @@
                         name: 'Techniek',
                         type: 'polygon',
                         data: techniek_circle,
-                        color: Highcharts.Color('#ffcc00').setOpacity(0.33).get(),
+                        color: Highcharts.Color('#FFC107').setOpacity(0.4).get(),
                         enableMouseTracking: false,
                         dataLabels: {
                             enabled: true,
@@ -303,7 +303,7 @@
                         name: 'Visual design',
                         type: 'polygon',
                         data: visual_circle,
-                        color: Highcharts.Color('#ffcc00').setOpacity(0.33).get(),
+                        color: Highcharts.Color('#FFC107').setOpacity(0.4).get(),
                         enableMouseTracking: false,
                         dataLabels: {
                             enabled: true,
@@ -321,7 +321,7 @@
                         name: 'Interaction design',
                         type: 'polygon',
                         data: interaction_circle,
-                        color: Highcharts.Color('#ffcc00').setOpacity(0.33).get(),
+                        color: Highcharts.Color('#FFC107').setOpacity(0.4).get(),
                         enableMouseTracking: false,
                         dataLabels: {
                             enabled: true,
