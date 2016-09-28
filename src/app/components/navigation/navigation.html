@@ -19,16 +19,18 @@
             </br/>
             </div>
         </section>
-        <section layout-margin>
-            <md-select ng-model="navigationCtrl.selected_world" placeholder="Select world">
+        <section layout-margin ng-if="navigationCtrl.access >= 2">
+            <md-select ng-change="navigationCtrl.changedWorld()"
+            ng-model="navigationCtrl.selected_world" placeholder="Select world">
                 <md-option ng-repeat="world in navigationCtrl.worlds"
                 value="{{world.id}}">
                     {{ world.name }}
                 </md-option>
             </md-select>
         </section>
-        <section layout-margin>
-            <md-select ng-model="navigationCtrl.selected_guild" placeholder="Select group">
+        <section layout-margin ng-if="navigationCtrl.access === 1">
+            <md-select ng-change="navigationCtrl.changedGuild()"
+            ng-model="navigationCtrl.selected_guild" placeholder="Select group">
                 <md-option ng-repeat="guild in navigationCtrl.guilds"
                 value="{{guild.id}}">
                     {{ guild.name }}

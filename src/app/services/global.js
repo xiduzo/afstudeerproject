@@ -11,7 +11,8 @@
         $state,
         $rootScope,
         localStorageService,
-        Account
+        Account,
+        Notifications
     ) {
 
         var self = this;
@@ -19,19 +20,13 @@
         self.user = {};
         self.access = null;
         self.active_page = '';
+        self.selected_world = null;
+        self.selected_guild = null;
 
         self.functions = {
             setUser: function(user) {
                 self.user = user;
-
-                // Setting the user access level
-                if(user.is_superuser) {
-                    self.acccess = 3;
-                } else if (user.is_staff) {
-                    self.access = 2;
-                } else {
-                    self.access = 1;
-                }
+                self.functions.getAccessLevel(user, true);
             },
             getUser: function() {
                 return self.user;
@@ -43,33 +38,15 @@
             getAccess: function() {
                 return Number(self.access);
             },
-            setAccess: function(access) {
-                self.access = acccess;
-            },
             notAllowed: function() {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('You are not allowed to view this page')
-                    .position('bottom right')
-                    .hideDelay(3000)
-                );
+                Notifications.simpleToast('You are not allowed to view this page');
                 $state.go('base.home');
             },
             noConnection: function() {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('There seems to be a problem establishing a database connection')
-                    .position('bottom right')
-                    .hideDelay(3000)
-                );
+                Notifications.simpleToast('There seems to be a problem establishing a database connection');
             },
             statusCode: function(response) {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent(response.status+': '+response.statusText)
-                    .position('bottom right')
-                    .hideDelay(5000)
-                );
+                Notifications.simpleToast(response.status+': '+response.statusText);
             },
             setActivePage: function(page) {
                 self.page = page;
@@ -77,13 +54,15 @@
             getAcitvePage: function() {
                 return self.page;
             },
-            getAccessLevel: function(user) {
+            getAccessLevel: function(user, set_user) {
                 Account.getAccessLevel(user.uid)
                 .then(function(response) {
-                    var user = response[0];
                     if(response.status === -1) {
                         return self.functions.noConnection();
                     }
+                    
+                    var user = response[0];
+
                     if(user.is_superuser) {
                         self.access = 3;
                     } else if(user.is_staff) {
@@ -91,15 +70,33 @@
                     } else {
                         self.access = 1;
                     }
-                    $rootScope.$broadcast('user-changed');
-                    $state.go('base.home');
-                });
-            }
 
+                    if(set_user) {
+                        $state.go('base.home');
+                    }
+
+                    $rootScope.$broadcast('user-changed');
+                });
+            },
+            setSelectedGuild: function(guild) {
+                self.guild = guild;
+                $rootScope.$broadcast('guild-changed', guild);
+            },
+            getSelectedGuild: function() {
+                return self.guild;
+            },
+            setSelectedWorld: function(world) {
+                self.world = world;
+                $rootScope.$broadcast('world-changed', world);
+            },
+            getSelectedWorld: function() {
+                return self.world;
+            }
         };
 
         $rootScope.$on('new-user-login', function(event, user) {
             self.functions.getAccessLevel(user);
+            $state.go('base.home');
         });
 
         if(localStorageService.get('user')) {

@@ -7,8 +7,9 @@
 
     /** @ngInject */
     function AccountLoginController(
-        $mdToast,
         $state,
+        $scope,
+        hotkeys,
         Account,
         Global,
         Notifications
@@ -16,8 +17,7 @@
 
         // If the user is logged in send him back to the homepage
         if(Global.getAccess() > 0) {
-            $state.go('base.home');
-            return;
+            return Global.notAllowed();
         }
 
         var self = this;
@@ -30,18 +30,28 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // objects
         self.login_form = {
             username: '',
             password: '',
             login_type: 'student'
         };
 
+        hotkeys.bindTo($scope)
+        .add({
+            combo: 'enter',
+            description: 'login',
+            callback: function() {
+                self.login();
+            }
+        })
+        // you can chain these methods for ease of use:
+        // .add ({...})
+        ; // End of hotkeys
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function login() {
-
             Account.login(self.login_form.username, self.login_form.password, self.login_form.login_type)
                 .then(function(response) {
                     if(response.uid) {
@@ -74,7 +84,6 @@
                                 //
                                 // On the other hand, they are first year students so let's just assume
                                 // They do not have the expertice to do this (yet...)
-
 
                                 // Create user into the database
                                 Account.createUser(logged_in_user)

@@ -18,6 +18,7 @@
             'textAngular',
             'angular-loading-bar',
             'ngOnboarding',
+            'cfp.hotkeys',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters

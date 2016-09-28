@@ -9,6 +9,7 @@
     function GuildOverviewController(
         $mdDialog,
         $mdToast,
+        $rootScope,
         Guild,
         Global,
         localStorageService,
@@ -41,6 +42,7 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
+        self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.loading_page = true;
         self.first_time = false;
@@ -123,6 +125,14 @@
                 }
             ];
         }
+
+        $rootScope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+            guild = _.find(self.guilds, function(guild) {
+                return guild.id == self.selected_guild;
+            });
+            self.buildGraphData(guild);
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services

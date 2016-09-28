@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function QuestsLogController(
+        $rootScope,
         Global,
         Guild,
         World,
@@ -30,8 +31,16 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
+        self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.loading_page = true;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $rootScope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -40,7 +49,6 @@
         .then(function(response) {
             _.each(response.guilds, function(guildObject) {
                 var guild = guildObject.guild;
-                guild.selected_quest = _.first(guild.quests);
 
                 World.getWorld(guild.world.id)
                 .then(function(response) {
@@ -85,7 +93,9 @@
                         }
                     });
 
-                    guild.selected_quest = _.first(guild.active_quests);
+                    guild.selected_quest = _.min(guild.active_quests, function(quest) {
+                        return moment(quest.quest.created_at).unix();
+                    });
 
                     self.guilds.push(guild);
                     self.loading_page = false;

@@ -146,6 +146,8 @@
             .icon('external_link_dark', './assets/icons/material/ic_open_in_new_black_48px.svg', 48)
             .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
             .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
+            .icon('remove_light', './assets/icons/material/ic_remove_white_48px.svg', 48)
+            .icon('remove_dark', './assets/icons/material/ic_remove_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

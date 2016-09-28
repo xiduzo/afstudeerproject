@@ -9,6 +9,7 @@
     function GuildsOverviewController(
         $mdDialog,
         $mdToast,
+        $rootScope,
         Account,
         Guild,
         Global,
@@ -37,6 +38,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.worlds = [];
         self.loading_page = true;
+        self.selected_world = Global.getSelectedWorld();
+
+        $rootScope.$on('world-changed', function(event, world) {
+            self.selected_world = world;
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services

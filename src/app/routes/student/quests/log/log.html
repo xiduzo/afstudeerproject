@@ -1,91 +1,114 @@
-<section flex layout="column">
+<section flex layout-fill>
+
     <cmd-loading-page ng-if="questsLogCtrl.loading_page"></cmd-loading-page>
+
     <cmd-empty-state ng-if="questsLogCtrl.guilds.length < 1 && !questsLogCtrl.loading_page"
     icon="guild_dark"
     headline="No group found."
     title="Wait for a lecturer to add you to a group.">
     </cmd-empty-state>
 
-    <md-tabs ng-if="questsLogCtrl.guilds.length >= 1 && !questsLogCtrl.loading_page"
-    class="md-primary" flex layout="column" layout-fill>
-        <md-tab ng-repeat="guild in questsLogCtrl.guilds | orderBy: 'name'"
-            flex layout="column" label="{{guild.name}}">
-            <md-tab-content layout-margin>
+    <section ng-if="questsLogCtrl.guilds.length >= 1" layout-fill>
+        <section layout-fill
+        ng-repeat="guild in questsLogCtrl.guilds"
+        ng-if="guild.id === questsLogCtrl.selected_guild">
+
+            <section layout="column" layout-fill>
+                <md-toolbar>
+                    <span class="md-toolbar-tools">
+                        {{ guild.name }}
+                    </span>
+                </md-toolbar>
+
                 <cmd-empty-state ng-if="guild.active_quests.length < 1"
                 icon="book_dark"
                 headline="No assessments found."
                 title="There are no assessments vissible at this moment."
                 subtitle="Be sure to check again later">
                 </cmd-empty-state>
-                <md-content layout-fill ng-if="guild.active_quests.length >= 1">
-                    <md-toolbar>
-                        <span class="md-toolbar-tools" layout>
-                            <span flex=20>
-                                Assessments
-                            </span>
-                            <span flex=80>
-                                <span layout>
-                                    <span ng-if="!guild.selected_objective"
-                                    flex layout layout-align="start center">
-                                        {{ guild.selected_quest.quest.name }}
+
+                <section layout flex layout-align="start stretch" ng-if="guild.active_quests.length >= 1">
+                    <section flex=80 layout="column" layout-fill>
+                        <section flex layout="column">
+                            <section flex=10 layout-margin
+                            layout layout-align="start center">
+                                <h1 class="md-headline" flex>
+                                    {{ guild.selected_quest.quest.name }}
+                                    <span class="md-subhead"
+                                    ng-if="guild.selected_objective">
+                                        > {{ guild.selected_objective.name }}
                                     </span>
-                                    <span ng-if="guild.selected_objective"
-                                    flex layout layout-align="start center">
-                                        {{ guild.selected_objective.name }}
+                                </h1>
+                                <md-button class="md-icon-button"
+                                ng-if="guild.selected_quest.quest.moodle_link"
+                                href="{{guild.selected_quest.quest.moodle_link}}"
+                                target="_BLANK">
+                                    <md-icon md-svg-icon="external_link_dark"></md-icon>
+                                    <md-tooltip md-delay="1000" md-direction="left">
+                                        Goto moodle
+                                    </md-tooltip>
+                                </md-button>
+                            </section>
+                            <md-divider></md-divider>
+                            <section flex=90 layout-padding ng-scrollbars>
+                                <div ng-if="!guild.selected_objective"
+                                ng-bind-html="guild.selected_quest.quest.description">
+                                </div>
+                                <div ng-if="guild.selected_objective"
+                                ng-bind-html="guild.selected_objective.objective">
+                                </div>
+                            </section>
+                        </section>
+                    </section>
+
+                    <md-content flex=20>
+                        <section ng-repeat="quest in guild.active_quests | orderBy: 'quest.created_at'"
+                        ng-if="quest.quest.active">
+                            <md-subheader ng-click="questsLogCtrl.selectQuest(guild, quest)">
+                                <span layout layout-align="start center">
+                                    <span flex>
+                                        {{ quest.quest.name }}
                                     </span>
-                                    <md-button class="md-icon-button"
-                                    ng-if="guild.selected_quest.quest.moodle_link"
-                                    href="{{guild.selected_quest.quest.moodle_link}}"
-                                    target="_BLANK">
-                                        <md-icon md-svg-icon="external_link_light"></md-icon>
-                                        <md-tooltip md-delay="1000" md-direction="left">
-                                            Goto moodle
-                                        </md-tooltip>
-                                    </md-button>
-                                </span>
-                            </span>
-                        </span>
-                    </md-toolbar>
-                    <section layout flex>
-                        <section flex=20>
-                            <section ng-repeat="quest in guild.active_quests"
-                            ng-if="quest.quest.active">
-                                <md-subheader ng-click="questsLogCtrl.selectQuest(guild, quest)">
-                                    <span layout>
-                                        <span flex>
-                                            {{ quest.quest.name }}
-                                        </span>
-                                        <span>
-                                            <md-icon ng-if="quest.completed"
-                                                md-svg-icon="done_dark"
-                                                class="icon--color--green">
+                                    <span>
+                                        <span ng-if="quest.completed">
+                                            <md-icon md-svg-icon="done_dark"
+                                            class="icon--color--green"
+                                            ng-if="quest.grade >= 55">
                                             </md-icon>
-                                            <md-tooltip md-delay="1000">
-                                                completed
+                                            <md-icon md-svg-icon="close_dark"
+                                            class="icon--color--red"
+                                            ng-if="quest.grade < 55">
+                                            </md-icon>
+                                            <md-tooltip md-delay="1000" md-direction="left">
+                                                <strong>
+                                                    {{ quest.grade | percentageToGrade }}
+                                                </strong>
+                                            </md-tooltip>
+                                        </span>
+                                        <span ng-if="!quest.completed">
+                                            <md-icon md-svg-icon="remove_dark"
+                                            class="icon--color--amber">
+                                            </md-icon>
+                                            <md-tooltip md-delay="1000" md-direction="left">
+                                                Not completed yet
                                             </md-tooltip>
                                         </span>
                                     </span>
-                                </md-subheader>
-                                <md-list ng-if="guild.selected_quest.id == quest.id">
-                                    <md-list-item ng-repeat="objective in quest.quest.objectives"
-                                    ng-click="questsLogCtrl.selectObjective(guild, objective)">
-                                        {{ objective.name }}
-                                    </md-list-item>
-                                </md-list>
-                                <md-divider></md-divider>
-                            </section>
+                                </span>
+                            </md-subheader>
+                            <md-list ng-if="guild.selected_quest.id == quest.id && quest.quest.objectives.length >= 1">
+                                <md-list-item ng-repeat="objective in quest.quest.objectives"
+                                ng-click="questsLogCtrl.selectObjective(guild, objective)">
+                                    {{ objective.name }}
+                                </md-list-item>
+                            </md-list>
+                            <md-divider></md-divider>
                         </section>
-                        <section flex=80>
-                            <div layout-padding ng-if="!guild.selected_objective">
-                                <span ng-bind-html="guild.selected_quest.quest.description"></span>
-                            </div>
-                            <div layout-padding ng-if="guild.selected_objective">
-                                <span ng-bind-html="guild.selected_objective.objective"></span>
-                            </div>
-                        </section>
-                    </section>
-                </md-content>
-            </md-tab-content>
-        </md-tab>
-    </md-tabs>
+                    </md-content>
+                </section>
+            </section>
+
+        </section>
+    </section>
+
 </section>

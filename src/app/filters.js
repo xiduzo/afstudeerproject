@@ -26,6 +26,12 @@
             };
         })
 
+        .filter('percentageToGrade', function() {
+            return function(percentage) {
+                return percentage / 10;
+            };
+        })
+
     ; // End of filters
 
 }());

@@ -27,6 +27,8 @@
         self.toggleNavigation = toggleNavigation;
         self.logout = logout;
         self.active_menu_item = $state.current.name;
+        self.changedWorld = changedWorld;
+        self.changedGuild = changedGuild;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +50,7 @@
                 self.worlds.push({id: world.world.id, name: world.world.name});
             });
             self.selected_world = _.first(self.worlds).id;
+            Global.setSelectedWorld(self.selected_world);
         })
         .catch(function() {
 
@@ -59,6 +62,7 @@
                 self.guilds.push({id: guild.guild.id, name: guild.guild.name});
             });
             self.selected_guild = _.first(self.guilds).id;
+            Global.setSelectedGuild(self.selected_guild);
         })
         .catch(function() {
 
@@ -171,6 +175,14 @@
 
             // Logout the user
             Account.logout();
+        }
+
+        function changedWorld() {
+            Global.setSelectedWorld(self.selected_world);
+        }
+
+        function changedGuild() {
+            Global.setSelectedGuild(self.selected_guild);
         }
 
     }

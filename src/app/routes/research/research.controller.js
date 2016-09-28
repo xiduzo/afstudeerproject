@@ -171,6 +171,317 @@
                 }
             });
 
+            $('#moscow').highcharts({
+               chart: {
+                   type: 'scatter',
+                   zoomType: 'xy',
+                   width: 800,
+                   height: 800
+               },
+               title: {
+                   text: 'MoSCoW*'
+               },
+               subtitle: {
+                   text: '*random order'
+               },
+               xAxis: {
+                    min: 0,
+                    max: 100,
+                    lineWidth: 0,
+                    gridLineWidth: 0,
+                    tickWidth: 0,
+                    plotBands: [
+                        {
+                            zIndex: 4,
+                            color: Highcharts.Color('#f44336').setOpacity(0.1).get(), // Color value
+                            from: 0, // Start of the plot band
+                            to: 50, // End of the plot band
+                            label: {
+                                text: 'Must have', // Content of the label.
+                                align: 'left', // Positioning of the label.
+                                x: 125, // Amount of pixels the label will be repositioned according to the alignment.
+                                y: 175,
+                                style: {
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                }
+                            }
+                        },
+                        {
+                            zIndex: 4,
+                            color: Highcharts.Color('#4CAF50').setOpacity(0.1).get(), // Color value
+                            from: 50, // Start of the plot band
+                            to: 100, // End of the plot band
+                            label: {
+                                text: 'Should have', // Content of the label.
+                                align: 'left', // Positioning of the label.
+                                x: 125, // Amount of pixels the label will be repositioned according to the alignment.
+                                y: 175,
+                                style: {
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                }
+                            }
+                        },
+                    ],
+               },
+               yAxis: {
+                   min: 0,
+                   max: 100,
+                   lineWidth: 0,
+                   gridLineWidth: 0,
+                   title: {
+                       text: ''
+                   },
+                   plotBands: [
+                       {
+                           zIndex: 4,
+                           color: Highcharts.Color('#2196F3').setOpacity(0.1).get(), // Color value
+                           from: 0, // Start of the plot band
+                           to: 50, // End of the plot band
+                           label: {
+                               text: 'Could have', // Content of the label.
+                               align: 'left', // Positioning of the label.
+                               x: 125, // Amount of pixels the label will be repositioned according to the alignment.
+                               y: 0,
+                               style: {
+                                   fontSize: 20,
+                                   fontWeight: 'bold',
+                               }
+                           },
+                       },
+                       {
+                           zIndex: 4,
+                           from: 50, // Start of the plot band
+                           to: 100, // End of the plot band
+                           label: {
+                               text: 'Won\'t have', // Content of the label.
+                               align: 'left', // Positioning of the label.
+                               x: 500, // Amount of pixels the label will be repositioned according to the alignment.
+                               y: 325,
+                               style: {
+                                   fontSize: 20,
+                                   fontWeight: 'bold',
+                               }
+                           }
+                       },
+                   ],
+               },
+               plotOptions: {
+                   scatter: {
+                       marker: {
+                           radius: 10,
+                       },
+                       tooltip: {
+                           headerFormat: '<b>{series.name}</b><br>',
+                           pointFormat: '{point.name}'
+                       }
+                   }
+               },
+               series: [
+                   {
+                   name: 'CMD',
+                   color: '#ffcc00',
+                   data: [
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Klassen aanmaken'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Klassen geimporteerd'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Groepen aanmaken'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Groepen wijzigen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Avatar'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Punten verzamelen in de les'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Privileges unlocken'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Wekelijks individueel beoordelen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Wekelijks individueel monitoren'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Regels opstellen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Content (les materiaal) uploaden'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Onderling messaging'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Leveling system'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Some sort of GP (editing your character)'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                           name: 'Punten verliezen (negatieve stimulans)'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Regels kunnen toepassen'
+                       },
+                   ]
+
+                   // Must have
+                   // x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                   // Should have
+                   // x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                   // Could have
+                   // x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                   // Wont have have
+                   // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                },
+                {
+                   name: 'Studenten',
+                   color: '#E91E63',
+                   data: [
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Duidelijke eisen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Een systeem'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Beter / vaker feedback'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'ClassCraft verbeteren'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Docenten die een platform actief inzetten'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Individueel presteren beoordelen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Eigen team kunnen samenstellen'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Werken in groepsverband'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Betere verdeling teams'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Zelfde beoordeling tussen verschillende klassen'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                           name: 'Classcraft afschaffen'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                           name: 'Docenten vervangen (betere docenten)'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                           name: 'Lessen verkorten'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Log van alles wat er is gebeurd in het platform voor mij'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Regels kunnen opstellen voor team'
+                       },
+                   ]
+
+                   // Must have
+                   // x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                   // Should have
+                   // x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                   // Could have
+                   // x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                   // Wont have have
+                   // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+               },
+                {
+                   name: 'Sander',
+                   color: '#2196F3',
+                   data: [
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Reusable code'
+                       },
+                       {
+                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                           name: 'Scheiding frontend & backend'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Backend werkend online'
+                       },
+                       {
+                          x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                           name: 'Python'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'User testing'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+                           name: 'The best visual interface'
+                       },
+                       {
+                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                           name: 'Decent UI'
+                       },
+                   ]
+
+                  // Must have
+                  // x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+                  // Should have
+                  // x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+                  // Could have
+                  // x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+                  // Wont have have
+                  // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+               },
+                ],
+               credits: {
+                   text: 'Sander Boer, Afstuderen 2015/2016',
+                   href: ''
+               }
+           });
 
        }
 
