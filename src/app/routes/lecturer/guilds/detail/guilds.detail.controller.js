@@ -95,6 +95,10 @@
             });
         }
 
+        function roundToTwo(num) {
+            return +(Math.round(num + "e+2")  + "e-2");
+        }
+
         function prepareGraphData(guild) {
             var graph_data = {
                 weeknumber: 1,
@@ -148,14 +152,14 @@
                     if(moment(date.date).isSame(objective.completed_at, 'day')) {
                         if(objective.assignments.length < 1) {
                             _.each(graph_data.series, function(serie) {
-                                serie.data[index] += Math.round(objective.points / guild.members.length * 100) / 10;
+                                serie.data[index] += roundToTwo(objective.points / guild.members.length);
                             });
                         } else {
                             _.each(objective.assignments, function(assigned) {
                                 var serie = _.find(graph_data.series, {
                                     id: assigned.user.id
                                 });
-                                serie.data[index] +=  Math.round(objective.points / objective.points / objective.assignments.length * 100) / 10;
+                                serie.data[index] += roundToTwo(objective.points / objective.assignments.length);
                             });
                         }
                     }
@@ -173,7 +177,7 @@
                         // Adding the points to the user
                         _.each(graph_data.points, function(person) {
                             if(assigned.user.id == person.id) {
-                                person.points += Math.round(objective.points / objective.assignments.length * 100) / 100;
+                                person.points += roundToTwo(objective.points / objective.assignments.length);
                             }
                         });
                     });
