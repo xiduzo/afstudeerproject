@@ -181,11 +181,14 @@
                 }
             });
 
+            self.max_average_per_day = 0;
             _.each(graph_data.points, function(member) {
-                member.avererage = roundToTwo(member.points / member.completed__tasks) || 0;
-                member.max = _.max(member.data) || 0;
-                member.average_day = roundToTwo(member.points / graph_data.days_past);
+                member.average_per_day = roundToTwo(member.points / graph_data.days_past);
                 self.members_data.push(member);
+
+                if(member.average_per_day > self.max_average_per_day) {
+                    self.max_average_per_day = member.average_per_day;
+                }
             });
 
             // Fixing the Y of each team member on the pie chart

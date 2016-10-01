@@ -324,12 +324,12 @@
                 }
             })
             .then(function(response) {
+                console.log(response);
                 if(!response ||
                     !response.name ||
                     !response.objective ||
                     !response.points) {
-                    Notifications.simpleToast('Fill in all the fields to add an task');
-                    return;
+                    return Notifications.simpleToast('Fill in all the fields to add an task');
                 }
 
                 Guild.addObjective(guild.url, response)

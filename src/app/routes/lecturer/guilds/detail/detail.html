@@ -45,18 +45,18 @@
                                 </md-list-item>
                                 <md-list-item layout flex layout-align="space-between center">
                                     <span>
-                                        Average points per task
+                                        Highest points in one day
                                     </span>
                                     <strong class="md-headline">
-                                        {{ member.avererage }}
+                                        {{ _.max(member.data) || 0 }}
                                     </strong>
                                 </md-list-item>
                                 <md-list-item layout flex layout-align="space-between center">
                                     <span>
-                                        Highest points per day
+                                        Average points per task
                                     </span>
                                     <strong class="md-headline">
-                                        {{ member.max }}
+                                        {{ (member.points / member.completed__tasks | roundToTwo) || 0 }}
                                     </strong>
                                 </md-list-item>
                                 <md-list-item layout flex layout-align="space-between center">
@@ -65,16 +65,16 @@
                                     </span>
                                     <strong class="md-headline" style="font-weight: 900;"
                                     ng-class="{
-                                        'text--color--red': member.average_day < 0.5,
-                                        'text--color--deepOrange': member.average_day >= 0.5 && member.average_day < 1,
-                                        'text--color--orange': member.average_day >= 1 && member.average_day < 1.5,
-                                        'text--color--amber': member.average_day >= 1.5 && member.average_day < 2,
-                                        'text--color--yellow': member.average_day >= 2 && member.average_day < 2.5,
-                                        'text--color--lime': member.average_day >= 2 && member.average_day < 2.5,
-                                        'text--color--lightGreen': member.average_day >= 2.5 && member.average_day < 3,
-                                        'text--color--green': member.average_day >= 3,
+                                        'text--color--red':        member.average_per_day < guildDetailCtrl.max_average_per_day * 0.2,
+                                        'text--color--deepOrange': member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.2 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.3,
+                                        'text--color--orange':     member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.3 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.4,
+                                        'text--color--amber':      member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.4 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.5,
+                                        'text--color--yellow':     member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.5 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.6,
+                                        'text--color--lime':       member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.6 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.7,
+                                        'text--color--lightGreen': member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.7 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.8,
+                                        'text--color--green':      member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.8
                                     }">
-                                        {{member.average_day }}
+                                        {{member.average_per_day }}
                                     </strong>
                                 </md-list-item>
                             </md-list>

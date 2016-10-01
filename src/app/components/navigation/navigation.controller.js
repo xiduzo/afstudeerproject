@@ -53,12 +53,12 @@
                 verbose: 'Coordinator',
                 access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
-                    {
-                        name: 'Dashboard',
-                        icon: 'dashboard_dark',
-                        link_to: 'base.home.dashboards.coordinator',
-                        access_levels: [COORDINATOR_ACCESS_LEVEL],
-                    },
+                    // {
+                    //     name: 'Dashboard',
+                    //     icon: 'dashboard_dark',
+                    //     link_to: 'base.home.dashboards.coordinator',
+                    //     access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    // },
                     {
                         name: 'Classes',
                         icon: 'world_dark',
@@ -208,6 +208,13 @@
                         self.changeState('base.worlds.overview');
                     }
                 })
+                // .add({
+                //     combo: 'd',
+                //     description: 'Goto dashboard',
+                //     callback: function() {
+                //         self.changeState('base.home.dashboards.coordinator');
+                //     }
+                // })
                 ; // End of hotkeys
             }
 
@@ -225,6 +232,13 @@
                     description: 'Goto assessments',
                     callback: function() {
                         self.changeState('base.progress.overview');
+                    }
+                })
+                .add({
+                    combo: 'd',
+                    description: 'Goto dashboard',
+                    callback: function() {
+                        self.changeState('base.home.dashboards.lecturer');
                     }
                 })
                 ; // End of hotkeys
@@ -246,6 +260,13 @@
                         self.changeState('base.quest.log');
                     }
                 })
+                .add({
+                    combo: 'd',
+                    description: 'Goto dashboard',
+                    callback: function() {
+                        self.changeState('base.home.dashboards.student');
+                    }
+                })
                 ; // End of hotkeys
             }
 
@@ -256,13 +277,6 @@
                 description: 'Goto profile',
                 callback: function() {
                     self.changeState('base.account.detail');
-                }
-            })
-            .add({
-                combo: 'd',
-                description: 'Goto dashboard',
-                callback: function() {
-                    self.changeState('base.home');
                 }
             })
             .add({
