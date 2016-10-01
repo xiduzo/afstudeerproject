@@ -166,7 +166,7 @@
                 if(objective.assignments.length < 1) {
                     _.each(graph_data.points, function(user) {
                         user.completed__tasks++;
-                        user.points += objective.points;
+                        user.points += roundToTwo(objective.points / guild.members.length);
                     });
                 } else {
                     _.each(objective.assignments, function(assigned) {
