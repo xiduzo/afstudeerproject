@@ -62,7 +62,7 @@
                         <img class="round" gravatar-size="50" gravatar-src="player.email">
                     </div>
                     <p flex>
-                        {{ player.displayname }} {{ player.surname }}
+                        {{ player | fullUserName }}
                     </p>
                     <md-checkbox
                         ng-model="player.selected"

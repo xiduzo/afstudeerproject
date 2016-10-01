@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function GuildDetailController(
+        $filter,
         $stateParams,
         $state,
         Guild,
@@ -106,7 +107,7 @@
                 var tempObj = {
                     id: member.id,
                     color: self.colors[index],
-                    name: member.first_name + ' ' + member.surname_prefix + ' ' + member.surname,
+                    name: $filter('fullUserName')(member),
                     points: 0, // Pie chart
                     completed__tasks: 0,
                     data: [], // Column graph

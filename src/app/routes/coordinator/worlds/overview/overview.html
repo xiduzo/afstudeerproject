@@ -93,7 +93,7 @@
                                     dnd-effect-allowed="move">
                                     <img class="round" gravatar-size="45" gravatar-src="gamemaster.email" layout-padding>
                                     <span flex>
-                                        {{ gamemaster.first_name }} {{ gamemaster.surname }}
+                                        {{ gamemaster | fullUserName }}
                                     </span>
                                     <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
                                         <md-tooltip md-direction="bottom">
