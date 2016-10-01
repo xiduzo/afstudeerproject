@@ -7,9 +7,11 @@
 
     /** @ngInject */
     function NavigationController(
+        $scope,
         $rootScope,
         $mdSidenav,
         $state,
+        hotkeys,
         Account,
         Global,
         Guild,
@@ -30,6 +32,9 @@
         self.changedWorld = changedWorld;
         self.changedGuild = changedGuild;
         self.changeState = changeState;
+        self.addHotkeys = addHotkeys;
+        self.removeHotkeys = removeHotkeys;
+        self.getWorldsAndGuilds = getWorldsAndGuilds;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,34 +46,6 @@
         self.guilds = [];
         self.selected_world = null;
         self.selected_guild = null;
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		      Services
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorldsOfGamemaster(self.user.id)
-        .then(function(response) {
-            _.each(response.worlds, function(world) {
-                self.worlds.push({id: world.world.id, name: world.world.name});
-            });
-            self.selected_world = _.first(self.worlds).id;
-            Global.setSelectedWorld(self.selected_world);
-        })
-        .catch(function() {
-
-        });
-
-        Guild.getUserGuilds(self.user.id)
-        .then(function(response) {
-            _.each(response.guilds, function(guild) {
-                self.guilds.push({id: guild.guild.id, name: guild.guild.name});
-            });
-            self.selected_guild = _.first(self.guilds).id;
-            Global.setSelectedGuild(self.selected_guild);
-        })
-        .catch(function() {
-
-        });
-
 
         self.main_navigation = [
             {
@@ -163,9 +140,30 @@
             ]
         };
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        if(self.user.id) {
+            self.getWorldsAndGuilds();
+            self.addHotkeys();
+        }
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('user-changed', function() {
             self.user = $rootScope.Global.getUser();
             self.access = $rootScope.Global.getAccess();
+            if(self.user.id) {
+                self.getWorldsAndGuilds();
+                self.addHotkeys();
+            } else {
+                self.removeHotkeys();
+            }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,6 +180,9 @@
 
             // Logout the user
             Account.logout();
+
+            // Remove all the hotkeys
+            self.removeHotkeys();
         }
 
         function changedWorld() {
@@ -195,6 +196,123 @@
         function changeState(state) {
             $state.go(state);
             self.active_menu_item = state;
+        }
+
+        function addHotkeys() {
+            if(self.user.is_superuser) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'c',
+                    description: 'Goto classes',
+                    callback: function() {
+                        self.changeState('base.worlds.overview');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            if(self.user.is_staff) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'g',
+                    description: 'Goto groups',
+                    callback: function() {
+                        self.changeState('base.guilds.overview');
+                    }
+                })
+                .add({
+                    combo: 'a',
+                    description: 'Goto assessments',
+                    callback: function() {
+                        self.changeState('base.progress.overview');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            if(!self.user.is_superuser && !self.user.is_staff) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'g',
+                    description: 'Goto group',
+                    callback: function() {
+                        self.changeState('base.guild.overview');
+                    }
+                })
+                .add({
+                    combo: 'a',
+                    description: 'Goto assessments',
+                    callback: function() {
+                        self.changeState('base.quest.log');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            // Every one can see this one
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'p',
+                description: 'Goto profile',
+                callback: function() {
+                    self.changeState('base.account.detail');
+                }
+            })
+            .add({
+                combo: 'd',
+                description: 'Goto dashboard',
+                callback: function() {
+                    self.changeState('base.home');
+                }
+            })
+            .add({
+                combo: 'l',
+                description: 'Logout',
+                callback: function() {
+                    self.logout();
+                }
+            })
+            ; // End of hotkeys
+        }
+
+        function removeHotkeys() {
+            hotkeys.del('c');
+            hotkeys.del('g');
+            hotkeys.del('a');
+            hotkeys.del('p');
+            hotkeys.del('d');
+            hotkeys.del('l');
+        }
+
+        function getWorldsAndGuilds() {
+
+            World.getWorldsOfGamemaster(self.user.id)
+            .then(function(response) {
+                self.worlds = [];
+                self.selected_world = null;
+                _.each(response.worlds, function(world) {
+                    self.worlds.push({id: world.world.id, name: world.world.name});
+                });
+                self.selected_world = _.first(self.worlds).id;
+                Global.setSelectedWorld(self.selected_world);
+            })
+            .catch(function() {
+
+            });
+
+            Guild.getUserGuilds(self.user.id)
+            .then(function(response) {
+                self.guilds = [];
+                self.selected_guild = null;
+                _.each(response.guilds, function(guild) {
+                    self.guilds.push({id: guild.guild.id, name: guild.guild.name});
+                });
+                self.selected_guild = _.first(self.guilds).id;
+                Global.setSelectedGuild(self.selected_guild);
+            })
+            .catch(function() {
+
+            });
         }
 
     }

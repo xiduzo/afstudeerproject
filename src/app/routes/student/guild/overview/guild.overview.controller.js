@@ -183,6 +183,7 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function buildGraphData(guild) {
+            if(!guild) { return; }
             var objectives = guild.objectives;
             var objective_groups = [];
             var previous_day_data = [];

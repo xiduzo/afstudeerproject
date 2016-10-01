@@ -137,7 +137,7 @@
                                                 <span flex=33 ng-repeat="assignment in objective.assignments"
                                                     ng-click="guildOverviewCtrl.removeObjectiveAssignment(guild, objective, assignment, $index)">
                                                     <img class="round" gravatar-size="40" gravatar-src-once="assignment.user.email">
-                                                    <md-tooltip md-delay="1000">
+                                                    <md-tooltip md-delay="1000" md-direction="top">
                                                         Remove {{ assignment.user | fullUserName}}
                                                     </md-tooltip>
                                                 </span>
