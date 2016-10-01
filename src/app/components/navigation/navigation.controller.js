@@ -56,7 +56,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base.home',
+                        link_to: 'base.home.dashboards.coordinator',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
                     {
@@ -75,8 +75,8 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base.home',
-                        access_levels: [LECTURER_ACCESS_LEVEL],
+                        link_to: 'base.home.dashboards.lecturer',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                     {
                         name: 'Groups',
@@ -100,7 +100,7 @@
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base.home',
+                        link_to: 'base.home.dashboards.student',
                         access_levels: [STUDENT_ACCESS_LEVEL]
                     },
                     {

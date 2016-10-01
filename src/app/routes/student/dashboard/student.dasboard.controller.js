@@ -3,11 +3,10 @@
 
     angular
         .module('cmd.home')
-        .controller('HomeController', HomeController);
+        .controller('StudentDashboardController', StudentDashboardController);
 
     /** @ngInject */
-    function HomeController(
-        $state,
+    function StudentDashboardController(
         Global
     ) {
 
@@ -18,17 +17,6 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Extra logic
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        if(self.user.is_superuser) {
-            $state.go('base.home.dashboards.lecturer');
-        } else if (self.user.is_staff) {
-
-        } else {
-
-        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
