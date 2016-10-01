@@ -8,7 +8,8 @@
     title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
     </cmd-empty-state>
 
-    <section ng-if="guildsOverviewCtrl.worlds.length >= 1 && !guildsOverviewCtrl.loading_page">
+    <section ng-if="guildsOverviewCtrl.worlds.length >= 1 && !guildsOverviewCtrl.loading_page"
+        layout-fill>
         <section flex layout="column" layout-fill
         ng-repeat="world in guildsOverviewCtrl.worlds"
         ng-if="world.id === guildsOverviewCtrl.selected_world">
@@ -22,7 +23,7 @@
             </section>
             <md-toolbar>
                 <span class="md-toolbar-tools">
-                    {{ world.name }}
+                    {{ world.name }} groups
                 </span>
             </md-toolbar>
             <section flex layout="column">

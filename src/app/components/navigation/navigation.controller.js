@@ -29,6 +29,7 @@
         self.active_menu_item = $state.current.name;
         self.changedWorld = changedWorld;
         self.changedGuild = changedGuild;
+        self.changeState = changeState;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,6 +105,12 @@
                         name: 'Groups',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
+                    },
+                    {
+                        name: 'Assessments',
+                        icon: 'book_dark',
+                        link_to: 'base.progress.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                 ],
@@ -183,6 +190,11 @@
 
         function changedGuild() {
             Global.setSelectedGuild(self.selected_guild);
+        }
+
+        function changeState(state) {
+            $state.go(state);
+            self.active_menu_item = state;
         }
 
     }

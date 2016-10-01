@@ -1,5 +1,51 @@
-<div layout="row" layout-padding>
-    <h2 class="md-headline" flex>
-        Progress overview
-    </h2>
-</div>
+<section flex layout-fill>
+
+    <cmd-loading-page ng-if="progressOverviewCtrl.loading_page"></cmd-loading-page>
+
+    <cmd-empty-state ng-if="progressOverviewCtrl.worlds.length < 1 && !progressOverviewCtrl.loading_page"
+    icon="world_dark"
+    headline="No classes found."
+    title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
+    </cmd-empty-state>
+
+    <section ng-if="progressOverviewCtrl.worlds.length >= 1" layout-fill>
+        <section layout-fill
+        ng-repeat="world in progressOverviewCtrl.worlds"
+        ng-if="world.id === progressOverviewCtrl.selected_world">
+
+            <section layout="column" layout-fill>
+                <md-toolbar>
+                    <span class="md-toolbar-tools">
+                        {{ world.name }} assessments
+                    </span>
+                </md-toolbar>
+
+                <cmd-empty-state ng-if="world.guilds.length < 1"
+                flex
+                icon="guild_dark"
+                headline="No groups found."
+                title="There are no groups in this class."
+                subtitle="Add new groups on the groups page.">
+                </cmd-empty-state>
+
+                <section layout flex layout-align="start stretch" ng-if="world.guilds.length >= 1">
+                    <section flex=80 layout-fill style="background: green;">
+                        {{ progressOverviewCtrl.selected_guild.name }}
+                    </section>
+                    <md-content flex=20 layout-fill>
+                        <md-list>
+                            <div ng-repeat="guild in world.guilds">
+                                <md-list-item ng-click="progressOverviewCtrl.selected_guild = guild">
+                                    {{ guild.name }}
+                                </md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </div>
+                        </md-list>
+                    </md-content>
+                </section>
+            </section>
+
+        </section>
+    </section>
+
+</section>

@@ -40,10 +40,6 @@
         self.loading_page = true;
         self.selected_world = Global.getSelectedWorld();
 
-        $rootScope.$on('world-changed', function(event, world) {
-            self.selected_world = world;
-        });
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -64,9 +60,16 @@
                 });
                 self.worlds.push(world.world);
             });
-            self.loading_page = false
+            self.loading_page = false;
         }, function() {
             // Err
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $rootScope.$on('world-changed', function(event, world) {
+            self.selected_world = world;
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
