@@ -26,7 +26,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.patchQuestStatus = patchQuestStatus;
         self.prepareGraphData = prepareGraphData;
         self.buildGraphs = buildGraphs;
         self.total_completed_objectives = 0;
@@ -35,6 +34,8 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.guild = [];
+        self.members_data = [];
+        self.loading_page = true;
         self.colors = [
             '#2196F3',
             '#4CAF50',
@@ -82,19 +83,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function patchQuestStatus(quest) {
-            Guild.patchQuestStatus(quest)
-            .then(function(response) {
-                if(response.completed) {
-                    Notifications.simpleToast('Asignment marked as completed');
-                } else {
-                    Notifications.simpleToast('Asignment marked as uncompleted');
-                }
-            }, function(error) {
-                // Err patch quest completion status
-            });
-        }
-
         function roundToTwo(num) {
             return +(Math.round(num + "e+2")  + "e-2");
         }
@@ -104,6 +92,7 @@
                 weeknumber: 1,
                 column_dates: [],
                 horizontal_axis: [],
+                days_past: 0,
                 series: [],
                 points: [],
             };
@@ -119,6 +108,7 @@
                     color: self.colors[index],
                     name: member.first_name + ' ' + member.surname_prefix + ' ' + member.surname,
                     points: 0, // Pie chart
+                    completed__tasks: 0,
                     data: [], // Column graph
                 };
 
@@ -127,11 +117,15 @@
                 graph_data.points.push(tempObj);
                 graph_data.series.push(tempObj);
             });
-
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= guild.world.course_duration; i++) {
                 var date = moment(guild.world.start).add(i, 'day');
                 graph_data.column_dates.push({date: date.format()});
+
+                // console.log(date);
+                if(moment(date).isSameOrBefore(moment(), 'day')) {
+                    graph_data.days_past++;
+                }
 
                 if(i === 0 || i % 7 === 0) {
                     graph_data.horizontal_axis.push('<b>Week ' + graph_data.weeknumber + '</b>');
@@ -170,6 +164,7 @@
             _.each(guild.objectives, function(objective) {
                 if(objective.assignments.length < 1) {
                     _.each(graph_data.points, function(user) {
+                        user.completed__tasks++;
                         user.points += objective.points;
                     });
                 } else {
@@ -177,11 +172,19 @@
                         // Adding the points to the user
                         _.each(graph_data.points, function(person) {
                             if(assigned.user.id == person.id) {
+                                person.completed__tasks++;
                                 person.points += roundToTwo(objective.points / objective.assignments.length);
                             }
                         });
                     });
                 }
+            });
+
+            _.each(graph_data.points, function(member) {
+                member.avererage = roundToTwo(member.points / member.completed__tasks) || 0;
+                member.max = _.max(member.data) || 0;
+                member.average_day = roundToTwo(member.points / graph_data.days_past);
+                self.members_data.push(member);
             });
 
             // Fixing the Y of each team member on the pie chart
@@ -190,15 +193,17 @@
                 point.points :
                 100 / self.guild.members.length;
             });
-
-            self.buildGraphs(graph_data);
+            self.loading_page = false;
+            setTimeout(function () {
+                self.buildGraphs(graph_data);
+            }, 100);
         }
 
         function buildGraphs(graph_data) {
             $('#completed__tasks').highcharts({
                 chart: { type: 'column' },
                 exporting: { enabled: Global.getAccess() > 1 ? true : false },
-                title: { text: 'Completed tasks ' + self.guild.name },
+                title: { text: self.guild.name + ': Completed tasks' },
                 xAxis: { categories: graph_data.horizontal_axis },
                 yAxis: { title: { text: 'Total points earned' }, },
                 tooltip: {
@@ -219,7 +224,7 @@
             $('#completed__tasks__explained').highcharts({
                 chart: { type: 'pie' },
                 exporting: { enabled: Global.getAccess() > 1 ? true : false },
-                title: { text: 'Completion per user' },
+                title: { text: self.guild.name +': Completion per user' },
                 tooltip: { pointFormat: '{series.name}: <b>{point.points}</b>' },
                 plotOptions: {
                     pie: {

@@ -9,6 +9,8 @@
     function ProgressOverviewController(
         $rootScope,
         Global,
+        Guild,
+        Notifications,
         World,
         LECTURER_ACCESS_LEVEL
     ) {
@@ -23,6 +25,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.patchQuest = patchQuest;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -47,11 +50,13 @@
                 self.worlds.push(world.world);
             });
 
-            self.loading_page = false;
+            if(_.findWhere(self.worlds, {id: self.selected_world})) {
+                self.selected_guild = _.first(_.findWhere(self.worlds, {id: self.selected_world}).guilds);
+            } else {
+                self.selected_guild = _.first(_.first(self.worlds).guilds);
+            }
 
-            console.log(self.worlds);
-            self.selected_guild = _.first(_.first(self.worlds).guilds);
-            console.log(self.selected_guild);
+            self.loading_page = false;
 
         }, function() {
             // Err
@@ -61,14 +66,22 @@
             Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('world-changed', function(event, world) {
-            console.log(world);
             self.selected_world = world;
+            self.selected_guild = _.first(_.findWhere(self.worlds, {id: world}).guilds);
         });
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function patchQuest(quest) {
+            Guild.patchQuest(quest)
+            .then(function(response) {
+                Notifications.simpleToast('Patched assessment');
+            }, function(error) {
+                // Err patch quest completion status
+            });
+        }
 
     }
 

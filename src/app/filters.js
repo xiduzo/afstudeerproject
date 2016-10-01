@@ -32,6 +32,13 @@
             };
         })
 
+        .filter('roundToTwo', function() {
+            return function(number) {
+                return +(Math.round(number + "e+2")  + "e-2");
+            };
+        })
+
+
     ; // End of filters
 
 }());

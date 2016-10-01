@@ -28,7 +28,7 @@
         service.getUserGuilds = getUserGuilds;
         service.getQuests = getQuests;
         service.addQuest = addQuest;
-        service.patchQuestStatus = patchQuestStatus;
+        service.patchQuest = patchQuest;
         service.addObjective = addObjective;
         service.removeObjective = removeObjective;
         service.patchObjective = patchObjective;
@@ -177,13 +177,13 @@
             }, function(error) { return error; });
         }
 
-        function patchQuestStatus(quest) {
-            console.log(quest);
+        function patchQuest(quest) {
             return $http({
                 url: REST_API_URL + 'guild/guildQuest/'+quest.id+'/',
                 method: "PATCH",
                 data: {
-                    completed: !quest.completed
+                    completed: quest.completed,
+                    grade: quest.grade,
                 }
             })
             .then(function(response) { return response.data;

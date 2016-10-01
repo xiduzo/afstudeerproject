@@ -29,12 +29,71 @@
                 </cmd-empty-state>
 
                 <section layout flex layout-align="start stretch" ng-if="world.guilds.length >= 1">
-                    <section flex=80 layout-fill style="background: green;">
-                        {{ progressOverviewCtrl.selected_guild.name }}
+                    <section flex=80 layout-fill>
+                        <cmd-empty-state ng-if="progressOverviewCtrl.selected_guild.quests.length < 1"
+                        flex
+                        icon="book_dark"
+                        headline="No assesments found."
+                        title="No one of this guild has viewed their assessments."
+                        subtitle="Motivate them to use the platform!">
+                        </cmd-empty-state>
+                        <section ng-if="progressOverviewCtrl.selected_guild.quests.length >= 1"
+                            layout-margin>
+                            <section md-whiteframe=1>
+                                <md-toolbar>
+                                    <div class="md-toolbar-tools">
+                                        <span flex=60>
+                                            Assessment
+                                        </span>
+                                        <span flex=20 layout layout-align="center">
+                                            Completed
+                                        </span>
+                                        <span flex=20>
+                                            Grade
+                                        </span>
+                                    </div>
+                                </md-toolbar>
+                                <md-content>
+                                    <md-list >
+                                        <md-list-item layout
+                                        ng-repeat="quest in progressOverviewCtrl.selected_guild.quests  | orderBy: 'quest.created_at'">
+                                            <span flex=60>
+                                                {{ quest.quest.name }}
+                                            </span>
+                                            <span flex=20 ng-repeat="v in [0]"
+                                                layout layout-align="center">
+                                                <md-checkbox style="margin-bottom: 0;" ng-model="quest.completed"
+                                                ng-change="progressOverviewCtrl.patchQuest(quest)"
+                                                ng-model-options="{ debounce: 100 }"
+                                                    aria-label="Toggle status">
+                                                </md-checkbox>
+                                            </span>
+                                            <span flex=20>
+                                                <md-input-container layout>
+                                                    <input aria-label="Assessment grade"
+                                                    ng-model="quest.grade"
+                                                    type="number"
+                                                    step="1"
+                                                    min=0
+                                                    max=100
+                                                    name="grade"
+                                                    ng-change="progressOverviewCtrl.patchQuest(quest)"
+                                                    ng-model-options="{ debounce: 1000 }"/>
+                                                </md-input-container>
+                                                <!-- {{ quest.grade / 10 }} -->
+                                            </span>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-content>
+                            </section>
+                        </section>
                     </section>
                     <md-content flex=20 layout-fill>
                         <md-list>
-                            <div ng-repeat="guild in world.guilds">
+                            <div ng-repeat="guild in world.guilds"
+                            ng-class="{
+                                'active_menu_item': progressOverviewCtrl.selected_guild.id === guild.id,
+                            }">
                                 <md-list-item ng-click="progressOverviewCtrl.selected_guild = guild">
                                     {{ guild.name }}
                                 </md-list-item>
