@@ -7,8 +7,11 @@
 
     /** @ngInject */
     function WorldsOverviewController(
+        $scope,
+        $state,
         $mdDialog,
         $mdToast,
+        hotkeys,
         Account,
         Global,
         Notifications,
@@ -30,6 +33,7 @@
         self.newWorldDialog = newWorldDialog;
         self.addGamemaster = addGamemaster;
         self.removeGamemaster = removeGamemaster;
+        self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -56,10 +60,17 @@
                 self.worlds.push(world);
             });
 
+            self.addHotkeys();
+
             self.loading_page = false;
         }, function() {
             // Err getting worlds
         });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -169,6 +180,19 @@
             }, function() {
                 // Err remove gamemaster from world
             });
+        }
+
+        function addHotkeys() {
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Add new world',
+                callback: function(event) {
+                    event.preventDefault();
+                    self.newWorldDialog(event);
+                }
+            });
+
         }
 
     }

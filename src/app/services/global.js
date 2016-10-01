@@ -60,7 +60,7 @@
                     if(response.status === -1) {
                         return self.functions.noConnection();
                     }
-                    
+
                     var user = response[0];
 
                     if(user.is_superuser) {
@@ -79,18 +79,18 @@
                 });
             },
             setSelectedGuild: function(guild) {
-                self.guild = guild;
+                self.selected_guild = guild;
                 $rootScope.$broadcast('guild-changed', guild);
             },
             getSelectedGuild: function() {
-                return self.guild;
+                return self.selected_guild;
             },
             setSelectedWorld: function(world) {
-                self.world = world;
+                self.selected_world = world;
                 $rootScope.$broadcast('world-changed', world);
             },
             getSelectedWorld: function() {
-                return self.world;
+                return self.selected_world;
             }
         };
 

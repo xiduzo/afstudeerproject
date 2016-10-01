@@ -7,9 +7,12 @@
 
     /** @ngInject */
     function GuildsOverviewController(
+        $scope,
         $mdDialog,
         $mdToast,
         $rootScope,
+        $state,
+        hotkeys,
         Account,
         Guild,
         Global,
@@ -32,6 +35,7 @@
         self.newGuildDialog = newGuildDialog;
         self.addGuildMember = addGuildMember;
         self.removeGuildMember = removeGuildMember;
+        self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -46,8 +50,7 @@
         World.getWorldsOfGamemaster(Global.getUser().id)
         .then(function(response) {
             if(response.status >= 400) {
-                Global.statusCode(response);
-                return;
+                return Global.statusCode(response);
             }
 
             _.each(response.worlds, function(world) {
@@ -60,6 +63,8 @@
                 });
                 self.worlds.push(world.world);
             });
+
+            self.addHotkeys();
             self.loading_page = false;
         }, function() {
             // Err
@@ -70,6 +75,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('world-changed', function(event, world) {
             self.selected_world = world;
+            self.addHotkeys();
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,12 +91,12 @@
                 guild.members.splice(guild.members.indexOf(user), 1);
             } else {
                 Guild.patchPlayersGuild(user.id, user.guildId, guild)
-                    .then(function(response) {
-                        user.guildId = guild.id;
-                        Notifications.simpleToast(user.first_name + ' moved to ' + guild.name);
-                    }, function() {
-                        // Err
-                    });
+                .then(function(response) {
+                    user.guildId = guild.id;
+                    Notifications.simpleToast(user.first_name + ' moved to ' + guild.name);
+                }, function() {
+                    // Err
+                });
             }
         }
 
@@ -155,27 +161,27 @@
                             players: response
                         }
                     })
-                        .then(function(response) {
-                            if(!response) {
-                                return;
-                            }
+                    .then(function(response) {
+                        if(!response) {
+                            return;
+                        }
 
-                            // Adding each lecturer to the world
-                            _.each(response, function(user) {
-                                Guild.addUserToGuild(user.url, guild.url)
-                                    .then(function(response) {
-                                        user.guildId = guild.id;
-                                        guild.members.push(user);
-                                    }, function() {
-                                        // Err
-                                    });
-                            });
-
-                            Notifications.simpleToast(response.length + ' member(s) added to ' + guild.name);
-
-                        }, function() {
-                            // Err
+                        // Adding each lecturer to the world
+                        _.each(response, function(user) {
+                            Guild.addUserToGuild(user.url, guild.url)
+                                .then(function(response) {
+                                    user.guildId = guild.id;
+                                    guild.members.push(user);
+                                }, function() {
+                                    // Err
+                                });
                         });
+
+                        Notifications.simpleToast(response.length + ' member(s) added to ' + guild.name);
+
+                    }, function() {
+                        // Err
+                    });
 
                 }, function() {
                     // Err
@@ -184,12 +190,26 @@
 
         function removeGuildMember(user, guild) {
             Guild.removeUserFromGuild(user.id, guild.id)
-                .then(function(response) {
-                    Notifications.simpleToast(user.first_name + ' got removed from ' + guild.name);
-                    guild.members.splice(guild.members.indexOf(user), 1);
-                }, function() {
-                    // Err
-                });
+            .then(function(response) {
+                Notifications.simpleToast(user.first_name + ' got removed from ' + guild.name);
+                guild.members.splice(guild.members.indexOf(user), 1);
+            }, function() {
+                // Err
+            });
+        }
+
+        function addHotkeys() {
+            if(!self.selected_world) { return; }
+
+            var world = _.findWhere(self.worlds, {id: self.selected_world});
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Create new group',
+                callback: function(event) {
+                    self.newGuildDialog(event, world);
+                }
+            });
         }
 
     }

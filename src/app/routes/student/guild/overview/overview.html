@@ -35,7 +35,7 @@
                         ng-click="guildOverviewCtrl.addObjective($event, guild)">
                         <md-icon md-svg-icon="add_light"></md-icon>
                         <md-tooltip md-direction="left">
-                            Add objective
+                            Add task
                         </md-tooltip>
                     </md-button>
                 </section>
@@ -44,7 +44,7 @@
                         <cmd-empty-state ng-if="guild.no_graph_data"
                         icon="timeline_dark"
                         headline="No data found."
-                        title="Add an objective to view your groups' progress.">
+                        title="Add an task to view your groups' progress.">
                         </cmd-empty-state>
                         <div id="{{guild.id}}" flex="100" ng-if="!guild.no_graph_data"
                             layout="row" layout-align="center center">
@@ -64,7 +64,7 @@
                             <cmd-empty-state ng-if="guild.history_updates.length < 1"
                             headline="No group news."
                             title="Group news will appear over here."
-                            subtitle="Try adding and objective">
+                            subtitle="Try adding and task">
                             </cmd-empty-state>
                             <md-content ng-scrollbars flex ng-if="guild.history_updates.length >= 1">
                                 <md-list>
@@ -109,8 +109,8 @@
                         <div layout="row" flex id="step4">
                             <cmd-empty-state ng-if="guild.objectives.length < 1"
                             icon="list_dark"
-                            headline="No objectives found."
-                            title="Add objectives so your group knows what to do.">
+                            headline="No tasks found."
+                            title="Add tasks so your group knows what to do.">
                             </cmd-empty-state>
                             <md-content ng-scrollbars flex ng-if="guild.objectives.length >= 1">
                                 <md-list>
@@ -159,7 +159,7 @@
                                                     <md-icon md-svg-icon="delete_dark">
                                                     </md-icon>
                                                     <md-tooltip md-direction="bottom" md-delay="1000">
-                                                        Remove objective
+                                                        Remove task
                                                     </md-tooltip>
                                                 </md-button>
                                             </span>

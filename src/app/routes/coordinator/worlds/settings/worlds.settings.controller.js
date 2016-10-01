@@ -11,6 +11,8 @@
         $mdToast,
         $state,
         $stateParams,
+        $scope,
+        hotkeys,
         Global,
         Notifications,
         Quest,
@@ -32,6 +34,7 @@
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
         self.toggleQuest = toggleQuest;
+        self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -75,6 +78,7 @@
                     });
                 });
 
+                self.addHotkeys();
                 self.loading_page = false;
 
             }, function() {
@@ -164,6 +168,43 @@
             }, function() {
                 // Err toggle quest
             });
+        }
+
+        function addHotkeys() {
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Change class name',
+                callback: function(event) {
+                    event.preventDefault();
+                    self.changeWorldName();
+                }
+            })
+            .add({
+                combo: 'shift+a',
+                description: 'Add assessment',
+                callback: function(event) {
+                    event.preventDefault();
+                    $state.go('base.worlds.quests.new', {worldUuid: self.world.id});
+                }
+            })
+            // .add({
+            //     combo: 'shift+r',
+            //     description: 'Add rule',
+            //     callback: function(event) {
+            //         event.preventDefault();
+            //     }
+            // })
+            .add({
+                combo: 'shift+d',
+                description: 'Delete ' + self.world.name,
+                callback: function(event) {
+                    event.preventDefault();
+                    self.deleteWorld();
+                }
+            })
+
+            ; // End of hotkeys
         }
 
     }

@@ -55,7 +55,6 @@
         }
 
         function logout() {
-            localStorageService.clearAll();
             $rootScope.Global.clearUser();
             $rootScope.$broadcast('user-changed');
 

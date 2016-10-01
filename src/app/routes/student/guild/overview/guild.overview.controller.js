@@ -7,9 +7,11 @@
 
     /** @ngInject */
     function GuildOverviewController(
+        $scope,
         $mdDialog,
         $mdToast,
         $rootScope,
+        hotkeys,
         Guild,
         Global,
         localStorageService,
@@ -37,6 +39,7 @@
         self.guildHistoryUpdate = guildHistoryUpdate;
         self.assignMemberToObjective = assignMemberToObjective;
         self.removeObjectiveAssignment = removeObjectiveAssignment;
+        self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -62,15 +65,15 @@
                 width: 300
             },
             {
-                title: "Objectives",
+                title: "Tasks",
                 position: "top",
-                description: "The group progress will be influenced by the groups' objectives. Objectives can be added by everybody in the group.",
+                description: "The group progress will be influenced by the groups' tasks. Tasks can be added by everybody in the group.",
                 attachTo: "#step2",
             },
             {
-                title: "Adding an objective",
+                title: "Adding an task",
                 position: "centered",
-                description: "By clicking on bottom right button you can add an objective for your group. Let's add one ourself, shall we?",
+                description: "By clicking on bottom right button you can add an task for your group. Let's add one ourself, shall we?",
                 attachTo: "#step3",
             },
         ];
@@ -79,13 +82,13 @@
             var guild = _.first(self.guilds);
 
             var tempObj = {
-                name: 'My first objective',
-                objective: 'This is my first objective, this objective was added automaticly by following the onboarding',
+                name: 'My first task',
+                objective: 'This is my first task, this task was added automaticly by following the onboarding',
                 points: 1
             };
             Guild.addObjective(guild.url, tempObj)
             .then(function(response) {
-                var update = 'added a new objective: ' + '\'' +response.name + '\'';
+                var update = 'added a new task: ' + '\'' +response.name + '\'';
                 guild.objectives.unshift(response);
                 self.guildHistoryUpdate(guild, update);
                 self.onboarding_steps_2_enabled = false;
@@ -118,9 +121,9 @@
             self.onboarding_steps_2_index = 0;
             self.onboarding_steps_2 = [
                 {
-                    title: "Assigning persons to an objective",
+                    title: "Assigning persons to an task",
                     position: "top",
-                    description: "As you can see, your new objective is added to the list. Let me assign you to this objective. You can assign multiple people to one objective, but for now let's just assign you.",
+                    description: "As you can see, your new task is added to the list. Let me assign you to this task. You can assign multiple people to one task, but for now let's just assign you.",
                     attachTo: "#step4",
                 }
             ];
@@ -132,6 +135,7 @@
                 return guild.id == self.selected_guild;
             });
             self.buildGraphData(guild);
+            self.addHotkeys();
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,6 +175,7 @@
                             self.first_time = true;
                             self.onboarding_enabled = true;
                     }
+                    self.addHotkeys();
                 });
             });
 
@@ -314,8 +319,8 @@
                 targetEvent: event,
                 clickOutsideToClose: true,
                 locals: {
-                    title: 'Add objective for ' + guild.name,
-                    about: 'quest objective',
+                    title: 'Add task for ' + guild.name,
+                    about: 'guild tasks',
                 }
             })
             .then(function(response) {
@@ -323,13 +328,13 @@
                     !response.name ||
                     !response.objective ||
                     !response.points) {
-                    Notifications.simpleToast('Fill in all the fields to add an objective');
+                    Notifications.simpleToast('Fill in all the fields to add an task');
                     return;
                 }
 
                 Guild.addObjective(guild.url, response)
                 .then(function(response) {
-                    var update = 'added a new objective: ' + '\'' +response.name + '\'';
+                    var update = 'added a new task: ' + '\'' +response.name + '\'';
                     guild.objectives.unshift(response);
                     self.guildHistoryUpdate(guild, update);
                     guild.no_graph_data = false;
@@ -344,7 +349,7 @@
         function removeObjective(guild, objective) {
             Guild.removeObjective(objective.id)
             .then(function(response) {
-                var update = 'removed objective: \'' + objective.name + '\'';
+                var update = 'removed task: \'' + objective.name + '\'';
                 guild.objectives.splice(guild.objectives.indexOf(objective), 1);
                 self.guildHistoryUpdate(guild, update);
                 if(!guild.objectives.length) {
@@ -361,7 +366,7 @@
             Guild.patchObjective(objective)
             .then(function(response) {
                 var update = response.completed ? 'done' : 'undone';
-                update = 'marked objective \''+response.name+'\' as '+update;
+                update = 'marked task \''+response.name+'\' as '+update;
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
                 // Err patch objective
@@ -406,7 +411,7 @@
                 },
                 series: [
                     {
-                        name: 'Remaining objective points',
+                        name: 'Remaining task points',
                         data: guild.graph_line,
                         color: '#616161'
                     }
@@ -477,6 +482,20 @@
                 objective.assignments.splice(index, 1);
             }, function(error) {
                 // Err remove objective assignment
+            });
+        }
+
+        function addHotkeys() {
+            if(!self.selected_guild) { return; }
+
+            var guild = _.findWhere(self.guilds, {id: self.selected_guild});
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Create new task',
+                callback: function(event) {
+                    self.addObjective(event, guild);
+                }
             });
         }
 
