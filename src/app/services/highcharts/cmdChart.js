@@ -108,6 +108,7 @@
             // Center of diagram:
             // x: circle radius * 2
             // y: circle radius * 2.25
+            // Minumum required % when to lit up an field
             var treshold = 55;
 
             // Building the focus indicator
@@ -131,10 +132,10 @@
 
                 // Focus indicator
                 if(show_focus || show_focus_average) {
-                    min_y = 375;
-                    max_y = 525;
-                    min_x = 350;
-                    max_x = 450;
+                    min_y = circle_template.radius * 1.875;
+                    max_y = circle_template.radius * 2.625;
+                    min_x = circle_template.radius * 1.75;
+                    max_x = circle_template.radius * 2.25;
                     center_x = min_x + (max_x - min_x) / 2;
                 }
 
@@ -160,10 +161,10 @@
 
                     // Focus indicator
                     if(show_focus || show_focus_average) {
-                        min_y = 475;
-                        max_y = 575;
-                        min_x = 225;
-                        max_x = 285;
+                        min_y = circle_template.radius * 2.375;
+                        max_y = circle_template.radius * 2.875;
+                        min_x = circle_template.radius * 1.125;
+                        max_x = circle_template.radius * 1.425;
                         center_x = min_x + (max_x - min_x) / 2;
                     }
 
@@ -188,10 +189,10 @@
 
                     // Focus indicator
                     if(show_focus || show_focus_average) {
-                        min_y = 275;
-                        max_y = 360;
-                        min_x = 350;
-                        max_x = 450;
+                        min_y = circle_template.radius * 1.375;
+                        max_y = circle_template.radius * 1.8;
+                        min_x = circle_template.radius * 1.75;
+                        max_x = circle_template.radius * 2.25;
                         center_x = min_x + (max_x - min_x) / 2;
                     }
 
@@ -215,10 +216,10 @@
 
                     // Focus indicator
                     if(show_focus || show_focus_average) {
-                        min_y = 475;
-                        max_y = 575;
-                        min_x = 490;
-                        max_x = 575;
+                        min_y = circle_template.radius * 2.375;
+                        max_y = circle_template.radius * 2.875;
+                        min_x = circle_template.radius * 2.45;
+                        max_x = circle_template.radius * 2.875;
                         center_x = min_x + (max_x - min_x) / 2;
                     }
 
