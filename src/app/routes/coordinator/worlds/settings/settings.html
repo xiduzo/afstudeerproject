@@ -25,9 +25,12 @@
                     <md-content flex="100" md-whiteframe=1 layout="column">
                         <md-toolbar>
                             <div class="md-toolbar-tools">
-                                <span flex=30> Assessment </span>
-                                <span flex=20> Group power </span>
+                                <span flex=25> Assessment </span>
+                                <span flex=15> Power </span>
                                 <span flex=30> Completion </span>
+                                <span flex=10 layout layout-align="center center">
+                                    Gradable
+                                </span>
                                 <span flex=10 layout layout-align="center center">
                                     Active
                                 </span>
@@ -38,8 +41,8 @@
                             <md-content ng-scrollbars flex>
                                 <md-list>
                                     <md-list-item ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'completion_percentage'">
-                                        <span flex=30> {{ quest.name }} </span>
-                                        <span flex=20> {{ quest.experience | number }} </span>
+                                        <span flex=25> {{ quest.name }} </span>
+                                        <span flex=15> {{ quest.experience | number }} </span>
                                         <span flex=30 layout-padding>
                                             <div ng-if="!quest.total_guilds_conquering_quest"
                                             class="text--color--grey">
@@ -73,9 +76,19 @@
                                         <span flex=10 layout="row" layout-align="center center">
                                             <div ng-repeat="v in [0]">
                                                 <md-switch class="md-primary"
-                                                ng-change="worldsSettingsCtrl.toggleQuest(quest)"
+                                                ng-change="worldsSettingsCtrl.patchQuest(quest)"
                                                 md-no-ink
-                                                aria-label="Toggle quest"
+                                                aria-label="Toggle quest status"
+                                                ng-model="quest.gradable">
+                                                </md-switch>
+                                            </div>
+                                        </span>
+                                        <span flex=10 layout="row" layout-align="center center">
+                                            <div ng-repeat="v in [0]">
+                                                <md-switch class="md-primary"
+                                                ng-change="worldsSettingsCtrl.patchQuest(quest)"
+                                                md-no-ink
+                                                aria-label="Toggle quest gradable"
                                                 ng-model="quest.active">
                                                 </md-switch>
                                             </div>

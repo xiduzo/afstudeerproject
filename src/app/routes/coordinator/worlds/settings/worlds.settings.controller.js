@@ -33,7 +33,7 @@
         self.deleteWorld = deleteWorld;
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
-        self.toggleQuest = toggleQuest;
+        self.patchQuest = patchQuest;
         self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,10 +161,10 @@
             });
         }
 
-        function toggleQuest(quest) {
-            Quest.toggleQuest(quest.id, quest.active)
+        function patchQuest(quest) {
+            Quest.patchQuestToggles(quest)
             .then(function(response) {
-                Notifications.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
+                Notifications.simpleToast('Patched assessment.');
             }, function() {
                 // Err toggle quest
             });

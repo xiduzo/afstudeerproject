@@ -77,7 +77,10 @@
                                 completed: response.completed,
                                 quest: quest,
                             };
-                            guild.quests.push(tempObj);
+                            if(quest.active) {
+                                guild.active_quests.push(quest);
+                                Notifications.simpleToast('New assessments: ' + quest.name);
+                            }
                         }, function(error) {
                             // Err add quest
                         });
