@@ -165,13 +165,6 @@
 
             // Building the focus indicator
             var positions, x, y, plot;
-            var min_x = null;
-            var max_x = null;
-            var center_x = null;
-            var range_x = null;
-            var min_y = null;
-            var max_y = null;
-            var range_y = null;
             var precent_per_point_over_treshold = 100 / (100 - treshold);
             var interaction_over_treshold = (data.interaction - treshold) * precent_per_point_over_treshold;
             var interaction_under_treshold = 100 - (data.interaction * 100) / treshold;
