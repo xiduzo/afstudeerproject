@@ -7,7 +7,8 @@
 
     /** @Spiderchart */
     function CMDChart(
-        Global
+        Global,
+        Notifications
     ) {
 
         var service = this;
@@ -17,7 +18,6 @@
         return service;
 
         function realignLabels(serie) {
-
             _.each(serie.points, function (j, point) {
                 if (!point.dataLabel) return true;
 
@@ -35,7 +35,56 @@
             });
         }
 
+        function buildpositionsObject(circle_radius, x, y) {
+            var positionsObject = {
+                x: {
+                    min: circle_radius * x.min,
+                    max: circle_radius * x.max,
+                    range: function() {
+                        return this.max - this.min;
+                    },
+                    center: function() {
+                        return this.min + this.range() / 2;
+                    }
+                },
+                y: {
+                    min: circle_radius * y.min,
+                    max: circle_radius * y.max,
+                    range: function() {
+                        return this.max - this.min;
+                    },
+                    center: function() {
+                        return this.min + this.range() / 2;
+                    }
+                }
+            };
+
+            return positionsObject;
+        }
+
+        function unicornPlot(positions, data) {
+            var plot = {
+                x: positions.x.center() - (
+                    (positions.x.range() / 4) * (data.techniek_over_treshold / 100)
+                ) + (
+                    (positions.x.range() / 4) * (data.visual_over_treshold / 100)
+                ),
+                y: positions.y.min + (
+                    positions.y.range() * (
+                        data.interaction_over_treshold / 100
+                    )
+                )
+            };
+
+            return plot;
+        }
+
         function createChart(container, data, size, show_focus, show_focus_average) {
+
+            if(data.techniek === undefined || data.interaction === undefined || data.visual === undefined) {
+                return Notifications.simpleToast('Can\'t build the CMD circle');
+            }
+
             Highcharts.Series.prototype.drawDataLabels = (function (func) {
                 return function () {
                     func.apply(this, arguments);
@@ -54,7 +103,7 @@
                 steps: 125,
             };
 
-            // Setting the circles into position
+            // Setting the circles into positions
             var techniek_base = {
                 x: circle_template.radius * 1.5,
                 y: circle_template.radius * 2
@@ -102,23 +151,28 @@
                 tech_interaction: { active: false, data: [] },
                 tech_visual: { active: false, data: [] },
                 visual_interaction: { active: false, data: [] },
-                focus: { self: {x: null, y: null, active: false } }
+                focus: {
+                    self: {x: null, y: null, active: false },
+                    average: {x: null, y: null, active: false },
+                }
             };
 
             // Center of diagram:
             // x: circle radius * 2
             // y: circle radius * 2.25
             // Minumum required % when to lit up an field
-            var treshold = 55;
+            var treshold = 40;
 
             // Building the focus indicator
+            var positions, x, y, plot;
             var min_x = null;
             var max_x = null;
             var center_x = null;
+            var range_x = null;
             var min_y = null;
             var max_y = null;
+            var range_y = null;
             var precent_per_point_over_treshold = 100 / (100 - treshold);
-            var percentage_over_treshold = null;
             var interaction_over_treshold = (data.interaction - treshold) * precent_per_point_over_treshold;
             var interaction_under_treshold = 100 - (data.interaction * 100) / treshold;
             var visual_over_treshold = (data.visual - treshold) * precent_per_point_over_treshold;
@@ -126,31 +180,53 @@
             var techniek_over_treshold = (data.techniek - treshold) * precent_per_point_over_treshold;
             var techniek_under_treshold = 100 - (data.techniek * 100) / treshold;
 
+            var over_and_unders = {
+                interaction_over_treshold: interaction_over_treshold,
+                interaction_under_treshold: interaction_under_treshold,
+                visual_over_treshold: visual_over_treshold,
+                visual_under_treshold: visual_under_treshold,
+                techniek_over_treshold: techniek_over_treshold,
+                techniek_under_treshold: techniek_under_treshold
+            };
+
+            var interaction_over_treshold_average = null;
+            var interaction_under_treshold_average = null;
+            var visual_over_treshold_average = null;
+            var visual_under_treshold_average = null;
+            var techniek_over_treshold_average = null;
+            var techniek_under_treshold_average = null;
+
+            data.average = {
+                interaction: 67,
+                visual: 70,
+                techniek: 52
+            };
+
+            if(data.average.interaction >= 0 && data.average.visual >= 0 && data.average.techniek >= 0) {
+                interaction_over_treshold_average = (data.average.interaction - treshold) * precent_per_point_over_treshold;
+                interaction_under_treshold_average = 100 - (data.average.interaction * 100) / treshold;
+                visual_over_treshold_average = (data.average.visual - treshold) * precent_per_point_over_treshold;
+                visual_under_treshold_average = 100 - (data.average.visual * 100) / treshold;
+                techniek_over_treshold_average = (data.average.techniek - treshold) * precent_per_point_over_treshold;
+                techniek_under_treshold_average = 100 - (data.average.techniek * 100) / treshold;
+            } else {
+                show_focus_average = false;
+            }
+
             // Which part of the diagram should be lit up green
             if(data.techniek >= treshold && data.interaction >= treshold && data.visual >= treshold) {
                 profiles.unicorn.active = true;
 
                 // Focus indicator
-                if(show_focus || show_focus_average) {
-                    min_y = circle_template.radius * 1.875;
-                    max_y = circle_template.radius * 2.625;
-                    min_x = circle_template.radius * 1.75;
-                    max_x = circle_template.radius * 2.25;
-                    center_x = min_x + (max_x - min_x) / 2;
-                }
-
                 if(show_focus) {
-                    profiles.focus.self.y = min_y + (
-                        (max_y - min_y) * interaction_over_treshold / 100
-                    );
+                    x = { min: 1.5, max: 2.5 };
+                    y = { min: 1.9, max: 2.6 };
+                    positions = buildpositionsObject(circle_template.radius, x, y);
+                    plot = unicornPlot(positions, over_and_unders);
 
-                    profiles.focus.self.x = (
-                        center_x
-                    ) - (
-                        ( (max_x - min_x) / 2) * techniek_over_treshold / 100
-                    ) + (
-                        ( (max_x - min_x) / 2) * visual_over_treshold / 100
-                    );
+                    profiles.focus.self.y = plot.y;
+
+                    profiles.focus.self.x = plot.x;
 
                     profiles.focus.self.active = true;
                 }
@@ -160,25 +236,23 @@
                     profiles.tech_interaction.active = true;
 
                     // Focus indicator
-                    if(show_focus || show_focus_average) {
-                        min_y = circle_template.radius * 2.375;
-                        max_y = circle_template.radius * 2.875;
-                        min_x = circle_template.radius * 1.125;
-                        max_x = circle_template.radius * 1.425;
-                        center_x = min_x + (max_x - min_x) / 2;
-                    }
-
                     if(show_focus) {
-                        profiles.focus.self.y = min_y + (
-                            (max_y - min_y) * interaction_over_treshold / 100
+                        x = { min: 1.1, max: 1.55 };
+                        y = { min: 2.4, max: 2.9 };
+                        positions = buildpositionsObject(circle_template.radius, x, y);
+
+                        profiles.focus.self.y = positions.y.min + (
+                            positions.y.range() * (
+                                interaction_over_treshold / 100
+                            )
                         );
 
                         profiles.focus.self.x = (
-                            center_x
-                        ) - (
-                            ( (max_x - min_x) / 2 ) * techniek_over_treshold / 100
-                        ) + (
-                            (100 - visual_under_treshold) / 100 * (max_x - min_x)
+                            positions.x.center() - (
+                                (positions.x.range() / 2) * (techniek_over_treshold / 100)
+                            ) + (
+                                (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                            )
                         );
 
                         profiles.focus.self.active = true;
@@ -189,51 +263,46 @@
 
                     // Focus indicator
                     if(show_focus || show_focus_average) {
-                        min_y = circle_template.radius * 1.375;
-                        max_y = circle_template.radius * 1.8;
-                        min_x = circle_template.radius * 1.75;
-                        max_x = circle_template.radius * 2.25;
-                        center_x = min_x + (max_x - min_x) / 2;
-                    }
+                        x = { min: 1.75, max: 2.25 };
+                        y = { min: 1.4, max: 1.8 };
+                        positions = buildpositionsObject(circle_template.radius, x, y);
 
-                    if(show_focus) {
-                        profiles.focus.self.y = min_y + (
-                            (100 - interaction_under_treshold) / 100 * (max_y - min_y)
+                        profiles.focus.self.y = positions.y.min + (
+                            (100 - interaction_under_treshold ) / 100 * positions.y.range()
                         );
 
                         profiles.focus.self.x = (
-                            center_x
-                        ) - (
-                            ( (max_x - min_x) / 2) * techniek_over_treshold / 100
-                        ) + (
-                            ( (max_x - min_x) / 2) * visual_over_treshold / 100
+                            positions.x.center() - (
+                                (positions.x.range() / 2) * (techniek_over_treshold / 100)
+                            ) + (
+                                (positions.x.range() / 2) * (visual_over_treshold / 100)
+                            )
                         );
 
                         profiles.focus.self.active = true;
                     }
+
                 } else if(data.interaction >= treshold && data.visual >= treshold) {
                     profiles.visual_interaction.active = true;
 
                     // Focus indicator
-                    if(show_focus || show_focus_average) {
-                        min_y = circle_template.radius * 2.375;
-                        max_y = circle_template.radius * 2.875;
-                        min_x = circle_template.radius * 2.45;
-                        max_x = circle_template.radius * 2.875;
-                        center_x = min_x + (max_x - min_x) / 2;
-                    }
-
                     if(show_focus) {
-                        profiles.focus.self.y = min_y + (
-                            (max_y - min_y) * interaction_over_treshold / 100
+                        x = { min: 2.5, max: 2.9 };
+                        y = { min: 2.4, max: 2.9 };
+                        positions = buildpositionsObject(circle_template.radius, x, y);
+
+                        profiles.focus.self.y = positions.y.min + (
+                            positions.y.range() * (
+                                interaction_over_treshold / 100
+                            )
                         );
 
                         profiles.focus.self.x = (
-                            center_x
-                        ) - (
-                            (100 - techniek_under_treshold) / 100 * ( (max_x - min_x) / 2 )
-                        ) + (
-                            ( (max_x - min_x) / 2) * visual_over_treshold / 100
+                            positions.x.center() - (
+                                (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                            ) + (
+                                (positions.x.range() / 2) * (visual_over_treshold / 100)
+                            )
                         );
 
                         profiles.focus.self.active = true;
@@ -242,10 +311,77 @@
                 } else {
                     if(data.techniek >= treshold) {
                         profiles.tech.active = true;
+
+                        // Focus indicator
+                        if(show_focus) {
+                            x = { min: 0.8, max: 1.2 };
+                            y = { min: 1.3, max: 2.2 };
+                            positions = buildpositionsObject(circle_template.radius, x, y);
+
+                            profiles.focus.self.y = positions.y.min + (
+                                (100 - interaction_under_treshold ) / 100 * positions.y.range()
+                            );
+
+                            profiles.focus.self.x = (
+                                positions.x.center() - (
+                                    (positions.x.range() / 2 ) * (techniek_over_treshold / 100)
+                                ) + (
+                                    (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                                )
+                            );
+
+                            profiles.focus.self.active = true;
+                        }
+
                     } else if(data.interaction >= treshold) {
                         profiles.interaction.active = true;
+
+                        // Focus indicator
+                        if(show_focus) {
+                            x = { min: 1.5, max: 2.5 };
+                            y = { min: 3, max: 3.6 };
+                            positions = buildpositionsObject(circle_template.radius, x, y);
+
+                            profiles.focus.self.y = positions.y.min + (
+                                positions.y.range() * (
+                                    interaction_over_treshold / 100
+                                )
+                            );
+
+                            profiles.focus.self.x = (
+                                positions.x.center() - (
+                                    (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                                ) + (
+                                    (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                                )
+                            );
+
+                            profiles.focus.self.active = true;
+                        }
+
                     } else if(data.visual >= treshold) {
                         profiles.visual.active = true;
+
+                        // Focus indicator
+                        if(show_focus) {
+                            x = { min: 2.85, max: 3.35 };
+                            y = { min: 1.5, max: 2.2 };
+                            positions = buildpositionsObject(circle_template.radius, x, y);
+
+                            profiles.focus.self.y = positions.y.min + (
+                                (100 - interaction_under_treshold ) / 100 * positions.y.range()
+                            );
+
+                            profiles.focus.self.x = (
+                                positions.x.center() - (
+                                    (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                                ) + (
+                                    (positions.x.range() / 2 ) * (visual_over_treshold / 100)
+                                )
+                            );
+
+                            profiles.focus.self.active = true;
+                        }
                     }
                 }
             }
@@ -437,7 +573,7 @@
                             y: -5,
                             formatter: function() {
                                 if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.9)) {
-                                    return "VISUAL DESIGN";
+                                    return "VISUAL";
                                 }
                             },
                         }
@@ -454,7 +590,7 @@
                             y: 40,
                             formatter: function() {
                                 if(_.indexOf(this.series.data,this.point) == Math.floor(circle_template.steps * 0.3)) {
-                                    return "INTERACTION DESIGN";
+                                    return "INTERACTION";
                                 }
                             },
                         }
@@ -510,19 +646,36 @@
                         enableMouseTracking: false,
                     },
                     {
+                        visible: profiles.focus.average.active,
+                        name: 'Average focus',
+                        type: 'scatter',
+                        color: Highcharts.Color('#000').setOpacity(0.5).get(),
+                        data: [
+                            [profiles.focus.average.x, profiles.focus.average.y]
+                        ],
+                        marker: {
+                            radius: 10,
+                            symbol: 'circle'
+                        }
+                    },
+                    {
                         visible: profiles.focus.self.active,
                         name: 'Your focus',
                         type: 'scatter',
                         color: '#000',
                         data: [
-                            [
-                                profiles.focus.self.x,
-                                profiles.focus.self.y
-                            ]
-                        ]
-
-                    }
+                            [profiles.focus.self.x, profiles.focus.self.y]
+                        ],
+                        marker: {
+                            radius: 15,
+                            symbol: 'circle'
+                        }
+                    },
                 ],
+                tooltip: {
+                    headerFormat: '<strong>{series.name}</strong>',
+                    pointFormat: ''
+                },
                 credits: {
                     href: '',
                     text: moment().format('DD/MM/YY HH:mm')
