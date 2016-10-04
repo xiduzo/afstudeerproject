@@ -62,21 +62,96 @@
             return positionsObject;
         }
 
+        function calculateYPosition(positions, data, type) {
+            switch (type) {
+                case 'over':
+                    return positions.y.min + (
+                        positions.y.range() * (
+                            data.interaction_over_treshold / 100
+                        )
+                    );
+                case 'under':
+                    return positions.y.min + (
+                        (100 - data.interaction_under_treshold ) / 100 * positions.y.range()
+                    );
+            }
+        }
+
         function unicornPlot(positions, data) {
-            var plot = {
+            return {
                 x: positions.x.center() - (
                     (positions.x.range() / 4) * (data.techniek_over_treshold / 100)
                 ) + (
                     (positions.x.range() / 4) * (data.visual_over_treshold / 100)
                 ),
-                y: positions.y.min + (
-                    positions.y.range() * (
-                        data.interaction_over_treshold / 100
-                    )
-                )
+                y: calculateYPosition(positions, data, 'over')
             };
+        }
 
-            return plot;
+        function techniekInteractionPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (positions.x.range() / 2) * (data.techniek_over_treshold / 100)
+                ) + (
+                    (100 - data.visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                ),
+                y: calculateYPosition(positions, data, 'over')
+            };
+        }
+
+        function techniekVisualPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (positions.x.range() / 2) * (data.techniek_over_treshold / 100)
+                ) + (
+                    (positions.x.range() / 2) * (data.visual_over_treshold / 100)
+                ),
+                y: calculateYPosition(positions, data, 'under')
+            };
+        }
+
+        function interactionVisualPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (100 - data.techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                ) + (
+                    (positions.x.range() / 2) * (data.visual_over_treshold / 100)
+                ),
+                y: calculateYPosition(positions, data, 'over')
+            };
+        }
+
+        function techniekPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (positions.x.range() / 2 ) * (data.techniek_over_treshold / 100)
+                ) + (
+                    (100 - data.visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                ),
+                y: calculateYPosition(positions, data, 'under')
+            };
+        }
+
+        function interactionPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (100 - data.techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                ) + (
+                    (100 - data.visual_under_treshold ) / 100 * (positions.x.range() / 2)
+                ),
+                y: calculateYPosition(positions, data, 'over')
+            };
+        }
+
+        function visualPlot(positions, data) {
+            return {
+                x: positions.x.center() - (
+                    (100 - data.techniek_under_treshold ) / 100 * (positions.x.range() / 2)
+                ) + (
+                    (positions.x.range() / 2 ) * (data.visual_over_treshold / 100)
+                ),
+                y: calculateYPosition(positions, data, 'under')
+            };
         }
 
         function createChart(container, data, size, show_focus, show_focus_average) {
@@ -214,12 +289,12 @@
                 if(show_focus) {
                     x = { min: 1.5, max: 2.5 };
                     y = { min: 1.9, max: 2.6 };
+
                     positions = buildpositionsObject(circle_template.radius, x, y);
                     plot = unicornPlot(positions, over_and_unders);
 
-                    profiles.focus.self.y = plot.y;
-
                     profiles.focus.self.x = plot.x;
+                    profiles.focus.self.y = plot.y;
 
                     profiles.focus.self.active = true;
                 }
@@ -232,21 +307,12 @@
                     if(show_focus) {
                         x = { min: 1.1, max: 1.55 };
                         y = { min: 2.4, max: 2.9 };
+
                         positions = buildpositionsObject(circle_template.radius, x, y);
+                        plot = techniekInteractionPlot(positions, over_and_unders);
 
-                        profiles.focus.self.y = positions.y.min + (
-                            positions.y.range() * (
-                                interaction_over_treshold / 100
-                            )
-                        );
-
-                        profiles.focus.self.x = (
-                            positions.x.center() - (
-                                (positions.x.range() / 2) * (techniek_over_treshold / 100)
-                            ) + (
-                                (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
-                            )
-                        );
+                        profiles.focus.self.x = plot.x;
+                        profiles.focus.self.y = plot.y;
 
                         profiles.focus.self.active = true;
                     }
@@ -258,19 +324,12 @@
                     if(show_focus || show_focus_average) {
                         x = { min: 1.75, max: 2.25 };
                         y = { min: 1.4, max: 1.8 };
+
                         positions = buildpositionsObject(circle_template.radius, x, y);
+                        plot = techniekVisualPlot(positions, over_and_unders);
 
-                        profiles.focus.self.y = positions.y.min + (
-                            (100 - interaction_under_treshold ) / 100 * positions.y.range()
-                        );
-
-                        profiles.focus.self.x = (
-                            positions.x.center() - (
-                                (positions.x.range() / 2) * (techniek_over_treshold / 100)
-                            ) + (
-                                (positions.x.range() / 2) * (visual_over_treshold / 100)
-                            )
-                        );
+                        profiles.focus.self.x = plot.x;
+                        profiles.focus.self.y = plot.y;
 
                         profiles.focus.self.active = true;
                     }
@@ -283,20 +342,10 @@
                         x = { min: 2.5, max: 2.9 };
                         y = { min: 2.4, max: 2.9 };
                         positions = buildpositionsObject(circle_template.radius, x, y);
+                        plot = interactionVisualPlot(positions, over_and_unders);
 
-                        profiles.focus.self.y = positions.y.min + (
-                            positions.y.range() * (
-                                interaction_over_treshold / 100
-                            )
-                        );
-
-                        profiles.focus.self.x = (
-                            positions.x.center() - (
-                                (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
-                            ) + (
-                                (positions.x.range() / 2) * (visual_over_treshold / 100)
-                            )
-                        );
+                        profiles.focus.self.x = plot.x;
+                        profiles.focus.self.y = plot.y;
 
                         profiles.focus.self.active = true;
                     }
@@ -310,18 +359,10 @@
                             x = { min: 0.8, max: 1.2 };
                             y = { min: 1.3, max: 2.2 };
                             positions = buildpositionsObject(circle_template.radius, x, y);
+                            plot = techniekPlot(positions, over_and_unders);
 
-                            profiles.focus.self.y = positions.y.min + (
-                                (100 - interaction_under_treshold ) / 100 * positions.y.range()
-                            );
-
-                            profiles.focus.self.x = (
-                                positions.x.center() - (
-                                    (positions.x.range() / 2 ) * (techniek_over_treshold / 100)
-                                ) + (
-                                    (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
-                                )
-                            );
+                            profiles.focus.self.x = plot.x;
+                            profiles.focus.self.y = plot.y;
 
                             profiles.focus.self.active = true;
                         }
@@ -334,20 +375,10 @@
                             x = { min: 1.5, max: 2.5 };
                             y = { min: 3, max: 3.6 };
                             positions = buildpositionsObject(circle_template.radius, x, y);
+                            plot = interactionPlot(positions, over_and_unders);
 
-                            profiles.focus.self.y = positions.y.min + (
-                                positions.y.range() * (
-                                    interaction_over_treshold / 100
-                                )
-                            );
-
-                            profiles.focus.self.x = (
-                                positions.x.center() - (
-                                    (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
-                                ) + (
-                                    (100 - visual_under_treshold ) / 100 * (positions.x.range() / 2)
-                                )
-                            );
+                            profiles.focus.self.x = plot.x;
+                            profiles.focus.self.y = plot.y;
 
                             profiles.focus.self.active = true;
                         }
@@ -360,18 +391,10 @@
                             x = { min: 2.85, max: 3.35 };
                             y = { min: 1.5, max: 2.2 };
                             positions = buildpositionsObject(circle_template.radius, x, y);
+                            plot = visualPlot(positions, over_and_unders);
 
-                            profiles.focus.self.y = positions.y.min + (
-                                (100 - interaction_under_treshold ) / 100 * positions.y.range()
-                            );
-
-                            profiles.focus.self.x = (
-                                positions.x.center() - (
-                                    (100 - techniek_under_treshold ) / 100 * (positions.x.range() / 2)
-                                ) + (
-                                    (positions.x.range() / 2 ) * (visual_over_treshold / 100)
-                                )
-                            );
+                            profiles.focus.self.x = plot.x;
+                            profiles.focus.self.y = plot.y;
 
                             profiles.focus.self.active = true;
                         }
