@@ -87,7 +87,7 @@
                     {
                         name: 'Assessments',
                         icon: 'book_dark',
-                        link_to: 'base.progress.overview',
+                        link_to: 'base.assessments.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                 ],
@@ -104,9 +104,9 @@
                         access_levels: [STUDENT_ACCESS_LEVEL]
                     },
                     {
-                        name: 'Group',
-                        icon: 'guild_dark',
-                        link_to: 'base.guild.overview',
+                        name: 'Progress',
+                        icon: 'timeline_dark',
+                        link_to: 'base.guild.progress',
                         access_levels: [
                             COORDINATOR_ACCESS_LEVEL,
                             LECTURER_ACCESS_LEVEL,
@@ -125,7 +125,7 @@
                     },
                     {
                         name: 'Activity',
-                        icon: 'book_dark',
+                        icon: 'activity_dark',
                         link_to: 'base.guild.activity',
                         access_levels: [
                             COORDINATOR_ACCESS_LEVEL,

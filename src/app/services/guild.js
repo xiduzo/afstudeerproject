@@ -234,7 +234,8 @@
                 data: {
                     user: user,
                     guild: guild,
-                    action: update
+                    action: update.action,
+                    action_type: update.type
                 }
             })
             .then(function(response) { return response.data;

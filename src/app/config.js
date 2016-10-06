@@ -148,6 +148,14 @@
             .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
             .icon('remove_light', './assets/icons/material/ic_remove_white_48px.svg', 48)
             .icon('remove_dark', './assets/icons/material/ic_remove_black_48px.svg', 48)
+            .icon('activity_light', './assets/icons/material/ic_storage_white_48px.svg', 48)
+            .icon('activity_dark', './assets/icons/material/ic_storage_black_48px.svg', 48)
+            .icon('clock_light', './assets/icons/material/ic_query_builder_white_48px.svg', 48)
+            .icon('clock_dark', './assets/icons/material/ic_query_builder_black_48px.svg', 48)
+            .icon('person_outline_light', './assets/icons/material/ic_person_outline_white_48px.svg', 48)
+            .icon('person_outline_dark', './assets/icons/material/ic_person_outline_black_48px.svg', 48)
+            .icon('again_light', './assets/icons/material/ic_cashed_white_48px.svg', 48)
+            .icon('again_dark', './assets/icons/material/ic_cashed_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

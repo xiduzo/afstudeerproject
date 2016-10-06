@@ -15,13 +15,13 @@
                 abstract: true
             })
 
-            .state('base.guild.overview', {
-                url: '/overview',
+            .state('base.guild.progress', {
+                url: '/progress',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/student/guild/overview/overview.html',
-                        controller: 'GuildOverviewController',
-                        controllerAs: 'guildOverviewCtrl'
+                        templateUrl: 'app/routes/student/guild/progress/progress.html',
+                        controller: 'GuildProgressController',
+                        controllerAs: 'guildProgressCtrl'
                     }
                 }
             })

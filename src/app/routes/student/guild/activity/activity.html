@@ -1,1 +1,89 @@
-guild log
+<section flex layout layout-fill>
+
+    <cmd-loading-page ng-if="guildActivityCtrl.loading_page"></cmd-loading-page>
+
+    <!-- <cmd-empty-state ng-if="guildActivityCtrl.guilds.length < 1 && !guildActivityCtrl.loading_page"
+    icon="guild_dark"
+    headline="No group found."
+    title="Wait for a lecturer to add you to a class.">
+    </cmd-empty-state> -->
+    <section flex layout="column" layout-fill
+    ng-repeat="guild in guildActivityCtrl.guilds"
+    ng-if="guild.id === guildActivityCtrl.selected_guild">
+        <md-toolbar>
+            <span class="md-toolbar-tools">
+                {{ guild.name }}
+            </span>
+        </md-toolbar>
+        <md-content layout-padding md-whiteframe=1>
+            sort options
+        </md-content>
+        <section ng-scrollbars flex layout-padding>
+            <md-list class="timeline">
+                <div class="timeline__container"
+                ng-repeat="activity in guild.history_updates"
+                layout layout-align="start start">
+                    <md-button class="timeline__icon md-fab md-accent" md-no-ink
+                    aria-label="timeline icon">
+                        <!-- (1, 'added task'), -->
+                        <md-icon md-svg-icon="add_light"
+                        ng-if="activity.action_type === 1">
+                        </md-icon>
+                        <!-- (2, 'removed task'), -->
+                        <md-icon md-svg-icon="delete_light"
+                        ng-if="activity.action_type === 2">
+                        </md-icon>
+                        <!-- (3, 'assigned'), -->
+                        <md-icon md-svg-icon="add_person_light"
+                        ng-if="activity.action_type === 3">
+                        </md-icon>
+                        <!-- (4, 'remove assigned'), -->
+                        <md-icon md-svg-icon="person_outline_light"
+                        ng-if="activity.action_type === 4">
+                        </md-icon>
+                        <!-- (5, 'completed'), -->
+                        <md-icon md-svg-icon="done_light"
+                        ng-if="activity.action_type === 5">
+                        </md-icon>
+                        <!-- (6, 'remove completed'), -->
+                        <md-icon md-svg-icon="close_light"
+                        ng-if="activity.action_type === 6">
+                        </md-icon>
+                        <!-- (7, 'graded'), -->
+                        <md-icon md-svg-icon="pencil_light"
+                        ng-if="activity.action_type === 7">
+                        </md-icon>
+                        <!-- (8, 'regraded'), -->
+                        <md-icon md-svg-icon="again_light"
+                        ng-if="activity.action_type === 8">
+                        </md-icon>
+                        <!-- (9, 'completed assessment'), -->
+                        <md-icon md-svg-icon="done_light"
+                        ng-if="activity.action_type === 9">
+                        </md-icon>
+                        <!-- (10, 'remove completed assessment'), -->
+                        <md-icon md-svg-icon="close_light"
+                        ng-if="activity.action_type === 10">
+                        </md-icon>
+                    </md-button>
+                    <md-list-item class="timeline__item">
+                        <md-content class="timeline__content" md-whiteframe=1 layout="column" flex>
+                            <section layout layout-align="space-between center">
+                                <span>
+                                    <img class="round" gravatar-size=32 gravatar-src-once="activity.user.email">
+                                    {{ activity.user | fullUserName }} {{ activity.action }}
+                                </span>
+                                <span class="text--color--grey">
+                                    <md-icon class="icon--color--grey" md-svg-icon="clock_dark"></md-icon>
+                                    {{ activity.created_at | fromNow }}
+                                </span>
+                            </section>
+                            <!-- {{ activity }} -->
+                        </md-content>
+                    </md-list-item>
+                </div>
+            </md-list>
+        </section>
+    </section>
+
+</section>
