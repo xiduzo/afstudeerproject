@@ -123,6 +123,16 @@
                             STUDENT_ACCESS_LEVEL
                         ],
                     },
+                    {
+                        name: 'Activity',
+                        icon: 'book_dark',
+                        link_to: 'base.guild.activity',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
+                    },
                 ],
             },
         ];

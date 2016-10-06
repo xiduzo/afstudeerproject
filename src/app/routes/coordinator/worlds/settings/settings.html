@@ -25,15 +25,15 @@
                     <md-content flex="100" md-whiteframe=1 layout="column">
                         <md-toolbar>
                             <div class="md-toolbar-tools">
+                                <span flex=10 layout layout-align="center center">
+                                    Active
+                                </span>
                                 <span flex=25> Assessment </span>
-                                <span flex=15> Power </span>
                                 <span flex=30> Completion </span>
                                 <span flex=10 layout layout-align="center center">
                                     Gradable
                                 </span>
-                                <span flex=10 layout layout-align="center center">
-                                    Active
-                                </span>
+                                <span flex=15> Power </span>
                                 <span flex=10> <!-- placeholder --> </span>
                             </div>
                         </md-toolbar>
@@ -41,8 +41,17 @@
                             <md-content ng-scrollbars flex>
                                 <md-list>
                                     <md-list-item ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'completion_percentage'">
+                                        <span flex=10 layout="row" layout-align="center center">
+                                            <div ng-repeat="v in [0]">
+                                                <md-switch class="md-primary"
+                                                ng-change="worldsSettingsCtrl.patchQuest(quest)"
+                                                md-no-ink
+                                                aria-label="Toggle quest gradable"
+                                                ng-model="quest.active">
+                                                </md-switch>
+                                            </div>
+                                        </span>
                                         <span flex=25> {{ quest.name }} </span>
-                                        <span flex=15> {{ quest.experience | number }} </span>
                                         <span flex=30 layout-padding>
                                             <div ng-if="!quest.total_guilds_conquering_quest"
                                             class="text--color--grey">
@@ -83,15 +92,14 @@
                                                 </md-switch>
                                             </div>
                                         </span>
-                                        <span flex=10 layout="row" layout-align="center center">
-                                            <div ng-repeat="v in [0]">
-                                                <md-switch class="md-primary"
-                                                ng-change="worldsSettingsCtrl.patchQuest(quest)"
-                                                md-no-ink
-                                                aria-label="Toggle quest gradable"
-                                                ng-model="quest.active">
-                                                </md-switch>
-                                            </div>
+                                        <span flex=15>
+                                            <span ng-if="quest.gradable">
+                                                {{ quest.experience | number }}
+                                            </span>
+                                            <span class="text--color--grey"
+                                            ng-if="!quest.gradable">
+                                                Not gradable
+                                            </span>
                                         </span>
                                         <span flex=10 layout="row" layout-align="end">
                                             <md-button class="md-icon-button"

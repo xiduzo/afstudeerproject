@@ -26,6 +26,17 @@
                 }
             })
 
+            .state('base.guild.activity', {
+                url: '/activity',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/student/guild/activity/activity.html',
+                        controller: 'GuildActivityController',
+                        controllerAs: 'guildActivityCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }

@@ -69,7 +69,8 @@
                                                 </md-checkbox>
                                             </span>
                                             <span flex=20>
-                                                <md-input-container layout>
+                                                <md-input-container layout
+                                                    ng-if="quest.quest.gradable">
                                                     <input aria-label="Assessment grade"
                                                     ng-model="quest.grade"
                                                     type="number"
@@ -80,7 +81,10 @@
                                                     ng-change="progressOverviewCtrl.patchQuest(quest)"
                                                     ng-model-options="{ debounce: 1000 }"/>
                                                 </md-input-container>
-                                                <!-- {{ quest.grade / 10 }} -->
+                                                <span class="text--color--grey"
+                                                ng-if="!quest.quest.gradable">
+                                                    Not gradable
+                                                </span>
                                             </span>
                                         </md-list-item>
                                     </md-list>

@@ -75,6 +75,7 @@
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function patchQuest(quest) {
+            console.log(quest);
             Guild.patchQuest(quest)
             .then(function(response) {
                 Notifications.simpleToast('Patched assessment');

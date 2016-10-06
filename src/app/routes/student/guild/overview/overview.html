@@ -40,7 +40,7 @@
                     </md-button>
                 </section>
                 <section flex=40 layout="row" layout-margin>
-                    <md-content flex=100 flex-gt-sm="60" layout="row" md-whiteframe=1 id="step1">
+                    <md-content flex=100 layout="row" md-whiteframe=1 id="step1">
                         <cmd-empty-state ng-if="guild.no_graph_data"
                         icon="timeline_dark"
                         headline="No data found."
@@ -51,34 +51,6 @@
                             <span ng-if="!guild.graph_data_loaded">
                                 Loading data
                             </span>
-                        </div>
-                    </md-content>
-                    <md-content md-whiteframe=1 flex="40"
-                        layout="column" layout-align="space-between stretch">
-                        <md-toolbar>
-                            <h1 class="md-toolbar-tools">
-                                Latest news
-                            </h1>
-                        </md-toolbar>
-                        <div layout="row" flex>
-                            <cmd-empty-state ng-if="guild.history_updates.length < 1"
-                            headline="No group news."
-                            title="Group news will appear over here."
-                            subtitle="Try adding and task">
-                            </cmd-empty-state>
-                            <md-content ng-scrollbars flex ng-if="guild.history_updates.length >= 1">
-                                <md-list>
-                                    </md-list-item>
-                                    <md-list-item ng-repeat="update in guild.history_updates | orderBy: '-created_at'">
-                                        <span flex=80 layout-padding>
-                                            {{ update.user | fullUserName }} {{ update.action }}
-                                        </span>
-                                        <span>
-                                            {{ update.created_at | fromNow }}
-                                        </span>
-                                    </md-list-item>
-                                </md-list>
-                            </md-content>
                         </div>
                     </md-content>
                 </section>
