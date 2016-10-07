@@ -92,12 +92,14 @@
                         update.action = ' set \'' + quest.quest.name + '\' to uncomplete';
                         update.type = 10;
                     }
+                    update.about = quest.quest.name;
                     Guild.addHistoryUpdate(self.user.url, response.guild, update);
                 }
 
                 if(type === 'grade') {
                     update.action = ' graded \'' + quest.quest.name + '\' with an ' + (quest.grade/10);
                     update.type = 7;
+                    update.about = quest.quest.name;
                     Guild.addHistoryUpdate(self.user.url, response.guild, update);
                 }
 

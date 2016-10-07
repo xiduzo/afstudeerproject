@@ -33,50 +33,14 @@
                                     user_id: filters.user
                                 }
                                 | filter: {
-                                    action: filters.free_search
+                                    about: filters.free_search || undefined
                                 }"
                                 layout layout-align="start start">
                                     <md-button class="timeline__icon md-fab md-accent" md-no-ink
                                     aria-label="timeline icon">
-                                        <!-- (1, 'added task'), -->
-                                        <md-icon md-svg-icon="add_light"
-                                        ng-if="activity.action_type === 1">
-                                        </md-icon>
-                                        <!-- (2, 'removed task'), -->
-                                        <md-icon md-svg-icon="delete_light"
-                                        ng-if="activity.action_type === 2">
-                                        </md-icon>
-                                        <!-- (3, 'assigned'), -->
-                                        <md-icon md-svg-icon="add_person_light"
-                                        ng-if="activity.action_type === 3">
-                                        </md-icon>
-                                        <!-- (4, 'remove assigned'), -->
-                                        <md-icon md-svg-icon="person_outline_light"
-                                        ng-if="activity.action_type === 4">
-                                        </md-icon>
-                                        <!-- (5, 'completed'), -->
-                                        <md-icon md-svg-icon="done_light"
-                                        ng-if="activity.action_type === 5">
-                                        </md-icon>
-                                        <!-- (6, 'remove completed'), -->
-                                        <md-icon md-svg-icon="close_light"
-                                        ng-if="activity.action_type === 6">
-                                        </md-icon>
-                                        <!-- (7, 'graded'), -->
-                                        <md-icon md-svg-icon="pencil_light"
-                                        ng-if="activity.action_type === 7">
-                                        </md-icon>
-                                        <!-- (8, 'regraded'), -->
-                                        <md-icon md-svg-icon="again_light"
-                                        ng-if="activity.action_type === 8">
-                                        </md-icon>
-                                        <!-- (9, 'completed assessment'), -->
-                                        <md-icon md-svg-icon="done_light"
-                                        ng-if="activity.action_type === 9">
-                                        </md-icon>
-                                        <!-- (10, 'remove completed assessment'), -->
-                                        <md-icon md-svg-icon="close_light"
-                                        ng-if="activity.action_type === 10">
+                                        <md-icon ng-repeat="action_type in guildActivityCtrl.action_types"
+                                            md-svg-icon="{{action_type.icon}}"
+                                            ng-if="activity.action_type == action_type.type">
                                         </md-icon>
                                     </md-button>
                                     <md-list-item class="timeline__item">
@@ -87,7 +51,7 @@
                                                         <img class="round" gravatar-size=32 gravatar-src-once="activity.user.email">
                                                     </span>
                                                     {{ activity.user | fullUserName }}
-                                                    <span ng-bind-html="activity.action"></span>
+                                                    <span ng-bind-html="activity.action | empasizeSubject : activity.about"></span>
                                                 </div>
                                                 <div class="text--color--grey">
                                                     <md-icon class="icon--color--grey" md-svg-icon="clock_dark"></md-icon>
@@ -126,8 +90,11 @@
                                     <md-select ng-model="filters.action_type">
                                         <md-option ng-value="undefined"> All </md-option>
                                         <md-option ng-repeat="action_type in guildActivityCtrl.action_types"
-                                            ng-value="action_type.type">
-                                            {{action_type.name}}
+                                            ng-value="action_type.type" layout>
+                                            <md-icon class="icon__helper icon--color--black"
+                                            md-svg-icon="{{action_type.icon}}">
+                                            </md-icon>
+                                                    {{action_type.name}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
@@ -139,7 +106,7 @@
                                         <md-option ng-value="undefined"> All </md-option>
                                         <md-option ng-repeat="user in guild.user_filter_list"
                                             ng-value="user.id">
-                                            <img class="round" gravatar-size=25 gravatar-src-once="user.email">
+                                            <img class="icon__helper round" gravatar-size=25 gravatar-src-once="user.email">
                                             {{user.name}}
                                         </md-option>
                                     </md-select>
@@ -147,9 +114,12 @@
                             </section>
                             <section layout-padding>
                                 <md-input-container class="md-block">
-                                    <label>Activity</label>
+                                    <label>Subject</label>
                                     <input ng-model="filters.free_search"
                                     ng-model-options="{ debounce: 500 }">
+                                    <div class="hint text--color--grey">
+                                        The subject has a black background
+                                    </div>
                                 </md-input-container>
                             </section>
                         </md-content>

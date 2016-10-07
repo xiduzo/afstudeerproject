@@ -154,8 +154,12 @@
             .icon('clock_dark', './assets/icons/material/ic_query_builder_black_48px.svg', 48)
             .icon('person_outline_light', './assets/icons/material/ic_person_outline_white_48px.svg', 48)
             .icon('person_outline_dark', './assets/icons/material/ic_person_outline_black_48px.svg', 48)
-            .icon('again_light', './assets/icons/material/ic_cashed_white_48px.svg', 48)
-            .icon('again_dark', './assets/icons/material/ic_cashed_black_48px.svg', 48)
+            .icon('again_light', './assets/icons/material/ic_cached_white_48px.svg', 48)
+            .icon('again_dark', './assets/icons/material/ic_cached_black_48px.svg', 48)
+            .icon('check_light', './assets/icons/material/ic_check_box_white_24px.svg', 24)
+            .icon('check_dark', './assets/icons/material/ic_check_box_black_24px.svg', 24)
+            .icon('uncheck_light', './assets/icons/material/ic_check_box_outline_blank_white_24px.svg', 24)
+            .icon('uncheck_dark', './assets/icons/material/ic_check_box_outline_blank_black_24px.svg', 24)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

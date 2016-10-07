@@ -38,16 +38,16 @@
         self.guilds = [];
         self.selected_guild = Global.getSelectedGuild();
         self.action_types = [
-            { type: '1', name: 'Added task', },
-            { type: '2', name: 'Removed task', },
-            { type: '3', name: 'Assigned', },
-            { type: '4', name: 'Removed assignment', },
-            { type: '5', name: 'Completed task', },
-            { type: '6', name: 'Uncomplete task', },
-            { type: '7', name: 'Graded assessment', },
-            { type: '8', name: 'Regraded assessment', },
-            { type: '9', name: 'Completed assessment', },
-            { type: '10', name: 'Uncomplete assessment', },
+            { type: 1, name: 'Added task', icon: 'add_light', },
+            { type: 2, name: 'Removed task', icon: 'delete_light', },
+            { type: 3, name: 'Assigned', icon: 'add_person_light', },
+            { type: 4, name: 'Removed assignment', icon: 'person_outline_light', },
+            { type: 5, name: 'Completed task', icon: 'check_light', },
+            { type: 6, name: 'Uncomplete task', icon: 'uncheck_light', },
+            { type: 7, name: 'Graded assessment', icon: 'pencil_light', },
+            { type: 8, name: 'Regraded assessment', icon: 'again_light', },
+            { type: 9, name: 'Completed assessment', icon: 'done_light', },
+            { type: 10, name: 'Uncomplete assessment', icon: 'remove_light', },
         ];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

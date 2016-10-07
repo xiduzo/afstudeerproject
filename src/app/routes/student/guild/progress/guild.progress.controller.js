@@ -91,6 +91,7 @@
                 var update = {
                     action: 'added a new task: ' + '\'' +response.name + '\'',
                     type: 1,
+                    about: response.name,
                 };
                 guild.objectives.unshift(response);
                 self.guildHistoryUpdate(guild, update);
@@ -111,6 +112,7 @@
                 var update = {
                     action: 'assigned ' + self.user.first_name + ' to \'' + objective.name + '\'',
                     type: 3,
+                    about: objective.name
                 };
                 self.guildHistoryUpdate(guild, update);
                 Notifications.simpleToast(self.user.first_name + ' assigned to \'' + objective.name + '\'');
@@ -342,6 +344,7 @@
                     var update = {
                         action: 'added a new task: ' + '\'' +response.name + '\'',
                         type: 1,
+                        about: response.name,
                     };
                     guild.objectives.unshift(response);
                     self.guildHistoryUpdate(guild, update);
@@ -360,6 +363,7 @@
                 var update = {
                     action: 'removed task: \'' + objective.name + '\'',
                     type: 2,
+                    about: objective.name,
                 };
                 guild.objectives.splice(guild.objectives.indexOf(objective), 1);
                 self.guildHistoryUpdate(guild, update);
@@ -378,7 +382,8 @@
             .then(function(response) {
                 var update = {
                     action: 'marked task \''+response.name+'\' as '+(response.completed ? 'done' : 'undone'),
-                    type: response.completed ? 5 : 6
+                    type: response.completed ? 5 : 6,
+                    about: objective.name,
                 };
                 self.guildHistoryUpdate(guild, update);
             }, function(error) {
@@ -473,7 +478,8 @@
                     .then(function(response) {
                         var update = {
                             action: 'assigned ' + user.first_name + ' to \'' + objective.name + '\'',
-                            type: 3
+                            type: 3,
+                            about: objective.name,
                         };
                         self.guildHistoryUpdate(guild, update);
                         Notifications.simpleToast(user.first_name + ' assigned to \'' + objective.name + '\'');
@@ -493,7 +499,8 @@
             .then(function(response) {
                 var update = {
                     action: 'removed ' + assignment.user.first_name + ' from \'' + objective.name + '\'',
-                    type: 4
+                    type: 4,
+                    about: objective.name
                 };
                 self.guildHistoryUpdate(guild, update);
                 Notifications.simpleToast(assignment.user.first_name + ' removed from \'' + objective.name + '\'');

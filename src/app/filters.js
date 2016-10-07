@@ -45,6 +45,13 @@
             };
         })
 
+        .filter('empasizeSubject', function() {
+            return function(sentence, subject) {
+                return sentence.replace(subject, '<strong>'+subject+'</strong>');
+                // return parseInt(number , 10);
+            };
+        })
+
 
     ; // End of filters
 

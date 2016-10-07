@@ -23,4 +23,7 @@ $sizes: (12, 24, 36, 48, 96, 192);
         bottom: 24px;
         right: 24px;
     }
+    &__helper {
+        margin: auto 16px auto 0;
+    }
 }

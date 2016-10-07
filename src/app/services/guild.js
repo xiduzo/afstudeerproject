@@ -236,7 +236,8 @@
                     user: user,
                     guild: guild,
                     action: update.action,
-                    action_type: update.type
+                    action_type: update.type,
+                    about: update.about,
                 }
             })
             .then(function(response) { return response.data;
