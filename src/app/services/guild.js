@@ -35,6 +35,7 @@
         service.addHistoryUpdate = addHistoryUpdate;
         service.addObjectiveAssignment = addObjectiveAssignment;
         service.removeObjectiveAssignment = removeObjectiveAssignment;
+        service.loadMoreHistoryUpdates = loadMoreHistoryUpdates;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -264,7 +265,18 @@
             }, function(error) { return error; });
         }
 
-
+        function loadMoreHistoryUpdates(guild, start) {
+            return $http({
+                url: REST_API_URL + 'guild/guildFullHistory',
+                method: "GET",
+                params: {
+                    guild: guild,
+                    start: start
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
 
     }
 

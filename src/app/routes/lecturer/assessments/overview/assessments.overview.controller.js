@@ -81,7 +81,7 @@
                     action: null,
                     type: null
                 };
-                
+
                 Notifications.simpleToast('Patched assessment');
 
                 if(type === 'completion') {
@@ -96,7 +96,7 @@
                 }
 
                 if(type === 'grade') {
-                    update.action = ' graded \'' + quest.quest.name + '\' with an ' + quest.grade;
+                    update.action = ' graded \'' + quest.quest.name + '\' with an ' + (quest.grade/10);
                     update.type = 7;
                     Guild.addHistoryUpdate(self.user.url, response.guild, update);
                 }

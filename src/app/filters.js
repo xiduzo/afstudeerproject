@@ -38,6 +38,13 @@
             };
         })
 
+        .filter('parseInt', function() {
+            return function(number) {
+                if(!number) { return; }
+                return parseInt(number , 10);
+            };
+        })
+
 
     ; // End of filters
 
