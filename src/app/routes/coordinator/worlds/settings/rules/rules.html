@@ -1,0 +1,48 @@
+<md-dialog md-theme="default" aria-label="{{ addRuleCtrl.about }}" flex="40">
+
+    <md-dialog-content class="md-dialog-content">
+        <h2 class="md-title ng-binding">
+            {{ addRuleCtrl.title }}
+        </h2>
+
+        <div class="md-dialog-content-body">
+            <form layout="column">
+                <div layout>
+                    <md-input-container flex>
+                        <label>Rule</label>
+                        <input md-autofocus ng-model="addRuleCtrl.formInput.rule" />
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Points</label>
+                        <md-select ng-model="addRuleCtrl.formInput.points">
+                            <md-option ng-repeat="points in [1,2,3,5,8,13,21]" value="{{points}}">
+                            {{ points }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <md-input-container>
+                    <label>Rule type</label>
+                    <md-select ng-model="addRuleCtrl.formInput.rule_type">
+                        <md-option ng-repeat="rule in addRuleCtrl.rule_types" value="{{rule.type}}">
+                        {{ rule.name }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </form>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button class="md-primary md-button" type="button" aria-label="Cancel"
+            ng-click="addRuleCtrl.close()" md-ink-ripple>
+            Cancel
+        </button>
+        <button class="md-primary md-button" type="button" aria-label="{{ addRuleCtrl.about }}"
+            ng-click="addRuleCtrl.addRule()" md-ink-ripple>
+            Add {{ addRuleCtrl.about }}
+        </button>
+    </md-dialog-actions>
+
+</md-dialog>

@@ -207,6 +207,7 @@
             var previous_points = null;
             var objectives_graph_line = [];
             var horizontal_axis = [];
+            var days_past = 0;
 
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= course_duration; i++) {
@@ -237,15 +238,15 @@
 
             // Overwrite the objective_groups
             _.each(objectives, function(objective) {
-                var date = moment(objective[0].created_at).format('DD/MM/YY');
+                var created = moment(objective[0].created_at).format('DD/MM/YY');
                 _.each(objective,function(group) {
-                    var objective_group = objective_groups[date];
+                    var objective_group = objective_groups[created];
                     if(objective_group && objective_group[0].points) {
                         objective_group.push(group);
                     } else {
                         objective_group = [group];
                     }
-                    objective_groups[date] = objective_group;
+                    objective_groups[created] = objective_group;
                 });
             });
 
@@ -283,14 +284,14 @@
             });
 
             for(i = 0; i <= course_duration; i++) {
-                var date = moment(starting_date).add(i, 'day');
+                var start = moment(starting_date).add(i, 'day');
                 var match = _.findWhere(
                     objectives_graph_items,
-                    {date: date.format('DD/MM')}
+                    {date: start.format('DD/MM')}
                 );
 
                 // If the date is after now
-                if(moment().add(1, 'days').isSameOrBefore(date)) {
+                if(moment().add(1, 'days').isSameOrBefore(start)) {
                     // don't show the chart
                     objectives_graph_line.push(null);
                 } else if(match) {
@@ -321,14 +322,14 @@
             }
 
             $mdDialog.show({
-                controller: 'addObjectiveController',
-                controllerAs: 'addObjectiveCtrl',
+                controller: 'addTaskController',
+                controllerAs: 'addTaskCtrl',
                 templateUrl: 'app/routes/student/guild/progress/objectives/objectives.html',
                 targetEvent: event,
                 clickOutsideToClose: true,
                 locals: {
                     title: 'Add task for ' + guild.name,
-                    about: 'guild tasks',
+                    about: 'task',
                 }
             })
             .then(function(response) {

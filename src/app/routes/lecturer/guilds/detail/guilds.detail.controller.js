@@ -123,7 +123,6 @@
                 var date = moment(guild.world.start).add(i, 'day');
                 graph_data.column_dates.push({date: date.format()});
 
-                // console.log(date);
                 if(moment(date).isSameOrBefore(moment(), 'day')) {
                     graph_data.days_past++;
                 }

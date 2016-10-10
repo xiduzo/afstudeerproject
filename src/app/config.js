@@ -160,6 +160,10 @@
             .icon('check_dark', './assets/icons/material/ic_check_box_black_24px.svg', 24)
             .icon('uncheck_light', './assets/icons/material/ic_check_box_outline_blank_white_24px.svg', 24)
             .icon('uncheck_dark', './assets/icons/material/ic_check_box_outline_blank_black_24px.svg', 24)
+            .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
+            .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
+            .icon('feedback_light', './assets/icons/material/ic_feedback_white_48px.svg', 48)
+            .icon('feedback_dark', './assets/icons/material/ic_feedback_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

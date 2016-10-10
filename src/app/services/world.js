@@ -26,6 +26,8 @@
         service.removeGamemasterFromWorld = removeGamemasterFromWorld;
         service.patchGamemasterWorld = patchGamemasterWorld;
         service.getWorldsOfGamemaster = getWorldsOfGamemaster;
+        service.addRule = addRule;
+        service.removeRule = removeRule;
 
         return service;
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -175,6 +177,36 @@
             return $http({
                 url: REST_API_URL + 'user/userWorlds/'+gamemaster+'/',
                 method: "GET"
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function addRule(world, ruleObject) {
+            return $http({
+                url: REST_API_URL + 'world/worldRule/',
+                method: "POST",
+                data: {
+                    world: world,
+                    rule: ruleObject.rule,
+                    points: ruleObject.points,
+                    rule_type: ruleObject.rule_type
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function removeRule(rule) {
+            return $http({
+                url: REST_API_URL + 'world/worldRule/' + rule + '/',
+                method: "DELETE"
             })
             .then(function(response) {
                 return response.data;

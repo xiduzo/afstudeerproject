@@ -37,6 +37,17 @@
                 }
             })
 
+            .state('base.guild.rules', {
+                url: '/rules',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/student/guild/rules/rules.html',
+                        controller: 'GuildRulesController',
+                        controllerAs: 'guildRulesCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }

@@ -114,6 +114,16 @@
                         ],
                     },
                     {
+                        name: 'Feedback',
+                        icon: 'feedback_dark',
+                        link_to: 'base.guild.rules',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
+                    },
+                    {
                         name: 'Assessments',
                         icon: 'book_dark',
                         link_to: 'base.quests.log',

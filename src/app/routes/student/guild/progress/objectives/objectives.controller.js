@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.worlds')
-        .controller('addObjectiveController', addObjectiveController);
+        .controller('addTaskController', addTaskController);
 
     /** @ngInject */
-    function addObjectiveController(
+    function addTaskController(
         $mdDialog,
         title,
         about
@@ -18,7 +18,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.close = close;
-        self.addObjective = addObjective;
+        self.addTask = addTask;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@
             $mdDialog.hide();
         }
 
-        function addObjective() {
+        function addTask() {
             $mdDialog.hide(self.formInput);
         }
 

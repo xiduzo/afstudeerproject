@@ -1,0 +1,17 @@
+<cmd-loading-page ng-if="guildRulesCtrl.loading_page"></cmd-loading-page>
+
+<section ng-if="!guildRulesCtrl.loading_page" layout-fill>
+    <section layout-fill
+        ng-repeat="guild in guildRulesCtrl.guilds"
+        ng-if="guild.id === guildRulesCtrl.selected_guild">
+
+        <section layout="column" layout-fill>
+            <md-toolbar>
+                <span class="md-toolbar-tools">
+                    Feedback of {{ guild.name }}
+                </span>
+            </md-toolbar>
+        </secion>
+
+    </section>
+</section>
