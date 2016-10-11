@@ -23,6 +23,7 @@
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.world = [];
+        self.selected_rules = [];
         self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
