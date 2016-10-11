@@ -33,10 +33,10 @@
         };
 
         self.rule_types = [
-            { type: 1, name: 'Houding', },
-            { type: 2, name: 'Functioneren binnen het team', },
-            { type: 3, name: 'Kennisontwikkeling', },
-            { type: 4, name: 'Verantwoording', },
+            { type: 1, name: 'Houding', icon: 'work_dark', },
+            { type: 2, name: 'Functioneren binnen het team', icon: 'group_work_dark', },
+            { type: 3, name: 'Kennisontwikkeling', icon: 'lightbulb_dark', },
+            { type: 4, name: 'Verantwoording', icon: 'description_dark', },
         ];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

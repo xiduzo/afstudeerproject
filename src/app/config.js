@@ -164,6 +164,14 @@
             .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
             .icon('feedback_light', './assets/icons/material/ic_feedback_white_48px.svg', 48)
             .icon('feedback_dark', './assets/icons/material/ic_feedback_black_48px.svg', 48)
+            .icon('group_work_light', './assets/icons/material/ic_group_work_white_48px.svg', 48)
+            .icon('group_work_dark', './assets/icons/material/ic_group_work_black_48px.svg', 48)
+            .icon('description_light', './assets/icons/material/ic_description_white_48px.svg', 48)
+            .icon('description_dark', './assets/icons/material/ic_description_black_48px.svg', 48)
+            .icon('lightbulb_light', './assets/icons/material/ic_lightbulb_outline_white_48px.svg', 48)
+            .icon('lightbulb_dark', './assets/icons/material/ic_lightbulb_outline_black_48px.svg', 48)
+            .icon('work_light', './assets/icons/material/ic_work_white_48px.svg', 48)
+            .icon('work_dark', './assets/icons/material/ic_work_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

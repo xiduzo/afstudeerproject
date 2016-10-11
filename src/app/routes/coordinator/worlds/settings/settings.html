@@ -135,41 +135,56 @@
                     <md-content flex=100 md-whiteframe=1 layout="column">
                         <md-toolbar>
                             <div class="md-toolbar-tools">
-                                <span flex=75>
+                                <span flex=5>
+                                    <!-- Icon placeholder -->
+                                </span>
+                                <span flex=70>
                                     Rule
                                 </span>
                                 <span flex=15>
                                     Points
                                 </span>
                                 <span flex=10>
-                                    <!-- Placeholder -->
+                                    <!-- Action placeholder -->
                                 </span>
                             </div>
                         </md-toolbar>
                         <div layout="row" flex>
                             <md-content ng-scrollbars flex>
-                                <md-list>
+                                <md-list layout-padding>
                                     <md-list-item ng-repeat="rule in worldsSettingsCtrl.world.rules | orderBy: 'rule_type'">
-                                        <div layout flex layout-padding>
-                                            <span flex=75>
-                                                {{ rule.rule }}
-                                            </span>
-                                            <span flex=15>
-                                                {{ rule.points }}
-                                            </span>
-                                            <span flex=10 layout="row" layout-align="end">
-                                                <!-- <md-button class="md-icon-button"
-                                                 ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
-                                                    <md-icon md-svg-icon="pencil_dark"></md-icon>
-                                                    <md-tooltip md-delay="1000"> Edit </md-tooltip>
-                                                </md-button> -->
-                                                <md-button class="md-icon-button"
-                                                 ng-click="worldsSettingsCtrl.deleteRule($event, rule)">
-                                                    <md-icon md-svg-icon="delete_dark"></md-icon>
-                                                    <md-tooltip md-delay="1000"> Delete </md-tooltip>
-                                                </md-button>
-                                            </span>
-                                        </div>
+                                        <span flex=5 layout layout-align="center center">
+                                            <md-icon md-svg-icon="work_dark"
+                                            ng-if="rule.rule_type === 1">
+                                            </md-icon>
+                                            <md-icon md-svg-icon="group_work_dark"
+                                            ng-if="rule.rule_type === 2">
+                                            </md-icon>
+                                            <md-icon md-svg-icon="lightbulb_dark"
+                                            ng-if="rule.rule_type === 3">
+                                            </md-icon>
+                                            <md-icon md-svg-icon="description_dark"
+                                            ng-if="rule.rule_type === 4">
+                                            </md-icon>
+                                        </span>
+                                        <span flex=70>
+                                            {{ rule.rule }}
+                                        </span>
+                                        <span flex=15>
+                                            {{ rule.points }}
+                                        </span>
+                                        <span flex=10 layout="row" layout-align="end">
+                                            <!-- <md-button class="md-icon-button"
+                                             ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
+                                                <md-icon md-svg-icon="pencil_dark"></md-icon>
+                                                <md-tooltip md-delay="1000"> Edit </md-tooltip>
+                                            </md-button> -->
+                                            <md-button class="md-icon-button"
+                                             ng-click="worldsSettingsCtrl.deleteRule($event, rule)">
+                                                <md-icon md-svg-icon="delete_dark"></md-icon>
+                                                <md-tooltip md-delay="1000"> Delete </md-tooltip>
+                                            </md-button>
+                                        </span>
                                     </md-list-item>
                                 </md-list>
                             </md-content>

@@ -22,6 +22,7 @@
         self.user = Global.getUser();
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
+        self.world = [];
         self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,6 +42,7 @@
                     World.getWorld(guild.world.id)
                     .then(function(response) {
                         console.log(response);
+                        self.world = response;
                         self.guilds.push(guild);
                         self.loading_page = false;
                     })

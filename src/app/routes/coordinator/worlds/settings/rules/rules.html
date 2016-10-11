@@ -24,8 +24,12 @@
                 <md-input-container>
                     <label>Rule type</label>
                     <md-select ng-model="addRuleCtrl.formInput.rule_type">
-                        <md-option ng-repeat="rule in addRuleCtrl.rule_types" value="{{rule.type}}">
-                        {{ rule.name }}
+                        <md-option layout ng-repeat="rule in addRuleCtrl.rule_types" value="{{rule.type}}">
+                            <md-icon class="icon__helper" md-svg-icon="{{rule.icon}}">
+                            </md-icon>
+                            <span flex>
+                                {{ rule.name }}
+                            </span>
                         </md-option>
                     </md-select>
                 </md-input-container>

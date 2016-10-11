@@ -11,6 +11,17 @@
                     Feedback of {{ guild.name }}
                 </span>
             </md-toolbar>
+
+            {{ guild.accepted_rules }}
+
+            <section ng-if="!guild.accepted_rules">
+                <md-list>
+                    <md-list-item ng-repeat="rule in guildRulesCtrl.world.rules">
+                        {{ rule }}
+                    </md-list-item>
+                </md-list>
+            </section>
+
         </secion>
 
     </section>

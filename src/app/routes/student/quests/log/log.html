@@ -76,15 +76,18 @@
                                         <span ng-if="quest.completed">
                                             <md-icon md-svg-icon="done_dark"
                                             class="icon--color--green"
-                                            ng-if="quest.grade >= 55">
+                                            ng-if="quest.grade >= 55 || !quest.quest.gradable">
                                             </md-icon>
                                             <md-icon md-svg-icon="close_dark"
                                             class="icon--color--red"
-                                            ng-if="quest.grade < 55">
+                                            ng-if="quest.grade < 55 && quest.quest.gradable">
                                             </md-icon>
                                             <md-tooltip md-delay="1000" md-direction="left">
-                                                <strong>
-                                                    {{ quest.grade | percentageToGrade }}
+                                                <strong ng-if="quest.quest.gradable">
+                                                    Grade: {{ quest.grade | percentageToGrade }}
+                                                </strong>
+                                                <strong ng-if="!quest.quest.gradable">
+                                                    Completed assessment
                                                 </strong>
                                             </md-tooltip>
                                         </span>
