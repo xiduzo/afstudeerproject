@@ -135,10 +135,7 @@
                     <md-content flex=100 md-whiteframe=1 layout="column">
                         <md-toolbar>
                             <div class="md-toolbar-tools">
-                                <span flex=5>
-                                    <!-- Icon placeholder -->
-                                </span>
-                                <span flex=70>
+                                <span flex=75>
                                     Rule
                                 </span>
                                 <span flex=15>
@@ -153,21 +150,23 @@
                             <md-content ng-scrollbars flex>
                                 <md-list layout-padding>
                                     <md-list-item ng-repeat="rule in worldsSettingsCtrl.world.rules | orderBy: 'rule_type'">
-                                        <span flex=5 layout layout-align="center center">
-                                            <md-icon md-svg-icon="work_dark"
+                                        <span flex=75>
+                                            <md-icon class="icon__helper"
+                                            md-svg-icon="work_dark"
                                             ng-if="rule.rule_type === 1">
                                             </md-icon>
-                                            <md-icon md-svg-icon="group_work_dark"
+                                            <md-icon class="icon__helper"
+                                            md-svg-icon="group_work_dark"
                                             ng-if="rule.rule_type === 2">
                                             </md-icon>
-                                            <md-icon md-svg-icon="lightbulb_dark"
+                                            <md-icon class="icon__helper"
+                                            md-svg-icon="lightbulb_dark"
                                             ng-if="rule.rule_type === 3">
                                             </md-icon>
-                                            <md-icon md-svg-icon="description_dark"
+                                            <md-icon class="icon__helper"
+                                            md-svg-icon="description_dark"
                                             ng-if="rule.rule_type === 4">
                                             </md-icon>
-                                        </span>
-                                        <span flex=70>
                                             {{ rule.rule }}
                                         </span>
                                         <span flex=15>
