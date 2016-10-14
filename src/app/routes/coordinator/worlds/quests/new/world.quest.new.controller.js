@@ -25,6 +25,9 @@
             return;
         }
 
+        Global.setRouteTitle('New assessment');
+        Global.setRouteBackRoute('base.worlds.settings', {worldUuid: $stateParams.worldUuid});
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,6 +64,7 @@
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
                 self.world = response;
+                Global.setRouteTitle('New assessment', self.world.name);
             }, function() {
                 // Err
             });

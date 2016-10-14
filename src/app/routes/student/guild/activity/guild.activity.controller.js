@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function GuildActivityController(
+        $rootScope,
         $filter,
         $scope,
         hotkeys,
@@ -18,6 +19,9 @@
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
             return Global.notAllowed();
         }
+
+        Global.setRouteTitle('Activity');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 
@@ -73,6 +77,7 @@
                 });
 
                 self.guilds.push(guild);
+                Global.setRouteTitle('Activity', _.findWhere(self.guilds, { id: self.selected_guild}).name);
             });
 
             self.addHotkeys();
@@ -80,6 +85,14 @@
 
         }, function() {
             // Err get user guilds
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $rootScope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+            Global.setRouteTitle('Activity', _.findWhere(self.guilds, { id: self.selected_guild}).name);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

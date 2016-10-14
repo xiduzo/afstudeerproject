@@ -92,8 +92,11 @@
             getSelectedWorld: function() {
                 return self.selected_world;
             },
-            setRouteTitle: function(title) {
-                $rootScope.$broadcast('route-title', title);
+            setRouteTitle: function(title, subtitle) {
+                $rootScope.$broadcast('route-title', title, subtitle);
+            },
+            setRouteBackRoute: function(route, params) {
+                $rootScope.$broadcast('back-route', route, params);
             }
         };
 

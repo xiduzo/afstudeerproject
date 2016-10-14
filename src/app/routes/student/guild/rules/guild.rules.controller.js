@@ -12,8 +12,17 @@
         Global,
         Guild,
         World,
-        Notifications
+        Notifications,
+        STUDENT_ACCESS_LEVEL
     ) {
+
+        if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
+            Global.notAllowed();
+            return;
+        }
+
+        Global.setRouteTitle('Feedback');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 
@@ -47,6 +56,7 @@
                 if(guild.accepted_rules) {
                     self.guilds.push(guild);
                     self.loading_page = false;
+                    Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
                 } else {
                     World.getWorld(guild.world.id)
                     .then(function(response) {
@@ -72,6 +82,7 @@
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
                         self.guilds.push(guild);
+                        Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
                         self.loading_page = false;
                     })
                     .catch(function(error) {

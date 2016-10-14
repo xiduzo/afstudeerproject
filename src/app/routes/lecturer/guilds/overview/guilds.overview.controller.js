@@ -26,6 +26,9 @@
             return;
         }
 
+        Global.setRouteTitle('Groups overview');
+        Global.setRouteBackRoute(null);
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,6 +67,8 @@
                 self.worlds.push(world.world);
             });
 
+            Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
+
             self.addHotkeys();
             self.loading_page = false;
         }, function() {
@@ -76,6 +81,7 @@
         $rootScope.$on('world-changed', function(event, world) {
             self.selected_world = world;
             self.addHotkeys();
+            Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

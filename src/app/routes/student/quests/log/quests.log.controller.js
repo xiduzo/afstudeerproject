@@ -19,6 +19,10 @@
             return;
         }
 
+        Global.setRouteTitle('Assessments');
+        Global.setRouteBackRoute(null);
+
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,6 +44,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
+            Global.setRouteTitle('Assessments', _.findWhere(self.guilds, { id: self.selected_guild}).name);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,6 +106,7 @@
                     });
 
                     self.guilds.push(guild);
+                    Global.setRouteTitle('Assessments', _.findWhere(self.guilds, { id: self.selected_guild}).name);
                     self.loading_page = false;
 
                 });

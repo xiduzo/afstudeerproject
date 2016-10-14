@@ -14,12 +14,6 @@
         ng-if="world.id === assessmentsOverviewCtrl.selected_world">
 
             <section layout="column" layout-fill>
-                <md-toolbar>
-                    <span class="md-toolbar-tools">
-                        {{ world.name }} assessments
-                    </span>
-                </md-toolbar>
-
                 <cmd-empty-state ng-if="world.guilds.length < 1"
                 flex
                 icon="guild_dark"
@@ -29,7 +23,7 @@
                 </cmd-empty-state>
 
                 <section layout flex layout-align="start stretch" ng-if="world.guilds.length >= 1">
-                    <section flex=80 layout-fill>
+                    <section flex=80 layout-fill layout-padding>
                         <cmd-empty-state ng-if="assessmentsOverviewCtrl.selected_guild.quests.length < 1"
                         flex
                         icon="book_dark"

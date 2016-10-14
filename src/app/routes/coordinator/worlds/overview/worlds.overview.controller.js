@@ -25,6 +25,7 @@
         }
 
         Global.setRouteTitle('Classes overview');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 

@@ -1,19 +1,6 @@
 <section flex layout="column">
-    <md-toolbar>
-        <div class="md-toolbar-tools" layout>
-            <md-button class="md-icon-button" ui-sref="base.worlds.overview">
-                <md-icon md-svg-src="back_light"></md-icon>
-                <md-tooltip md-direction="top" md-delay="1000">
-                    Take me back
-                </md-tooltip>
-            </md-button>
-            <span flex>
-                Class settings of: {{ worldsSettingsCtrl.world.name }}
-            </span>
-        </div>
-    </md-toolbar>
     <section flex layout>
-        <section flex=80 layout="column">
+        <section flex=80 layout="column" layout-padding>
             <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
             <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout-margin layout="column">
                 <cmd-empty-state flex ng-if="worldsSettingsCtrl.world.quests.length < 1"
@@ -167,7 +154,7 @@
                                             md-svg-icon="description_dark"
                                             ng-if="rule.rule_type === 4">
                                             </md-icon>
-                                            {{ rule.rule }}
+                                            The student {{ rule.rule }}
                                         </span>
                                         <span flex=15>
                                             {{ rule.points }}

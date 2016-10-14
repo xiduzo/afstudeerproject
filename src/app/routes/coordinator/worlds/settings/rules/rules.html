@@ -1,38 +1,68 @@
 <md-dialog md-theme="default" aria-label="{{ addRuleCtrl.about }}" flex="40">
 
-    <md-dialog-content class="md-dialog-content">
+    <md-dialog-content class="md-dialog-content" layout-padding>
         <h2 class="md-title ng-binding">
             {{ addRuleCtrl.title }}
         </h2>
 
         <div class="md-dialog-content-body">
             <form layout="column">
-                <div layout>
+                <section layout>
                     <md-input-container flex>
-                        <label>Rule</label>
-                        <input md-autofocus ng-model="addRuleCtrl.formInput.rule" />
+                        The student:
+                        <input md-autofocus
+                        aria-label="afspraak"
+                        ng-model="addRuleCtrl.formInput.rule" />
                     </md-input-container>
-                    <md-input-container>
-                        <label>Points</label>
-                        <md-select ng-model="addRuleCtrl.formInput.points">
-                            <md-option ng-repeat="points in [1,2,3,5,8,13,21]" value="{{points}}">
-                            {{ points }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-                <md-input-container>
-                    <label>Rule type</label>
-                    <md-select ng-model="addRuleCtrl.formInput.rule_type">
-                        <md-option layout ng-repeat="rule in addRuleCtrl.rule_types" value="{{rule.type}}">
-                            <md-icon class="icon__helper" md-svg-icon="{{rule.icon}}">
+                </section>
+
+                <section>
+                    <h2 class="md-title">
+                        Categorie
+                    </h2>
+                    <span class="md-subhead">
+                        Select the categorie of this new rule.
+                    </span>
+                    <md-radio-group layout layout-margin layout-align="space-around" ng-model="addRuleCtrl.formInput.rule_type">
+                        <div ng-repeat="type in addRuleCtrl.types" layout="column" layout-align="center center">
+                            <md-icon
+                                class="icon--size--48 icon--color--black"
+                                md-svg-icon="{{type.icon}}"
+                                ng-click="addRuleCtrl.formInput.rule_type = type.type">
                             </md-icon>
-                            <span flex>
-                                {{ rule.name }}
-                            </span>
-                        </md-option>
-                    </md-select>
-                </md-input-container>
+                            <md-radio-button
+                                layout-padding
+                                value="{{type.type}}"
+                                aria-label="{{type.type}}"
+                                style="width: 20px;">
+                            </md-radio-button>
+                            <md-tooltip md-delay="100" md-direction="bottom">
+                                {{ type.name }}
+                            </md-tooltip>
+                        </div>
+                    </md-radio-group>
+                </section>
+
+                <section>
+                    <h2 class="md-title">
+                        Importance
+                    </h2>
+                    <span class="md-subhead">
+                        The more important the rule, the more points the student will earn.
+                    </span>
+                    <md-slider flex class="md-primary"
+                    step="1"
+                    min="0"
+                    max="100"
+                    ng-model="addRuleCtrl.formInput.importance"
+                    aria-label="Importance">
+                    </md-slider>
+                    <div layout layout-align="space-between">
+                        <strong>Less important</strong>
+                        <strong>Important</strong>
+                        <strong>Very important</strong>
+                    </div>
+                </section>
             </form>
         </div>
 

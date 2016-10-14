@@ -24,7 +24,8 @@
             return;
         }
 
-        Global.setRouteTitle('Loading page...');
+        Global.setRouteTitle('Class settings');
+        Global.setRouteBackRoute('base.worlds.overview');
 
         var self = this;
 
@@ -63,7 +64,7 @@
 
                 self.world = response;
 
-                Global.setRouteTitle('Class settings of: ' + self.world.name);
+                Global.setRouteTitle('Class settings', self.world.name);
 
                 _.each(self.world.quests, function(quest) {
                     quest.total_guilds_conquering_quest = 0;
@@ -193,11 +194,26 @@
                 }
             })
             .then(function(response) {
+                console.log(response);
                 if(!response ||
                     !response.rule ||
                     !response.rule_type ||
-                    !response.points) {
+                    !response.importance) {
                     return Notifications.simpleToast('Fill in all the fields to add an rule');
+                }
+
+                if(response.importance > 96) {
+                    response.points = 13;
+                } else if (response.importance > 80) {
+                    response.points = 8;
+                } else if (response.importance > 64) {
+                    response.points = 5;
+                } else if (response.importance > 48) {
+                    response.points = 3;
+                } else if (response.importance > 32) {
+                    response.points = 2;
+                } else {
+                    response.points = 1;
                 }
 
                 // Add rule to the system

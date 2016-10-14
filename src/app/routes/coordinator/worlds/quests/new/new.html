@@ -1,20 +1,6 @@
 <section flex layout="column">
-    <md-toolbar>
-        <span class="md-toolbar-tools">
-            <md-button class="md-icon-button" ui-sref="base.worlds.settings({worldUuid: worldsQuestsNewCtrl.worldUuid})">
-                <md-icon md-svg-icon="back_light"></md-icon>
-                <md-tooltip md-direction="top" md-delay="1000">
-                    Take me back
-                </md-tooltip>
-            </md-button>
-            <span flex>
-                Create assessment for {{ worldsQuestsNewCtrl.world.name }}
-            </span>
-        </span>
-    </md-toolbar>
-
     <section flex layout="row" layout-fill layout-align="start stretch">
-        <section flex=80 flex layout="column">
+        <section flex=80 flex layout="column" layout-padding>
             <md-content flex=50 layout-margin layout-padding md-whiteframe=1>
                 <text-angular flex ng-model="worldsQuestsNewCtrl.formInput.description">
                 </text-angular>
@@ -69,7 +55,7 @@
                 </section>
             </md-content>
         </section>
-        <section flex md-whiteframe=1>
+        <section flex>
             <md-content layout-fill layout="column">
                 <md-subheader>
                     Settings

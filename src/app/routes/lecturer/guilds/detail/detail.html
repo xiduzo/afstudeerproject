@@ -1,29 +1,15 @@
 <cmd-loading-page ng-if="guildDetailCtrl.loading_page"></cmd-loading-page>
 
 <section flex layout="column" ng-if="!guildDetailCtrl.loading_page">
-    <md-toolbar>
-        <div class="md-toolbar-tools" layout>
-            <md-button class="md-icon-button" ui-sref="base.guilds.overview">
-                <md-icon md-svg-src="back_light"></md-icon>
-                <md-tooltip md-direction="top" md-delay="1000">
-                    Take me back
-                </md-tooltip>
-            </md-button>
-            <span flex>
-                {{ guildDetailCtrl.guild.name }}
-            </span>
-        </div>
-    </md-toolbar>
-
-    <section flex layout="column" layout-fill layout-align="start stretch">
+    <section flex layout="column" layout-fill layout-align="start stretch" layout-padding>
         <section flex=50 layout="row" layout-margin>
             <section flex=60 id="completed__tasks" md-whiteframe=1></section>
-            <section flex id="completed__tasks__explained" md-whiteframe=1>
+            <section flex=40 id="completed__tasks__explained" md-whiteframe=1>
             </section>
         </section>
-        <section flex=50 ng-scrollbars>
-            <section layout="row" flex layout-wrap>
-                <div flex="25" ng-repeat="member in guildDetailCtrl.members_data">
+        <section flex=50 ng-scrollbars layout-margin>
+            <section layout layout-wrap>
+                <div flex=25 ng-repeat="member in guildDetailCtrl.members_data">
                     <md-card>
                         <md-toolbar
                         ng-style="{
@@ -80,7 +66,7 @@
                             </md-list>
                         </md-card-content>
                     </md-card>
-
+                </div>
             </section>
         </section>
     </section>

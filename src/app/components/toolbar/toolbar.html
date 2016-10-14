@@ -12,10 +12,22 @@
             </md-icon>
         </md-button>
 
+        <md-button class="md-icon-button"
+            ng-if="toolbarCtrl.back_route"
+            ng-click="toolbarCtrl.changeState()">
+            <md-icon md-svg-src="back_light"></md-icon>
+            <md-tooltip md-direction="bottom" md-delay="1000">
+                Take me back
+            </md-tooltip>
+        </md-button>
+
         <h1 class="md-title" flex>
-            <strong>
+            <strong layoout-padding>
                 {{ toolbarCtrl.route_title }}
             </strong>
+            <span ng-if="toolbarCtrl.route_subtitle">
+                - {{ toolbarCtrl.route_subtitle }}
+            </span>
         </h1>
 
         <section layout layout-align="center center" ng-if="toolbarCtrl.user.id">

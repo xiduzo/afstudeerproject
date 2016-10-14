@@ -14,12 +14,6 @@
         ng-if="guild.id === questsLogCtrl.selected_guild">
 
             <section layout="column" layout-fill>
-                <md-toolbar>
-                    <span class="md-toolbar-tools">
-                        {{ guild.name }}
-                    </span>
-                </md-toolbar>
-
                 <cmd-empty-state ng-if="guild.active_quests.length < 1"
                 icon="book_dark"
                 headline="No assessments found."

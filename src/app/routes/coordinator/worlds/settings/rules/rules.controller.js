@@ -27,12 +27,12 @@
         self.title = title;
         self.about = about;
         self.formInput = {
-            rule: '',
-            rule_type: '',
-            points: ''
+            rule_type: 1,
+            rule: undefined,
+            importance: 50
         };
 
-        self.rule_types = [
+        self.types = [
             { type: 1, name: 'Houding', icon: 'work_dark', },
             { type: 2, name: 'Functioneren binnen het team', icon: 'group_work_dark', },
             { type: 3, name: 'Kennisontwikkeling', icon: 'lightbulb_dark', },

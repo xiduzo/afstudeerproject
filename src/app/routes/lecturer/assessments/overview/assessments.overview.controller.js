@@ -20,6 +20,9 @@
             return;
         }
 
+        Global.setRouteTitle('Assessments');
+        Global.setRouteBackRoute(null);
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,7 +53,9 @@
                 self.worlds.push(world.world);
             });
 
+
             if(_.findWhere(self.worlds, {id: self.selected_world})) {
+                Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
                 self.selected_guild = _.first(_.findWhere(self.worlds, {id: self.selected_world}).guilds);
             } else {
                 self.selected_guild = _.first(_.first(self.worlds).guilds);
@@ -68,6 +73,7 @@
         $rootScope.$on('world-changed', function(event, world) {
             self.selected_world = world;
             self.selected_guild = _.first(_.findWhere(self.worlds, {id: world}).guilds);
+            Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
         });
 
 

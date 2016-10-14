@@ -26,6 +26,9 @@
             return;
         }
 
+        Global.setRouteTitle('Progress');
+        Global.setRouteBackRoute(null);
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,6 +145,7 @@
             guild = _.find(self.guilds, function(guild) {
                 return guild.id == self.selected_guild;
             });
+            Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild}).name);
             self.buildGraphData(guild);
             self.addHotkeys();
         });
@@ -183,6 +187,8 @@
                             self.first_time = true;
                             self.onboarding_enabled = true;
                     }
+
+                    Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild}).name);
                     self.addHotkeys();
                 });
             });

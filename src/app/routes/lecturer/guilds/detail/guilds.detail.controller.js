@@ -22,6 +22,9 @@
             return;
         }
 
+        Global.setRouteTitle('Group progress');
+        Global.setRouteBackRoute('base.guilds.overview');
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,6 +71,8 @@
                 }
 
                 self.guild = response;
+
+                Global.setRouteTitle('Group detail', self.guild.name);
 
                 World.getWorld(response.world.id)
                 .then(function(response) {

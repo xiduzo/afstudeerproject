@@ -12,12 +12,7 @@
         <section flex layout="column" layout-fill
         ng-repeat="guild in guildProgressCtrl.guilds"
         ng-if="guild.id === guildProgressCtrl.selected_guild">
-            <section layout="column" flex layout-align="start stretch">
-                <md-toolbar>
-                    <span class="md-toolbar-tools">
-                        {{ guild.name }}
-                    </span>
-                </md-toolbar>
+            <section layout="column" flex layout-align="start stretch" layout-padding>
                 <onboarding-popover
                 enabled="guildProgressCtrl.onboarding_enabled"
                 steps="guildProgressCtrl.onboarding_steps"
@@ -39,7 +34,7 @@
                         </md-tooltip>
                     </md-button>
                 </section>
-                <section flex=40 layout="row" layout-margin>
+                <section flex=40 layout="row">
                     <md-content flex=100 layout="row" md-whiteframe=1 id="step1">
                         <cmd-empty-state ng-if="guild.no_graph_data"
                         icon="timeline_dark"
@@ -54,7 +49,7 @@
                         </div>
                     </md-content>
                 </section>
-                <section flex=60 layout="row" layout-margin>
+                <section flex=60 layout="row">
                     <md-content flex="100" md-whiteframe=1 layout="column" id="step2">
                         <md-toolbar ng-if="guild.objectives.length >= 1">
                             <div layout="row" class="md-toolbar-tools">
