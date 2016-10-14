@@ -24,6 +24,8 @@
             return;
         }
 
+        Global.setRouteTitle('Classes overview');
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

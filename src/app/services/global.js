@@ -91,6 +91,9 @@
             },
             getSelectedWorld: function() {
                 return self.selected_world;
+            },
+            setRouteTitle: function(title) {
+                $rootScope.$broadcast('route-title', title);
             }
         };
 

@@ -45,6 +45,12 @@
             };
         })
 
+        .filter('positiveInteger', function() {
+            return function(number) {
+                return number < 0 ? 0 : number;
+            };
+        })
+
         .filter('empasizeSubject', function() {
             return function(sentence, subject) {
                 return sentence.replace(subject, '<strong>'+subject+'</strong>');

@@ -1,7 +1,8 @@
 <md-toolbar layout="row"
     md-component-id="main__toolbar"
     id="main__toolbar">
-    <div class="md-toolbar-tools">
+    <section class="md-toolbar-tools">
+
         <md-button aria-label="toggle menu"
             ng-click="toolbarCtrl.toggleNavigation()"
             ng-if="toolbarCtrl.access >= 1"
@@ -10,27 +11,21 @@
                 md-svg-icon="menu_light">
             </md-icon>
         </md-button>
+
         <h1 class="md-title" flex>
-            [PLATFORM NAME]
+            <strong>
+                {{ toolbarCtrl.route_title }}
+            </strong>
         </h1>
-        <md-icon md-svg-icon="school_light"
-            ng-if="toolbarCtrl.access === toolbarCtrl.LECTURER_ACCESS_LEVEL">
-            <md-tooltip md-direction="left">
-                You have game master access
-            </md-tooltip>
-        </md-icon>
-        <!-- <md-icon md-svg-icon="research_light"
-            ng-if="toolbarCtrl.user.uid === 'boera006'"
-            ui-sref="base.research">
-            <md-tooltip md-direction="left">
-                Research
-            </md-tooltip>
-        </md-icon> -->
-        <md-icon md-svg-icon="gavel_light"
-            ng-if="toolbarCtrl.access === toolbarCtrl.COORDINATOR_ACCESS_LEVEL">
-            <md-tooltip md-direction="left">
-                You have god access
-            </md-tooltip>
-        </md-icon>
-    </div>
+
+        <section layout layout-align="center center" ng-if="toolbarCtrl.user.id">
+            <span class="md-subhead" layout layout-padding>
+                {{ toolbarCtrl.user | fullUserName }}
+            </span>
+            <span layout-margin>
+                <img class="round" gravatar-size=45 gravatar-src-once="toolbarCtrl.user.email">
+            </span>
+        </section>
+
+    </section>
 </md-toolbar>

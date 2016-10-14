@@ -1,3 +1,9 @@
 .onboarding-overlay {
     position: fixed;
 }
+
+.onboarding-focus {
+    &.first__item {
+        background: white;
+    }
+}

@@ -10,6 +10,8 @@
         Global
     ) {
 
+        Global.setRouteTitle('Dashboard');
+        
         var self = this;
 
 

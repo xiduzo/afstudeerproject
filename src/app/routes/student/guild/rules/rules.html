@@ -5,6 +5,14 @@
         ng-repeat="guild in guildRulesCtrl.guilds"
         ng-if="guild.id === guildRulesCtrl.selected_guild">
 
+        <md-button class="md-fab icon__fab"
+            ng-click="guildRulesCtrl.addRule($event, guild)">
+            <md-icon md-svg-icon="add_light"></md-icon>
+            <md-tooltip md-direction="left">
+                Add rule
+            </md-tooltip>
+        </md-button>
+
         <section layout="column" layout-fill>
             <md-toolbar>
                 <span class="md-toolbar-tools">
@@ -12,104 +20,157 @@
                 </span>
             </md-toolbar>
 
-            <section ng-if="!guild.accepted_rules">
-                <md-content layout-margin md-whiteframe=1>
-                    <h1>
+                <section layout flex
+                layout-align="start stretch" ng-if="!guild.accepted_rules">
+                <md-content layout-padding layout-margin md-whiteframe=1 flex=40>
+                    <h1 class="md-title">
                         Samenwerkingscontract
                     </h1>
                     <article>
                         <p>
                             Om de samenwerking zo eerlijk mogenlijk te laten verlopen
-                            vragen wij elke project groep afspraken op te stellen.
-
-                            Zelf hebben wij al een paar basis afspraken opgesteld, deze
-                            afspraken zijn verdeeld over vier categorieën:
+                            vragen wij elke project team afspraken op te stellen.
+                            Hiernaast zie je een lijst met afspraken waarvan wij denken
+                            waaraan gehouden zou kunnen worden. Deze afspraken zijn
+                            onderverdeeld in vier categorieën:
                         </p>
 
-                        <p layout layout-margin layout-align="space-around">
-                            <span>
-                                <md-icon class="icon__helper" md-svg-icon="work_dark"></md-icon>
+                        <p layout-margin layout layout-align="space-around">
+                            <span layout="column" layout-align="center center">
+                                <md-icon class="icon--size--36" md-svg-icon="work_dark"></md-icon>
                                 Houding
                             </span>
-                            <span>
-                                <md-icon class="icon__helper" md-svg-icon="group_work_dark"></md-icon>
+                            <span layout="column" layout-align="center center">
+                                <md-icon class="icon--size--36" md-svg-icon="group_work_dark"></md-icon>
                                 Functioneren binnen het team
                             </span>
-                            <span>
-                                <md-icon class="icon__helper" md-svg-icon="lightbulb_dark"></md-icon>
+                            <span layout="column" layout-align="center center">
+                                <md-icon class="icon--size--36" md-svg-icon="lightbulb_dark"></md-icon>
                                 Kennisontwikkeling
                             </span>
-                            <span>
-                                <md-icon class="icon__helper" md-svg-icon="description_dark"></md-icon>
+                            <span layout="column" layout-align="center center">
+                                <md-icon class="icon--size--36" md-svg-icon="description_dark"></md-icon>
                                 Verantwoording
                             </span>
                         </p>
-
                         <p>
-                            Wij verwachten dat elke project groep uit elke categorie
-                            minimaal 1 afspraak kiest waarvan jullie vinden dat hieraan
-                            gehouden moet worden.
-
-                            Hiernaast word verwacht dat jullie als groep ten minste
-                            acht afspraken kiezen waarvan jullie vinden waaraan gehouden
-                            moet worden.
+                            Kies tenminste acht afspraken met uit elke categorie
+                            tenminste één afspraak. Ook kun je als team eigen
+                            afspraken opstellen.
                         </p>
-                        <p>
-                            Als laatste kunnen jullie als project groep nog zelf
-                            afspraken opstellen. <em>Let op:</em> docenten houden
-                            deze afspraken bij, met deze afspraken kun je punten verdienen
-                            die je later in kunt zetten om privileges te unlocken.
+                            <em>Let op:</em> elke week zal iedereen elkaar
+                            beoordelen op de gemaakte afspraken.
                         </p>
                     </article>
+
+                    <section layout="column" layout-margin layout-align="space-around">
+                        <h2 class="md-subhead">
+                            Gekozen afspraken checklist
+                        </h2>
+                        <span>
+                            <md-checkbox ng-disabled="true" ng-model="guild.requirements.attitude.check">
+                                <strong ng-class="{
+                                    'text--color--red': !guild.requirements.attitude.check,
+                                    'text--color--green': guild.requirements.attitude.check,
+                                }">
+                                    Houding ({{guild.requirements.attitude.selected}})
+                                </strong>
+                            </md-checkbox>
+                        </span>
+                        <span>
+                            <md-checkbox ng-disabled="true" ng-model="guild.requirements.functioning.check">
+                                <strong ng-class="{
+                                    'text--color--red': !guild.requirements.functioning.check,
+                                    'text--color--green': guild.requirements.functioning.check,
+                                }">
+                                    Functioneren binnen het team ({{guild.requirements.functioning.selected}})
+                                </strong>
+                            </md-checkbox>
+                        </span>
+                        <span>
+                            <md-checkbox ng-disabled="true" ng-model="guild.requirements.knowledge.check">
+                                <strong ng-class="{
+                                    'text--color--red': !guild.requirements.knowledge.check,
+                                    'text--color--green': guild.requirements.knowledge.check,
+                                }">
+                                    Kennisontwikkeling ({{guild.requirements.knowledge.selected}})
+                                </strong>
+                            </md-checkbox>
+                        </span>
+                        <span>
+                            <md-checkbox ng-disabled="true" ng-model="guild.requirements.justification.check">
+                                <strong ng-class="{
+                                    'text--color--red': !guild.requirements.justification.check,
+                                    'text--color--green': guild.requirements.justification.check,
+                                }">
+                                    Verantwoording ({{guild.requirements.justification.selected}})
+                                </strong>
+                            </md-checkbox>
+                        </span>
+                        <span ng-if="guild.selected_rules.length >= 8">
+                            <md-checkbox ng-disabled="true" ng-model="self.fakektrue" ng-init="self.fakektrue = true">
+                                <strong class="text--color--green">
+                                    {{ guild.selected_rules.length }} gekozen afspraken
+                                </strong>
+                            </md-checkbox>
+                        </span>
+                        <span ng-if="guild.selected_rules.length < 8">
+                            Kies nog minimaal {{ 8 - guild.selected_rules.length | positiveInteger }} afspraken
+                            <br />
+                            <br />
+                            <md-progress-linear flex md-mode="determinate"
+                            ng-class="{
+                                'md-warn': guild.selected_rules.length <= 2,
+                                'md-accent': guild.selected_rules.length > 2 &&
+                                guild.selected_rules.length <= 5,
+                            }"
+                            value="{{ guildRulesCtrl.selected_rules.length * 100 / 8 }}">
+                            </md-progress-linear>
+                        </span>
+                        <div ng-if="guild.requirements.attitude.check &&
+                            guild.requirements.functioning.check &&
+                            guild.requirements.knowledge.check &&
+                            guild.requirements.justification.check &&
+                            guild.selected_rules.length >= 8"
+                            layout layout-align="center">
+                            <md-button class="success md-raised"
+                            ng-click="guildRulesCtrl.addRulesToGuild(guild)">
+                                Sla afspraken op
+                            </md-button>
+                        </div>
+                    </section>
+
+
                 </md-content>
 
-                <section layout layout-margin>
-                    <md-progress-linear flex md-mode="determinate"
-                    ng-class="{
-                        'md-warn': guildRulesCtrl.selected_rules.length <= 2,
-                        'md-accent': guildRulesCtrl.selected_rules.length > 2 &&
-                        guildRulesCtrl.selected_rules.length <= 5,
-                    }"
-                    value="{{ 5 * 100 / 8 }}">
-                    </md-progress-linear>
-                </section>
+                <md-content ng-scrollbars flex flex=60>
+                    <md-list>
+                        <md-list-item ng-repeat="rule in guildRulesCtrl.world.rules">
+                            <md-checkbox ng-change="guildRulesCtrl.toggleRule(rule, guild)"
+                            ng-model="rule.selected"
+                            aria-label="Select rule">
+                            </md-checkbox>
+                            <md-icon class="icon__helper"
+                                md-svg-icon="work_dark"
+                                ng-if="rule.rule_type === 1">
+                            </md-icon>
+                            <md-icon class="icon__helper"
+                                md-svg-icon="group_work_dark"
+                                ng-if="rule.rule_type === 2">
+                            </md-icon>
+                            <md-icon class="icon__helper"
+                                md-svg-icon="lightbulb_dark"
+                                ng-if="rule.rule_type === 3">
+                            </md-icon>
+                            <md-icon class="icon__helper"
+                                md-svg-icon="description_dark"
+                                ng-if="rule.rule_type === 4">
+                            </md-icon>
+                            De student {{ rule.rule  }}
+                        </md-list-item>
+                    </md-list>
+                </md-content>
 
-                <section layout layout-margin layout-align="space-around">
-                    <span>
-                        <md-checkbox ng-disabled="true" ng-model="guildRulesCtrl.requirement.attitude">
-                            <span class="text--color--red">
-                                Houding
-                            </span>
-                        </md-checkbox>
-                    </span>
-                    <span>
-                        <md-checkbox ng-disabled="true" ng-model="guildRulesCtrl.requirement.functioning">
-                            <span class="text--color--red">
-                                Functioneren binnen het team
-                            </span>
-                        </md-checkbox>
-                    </span>
-                    <span>
-                        <md-checkbox ng-disabled="true" ng-model="guildRulesCtrl.requirement.knowledge">
-                            <span class="text--color--red">
-                                Kennisontwikkeling
-                            </span>
-                        </md-checkbox>
-                    </span>
-                    <span>
-                        <md-checkbox ng-disabled="true" ng-model="guildRulesCtrl.requirement.justification">
-                            <span class="text--color--red">
-                                Verantwoording
-                            </span>
-                        </md-checkbox>
-                    </div>
-                </section>
-
-                <!-- <md-list>
-                    <md-list-item ng-repeat="rule in guildRulesCtrl.world.rules">
-                        {{ rule }}
-                    </md-list-item>
-                </md-list> -->
             </section>
 
         </secion>

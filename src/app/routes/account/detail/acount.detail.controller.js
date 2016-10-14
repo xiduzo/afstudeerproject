@@ -21,6 +21,8 @@
             return;
         }
 
+        Global.setRouteTitle('Profile');
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

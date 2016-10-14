@@ -7,13 +7,9 @@
 
     /** @ngInject */
     function Toolbarcontroller(
-        $scope,
-        $mdMedia,
         $rootScope,
         $mdSidenav,
-        STUDENT_ACCESS_LEVEL,
-        LECTURER_ACCESS_LEVEL,
-        COORDINATOR_ACCESS_LEVEL
+        Global
     ) {
 
         var self = this;
@@ -26,15 +22,17 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = $rootScope.Global.getUser();
-        self.access = $rootScope.Global.getAccess();
-        self.STUDENT_ACCESS_LEVEL = STUDENT_ACCESS_LEVEL;
-        self.LECTURER_ACCESS_LEVEL = LECTURER_ACCESS_LEVEL;
-        self.COORDINATOR_ACCESS_LEVEL = COORDINATOR_ACCESS_LEVEL;
+        self.user = Global.getUser();
+        self.access = Global.getAccess();
+        self.route_title = '';
 
         $rootScope.$on('user-changed', function() {
-            self.user = $rootScope.Global.getUser();
-            self.access = $rootScope.Global.getAccess();
+            self.user = Global.getUser();
+            self.access = Global.getAccess();
+        });
+
+        $rootScope.$on('route-title', function(event, title) {
+            self.route_title = title;
         });
 
 

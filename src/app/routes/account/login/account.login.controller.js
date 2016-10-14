@@ -20,6 +20,8 @@
             return Global.notAllowed();
         }
 
+        Global.setRouteTitle('[PLATFORM NAME]');
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

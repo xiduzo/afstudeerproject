@@ -1,0 +1,74 @@
+<md-dialog md-theme="default" aria-label="{{ addGuildRuleCtrl.about }}" flex="40">
+
+    <md-dialog-content class="md-dialog-content" layout-padding>
+        <h1 class="md-title ng-binding">
+            {{ addGuildRuleCtrl.title }}
+        </h1>
+
+        <div class="md-dialog-content-body">
+            <form layout="column">
+                <section layout>
+                    <md-input-container flex>
+                        De student:
+                        <input md-autofocus
+                        aria-label="afspraak"
+                        ng-model="addGuildRuleCtrl.formInput.rule" />
+                    </md-input-container>
+                </section>
+                <section>
+                    <h2 class="md-subhead">
+                        Categorie
+                    </h2>
+                    <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
+                        <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center">
+                            <md-icon
+                                class="icon--size--48 icon--color--black"
+                                md-svg-icon="{{type.icon}}"
+                                ng-click="addGuildRuleCtrl.formInput.type = type.type">
+                            </md-icon>
+                            <md-radio-button
+                                layout-padding
+                                value="{{type.type}}"
+                                aria-label="{{type.type}}"
+                                style="width: 20px;">
+                            </md-radio-button>
+                            <md-tooltip md-delay="100" md-direction="top">
+                                {{ type.name }}
+                            </md-tooltip>
+                        </div>
+                    </md-radio-group>
+                </section>
+                <section>
+                    <h2 class="md-subhead">
+                        Hoe belangrijk vinden julllie deze regel als groep?
+                    </h2>
+                    <md-slider flex class="md-primary"
+                    step="1"
+                    min="0"
+                    max="100"
+                    ng-model="addGuildRuleCtrl.formInput.importance"
+                    aria-label="Importance">
+                    </md-slider>
+                    <div layout layout-align="space-between">
+                        <strong>Minder belangrijk</strong>
+                        <strong>Belangrijk</strong>
+                        <strong>Heel Belangrijk</strong>
+                    </div>
+                </section>
+            </form>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button class="md-primary md-button" type="button" aria-label="Cancel"
+            ng-click="addGuildRuleCtrl.close()" md-ink-ripple>
+            Cancel
+        </button>
+        <button class="md-primary md-button" type="button" aria-label="{{ addGuildRuleCtrl.about }}"
+            ng-click="addGuildRuleCtrl.addRule()" md-ink-ripple>
+            Add {{ addGuildRuleCtrl.about }}
+        </button>
+    </md-dialog-actions>
+
+</md-dialog>

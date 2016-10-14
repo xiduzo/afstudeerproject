@@ -175,6 +175,8 @@
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)
+            .icon('cmd_unicorn', '/assets/icons/cmd/unicorn.svg', 48)
+            .icon('cmd_cthulhu', '/assets/icons/cmd/cthulhu.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

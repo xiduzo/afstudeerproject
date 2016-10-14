@@ -5,23 +5,15 @@
     layout="column">
 
     <md-toolbar ng-if="navigationCtrl.user.email" flex="none" layout="column">
-        <section layout>
-            <div flex=30 layout-padding layout layout-align="center center">
-                <img class="round" gravatar-size=75 gravatar-src-once="navigationCtrl.user.email">
-            </div>
-            <div flex layout="column" layout-align="center start">
-                <div class="md-headline">
-                    {{ navigationCtrl.user | fullUserName }}
-                </div>
-                <div class="md-subhead">
-                    [PLACEHOLDER]
-                </div>
-            </br/>
-            </div>
+        <section layout layout-padding layout-margin layout-align="start center">
+            <md-icon class="icon--size--48"
+                md-svg-icon="cmd_unicorn">
+            </md-icon>
+            [PLATFORM NAME]
         </section>
         <section layout-margin ng-if="navigationCtrl.access >= 2">
             <md-select ng-change="navigationCtrl.changedWorld()"
-            ng-model="navigationCtrl.selected_world" placeholder="Select world">
+            ng-model="navigationCtrl.selected_world">
                 <md-option ng-repeat="world in navigationCtrl.worlds"
                 value="{{world.id}}">
                     {{ world.name }}
@@ -30,7 +22,7 @@
         </section>
         <section layout-margin ng-if="navigationCtrl.access === 1">
             <md-select ng-change="navigationCtrl.changedGuild()"
-            ng-model="navigationCtrl.selected_guild" placeholder="Select group">
+            ng-model="navigationCtrl.selected_guild">
                 <md-option ng-repeat="guild in navigationCtrl.guilds"
                 value="{{guild.id}}">
                     {{ guild.name }}

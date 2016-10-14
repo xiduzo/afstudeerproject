@@ -132,7 +132,7 @@
                     title: "Assigning persons to an task",
                     position: "top",
                     description: "As you can see, your new task is added to the list. Let me assign you to this task. You can assign multiple people to one task, but for now let's just assign you.",
-                    attachTo: "#step4",
+                    attachTo: ".first__item",
                 }
             ];
         }
@@ -166,9 +166,9 @@
                     guild.course_duration = response.course_duration;
 
                     self.guilds.push(guild);
-                    self.buildGraphData(guild);
-
                     self.loading_page = false;
+
+                    self.buildGraphData(guild);
 
                     switch (localStorageService.get('guild_overview_first_time')) {
                         case true:
@@ -206,8 +206,8 @@
             var weeknumber = 1;
             var previous_points = null;
             var objectives_graph_line = [];
+            var objectives_graph_bars = [];
             var horizontal_axis = [];
-            var days_past = 0;
 
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= course_duration; i++) {
@@ -275,9 +275,13 @@
                         } else {
                             memo.points += objective.points;
                         }
+
+                        if(objective.completed && moment(objective.completed_at).isSame(memo.date, 'day')) {
+                            memo.completed_today += objective.points;
+                        }
                     }
                     return memo;
-                }, { date: null, points: 0 });
+                }, { date: null, points: 0, completed_today: 0 });
                 reduced.date = reduced.date ? moment(reduced.date).format('DD/MM') : null;
                 // Add the item to the graph items
                 objectives_graph_items.push(reduced);
@@ -294,15 +298,19 @@
                 if(moment().add(1, 'days').isSameOrBefore(start)) {
                     // don't show the chart
                     objectives_graph_line.push(null);
+                    objectives_graph_bars.push(null);
                 } else if(match) {
                     previous_points = match.points;
                     objectives_graph_line.push(match.points);
+                    objectives_graph_bars.push(match.completed_today);
                 } else {
                     objectives_graph_line.push(previous_points);
+                    objectives_graph_bars.push(null);
                 }
             }
 
             guild.graph_line = objectives_graph_line;
+            guild.graph_bars = objectives_graph_bars;
 
             setTimeout(function () {
                 guild.graph_data_loaded = true;
@@ -410,17 +418,45 @@
                 xAxis: {
                     categories: guild.horizontal_axis
                 },
-                yAxis: {
-                    title: { text: 'Remaning task points' },
-                    min: 0
-                },
+                yAxis: [
+                    {
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        title: {
+                            text: 'Remaning task points',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        opposite: false
+                    },
+                    {
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        title: {
+                            text: 'Completed task points',
+                            style: {
+                                color: '#000'
+                            }
+                        },
+                        opposite: true
+                    },
+                ],
                 // Only show the exporting button when you have
                 // a higher access level than the student
-                exporting: { enabled: false, },
+                exporting: { enabled: Global.getAccess() > 1 ? true : false, },
                 legend: { enabled: false },
                 tooltip: {
-                    shared: false,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong>'
+                    shared: true,
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
                 },
                 plotOptions: {
                     series: {
@@ -429,10 +465,18 @@
                 },
                 series: [
                     {
+                        name: 'Completed task points',
+                        yAxis: 1,
+                        type: 'column',
+                        data: guild.graph_bars,
+                        color: Highcharts.Color('#FFCC00').setOpacity(0.4).get()
+                    },
+                    {
                         name: 'Remaining task points',
+                        yAxis: 0,
                         data: guild.graph_line,
                         color: '#616161'
-                    }
+                    },
                 ],
                 credits: {
                     text: moment().format("DD/MM/YY HH:MM"),

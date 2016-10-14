@@ -87,7 +87,9 @@
                             <md-content ng-scrollbars flex ng-if="guild.objectives.length >= 1">
                                 <md-list>
                                     <div ng-repeat="objective in guild.objectives | orderBy: ['completed', '-completed_at', '-created_at']">
-                                        <md-list-item>
+                                        <md-list-item ng-class="{
+                                            'first__item': $first
+                                        }">
                                             <!-- https://github.com/angular/material/issues/2819#issuecomment-136321546 -->
                                             <span flex="10" ng-repeat="v in [0]"
                                                 layout="row" layout-align="center">
