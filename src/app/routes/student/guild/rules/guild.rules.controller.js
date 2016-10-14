@@ -33,6 +33,7 @@
         self.toggleRule = toggleRule;
         self.addRule = addRule;
         self.addRulesToGuild = addRulesToGuild;
+        self.toggleRuleCompletion = toggleRuleCompletion;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -53,14 +54,11 @@
                 self.loading_page = true;
                 guild = guild.guild;
 
-                if(guild.accepted_rules) {
-                    self.guilds.push(guild);
-                    self.loading_page = false;
-                    Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-                } else {
-                    World.getWorld(guild.world.id)
-                    .then(function(response) {
-                        self.world = response;
+                World.getWorld(guild.world.id)
+                .then(function(response) {
+                    self.world = response;
+
+                    if(guild.rules.length < 8) {
                         guild.requirements = {
                             attitude: {
                                 selected: 0,
@@ -81,14 +79,45 @@
                         };
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
-                        self.guilds.push(guild);
-                        Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-                        self.loading_page = false;
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                }
+                    }
+
+                    guild.weeks = [];
+                    guild.selected_week = null;
+                    guild.endorsed_rules = [];
+                    guild.removed_endorsed_rules = [];
+
+                    for(var i = self.world.course_duration; i > 0; i -= 7) {
+                        var start_week = moment(self.world.start).add(guild.weeks.length * 7 , 'days');
+                        var end_week = moment(self.world.start).add(guild.weeks.length * 7 + 7 , 'days');
+                        var tempObj = {
+                            week: guild.weeks.length,
+                            start: start_week,
+                            end: end_week,
+                            selected: false,
+                            editable: true
+                        };
+
+                        if (moment().isBetween(start_week, end_week)) {
+                            tempObj.selected = true;
+                            guild.selected_week = guild.weeks.length;
+                        }
+
+                        // console.log(end_week);
+                        if(moment().isAfter(end_week, 'day')) {
+                            tempObj.editable = false;
+                        }
+
+                        guild.weeks.push(tempObj);
+                    }
+
+                    self.guilds.push(guild);
+                    Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+                    self.loading_page = false;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
             });
         })
         .catch(function(error) {
@@ -146,8 +175,22 @@
                     Notifications.simpleToast('Please fill in all the fields');
                 }
 
+                if(response.importance > 90) {
+                    response.points = 13;
+                } else if (response.importance > 75) {
+                    response.points = 8;
+                } else if (response.importance > 60) {
+                    response.points = 5;
+                } else if (response.importance > 45) {
+                    response.points = 3;
+                } else if (response.importance > 30) {
+                    response.points = 2;
+                } else {
+                    response.points = 1;
+                }
+
                 var tempObj = {
-                    points: response.importance,
+                    points: response.points,
                     rule: response.rule,
                     rule_type: response.type,
                     selected: true
@@ -160,8 +203,58 @@
             });
         }
 
-        function addRulesToGuild(guild) {
+        function addRulesToGuild(event, guild) {
             console.log(guild.selected_rules);
+            $mdDialog.show({
+                controller: 'confirmGuildRulesController',
+                controllerAs: 'confirmGuildRulesCtrl',
+                templateUrl: 'app/routes/student/guild/rules/confirm/confirm.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    title: 'Check rules for ' + guild.name,
+                    about: 'rules',
+                    rules: guild.selected_rules,
+                }
+            })
+            .then(function() {
+
+                _.each(guild.selected_rules, function(rule) {
+                    self.loading_page = true;
+                    console.log(rule);
+                    Guild.addGuildRule(guild.id, rule)
+                    .then(function(response) {
+                        self.loading_page = false;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                });
+            }, function() {
+                // Err dialog
+            });
+        }
+
+        function toggleRuleCompletion(guild, week, rule, user, state) {
+            if(state) {
+                guild.endorsed_rules.push( {
+                    id: rule.id+'-'+user.id+'-'+week,
+                    rule: rule,
+                    week: week,
+                    user: user
+                });
+            } else {
+                guild.endorsed_rules.splice(
+                    _.indexOf(
+                        guild.endorsed_rules,
+                        _.findWhere(
+                            guild.endorsed_rules,
+                            { id: rule.id+'-'+user.id+'-'+week }
+                        )
+                    ),
+                    1
+                );
+            }
         }
 
     }

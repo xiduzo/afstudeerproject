@@ -5,12 +5,12 @@
     layout="column">
 
     <md-toolbar ng-if="navigationCtrl.user.email" flex="none" layout="column">
-        <section layout layout-padding layout-margin layout-align="start center">
+        <h1 layout layout-padding layout-margin layout-align="start center">
             <md-icon class="icon--size--48"
                 md-svg-icon="cmd_unicorn">
             </md-icon>
-            [PLATFORM NAME]
-        </section>
+            CMD Athena
+        </h1>
         <section layout-margin ng-if="navigationCtrl.access >= 2">
             <md-select ng-change="navigationCtrl.changedWorld()"
             ng-model="navigationCtrl.selected_world">
@@ -46,7 +46,8 @@
                     }"
                     ng-if="_.contains(item.access_levels, navigationCtrl.access)"
                     ng-click="navigationCtrl.toggleNavigation(); navigationCtrl.active_menu_item = item.link_to">
-                    <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
+                    <md-icon class="icon--color--black"
+                    md-svg-icon="{{ item.icon }}"></md-icon>
                     <span flex>{{ item.name }}</span>
                 </md-list-item>
             </md-list>

@@ -36,6 +36,7 @@
         service.addObjectiveAssignment = addObjectiveAssignment;
         service.removeObjectiveAssignment = removeObjectiveAssignment;
         service.loadMoreHistoryUpdates = loadMoreHistoryUpdates;
+        service.addGuildRule = addGuildRule;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -273,6 +274,21 @@
                 params: {
                     guild: guild,
                     start: start
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function addGuildRule(guild, rule) {
+            return $http({
+                url: REST_API_URL + 'guild/guildRules/',
+                method: "POST",
+                data: {
+                    guild: guild,
+                    rule: rule.rule,
+                    rule_type: rule.rule_type,
+                    points: rule.points
                 }
             })
             .then(function(response) { return response.data;

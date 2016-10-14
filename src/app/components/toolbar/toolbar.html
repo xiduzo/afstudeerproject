@@ -22,7 +22,10 @@
         </md-button>
 
         <h1 class="md-title" flex>
-            <strong layoout-padding>
+            <md-icon ng-if="toolbarCtrl.access <= 0"
+                md-svg-icon="cmd_unicorn">
+            </md-icon>
+            <strong layout-padding>
                 {{ toolbarCtrl.route_title }}
             </strong>
             <span ng-if="toolbarCtrl.route_subtitle">

@@ -20,7 +20,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('[PLATFORM NAME]');
+        Global.setRouteTitle('CMD Athena');
 
         var self = this;
 

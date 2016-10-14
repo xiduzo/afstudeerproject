@@ -5,18 +5,17 @@
         ng-repeat="guild in guildRulesCtrl.guilds"
         ng-if="guild.id === guildRulesCtrl.selected_guild">
 
-        <md-button class="md-fab icon__fab"
-            ng-click="guildRulesCtrl.addRule($event, guild)">
-            <md-icon md-svg-icon="add_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Add rule
-            </md-tooltip>
-        </md-button>
-
         <section layout="column" layout-fill>
-                <section layout flex layout-fill ng-if="!guild.accepted_rules">
-                <section layout  layout-align="start stretch"
-                flex=40 layout-margin>
+            <section layout flex layout-fill ng-if="guild.rules.length < 8">
+                <md-button class="md-fab icon__fab"
+                    ng-click="guildRulesCtrl.addRule($event, guild)">
+                    <md-icon md-svg-icon="add_light"></md-icon>
+                    <md-tooltip md-direction="left">
+                        Add rule
+                    </md-tooltip>
+                </md-button>
+                <section layout layout-align="start stretch"
+                    flex=40 layout-margin>
                     <md-content md-whiteframe=1>
                         <md-toolbar>
                             <span class="md-toolbar-tools">
@@ -131,7 +130,7 @@
                                 guild.selected_rules.length >= 8"
                                 layout layout-align="center">
                                 <md-button class="success md-raised"
-                                ng-click="guildRulesCtrl.addRulesToGuild(guild)">
+                                ng-click="guildRulesCtrl.addRulesToGuild($event, guild)">
                                     Bekijk samenwerkingscontract
                                 </md-button>
                             </div>
@@ -169,7 +168,82 @@
 
             </section>
 
-        </secion>
-
+            <section layout flex layout-fill ng-if="guild.rules.length >= 8">
+                <section flex=80 layout-margin>
+                    <section md-whiteframe=1>
+                        <md-toolbar layout-padding>
+                            <span layout class="md-toolbar-tools">
+                                <span flex=30>
+                                    <strong>
+                                        Week {{ guild.selected_week + 1}}:
+                                    </strong>
+                                    {{ guild.weeks[guild.selected_week].start._d | date }}
+                                    -
+                                    {{ guild.weeks[guild.selected_week].end._d | date }}
+                                    <!-- Placeholder -->
+                                </span>
+                                <span flex=70 layout layout-align="end">
+                                    <div layout="column" layout-align="center center"
+                                    flex=25
+                                    ng-repeat="user in guild.members"
+                                    ng-if="user.id !== guildRulesCtrl.user.id">
+                                        <img class="round" gravatar-size=45 gravatar-src-once="user.email">
+                                        {{ user | fullUserName}}
+                                    </div>
+                                </span>
+                            </span>
+                        </md-toolbar>
+                        <md-content ng-repeat="week in guild.weeks"
+                        ng-if="week.week === guild.selected_week">
+                            <md-list>
+                                <md-list-item layout ng-repeat="rule in guild.rules">
+                                    <span flex=30>
+                                        {{ rule.rule }}
+                                    </span>
+                                    <span flex=70 layout layout-align="end">
+                                        <div layout="column" layout-align="center center"
+                                        flex=25
+                                        ng-repeat="user in guild.members"
+                                        ng-if="user.id !== guildRulesCtrl.user.id">
+                                            <md-checkbox
+                                            style="margin-bottom: 0;"
+                                            ng-disabled="!week.editable"
+                                            ng-if="user.id !== guildRulesCtrl.user.id"
+                                            ng-model="$index"
+                                            ng-change="guildRulesCtrl.toggleRuleCompletion(guild, week.week, rule, user, $index)"
+                                            aria-label="checkbox">
+                                             </md-checkbox>
+                                        </div>
+                                    </span>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </section>
+                </section>
+                <md-content flex=20 layout-fill>
+                    <md-subheader>
+                        Weeks
+                    </md-subheader>
+                    <section>
+                        <md-list>
+                            <md-list-item ng-repeat="week in guild.weeks"
+                            layout layout-align="space-between"
+                            ng-click="guild.selected_week = week.week"
+                            ng-class="{
+                                'active_menu_item': week.week === guild.selected_week
+                            }">
+                                <strong layout-padding>
+                                    Week {{ week.week + 1 }}:
+                                </strong>
+                                <span>
+                                    {{ week.start._d | date }} - {{ week.end._d | date }}
+                                </span>
+                            </md-list-item>
+                        </md-list>
+                    </section>
+                </md-content>
+            </section>
+        </section>
     </section>
 </section>

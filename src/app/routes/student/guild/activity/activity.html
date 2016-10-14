@@ -17,8 +17,24 @@
                     <section layout-fill layout>
                         <section ng-scrollbars flex=80>
                             <md-list class="timeline">
+                                <div ng-if="filtered.length <= 0"
+                                class="timeline__container" layout layout-align="start start">
+                                    <md-button class="timeline__icon md-fab md-accent" md-no-ink
+                                    aria-label="timeline icon">
+                                        <md-icon md-svg-icon="cmd_book">
+                                        </md-icon>
+                                    </md-button>
+                                    <md-list-item class="timeline__item">
+                                        <md-content class="timeline__content" md-whiteframe=1 layout="column" flex>
+                                            <section layout layout-align="space-between center">
+                                                No activities found.
+                                            </section>
+                                        </md-content>
+                                    </md-list-item>
+                                </div>
+
                                 <div class="timeline__container"
-                                ng-repeat="activity in guild.history_updates
+                                ng-repeat="activity in filtered = (guild.history_updates
                                 | filter : {
                                     action_type: (filters.action_type | parseInt ),
 
@@ -28,7 +44,7 @@
                                 }
                                 | filter: {
                                     about: filters.free_search
-                                }"
+                                })"
                                 layout layout-align="start start">
                                     <md-button class="timeline__icon md-fab md-accent" md-no-ink
                                     aria-label="timeline icon">
