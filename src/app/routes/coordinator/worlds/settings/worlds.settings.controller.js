@@ -24,7 +24,7 @@
             return;
         }
 
-        Global.setRouteTitle('Class settings');
+        Global.setRouteTitle('Loading page...');
 
         var self = this;
 
@@ -63,7 +63,7 @@
 
                 self.world = response;
 
-                Global.setRouteTitle('Class settings of ' + self.world.name);
+                Global.setRouteTitle('Class settings of: ' + self.world.name);
 
                 _.each(self.world.quests, function(quest) {
                     quest.total_guilds_conquering_quest = 0;
