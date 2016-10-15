@@ -73,7 +73,7 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function updateChart() {
-            CMDChart.createChart('cmd__profile', self.skills, 'small', true, false);
+            CMDChart.createChart('cmd__profile', self.skills, 'small');
         }
 
         function addQuest() {

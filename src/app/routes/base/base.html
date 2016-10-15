@@ -1,5 +1,12 @@
 <div id="wrapper" layout flex style="height: 100vh; overflow: hidden;">
 
+    <div class="bullet__points">
+        <div ng-repeat="point in [1,2,3,4,5,6,7,8,9]"
+        class="point point--{{point}}">
+
+        </div>
+    </div>
+
     <cmd-navigation></cmd-navigation>
 
     <md-content layout="column" flex md-whiteframe=3>

@@ -120,7 +120,7 @@
                                     'md-accent': guild.selected_rules.length > 2 &&
                                     guild.selected_rules.length <= 5,
                                 }"
-                                value="{{ guildRulesCtrl.selected_rules.length * 100 / 8 }}">
+                                value="{{ guild.selected_rules.length * 100 / 8 }}">
                                 </md-progress-linear>
                             </span>
                             <div ng-if="guild.requirements.attitude.check &&
@@ -140,7 +140,7 @@
 
                 <md-content ng-scrollbars flex flex=60>
                     <md-list>
-                        <md-list-item ng-repeat="rule in guildRulesCtrl.world.rules">
+                        <md-list-item ng-repeat="rule in guild.possible_rules">
                             <md-checkbox ng-change="guildRulesCtrl.toggleRule(rule, guild)"
                             ng-model="rule.selected"
                             aria-label="Select rule">

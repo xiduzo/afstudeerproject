@@ -20,7 +20,7 @@
                 </md-option>
             </md-select>
         </section>
-        <section layout-margin ng-if="navigationCtrl.access === 1">
+        <section layout-margin>
             <md-select ng-change="navigationCtrl.changedGuild()"
             ng-model="navigationCtrl.selected_guild">
                 <md-option ng-repeat="guild in navigationCtrl.guilds"

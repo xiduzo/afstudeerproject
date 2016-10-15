@@ -12,6 +12,7 @@
         Global,
         Guild,
         World,
+        Rules,
         Notifications,
         STUDENT_ACCESS_LEVEL
     ) {
@@ -93,26 +94,28 @@
                             week: guild.weeks.length,
                             start: start_week,
                             end: end_week,
-                            selected: false,
-                            editable: true
+                            editable: false
                         };
 
                         if (moment().isBetween(start_week, end_week)) {
-                            tempObj.selected = true;
+                            tempObj.editable = true;
                             guild.selected_week = guild.weeks.length;
-                        }
-
-                        // console.log(end_week);
-                        if(moment().isAfter(end_week, 'day')) {
-                            tempObj.editable = false;
                         }
 
                         guild.weeks.push(tempObj);
                     }
 
-                    self.guilds.push(guild);
-                    Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-                    self.loading_page = false;
+                    Rules.getRules()
+                    .then(function(response) {
+                        guild.possible_rules = response;
+                        self.guilds.push(guild);
+                        Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+                        self.loading_page = false;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                    
                 })
                 .catch(function(error) {
                     console.log(error);

@@ -433,49 +433,49 @@
                    // Wont have have
                    // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
                },
-                {
-                   name: 'Sander',
-                   color: '#2196F3',
-                   data: [
-                       {
-                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
-                           name: 'Reusable code'
-                       },
-                       {
-                           x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
-                           name: 'Scheiding frontend & backend'
-                       },
-                       {
-                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
-                           name: 'Backend werkend online'
-                       },
-                       {
-                          x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
-                           name: 'Python'
-                       },
-                       {
-                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
-                           name: 'User testing'
-                       },
-                       {
-                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
-                           name: 'The best visual interface'
-                       },
-                       {
-                           x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
-                           name: 'Decent UI'
-                       },
-                   ]
-
-                  // Must have
-                  // x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
-                  // Should have
-                  // x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
-                  // Could have
-                  // x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
-                  // Wont have have
-                  // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
-               },
+            //     {
+            //        name: 'Sander',
+            //        color: '#2196F3',
+            //        data: [
+            //            {
+            //                x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+            //                name: 'Reusable code'
+            //            },
+            //            {
+            //                x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+            //                name: 'Scheiding frontend & backend'
+            //            },
+            //            {
+            //                x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+            //                name: 'Backend werkend online'
+            //            },
+            //            {
+            //               x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+            //                name: 'Python'
+            //            },
+            //            {
+            //                x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+            //                name: 'User testing'
+            //            },
+            //            {
+            //                x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+            //                name: 'The best visual interface'
+            //            },
+            //            {
+            //                x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+            //                name: 'Decent UI'
+            //            },
+            //        ]
+               //
+            //       // Must have
+            //       // x: Math.random() * 45 + 2, y: Math.random() * 45 + 52,
+            //       // Should have
+            //       // x: Math.random() * 45 + 52, y: Math.random() * 45 + 52,
+            //       // Could have
+            //       // x: Math.random() * 45 + 2, y: Math.random() * 45 + 2,
+            //       // Wont have have
+            //       // x: Math.random() * 45 + 52, y: Math.random() * 45 + 2,
+            //    },
                 ],
                credits: {
                    text: 'Sander Boer, Afstuderen 2015/2016',

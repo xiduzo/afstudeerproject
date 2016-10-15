@@ -11,6 +11,7 @@
         Global,
         Guild,
         World,
+        Notifications,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -36,6 +37,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
         self.selected_guild = Global.getSelectedGuild();
+        console.log(self.selected_guild);
         self.guilds = [];
         self.loading_page = true;
 
@@ -58,7 +60,8 @@
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     var worldQuests = response.quests;
-                    guild.quest_urls = [];
+                    guild.active_quests = [];
+                    guild.selected_quest = null;
 
                     // Quick fix bc I changed the serializer
                     _.each(guild.quests, function(quest) {
@@ -73,6 +76,13 @@
                         }
                     });
 
+                    // Adding the quests
+                    _.each(guild.quests, function(quest) {
+                        if(quest.quest.active) {
+                            guild.active_quests.push(quest);
+                        }
+                    });
+
                     // Add all the new quests
                     _.each(worldQuests, function(quest) {
                         Guild.addQuest(guild.url, quest.url)
@@ -83,22 +93,21 @@
                                 quest: quest,
                             };
                             if(quest.active) {
-                                guild.active_quests.push(quest);
+                                guild.active_quests.push({
+                                    completed: false,
+                                    grade: null,
+                                    guild: guild.url,
+                                    quest: quest,
+                                    quest_url: quest.url
+                                });
                                 Notifications.simpleToast('New assessments: ' + quest.name);
+                                guild.selected_quest = _.min(guild.active_quests, function(quest) {
+                                    return moment(quest.quest.created_at).unix();
+                                });
                             }
                         }, function(error) {
                             // Err add quest
                         });
-                    });
-
-                    guild.world_start_date = moment(response.start).format();
-                    guild.course_duration = response.course_duration;
-                    guild.active_quests = [];
-
-                    _.each(guild.quests, function(quest) {
-                        if(quest.quest.active) {
-                            guild.active_quests.push(quest);
-                        }
                     });
 
                     guild.selected_quest = _.min(guild.active_quests, function(quest) {
@@ -106,7 +115,10 @@
                     });
 
                     self.guilds.push(guild);
-                    Global.setRouteTitle('Assessments', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+
+                    if( _.findWhere(self.guilds, { id: self.selected_guild})) {
+                        Global.setRouteTitle('Assessments', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+                    }
                     self.loading_page = false;
 
                 });
