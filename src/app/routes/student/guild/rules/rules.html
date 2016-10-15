@@ -210,7 +210,8 @@
                                             ng-disabled="!week.editable"
                                             ng-if="user.id !== guildRulesCtrl.user.id"
                                             ng-model="$index"
-                                            ng-change="guildRulesCtrl.toggleRuleCompletion(guild, week.week, rule, user, $index)"
+                                            ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, user)"
+                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, user, $index)"
                                             aria-label="checkbox">
                                              </md-checkbox>
                                         </div>
@@ -236,9 +237,13 @@
                                 <strong layout-padding>
                                     Week {{ week.week + 1 }}:
                                 </strong>
-                                <span>
+                                <span flex>
                                     {{ week.start._d | date }} - {{ week.end._d | date }}
                                 </span>
+                                <md-icon ng-if="week.week === guild.editable_week"
+                                md-svg-src="pencil_dark"
+                                class="icon--color--grey">
+                                </md-icon>
                             </md-list-item>
                         </md-list>
                     </section>

@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.guilds')
-        .controller('GuildDetailController', GuildDetailController);
+        .controller('GuildDetailProgressController', GuildDetailProgressController);
 
     /** @ngInject */
-    function GuildDetailController(
+    function GuildDetailProgressController(
         $filter,
         $stateParams,
         $state,
@@ -44,6 +44,7 @@
             '#2196F3',
             '#4CAF50',
             '#f44336',
+            '#FFEB3B',
             '#795548',
             '#009688',
             '#FFC107',

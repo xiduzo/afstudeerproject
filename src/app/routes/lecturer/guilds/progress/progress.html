@@ -1,6 +1,6 @@
-<cmd-loading-page ng-if="guildDetailCtrl.loading_page"></cmd-loading-page>
+<cmd-loading-page ng-if="guildDetailProgressCtrl.loading_page"></cmd-loading-page>
 
-<section flex layout="column" ng-if="!guildDetailCtrl.loading_page">
+<section flex layout="column" ng-if="!guildDetailProgressCtrl.loading_page">
     <section flex layout="column" layout-fill layout-align="start stretch" layout-padding>
         <section flex=50 layout="row" layout-margin>
             <section flex=60 id="completed__tasks" md-whiteframe=1></section>
@@ -9,14 +9,16 @@
         </section>
         <section flex=50 ng-scrollbars layout-margin>
             <section layout layout-wrap>
-                <div flex=25 ng-repeat="member in guildDetailCtrl.members_data">
+                <div flex=25 ng-repeat="member in guildDetailProgressCtrl.members_data">
                     <md-card>
                         <md-toolbar
                         ng-style="{
                             'background': member.color
                         }">
                             <span class="md-toolbar-tools" layout layout-align="center center">
-                                {{ member.name }}
+                                <strong>
+                                    {{ member.name }}
+                                </strong>
                             </span>
                         </md-toolbar>
                         <md-card-content layout>
@@ -51,15 +53,12 @@
                                     </span>
                                     <strong class="md-headline" style="font-weight: 900;"
                                     ng-class="{
-                                        'text--color--red':        member.average_per_day < guildDetailCtrl.max_average_per_day * 0.2,
-                                        'text--color--deepOrange': member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.2 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.3,
-                                        'text--color--orange':     member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.3 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.4,
-                                        'text--color--amber':      member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.4 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.5,
-                                        'text--color--yellow':     member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.5 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.6,
-                                        'text--color--lime':       member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.6 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.7,
-                                        'text--color--lightGreen': member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.7 && member.average_per_day < guildDetailCtrl.max_average_per_day * 0.8,
-                                        'text--color--green':      member.average_per_day >= guildDetailCtrl.max_average_per_day * 0.8
-                                    }">
+                                        'text--color--red':        member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.30,
+                                        'text--color--orange':     member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.45 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.6,
+                                        'text--color--amber':      member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.6 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.75,
+                                        'text--color--lightGreen': member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.75 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.9,
+                                        'text--color--green':      member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.9
+                                    }" class="text--color--red">
                                         {{member.average_per_day }}
                                     </strong>
                                 </md-list-item>

@@ -37,7 +37,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
         self.selected_guild = Global.getSelectedGuild();
-        console.log(self.selected_guild);
         self.guilds = [];
         self.loading_page = true;
 

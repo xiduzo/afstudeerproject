@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function GuildRulesController(
+        $filter,
         $mdDialog,
         $state,
         Global,
@@ -34,7 +35,8 @@
         self.toggleRule = toggleRule;
         self.addRule = addRule;
         self.addRulesToGuild = addRulesToGuild;
-        self.toggleRuleCompletion = toggleRuleCompletion;
+        self.toggleRuleEndorsement = toggleRuleEndorsement;
+        self.checkRuleEndorsementStatus = checkRuleEndorsementStatus;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -84,8 +86,6 @@
 
                     guild.weeks = [];
                     guild.selected_week = null;
-                    guild.endorsed_rules = [];
-                    guild.removed_endorsed_rules = [];
 
                     for(var i = self.world.course_duration; i > 0; i -= 7) {
                         var start_week = moment(self.world.start).add(guild.weeks.length * 7 , 'days');
@@ -100,6 +100,8 @@
                         if (moment().isBetween(start_week, end_week)) {
                             tempObj.editable = true;
                             guild.selected_week = guild.weeks.length;
+                            guild.editable_week = guild.weeks.length;
+                            console.log(true);
                         }
 
                         guild.weeks.push(tempObj);
@@ -115,7 +117,7 @@
                     .catch(function(error) {
                         console.log(error);
                     });
-                    
+
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -207,7 +209,6 @@
         }
 
         function addRulesToGuild(event, guild) {
-            console.log(guild.selected_rules);
             $mdDialog.show({
                 controller: 'confirmGuildRulesController',
                 controllerAs: 'confirmGuildRulesCtrl',
@@ -224,7 +225,6 @@
 
                 _.each(guild.selected_rules, function(rule) {
                     self.loading_page = true;
-                    console.log(rule);
                     Guild.addGuildRule(guild.id, rule)
                     .then(function(response) {
                         self.loading_page = false;
@@ -238,26 +238,48 @@
             });
         }
 
-        function toggleRuleCompletion(guild, week, rule, user, state) {
+        function toggleRuleEndorsement(guild, week, rule, user, state) {
             if(state) {
-                guild.endorsed_rules.push( {
-                    id: rule.id+'-'+user.id+'-'+week,
-                    rule: rule,
-                    week: week,
-                    user: user
+                Guild.addEndorsement(rule.id, user.id, self.user.id, week)
+                .then(function(response) {
+                    rule.endorsements.push(response);
+                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
+                })
+                .catch(function(error) {
+                    console.log(error);
                 });
             } else {
-                guild.endorsed_rules.splice(
-                    _.indexOf(
-                        guild.endorsed_rules,
-                        _.findWhere(
-                            guild.endorsed_rules,
-                            { id: rule.id+'-'+user.id+'-'+week }
-                        )
-                    ),
-                    1
-                );
+                var endorsement = _.findWhere(rule.endorsements, {
+                    endorsed_by: self.user.id,
+                    week: week,
+                    user: user.id,
+                    rule: rule.id
+                });
+
+                console.log(endorsement);
+
+                Guild.removeEndorsement(endorsement.id)
+                .then(function(response) {
+                    if(response.status === 204) {
+                        rule.endorsements.splice(_.indexOf(rule.endorsements, rule), 1);
+                        Notifications.simpleToast('Removed endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
             }
+        }
+
+        function checkRuleEndorsementStatus(guild, week, rule, user) {
+            var endorsement = _.findWhere(rule.endorsements, {
+                endorsed_by: self.user.id,
+                week: week,
+                user: user.id,
+                rule: rule.id
+            });
+
+            return endorsement ? true : false;
         }
 
     }

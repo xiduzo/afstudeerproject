@@ -11,20 +11,28 @@
             </md-icon>
             CMD Athena
         </h1>
-        <section layout-margin ng-if="navigationCtrl.access >= 2">
-            <md-select ng-change="navigationCtrl.changedWorld()"
-            ng-model="navigationCtrl.selected_world">
-                <md-option ng-repeat="world in navigationCtrl.worlds"
-                value="{{world.id}}">
+        <section layout layout-align="start center" layout-margin ng-if="navigationCtrl.access >= 2">
+            <md-icon md-svg-src="world_light">
+                <md-tooltip md-direction="right" md-delay="1000">
+                    Select class
+                </md-tooltip>
+            </md-icon>
+            <md-select flex ng-change="navigationCtrl.changedWorld()"
+            ng-model="navigationCtrl.selected_world" aria-label="select class">
+                <md-option ng-repeat="world in navigationCtrl.worlds" value="{{world.id}}">
                     {{ world.name }}
                 </md-option>
             </md-select>
         </section>
-        <section layout-margin>
-            <md-select ng-change="navigationCtrl.changedGuild()"
-            ng-model="navigationCtrl.selected_guild">
-                <md-option ng-repeat="guild in navigationCtrl.guilds"
-                value="{{guild.id}}">
+        <section layout layout-align="start center" layout-margin>
+            <md-icon md-svg-src="guild_light">
+                <md-tooltip md-direction="right" md-delay="1000">
+                    Select group
+                </md-tooltip>
+            </md-icon>
+            <md-select flex ng-change="navigationCtrl.changedGuild()"
+            ng-model="navigationCtrl.selected_guild" aria-label="select group">
+                <md-option ng-repeat="guild in navigationCtrl.guilds" value="{{guild.id}}">
                     {{ guild.name }}
                 </md-option>
             </md-select>

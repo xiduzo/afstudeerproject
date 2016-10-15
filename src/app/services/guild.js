@@ -37,6 +37,8 @@
         service.removeObjectiveAssignment = removeObjectiveAssignment;
         service.loadMoreHistoryUpdates = loadMoreHistoryUpdates;
         service.addGuildRule = addGuildRule;
+        service.addEndorsement = addEndorsement;
+        service.removeEndorsement = removeEndorsement;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -292,6 +294,30 @@
                 }
             })
             .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function addEndorsement(rule, user, endorsed_by, week) {
+            return $http({
+                url: REST_API_URL + 'guild/guildRulesEndorsments/',
+                method: "POST",
+                data: {
+                    rule: rule,
+                    user: user,
+                    endorsed_by: endorsed_by,
+                    week: week
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+        function removeEndorsement(endorsement) {
+            return $http({
+                url: REST_API_URL + 'guild/guildRulesEndorsments/'+endorsement+'/',
+                method: "DELETE"
+            })
+            .then(function(response) { return response;
             }, function(error) { return error; });
         }
 
