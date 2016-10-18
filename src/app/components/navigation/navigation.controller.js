@@ -64,7 +64,13 @@
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
-                    }
+                    },
+                    {
+                        name: 'Rules',
+                        icon: 'rules_dark',
+                        link_to: 'base.rules.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
                 ],
             },
             {
@@ -135,7 +141,7 @@
                     },
                     {
                         name: 'Activity',
-                        icon: 'activity_dark',
+                        icon: 'list_dark',
                         link_to: 'base.guild.activity',
                         access_levels: [
                             COORDINATOR_ACCESS_LEVEL,

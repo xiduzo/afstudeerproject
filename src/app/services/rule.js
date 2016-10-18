@@ -16,13 +16,32 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        services.addRule = addRule;
         services.getRules = getRules;
+        services.deleteRule = deleteRule;
 
         return services;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function addRule(rule) {
+            return $http({
+                url: REST_API_URL + 'rules/rules/',
+                method: "POST",
+                data: {
+                    rule: rule.rule,
+                    points: rule.points,
+                    rule_type: rule.rule_type
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
         function getRules() {
             return $http({
                 url: REST_API_URL + 'rules/rules/',
@@ -30,6 +49,18 @@
             })
             .then(function(response) {
                 return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function deleteRule(rule) {
+            return $http({
+                url: REST_API_URL + 'rules/rules/' + rule + '/',
+                method: "DELETE"
+            })
+            .then(function(response) {
+                return response;
             }, function(error) {
                 return error;
             });

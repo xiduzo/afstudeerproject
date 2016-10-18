@@ -12,6 +12,7 @@
         hotkeys,
         Account,
         Global,
+        md5,
         Notifications
     ) {
 
@@ -77,6 +78,7 @@
                                 return Global.noConnection();
                             }
                             if(response.length) {
+                                response[0].password = md5(self.login_form.password);
                                 Account.setUser(response[0]);
                             } else {
                                 // TODO
@@ -94,6 +96,7 @@
                                         return Global.noConnection();
                                     }
                                     if(response) {
+                                        logged_in_user.password = md5(self.login_form.password);
                                         Account.setUser(logged_in_user);
                                     }
                                 })

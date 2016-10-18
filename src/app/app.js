@@ -19,6 +19,7 @@
             'angular-loading-bar',
             'ngOnboarding',
             'cfp.hotkeys',
+            'angular-md5',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
@@ -59,6 +60,7 @@
 
             // Coordinator
             'cmd.worlds',
+            'cmd.rules',
 
             // Research
             'cmd.research',

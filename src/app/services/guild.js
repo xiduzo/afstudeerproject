@@ -299,7 +299,7 @@
 
         function addEndorsement(rule, user, endorsed_by, week) {
             return $http({
-                url: REST_API_URL + 'guild/guildRulesEndorsments/',
+                url: REST_API_URL + 'guild/newGuildRulesEndorsments/',
                 method: "POST",
                 data: {
                     rule: rule,

@@ -36,7 +36,6 @@
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
         self.patchQuest = patchQuest;
-        self.addRule = addRule;
         self.deleteRule = deleteRule;
         self.addHotkeys = addHotkeys;
 
@@ -178,57 +177,6 @@
                 Notifications.simpleToast('Patched assessment.');
             }, function() {
                 // Err toggle quest
-            });
-        }
-
-        function addRule() {
-            $mdDialog.show({
-                controller: 'addRuleController',
-                controllerAs: 'addRuleCtrl',
-                templateUrl: 'app/routes/coordinator/worlds/settings/rules/rules.html',
-                targetEvent: event,
-                clickOutsideToClose: true,
-                locals: {
-                    title: 'Add rule for ' + self.world.name,
-                    about: 'rule',
-                }
-            })
-            .then(function(response) {
-                console.log(response);
-                if(!response ||
-                    !response.rule ||
-                    !response.rule_type ||
-                    !response.importance) {
-                    return Notifications.simpleToast('Fill in all the fields to add an rule');
-                }
-
-                if(response.importance > 96) {
-                    response.points = 13;
-                } else if (response.importance > 80) {
-                    response.points = 8;
-                } else if (response.importance > 64) {
-                    response.points = 5;
-                } else if (response.importance > 48) {
-                    response.points = 3;
-                } else if (response.importance > 32) {
-                    response.points = 2;
-                } else {
-                    response.points = 1;
-                }
-
-                // Add rule to the system
-                World.addRule(self.world.url, response)
-                .then(function(response) {
-                    Notifications.simpleToast('Rule \''+response.rule+'\' added');
-                    self.world.rules.push(response);
-                })
-                .catch(function(error) {
-                    // err add rule
-                });
-
-
-            }, function() {
-                // Err dialog
             });
         }
 

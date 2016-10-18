@@ -125,7 +125,8 @@
                             <section layout-padding>
                                 <md-input-container class="md-block">
                                     <label>Subject</label>
-                                    <input ng-model="filters.free_search">
+                                    <input ng-model="filters.free_search"
+                                    ng-model-options=" { debounce: 500 }">
                                     <div class="hint text--color--grey">
                                         The subject has a black background
                                     </div>

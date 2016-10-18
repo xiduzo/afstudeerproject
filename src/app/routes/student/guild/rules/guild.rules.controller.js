@@ -15,6 +15,7 @@
         World,
         Rules,
         Notifications,
+        md5,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -28,7 +29,6 @@
 
         var self = this;
 
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -37,6 +37,7 @@
         self.addRulesToGuild = addRulesToGuild;
         self.toggleRuleEndorsement = toggleRuleEndorsement;
         self.checkRuleEndorsementStatus = checkRuleEndorsementStatus;
+        self.showPasswordPrompt = showPasswordPrompt;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -45,7 +46,9 @@
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.world = [];
+        self.rules = [];
         self.loading_page = true;
+        self.password_protection = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -82,6 +85,11 @@
                         };
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
+                    } else {
+                        // TODO
+                        // build angular prompt which has a password field
+                        // self.password_protection = true;
+                        // self.showPasswordPrompt();
                     }
 
                     guild.weeks = [];
@@ -101,7 +109,6 @@
                             tempObj.editable = true;
                             guild.selected_week = guild.weeks.length;
                             guild.editable_week = guild.weeks.length;
-                            console.log(true);
                         }
 
                         guild.weeks.push(tempObj);
@@ -180,15 +187,15 @@
                     Notifications.simpleToast('Please fill in all the fields');
                 }
 
-                if(response.importance > 90) {
+                if(response.importance >= 95) {
                     response.points = 13;
-                } else if (response.importance > 75) {
+                } else if (response.importance > 70) {
                     response.points = 8;
-                } else if (response.importance > 60) {
+                } else if (response.importance > 40) {
                     response.points = 5;
-                } else if (response.importance > 45) {
+                } else if (response.importance > 20) {
                     response.points = 3;
-                } else if (response.importance > 30) {
+                } else if (response.importance > 10) {
                     response.points = 2;
                 } else {
                     response.points = 1;
@@ -201,7 +208,7 @@
                     selected: true
                 };
 
-                self.world.rules.push(tempObj);
+                guild.possible_rules.push(tempObj);
                 self.toggleRule(tempObj, guild);
             }, function() {
                 // Err dialog
@@ -242,6 +249,7 @@
             if(state) {
                 Guild.addEndorsement(rule.id, user.id, self.user.id, week)
                 .then(function(response) {
+                    console.log(response);
                     rule.endorsements.push(response);
                     Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
                 })
@@ -253,7 +261,7 @@
                     endorsed_by: self.user.id,
                     week: week,
                     user: user.id,
-                    rule: rule.id
+                    rule_id: rule.id
                 });
 
                 console.log(endorsement);
@@ -272,14 +280,42 @@
         }
 
         function checkRuleEndorsementStatus(guild, week, rule, user) {
+            _.each(rule.endorsements, function(endorsement) {
+                endorsement.rule_id = endorsement.rule.id;
+            });
+
             var endorsement = _.findWhere(rule.endorsements, {
                 endorsed_by: self.user.id,
                 week: week,
                 user: user.id,
-                rule: rule.id
+                rule_id: rule.id
             });
 
             return endorsement ? true : false;
+        }
+
+        function showPasswordPrompt() {
+            Notifications.prompt(
+                'Password Required',
+                'This page contains sensitive information, please enter your password to continue',
+                'password',
+                event
+            )
+            .then(function(result) {
+                // Checks for the world name
+                if(!result) {
+                    return Notifications.simpleToast('Please enter a password');
+                }
+
+                if(md5(result) === self.user.password) {
+                    self.password_protection = false;
+                } else {
+                    Notifications.simpleToast('Incorrect password');
+                }
+
+            }, function() {
+                // Cancel dialog
+            });
         }
 
     }

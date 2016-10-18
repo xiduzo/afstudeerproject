@@ -48,6 +48,17 @@
                 }
             })
 
+            .state('base.guilds.feedback', {
+                url: '/:guildUuid/feedback',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/lecturer/guilds/feedback/feedback.html',
+                        controller: 'GuildDetailFeedbackController',
+                        controllerAs: 'guildDetailFeedbackCtrl'
+                    }
+                }
+            })
+
         ; // End of states
 
     }

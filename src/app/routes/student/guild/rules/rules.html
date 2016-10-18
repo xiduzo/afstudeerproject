@@ -140,7 +140,7 @@
 
                 <md-content ng-scrollbars flex flex=60>
                     <md-list>
-                        <md-list-item ng-repeat="rule in guild.possible_rules">
+                        <md-list-item ng-repeat="rule in guild.possible_rules | orderBy: 'rule_type'">
                             <md-checkbox ng-change="guildRulesCtrl.toggleRule(rule, guild)"
                             ng-model="rule.selected"
                             aria-label="Select rule">
@@ -168,7 +168,7 @@
 
             </section>
 
-            <section layout flex layout-fill ng-if="guild.rules.length >= 8">
+            <section layout flex layout-fill ng-if="guild.rules.length >= 8 && !guildRulesCtrl.password_protection">
                 <section flex=80 layout-margin>
                     <section md-whiteframe=1>
                         <md-toolbar layout-padding>
