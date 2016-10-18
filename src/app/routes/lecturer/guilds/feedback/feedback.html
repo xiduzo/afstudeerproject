@@ -8,6 +8,20 @@
         </section>
     </section>
     <md-content flex=20 layout-fill>
-
+        <md-list>
+            <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.members_data"
+            ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
+                <span ng-style="{
+                    'background': member.color
+                }" style="width: 25px; height: 25px; border-radius: 50%;"></span>
+                <span flex layout-padding>
+                    <img class="round" gravatar-size=45 gravatar-src-once="member.email">
+                    {{ member.name }}
+                </span>
+                <md-icon ng-if="member.selected" md-svg-src="done_dark"
+                class="icon--color--green">
+                </md-icon>
+            </md-list-item>
+        </md-list>
     </md-content>
 </section>

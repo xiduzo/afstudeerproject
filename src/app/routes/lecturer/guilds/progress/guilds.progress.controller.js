@@ -14,7 +14,8 @@
         Global,
         Notifications,
         World,
-        LECTURER_ACCESS_LEVEL
+        LECTURER_ACCESS_LEVEL,
+        COLORS
     ) {
 
         if(Global.getAccess() < LECTURER_ACCESS_LEVEL) {
@@ -40,26 +41,6 @@
         self.guild = [];
         self.members_data = [];
         self.loading_page = true;
-        self.colors = [
-            '#2196F3',
-            '#4CAF50',
-            '#f44336',
-            '#FFEB3B',
-            '#795548',
-            '#009688',
-            '#FFC107',
-            '#3F51B5',
-            '#E91E63',
-            '#03A9F4',
-            '#FF9800',
-            '#673AB7',
-            '#FF5722',
-            '#9C27B0',
-            '#00BCD4',
-            '#8BC34A',
-            '#9E9E9E',
-            '#607D8B',
-        ];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -112,7 +93,7 @@
             _.each(guild.members, function(member, index) {
                 var tempObj = {
                     id: member.id,
-                    color: self.colors[index],
+                    color: COLORS[index],
                     name: $filter('fullUserName')(member),
                     points: 0, // Pie chart
                     completed__tasks: 0,
