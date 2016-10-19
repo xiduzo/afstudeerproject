@@ -102,8 +102,8 @@
 
                 // Need to have two seperate arrays b/c
                 // We are gonna build two different charts
-                graph_data.points.push(tempObj);
                 graph_data.series.push(tempObj);
+                graph_data.points.push(tempObj);
             });
             // Building the horizontal axis of the graph (date)
             for(var i = 0; i <= guild.world.course_duration; i++) {

@@ -30,7 +30,7 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.buildChartData = buildChartData;
-        self.createChart = createChart;
+        self.createCharts = createCharts;
         self.selectMember = selectMember;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,9 @@
             line: [],
             polar: [],
         };
+        self.guilds = [];
         self.horizontal_axis = [];
+        self.endorsed_rules = [];
         self.selected_member = null;
         self.loading_page = true;
         self.first_line_graph_load = true;
@@ -54,7 +56,7 @@
         Guild.getGuild($stateParams.guildUuid)
         .then(function(response) {
             Global.setRouteTitle('Group feedback', response.name);
-            var data = response;
+            self.guild = response;
             _.each(response.members, function(member, index) {
                 self.members_data.push({
                     id: member.id,
@@ -77,11 +79,11 @@
 
             World.getWorld(response.world.id)
             .then(function(response) {
-                var tempObj = {
+                self.guild.world_data = {
                     duration: response.course_duration,
                     start: response.start
                 };
-                self.buildChartData(data, tempObj);
+                self.buildChartData(self.guild);
             })
             .catch(function(error) {
                 console.log(error);
@@ -98,10 +100,10 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function buildChartData(data, world_data) {
+        function buildChartData(data) {
             var horizontal_axis = [];
             var week = 0;
-            for(var i = world_data.duration; i > 0; i-=7) {
+            for(var i = data.world_data.duration; i > 0; i-=7) {
                 self.graphs_data.line.push(week);
                 horizontal_axis.push(week);
                 week++;
@@ -121,37 +123,43 @@
                 });
 
                 _.each(member.endorsements, function(endorsements, index) {
-                    // Group the rule types for each week
+                    // Group the endorsements per week
                     endorsements = _.groupBy(endorsements, function(endorsement) {
                         return endorsement.rule.rule_type;
                     });
-
 
                     var points = 0;
                     // Count the points per week
                     _.each(endorsements, function(endorsement_type, index) {
                         _.each(endorsement_type, function(type_group) {
+                            if(_.findWhere(self.endorsed_rules, {id: type_group.rule.id})) {
+                                _.findWhere(self.endorsed_rules, {id: type_group.rule.id}).amount++;
+                            } else {
+                                self.endorsed_rules.push({
+                                    id: type_group.rule.id,
+                                    rule: type_group.rule,
+                                    amount: 1
+                                });
+                            }
                             points += type_group.rule.points;
+
+                            // Also make sure the endorsement types are safed
+                            // per type on the user for the polar chart
+                            _.findWhere(member.polar_data, { type: type_group.rule.rule_type}).points += points;
                         });
                     });
-
                     self.graphs_data.line[index] += points;
                     member.line_data.push(points);
-
                 });
-
-            });
-            console.log(self.members_data);
-
-            // Calculating the average points for the users
-            self.graphs_data.line = _.map(self.graphs_data.line, function(line_data) {
-                return line_data / self.members_data.length;
             });
 
+            // Make sure the average is included in the graph as well
             self.graphs_data.line = [
                 {
                     name: 'Average',
-                    data: self.graphs_data.line,
+                    data: _.map(self.graphs_data.line, function(line_data) {
+                        return line_data / self.members_data.length;
+                    }),
                     color: Highcharts.Color('#222222').setOpacity(0.1).get(),
                 }
             ];
@@ -163,17 +171,30 @@
                     data: member.line_data,
                     color: member.color
                 });
+
+                member.polar_data =_.map(member.polar_data, function(data) {
+                    return data.points;
+                });
+                self.graphs_data.polar.push({
+                    type: 'spline',
+                    visible: member.selected,
+                    name: member.name,
+                    data: member.polar_data,
+                    color: member.color
+                });
             });
 
             self.horizontal_axis = _.map(horizontal_axis, function(axis_point) {
                 axis_point = 'Week ' + (axis_point+1);
                 return axis_point;
             });
-            
-            self.createChart();
+
+            self.createCharts();
         }
 
-        function createChart(data) {
+        function createCharts(data) {
+            // TODO
+            // On selecting user in the graph itself, make sure it will also update the sidenav
             $('#chart').highcharts({
                 chart: {
                     type: 'spline',
@@ -187,9 +208,6 @@
                 },
                 xAxis: {
                     categories: self.horizontal_axis
-                },
-                legend: {
-                    enabled: false
                 },
                 yAxis: {
                     title: {
@@ -206,11 +224,6 @@
                 plotOptions: {
                     spline: {
                         lineWidth: 4,
-                        states: {
-                            hover: {
-                                lineWidth: 5
-                            }
-                        },
                         marker: {
                             enabled: false,
                         },
@@ -224,6 +237,41 @@
                     menuItemStyle: {
                         fontSize: '10px'
                     }
+                },
+                credits: {
+                    href: '',
+                    text: moment().format('DD/MM/YY HH:mm'),
+                }
+            });
+            $('#polar').highcharts({
+                chart: {
+                    polar: true
+                },
+                title: { text: 'Endorsement focus' },
+                xAxis: {
+                    categories: [
+                        'Houding',
+                        'Functioneren binnen de groep',
+                        'Kennisontwikkeling',
+                        'Verantwoording',
+                    ],
+                    // tickmarkPlacement: 'on',
+                    lineWidth: 0,
+                    gridLineWidth: 0
+                },
+                yAxis: {
+                    gridLineInterpolation: 'polygon',
+                    visible: false
+                },
+                plotOptions: {
+                    series: {
+                        animation: self.first_line_graph_load
+                    },
+                },
+                series: self.graphs_data.polar,
+                credits: {
+                    href: '',
+                    text: moment().format('DD/MM/YY HH:mm'),
                 }
             });
             self.first_line_graph_load = false;
@@ -239,9 +287,17 @@
                     data: member.line_data,
                     color: member.color
                 };
+
+                self.graphs_data.polar[index] = {
+                    type: 'spline',
+                    visible: member.selected,
+                    name: member.name,
+                    data: member.polar_data,
+                    color: member.color
+                };
             });
 
-            self.createChart();
+            self.createCharts();
         }
 
 

@@ -207,7 +207,6 @@
                                         ng-if="user.id !== guildRulesCtrl.user.id">
                                             <md-checkbox
                                             style="margin-bottom: 0;"
-                                            ng-disabled="!week.editable"
                                             ng-if="user.id !== guildRulesCtrl.user.id"
                                             ng-model="$index"
                                             ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, user)"

@@ -479,6 +479,7 @@
                     },
                     {
                         name: 'Remaining task points',
+                        type: 'spline',
                         yAxis: 0,
                         data: guild.graph_line,
                         color: '#616161'
