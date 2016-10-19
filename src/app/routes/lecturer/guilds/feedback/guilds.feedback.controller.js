@@ -164,6 +164,16 @@
                 }
             ];
 
+            self.graphs_data.polar = [
+                {
+                    type: 'spline',
+                    visible: true,
+                    name: 'Average',
+                    color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+                    data: [0, 0, 0, 0]
+                }
+            ];
+
             _.each(self.members_data, function(member, index) {
                 self.graphs_data.line.push({
                     visible: member.selected,
@@ -175,6 +185,11 @@
                 member.polar_data =_.map(member.polar_data, function(data) {
                     return data.points;
                 });
+
+                _.each(member.polar_data, function(data, index) {
+                    self.graphs_data.polar[0].data[index] += data;
+                });
+
                 self.graphs_data.polar.push({
                     type: 'spline',
                     visible: member.selected,
@@ -182,6 +197,11 @@
                     data: member.polar_data,
                     color: member.color
                 });
+
+            });
+
+            self.graphs_data.polar[0].data = _.map(self.graphs_data.polar[0].data, function(polar_data) {
+                return polar_data / self.members_data.length;
             });
 
             self.horizontal_axis = _.map(horizontal_axis, function(axis_point) {
@@ -192,9 +212,7 @@
             self.createCharts();
         }
 
-        function createCharts(data) {
-            // TODO
-            // On selecting user in the graph itself, make sure it will also update the sidenav
+        function createCharts() {
             $('#chart').highcharts({
                 chart: {
                     type: 'spline',
@@ -218,6 +236,7 @@
                     alternateGridColor: null,
                 },
                 tooltip: {
+                    enabled: false,
                     shared: true,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
                 },
@@ -229,15 +248,15 @@
                         },
                     },
                     series: {
-                        animation: self.first_line_graph_load
-                    }
+                        animation: self.first_line_graph_load,
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        }
+                    },
                 },
                 series: self.graphs_data.line,
-                navigation: {
-                    menuItemStyle: {
-                        fontSize: '10px'
-                    }
-                },
                 credits: {
                     href: '',
                     text: moment().format('DD/MM/YY HH:mm'),
@@ -255,17 +274,33 @@
                         'Kennisontwikkeling',
                         'Verantwoording',
                     ],
-                    // tickmarkPlacement: 'on',
+                    tickmarkPlacement: 'on',
                     lineWidth: 0,
-                    gridLineWidth: 0
+                    // gridLineWidth: 0
                 },
                 yAxis: {
                     gridLineInterpolation: 'polygon',
                     visible: false
                 },
+                tooltip: {
+                    enabled: false,
+                    shared: true,
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                },
                 plotOptions: {
                     series: {
-                        animation: self.first_line_graph_load
+                        animation: self.first_line_graph_load,
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        }
+                    },
+                    spline: {
+                        lineWidth: 4,
+                        marker: {
+                            enabled: false,
+                        },
                     },
                 },
                 series: self.graphs_data.polar,
@@ -288,7 +323,7 @@
                     color: member.color
                 };
 
-                self.graphs_data.polar[index] = {
+                self.graphs_data.polar[index + 1] = {
                     type: 'spline',
                     visible: member.selected,
                     name: member.name,
