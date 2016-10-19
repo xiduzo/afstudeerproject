@@ -29,6 +29,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.addRule = addRule;
         self.deleteRule = deleteRule;
+        self.typeFilter = typeFilter;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -36,6 +37,12 @@
         self.user = Global.getUser();
         self.access = Global.getAccess();
         self.rules = [];
+        self.type_filters = {
+            attitude: true,
+            functioning: true,
+            knowledge: true,
+            justification: true
+        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Services
@@ -113,6 +120,29 @@
             .catch(function(error) {
                 console.log(error);
             });
+        }
+
+        function typeFilter() {
+            // console.log(self.type_filters);
+            return _.map(self.rules, function(rule) {
+                if(rule.rule_type === 1 && self.type_filters.attitude) {
+                    console.log(true);
+                    return rule;
+                }
+                if(rule.rule_type === 2 && self.type_filters.functioning) {
+                    return rule;
+                }
+                if(rule.rule_type === 3 && self.type_filters.knowledge) {
+                    return rule;
+                }
+                if(rule.rule_type === 4 && self.type_filters.justification) {
+                    return rule;
+                }
+            });
+            // console.log(self.filters);
+            // return _.map(self.rules, function(rule) {
+            //
+            // });
         }
 
 

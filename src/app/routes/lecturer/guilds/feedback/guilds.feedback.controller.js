@@ -236,7 +236,6 @@
                     alternateGridColor: null,
                 },
                 tooltip: {
-                    enabled: false,
                     shared: true,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
                 },
@@ -283,7 +282,6 @@
                     visible: false
                 },
                 tooltip: {
-                    enabled: false,
                     shared: true,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
                 },

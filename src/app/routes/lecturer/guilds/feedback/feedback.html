@@ -12,8 +12,8 @@
             </md-content>
         </section>
         <section flex=50 layout>
-            <section flex layout-fill layout md-whiteframe=1>
-                <md-content flex=50 layout="column">
+            <section flex layout-fill layout>
+                <md-content flex=50 layout="column" md-whiteframe=1>
                     <md-toolbar>
                         <span class="md-toolbar-tools">
                             Most endorsed rules
@@ -25,18 +25,29 @@
                             <md-icon class="icon__helper icon--size--36"
                                 md-svg-icon="work_dark"
                                 ng-if="rule.rule.rule_type === 1">
+                                <md-tooltip md-delay="1000">
+                                    Houding
+                                </md-tooltip>
                             </md-icon>
                             <md-icon class="icon__helper icon--size--36"
                                 md-svg-icon="group_work_dark"
                                 ng-if="rule.rule.rule_type === 2">
+                                <md-tooltip md-delay="1000">
+                                    Functioneren binnen de groep
+                                </md-tooltip>
                             </md-icon>
                             <md-icon class="icon__helper icon--size--36"
                                 md-svg-icon="lightbulb_dark"
                                 ng-if="rule.rule.rule_type === 3">
+                                    Kennisontwikkeling
+                                </md-tooltip>
                             </md-icon>
                             <md-icon class="icon__helper icon--size--36"
                                 md-svg-icon="description_dark"
                                 ng-if="rule.rule.rule_type === 4">
+                                <md-tooltip>
+                                    Verantwoording
+                                </md-tooltip>
                             </md-icon>
                             <span flex>
                                 The student {{ rule.rule.rule }}
@@ -50,7 +61,7 @@
                 <section flex=5>
                     <!-- placeholder -->
                 </section>
-                <md-content flex=50 id="polar">
+                <md-content flex=50 id="polar" md-whiteframe=1>
                     <cmd-empty-state
                     icon="again_dark"
                     headline="Loading data."

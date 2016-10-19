@@ -172,6 +172,10 @@
             .icon('lightbulb_dark', './assets/icons/material/ic_lightbulb_outline_black_48px.svg', 48)
             .icon('work_light', './assets/icons/material/ic_work_white_48px.svg', 48)
             .icon('work_dark', './assets/icons/material/ic_work_black_48px.svg', 48)
+            .icon('loyalty_light', './assets/icons/material/ic_loyalty_white_48px.svg', 48)
+            .icon('loyalty_dark', './assets/icons/material/ic_loyalty_black_48px.svg', 48)
+            .icon('redeem_light', './assets/icons/material/ic_redeem_white_48px.svg', 48)
+            .icon('redeem_dark', './assets/icons/material/ic_redeem_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

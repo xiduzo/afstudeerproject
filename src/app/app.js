@@ -61,6 +61,7 @@
             // Coordinator
             'cmd.worlds',
             'cmd.rules',
+            'cmd.behaviour',
 
             // Research
             'cmd.research',

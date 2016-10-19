@@ -71,6 +71,18 @@
                         link_to: 'base.rules.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
+                    {
+                        name: 'Behaviours',
+                        icon: 'loyalty_dark',
+                        link_to: 'base.behaviour.behaviours',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
+                    {
+                        name: 'Rewards',
+                        icon: 'redeem_dark',
+                        link_to: 'base.behaviour.rewards',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
                 ],
             },
             {
