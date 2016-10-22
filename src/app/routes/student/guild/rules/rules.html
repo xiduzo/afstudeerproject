@@ -209,6 +209,7 @@
                                             style="margin-bottom: 0;"
                                             ng-if="user.id !== guildRulesCtrl.user.id"
                                             ng-model="$index"
+                                            ng-disabled="guild.editable_week !== week.week"
                                             ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, user)"
                                             ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, user, $index)"
                                             aria-label="checkbox">
