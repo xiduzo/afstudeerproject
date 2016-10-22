@@ -1,10 +1,12 @@
 <md-dialog md-theme="default" aria-label="{{ addTaskCtrl.about }}" flex="40">
 
-    <md-dialog-content class="md-dialog-content">
-        <h2 class="md-title ng-binding">
+    <md-toolbar>
+        <span class="md-toolbar-tools" layout layout-align="center center">
             {{ addTaskCtrl.title }}
-        </h2>
+        </span>
+    </md-toolbar>
 
+    <md-dialog-content class="md-dialog-content">
         <div class="md-dialog-content-body">
             <form layout="column">
                 <div layout>
@@ -35,13 +37,17 @@
     </md-dialog-content>
 
     <md-dialog-actions>
-        <button class="md-primary md-button" type="button" aria-label="Cancel"
+        <button class="md-button" type="button" aria-label="Cancel"
             ng-click="addTaskCtrl.close()" md-ink-ripple>
-            Cancel
+            <strong class="text--color--red">
+                Cancel
+            </strong>
         </button>
         <button class="md-primary md-button" type="button" aria-label="{{ addTaskCtrl.about }}"
             ng-click="addTaskCtrl.addTask()" md-ink-ripple>
-            Add {{ addTaskCtrl.about }}
+            <strong class="text--color--green">
+                Add {{ addTaskCtrl.about }}
+            </strong>
         </button>
     </md-dialog-actions>
 

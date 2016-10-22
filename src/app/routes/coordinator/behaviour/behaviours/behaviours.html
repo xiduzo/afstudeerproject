@@ -1,6 +1,41 @@
 <section layout-fill layout>
-    <section flex=80 layout-padding layout-margin>
-        behaviours
+    <section flex=80 layout-fill ng-scrollbars>
+        <section layout layout-wrap>
+            <div flex=25 layout-padding
+            ng-repeat="behaviour in filtered = (behavioursCtrl.behaviours
+            | filter: {
+                behaviour: filters.free_search
+            }
+            )">
+                <section layout-fill>
+                    <md-card layout-fill layout-align="space-between">
+                        <md-card-content layout="column" layout-align="space-between center">
+                            <section layout="column" layout-align="center center">
+                                <strong layout-padding>
+                                    The student:
+                                </strong>
+                                <em class="md-title" style="text-align: center;">
+                                    {{ behaviour.behaviour }}
+                                </em>
+                            </section>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>
+                                <strong>
+                                    Edit
+                                </strong>
+                            </md-button>
+                            <md-button class="md-warn"
+                             ng-click="behavioursCtrl.removeBehaviour(behaviour)">
+                                <strong>
+                                    Remove
+                                </strong>
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
+                </section>
+            </div>
+        </section>
     </section>
     <md-content layout-fill flex=20>
         <md-subheader>
@@ -8,13 +43,22 @@
         </md-subheader>
         <section layout="column">
             <md-button layout flex class="success md-raised"
-            ng-click="rulesOverviewCtrl.addRule()">
+            ng-click="behavioursCtrl.addBehaviour($event)">
                 <md-icon md-svg-src="loyalty_light">
                 </md-icon>
                 <span flex>
                     New behaviour
                 </span>
             </md-button>
+        </section>
+        <md-subheader>
+            Filter options
+        </md-subheader>
+        <section layout-padding>
+            <md-input-container class="md-block">
+                <label>Rule</label>
+                <input ng-model="filters.free_search">
+            </md-input-container>
         </section>
     </md-content>
 </section>
