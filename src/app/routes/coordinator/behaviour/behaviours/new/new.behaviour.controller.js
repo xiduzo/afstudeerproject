@@ -24,7 +24,13 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.formInput = {
             behaviour: undefined,
-            points: 50
+            points: 50,
+            rupees: [
+                { type: 1, name: 'ruby', amount: 0, },
+                { type: 2, name: 'sapphire', amount: 0, },
+                { type: 3, name: 'emerald', amount: 0, },
+                { type: 4, name: 'amethyst', amount: 0, },
+            ]
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -19,6 +19,7 @@
         services.addBehaviour = addBehaviour;
         services.getBehavours = getBehavours;
         services.removeBehaviour = removeBehaviour;
+        services.addBehaviourRupeeReward = addBehaviourRupeeReward;
 
         return services;
 
@@ -61,6 +62,23 @@
             })
             .then(function(response) {
                 return response;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function addBehaviourRupeeReward(behaviour, rupee, amount) {
+            return $http({
+                url: REST_API_URL + 'behaviour/behaviourReward/',
+                method: "POST",
+                data: {
+                    behaviour: behaviour.url,
+                    rupee: rupee,
+                    amount: amount
+                }
+            })
+            .then(function(response) {
+                return response.data;
             }, function(error) {
                 return error;
             });

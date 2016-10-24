@@ -18,23 +18,22 @@
 
                 <section>
                     <h2 class="md-title">
-                        Points
+                        Reward
                     </h2>
-                    <span class="md-subhead">
-                        Points earned for this behaviour: {{ addBehaviourCtrl.formInput.points }}
+                    <span class="md-subhead text--color--grey">
+                        What will the student receive for this behaviour?
                     </span>
-                    <md-slider flex class="md-primary"
-                    step="1"
-                    min="0"
-                    max="30"
-                    ng-model="addBehaviourCtrl.formInput.points"
-                    aria-label="Importance">
-                    </md-slider>
-                    <div layout layout-align="space-between">
-                        <strong>0</strong>
-                        <strong>Average</strong>
-                        <strong>30</strong>
-                    </div>
+                    <section layout layout-align="space-around">
+                        <div layout="column" layout-align="center center" layout-margin
+                        ng-repeat="rupee in addBehaviourCtrl.formInput.rupees">
+                            <cmd-rupee type="{{rupee.name}}"></cmd-rupee>
+                            <md-input-container>
+                                <label>Amount</label>
+                                <input type="number" name="amount"
+                                ng-model="rupee.amount" min=0 max=50 />
+                            </md-input-container>
+                        </div>
+                    </section>
                 </section>
             </form>
         </div>

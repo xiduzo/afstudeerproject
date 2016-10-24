@@ -2,8 +2,15 @@ $rupee_width: 32px;
 $rupee_height: $rupee_width * 1.5;
 $gem_width: $rupee_width / 2;
 
-$rupee_color_array:        #4CAF50, #03A9F4, #9C27B0, #F44336, #3e3e3e, #FFEB3B;
-$rupee_color_array-names:  emerald, sapphire, amethyst, ruby , coal, citrine;
+$rupee_color_array:        #4CAF50, #2196F3, #9C27B0, #F44336;
+$rupee_color_array-names:  emerald, sapphire, amethyst, ruby;
+
+$rupee_colors: (
+    emerald: #4CAF50,
+    sapphire: #2196F3,
+    amethyst: #9C27B0,
+    ruby: #F44336
+);
 
 @mixin set-rupee-segment-color($color) {
     .gem {
@@ -33,110 +40,106 @@ $rupee_color_array-names:  emerald, sapphire, amethyst, ruby , coal, citrine;
     }
 }
 
-.rupee__container {
-    padding-bottom: 1em;
+
+.rupee {
+    margin: $gem_width / 2;
+    width: $rupee_width;
+    height: $rupee_height;
+    position: relative;
+    display: inline-block;
     text-align: center;
+    margin-bottom: 1em;
 
-    .rupee {
-        margin: $gem_width / 2;
-        width: $rupee_width;
-        height: $rupee_height;
+    .amount {
         position: relative;
-        display: inline-block;
-
-        .amount {
-            z-index: 10;
-            position: relative;
-            top: $rupee_width * 1.5;
-            font-size: .75em;
-        }
-
-        .gem {
-            width: $gem_width;
-            border-left: ($gem_width / 2) solid transparent;
-            border-right: ($gem_width / 2) solid transparent;
-            border-bottom: $gem_width solid transparent;
-            transform-origin: top left;
-            position: absolute;
-            left: 0;
-            top: 0;
-
-            &__segment {
-                // Positioning
-                &--1 {
-                    top: $rupee_height;
-                }
-                &--2,
-                &--7 {
-                    left: $rupee_width;
-                }
-                &--3 {
-                    top: $gem_width / 2;
-                    left: $gem_width / 2;
-                }
-                &--4 {
-                    top: $rupee_width * 1.25;
-                    left: $gem_width / 2;
-                }
-                &--5 {
-                    top: $gem_width / 2;
-                    left: $rupee_width * .75;
-                    z-index: 2;
-                }
-                &--6 {
-                    top: $rupee_width * 1.25;
-                    left: $rupee_width * .75;
-                    z-index: 3;
-                }
-
-                // Rotate 90 deg clockwise
-                &--2,
-                &--3,
-                &--5,
-                &--7 {
-                    transform: rotate(90deg);
-                }
-
-                // Rotate 90 deg counter clockwise
-                &--1,
-                &--4,
-                &--6 {
-                    transform: rotate(-90deg);
-                }
-
-                // Height
-                @for $i from 1 through 2 {
-                    &--#{$i} {
-                        width: $rupee_height;
-                    }
-                }
-
-                // Width
-                @for $i from 3 through 7 {
-                    &--#{$i} {
-                        width: $rupee_width;
-                    }
-                }
-
-                // Different borders
-                @for $i from 3 through 6 {
-                    &--#{$i} {
-                        border-bottom-width: $gem_width / 2;
-                        border-left-width: $gem_width / 4;
-                        border-right-width: $gem_width / 4;
-                    }
-                }
-
-            }
-        }
-
-        // Set the color on the different rupee types
-        @each $color_name in $rupee_color_array-names {
-            $i: index($rupee_color_array-names, $color_name);
-            &--#{$color_name} {
-                @include set-rupee-segment-color(nth($rupee_color_array, $i));
-            }
-        }
-
+        top: $rupee_width * 1.75;
     }
+
+    .gem {
+        width: $gem_width;
+        border-left: ($gem_width / 2) solid transparent;
+        border-right: ($gem_width / 2) solid transparent;
+        border-bottom: $gem_width solid transparent;
+        transform-origin: top left;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        &__segment {
+            // Positioning
+            &--1 {
+                top: $rupee_height;
+            }
+            &--2,
+            &--7 {
+                left: $rupee_width;
+            }
+            &--3 {
+                top: $gem_width / 2;
+                left: $gem_width / 2;
+            }
+            &--4 {
+                top: $rupee_width * 1.25;
+                left: $gem_width / 2;
+            }
+            &--5 {
+                top: $gem_width / 2;
+                left: $rupee_width * .75;
+                z-index: 2;
+            }
+            &--6 {
+                top: $rupee_width * 1.25;
+                left: $rupee_width * .75;
+                z-index: 3;
+            }
+
+            // Rotate 90 deg clockwise
+            &--2,
+            &--3,
+            &--5,
+            &--7 {
+                transform: rotate(90deg);
+            }
+
+            // Rotate 90 deg counter clockwise
+            &--1,
+            &--4,
+            &--6 {
+                transform: rotate(-90deg);
+            }
+
+            // Height
+            @for $i from 1 through 2 {
+                &--#{$i} {
+                    width: $rupee_height;
+                }
+            }
+
+            // Width
+            @for $i from 3 through 7 {
+                &--#{$i} {
+                    width: $rupee_width;
+                }
+            }
+
+            // Different borders
+            @for $i from 3 through 6 {
+                &--#{$i} {
+                    border-bottom-width: $gem_width / 2;
+                    border-left-width: $gem_width / 4;
+                    border-right-width: $gem_width / 4;
+                }
+            }
+
+        }
+    }
+
+    // Set the color on the different rupee types
+    @each $name, $color in $rupee_colors {
+        &--#{$name} {
+            @include set-rupee-segment-color($color);
+            color: $color;
+        }
+    }
+
 }

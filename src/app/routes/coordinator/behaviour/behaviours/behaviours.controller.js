@@ -42,6 +42,7 @@
         Behaviour.getBehavours()
         .then(function(response) {
             self.behaviours = response;
+            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
@@ -63,6 +64,8 @@
                     return Notifications.simpleToast('Please enter an behaviour');
                 }
 
+                var rupees = response.rupees;
+
                 if(response.importance >= 95) {
                     response.points = 13;
                 } else if (response.importance > 70) {
@@ -79,11 +82,27 @@
 
                 response.behaviour_type = 1;
 
-                console.log(response);
-
                 Behaviour.addBehaviour(response)
                 .then(function(response) {
-                    self.behaviours.push(response);
+                    var behaviour = response;
+                    behaviour.rewards = [];
+
+                    _.each(rupees, function(rupee) {
+                        rupee.rupee = rupee.type;
+                        Behaviour.addBehaviourRupeeReward(
+                            behaviour,
+                            rupee.type,
+                            rupee.amount
+                        )
+                        .then(function(response) {
+                            behaviour.rewards.push(response);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    });
+
+                    self.behaviours.push(behaviour);
                     Notifications.simpleToast('Added new behaviour: ' + response.behaviour);
                 })
                 .catch(function(error) {
@@ -99,7 +118,6 @@
         function removeBehaviour(behaviour) {
             Behaviour.removeBehaviour(behaviour.id)
             .then(function(response) {
-                console.log(response);
                 self.behaviours.splice(_.indexOf(self.behaviours, behaviour), 1);
                 Notifications.simpleToast('Removed behaviour: ' + behaviour.behaviour);
             })

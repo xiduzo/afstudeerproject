@@ -72,7 +72,7 @@
                     }
 
                     if(set_user) {
-                        $state.go('base.home');
+                        // $state.go('base.home');
                     }
 
                     $rootScope.$broadcast('user-changed');
