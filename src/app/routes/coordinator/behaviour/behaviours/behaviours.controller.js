@@ -42,7 +42,6 @@
         Behaviour.getBehavours()
         .then(function(response) {
             self.behaviours = response;
-            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
@@ -112,7 +111,6 @@
             .catch(function() {
                 // Closed
             });
-            // function prompt(title, context, label, event)
         }
 
         function removeBehaviour(behaviour) {
