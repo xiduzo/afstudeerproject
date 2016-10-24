@@ -11,17 +11,14 @@
                     <md-card layout-fill layout-align="space-between">
                         <md-card-content layout="column">
                             <section layout="column" layout-align="center center">
-                                <strong layout-padding>
-                                    The student:
-                                </strong>
-                                <em class="md-title" layout layout-align="center">
+                                <span class="md-title" layout layout-padding layout-align="center">
                                     {{ behaviour.behaviour }}
-                                </em>
+                                </span>
                             </section>
                             <md-divider layout-margin></md-divider>
                             <section layout="column">
                                 <section flex layout layout-align="space-around">
-                                    <div ng-repeat="reward in behaviour.rewards">
+                                    <div ng-repeat="reward in behaviour.rewards | orderBy: 'rupee'">
                                         <cmd-rupee type="ruby"
                                         ng-if="reward.rupee === 1"
                                         amount="{{reward.amount}}"
