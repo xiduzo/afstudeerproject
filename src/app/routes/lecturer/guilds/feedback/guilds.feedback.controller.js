@@ -59,9 +59,9 @@
             self.guild = response;
             _.each(response.members, function(member, index) {
                 self.members_data.push({
-                    id: member.id,
-                    email: member.email,
-                    name: $filter('fullUserName')(member),
+                    id: member.user.id,
+                    email: member.user.email,
+                    name: $filter('fullUserName')(member.user),
                     color: COLORS[index],
                     endorsements: [],
                     line_data: [],

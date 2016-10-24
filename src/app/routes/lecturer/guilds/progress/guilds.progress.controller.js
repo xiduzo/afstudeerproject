@@ -91,10 +91,11 @@
 
             // Prepare the graph data points
             _.each(guild.members, function(member, index) {
+                console.log(member);
                 var tempObj = {
-                    id: member.id,
+                    id: member.user.id,
                     color: COLORS[index],
-                    name: $filter('fullUserName')(member),
+                    name: $filter('fullUserName')(member.user),
                     points: 0, // Pie chart
                     completed__tasks: 0,
                     data: [], // Column graph

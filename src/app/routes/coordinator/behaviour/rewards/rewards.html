@@ -1,11 +1,61 @@
 <section layout-fill layout>
-    <section flex=80 layout-padding layout-margin>
-        rewards
-        <br/>
-        <strong>
-            IDEA: alleen de 'team leaders' kunnen group rewards kopen.
-            Team leaders zijn de mensen die het meest endorsed worden. (punten)
-        </strong>
+    <section flex=80 layout-fill ng-scrollbars>
+        <section layout layout-wrap>
+            <div flex=33 layout-padding
+            ng-repeat="reward in filtered = (rewardsCtrl.rewards
+            | filter: {
+                reward: filters.free_search
+            }
+            )">
+                <section layout-fill>
+                    <md-card layout-fill layout-align="space-between">
+                        <md-card-content layout="column">
+                            <section layout="column" layout-align="center center">
+                                <span class="md-title" layout layout-padding layout-align="center">
+                                    {{ reward.reward }}
+                                </span>
+                            </section>
+                            <md-divider layout-margin></md-divider>
+                            <section layout="column">
+                                <section flex layout layout-align="space-around">
+                                    <div ng-repeat="cost in reward.cost | orderBy: 'rupee'">
+                                        <cmd-rupee type="ruby"
+                                        ng-if="cost.rupee === 1"
+                                        amount="{{cost.amount}}"
+                                        ></cmd-rupee>
+                                        <cmd-rupee type="sapphire"
+                                        amount="{{cost.amount}}"
+                                        ng-if="cost.rupee === 2">
+                                        </cmd-rupee>
+                                        <cmd-rupee type="emerald"
+                                        amount="{{cost.amount}}"
+                                        ng-if="cost.rupee === 3">
+                                        </cmd-rupee>
+                                        <cmd-rupee type="amethyst"
+                                        amount="{{cost.amount}}"
+                                        ng-if="cost.rupee === 4">
+                                        </cmd-rupee>
+                                    </div>
+                                </section>
+                            </section>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="center center">
+                            <md-button>
+                                <strong>
+                                    Edit
+                                </strong>
+                            </md-button>
+                            <md-button class="md-warn"
+                             ng-click="rewardsCtrl.removeReward(reward)">
+                                <strong>
+                                    Remove
+                                </strong>
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
+                </section>
+            </div>
+        </section>
     </section>
     <md-content layout-fill flex=20>
         <md-subheader>
@@ -13,13 +63,22 @@
         </md-subheader>
         <section layout="column">
             <md-button layout flex class="success md-raised"
-            ng-click="rulesOverviewCtrl.addRule()">
+            ng-click="rewardsCtrl.addReward()">
                 <md-icon md-svg-src="redeem_light">
                 </md-icon>
                 <span flex>
                     New reward
                 </span>
             </md-button>
+        </section>
+        <md-subheader>
+            Filter options
+        </md-subheader>
+        <section layout-padding>
+            <md-input-container class="md-block">
+                <label>Reward</label>
+                <input ng-model="filters.free_search">
+            </md-input-container>
         </section>
     </md-content>
 </section>

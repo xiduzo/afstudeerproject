@@ -65,20 +65,6 @@
 
                 var rupees = response.rupees;
 
-                if(response.importance >= 95) {
-                    response.points = 13;
-                } else if (response.importance > 70) {
-                    response.points = 8;
-                } else if (response.importance > 40) {
-                    response.points = 5;
-                } else if (response.importance > 20) {
-                    response.points = 3;
-                } else if (response.importance > 10) {
-                    response.points = 2;
-                } else {
-                    response.points = 1;
-                }
-
                 response.behaviour_type = 1;
 
                 Behaviour.addBehaviour(response)

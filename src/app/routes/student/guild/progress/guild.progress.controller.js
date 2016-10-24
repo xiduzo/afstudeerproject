@@ -506,6 +506,9 @@
                 }
             });
 
+            members = _.map(members, function(member) {
+                return member.user;
+            });
 
             $mdDialog.show({
                 controller: 'AasController',

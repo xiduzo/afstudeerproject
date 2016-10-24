@@ -61,13 +61,15 @@
                 _.each(world.world.guilds, function(guild) {
                     _.each(guild.members, function(member) {
                         // Adding guild id for moving players around
-                        member.guildId = guild.id;
+                        member.user.guildId = guild.id;
                     });
                 });
                 self.worlds.push(world.world);
             });
 
-            Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
+            if(_.findWhere(self.worlds, {id: self.selected_world})) {
+                Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
+            }
 
             self.addHotkeys();
             self.loading_page = false;
@@ -87,19 +89,19 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function movePlayer(event, guild, user) {
+        function movePlayer(event, guild, player) {
             if(guild.id === user.guildId) {
                 return;
             }
-            if((_.where(guild.members, { id: user.id })).length >=2) {
+            if((_.where(guild.members, { id: player.user.id })).length >=2) {
                 // Remove duplicate members in world
-                Guild.removeUserFromGuild(user.id, user.guilId);
-                guild.members.splice(guild.members.indexOf(user), 1);
+                Guild.removeUserFromGuild(player.user.id, player.user.guilId);
+                guild.members.splice(guild.members.indexOf(player), 1);
             } else {
-                Guild.patchPlayersGuild(user.id, user.guildId, guild)
+                Guild.patchPlayersGuild(player.user.id, player.user.guildId, guild)
                 .then(function(response) {
-                    user.guildId = guild.id;
-                    Notifications.simpleToast(user.first_name + ' moved to ' + guild.name);
+                    player.user.guildId = guild.id;
+                    Notifications.simpleToast(player.user.first_name + ' moved to ' + guild.name);
                 }, function() {
                     // Err
                 });
@@ -130,7 +132,6 @@
 
                     Guild.addGuild(result, world.url)
                         .then(function(response) {
-                            console.log(response);
                             response.members = [];
                             world.guilds.unshift(response);
                             Notifications.simpleToast('Group ' + response.name + ' created');
@@ -177,7 +178,7 @@
                             Guild.addUserToGuild(user.url, guild.url)
                                 .then(function(response) {
                                     user.guildId = guild.id;
-                                    guild.members.push(user);
+                                    guild.members.push({user: user});
                                 }, function() {
                                     // Err
                                 });
@@ -194,11 +195,11 @@
                 });
         }
 
-        function removeGuildMember(user, guild) {
-            Guild.removeUserFromGuild(user.id, guild.id)
+        function removeGuildMember(player, guild) {
+            Guild.removeUserFromGuild(player.user.id, guild.id)
             .then(function(response) {
-                Notifications.simpleToast(user.first_name + ' got removed from ' + guild.name);
-                guild.members.splice(guild.members.indexOf(user), 1);
+                Notifications.simpleToast(player.user.first_name + ' got removed from ' + guild.name);
+                guild.members.splice(guild.members.indexOf(player), 1);
             }, function() {
                 // Err
             });

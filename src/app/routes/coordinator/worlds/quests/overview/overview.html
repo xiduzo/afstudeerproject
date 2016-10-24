@@ -1,0 +1,108 @@
+<section flex layout="column" layout-fill>
+    <md-button class="md-fab icon__fab" ng-click="worldsOverviewCtrl.newWorldDialog($event)">
+        <md-icon md-svg-icon="world_light"></md-icon>
+        <md-tooltip md-direction="left">
+            Create new class
+        </md-tooltip>
+    </md-button>
+
+    <section flex layout>
+        <section ng-if="worldsOverviewCtrl.worlds.length < 1" layout-fill layout="column" layout-align="center center">
+            <cmd-loading-page ng-if="worldsOverviewCtrl.loading_page"></cmd-loading-page>
+            <section ng-if="!worldsOverviewCtrl.loading_page" layout="column" layout-align="center center">
+                <span>
+                    <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="world_dark">
+                    </md-icon>
+                    <md-tooltip md-direction="top">
+                        Nope, the one in the corner
+                    </md-tooltip>
+                </span>
+                <span class="md-headline">
+                    No classes have been found.
+                </span>
+                <span class="md-title text--color--blueGrey">
+                    Add a new class by clicking on the world.
+                </span>
+            </section>
+        </section>
+        <!-- <h3 layout-margin ng-if="worldsOverviewCtrl.worlds.length < 1" class="md-title">
+            No classes have been found, add a new world by clicking on the 'Create new class' button.
+        </h3> -->
+
+        <div ng-scrollbars flex>
+            <div layout="row" layout-wrap layout-padding>
+                <div flex=33
+                    ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'created_at'">
+                    <md-card>
+                        <md-toolbar layout-align="end center" layout>
+                            <md-card-title class="md-toolbar-tools">
+                                <md-card-title-text>
+                                    <span class="md-headline">
+                                        {{world.name}}
+                                    </span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-menu>
+                                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                                    <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
+                                </md-button>
+                                <md-menu-content width="4" >
+                                    <md-menu-item aria-label="Change world settings" ui-sref="base.worlds.settings({worldUuid: world.id})">
+                                        <md-button>
+                                            <div layout="row">
+                                                <md-icon
+                                                    md-menu-align-target
+                                                    md-svg-icon="settings_dark">
+                                                </md-icon>
+                                                <p flex> Settings </p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-click="worldsOverviewCtrl.addGamemaster($event, world)">
+                                        <md-button>
+                                            <div layout="row">
+                                                <md-icon
+                                                    md-menu-align-target
+                                                    md-svg-icon="add_dark">
+                                                </md-icon>
+                                                <p flex> Add lecturer </p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-toolbar>
+
+                        <md-card-content>
+                            <section ng-if="world.gamemasters.length < 1">
+                                <span class="text--color--grey" layout layout-align="center">
+                                    No lecturers in this class yet.
+                                </span>
+                            </section>
+                            <md-list ng-if="world.gamemasters.length >= 1"
+                                dnd-list="world.gamemasters"
+                                dnd-inserted="worldsOverviewCtrl.moveGamemaster(event, world, item)">
+                                <md-list-item ng-repeat="gamemaster in world.gamemasters"
+                                    dnd-draggable="gamemaster"
+                                    dnd-moved="world.gamemasters.splice($index, 1)"
+                                    dnd-effect-allowed="move">
+                                    <img class="round" gravatar-size="45" gravatar-src="gamemaster.email" layout-padding>
+                                    <span flex>
+                                        {{ gamemaster | fullUserName }}
+                                    </span>
+                                    <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
+                                        <md-tooltip md-direction="bottom">
+                                            Remove lecturer from {{ world.name }}
+                                        </md-tooltip>
+                                    </md-icon>
+                                </md-list-item>
+                            </md-list>
+                        </md-card-content>
+
+                    </md-card>
+
+                </div> <!-- End of worlds -->
+            </div>
+        </div>
+    </section>
+</section>

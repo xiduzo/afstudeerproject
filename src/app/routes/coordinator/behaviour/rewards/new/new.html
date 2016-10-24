@@ -1,0 +1,58 @@
+<md-dialog md-theme="default" aria-label="New behaviour" flex="40">
+    <md-toolbar>
+        <span class="md-toolbar-tools" layout layout-align="center center">
+            New reward
+        </span>
+    </md-toolbar>
+    <md-dialog-content class="md-dialog-content" layout-padding>
+        <div class="md-dialog-content-body">
+            <form layout="column">
+                <section layout>
+                    <md-input-container flex>
+                        <label>Reward</label>
+                        <input md-autofocus
+                        aria-label="reward"
+                        ng-model="addRewardCtrl.formInput.reward" />
+                    </md-input-container>
+                </section>
+
+                <section>
+                    <h2 class="md-title">
+                        Cost
+                    </h2>
+                    <span class="md-subhead text--color--grey">
+                        What does the student has to pay to optain this reward?
+                    </span>
+                    <section layout layout-align="space-around">
+                        <div layout="column" layout-align="center center" layout-margin
+                        ng-repeat="rupee in addRewardCtrl.formInput.rupees">
+                            <cmd-rupee type="{{rupee.name}}"></cmd-rupee>
+                            <md-input-container>
+                                <label>Amount</label>
+                                <input type="number" name="amount"
+                                ng-model="rupee.amount" min=0 max=50 />
+                            </md-input-container>
+                        </div>
+                    </section>
+                </section>
+            </form>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button class="md-primary md-button" type="button" aria-label="Cancel"
+            ng-click="addRewardCtrl.close()" md-ink-ripple>
+            <strong class="text--color--red">
+                Cancel
+            </strong>
+        </button>
+        <button class="md-primary md-button" type="button" aria-label="{{ addRewardCtrl.about }}"
+            ng-click="addRewardCtrl.addReward()" md-ink-ripple>
+            <strong class="text--color--green">
+                Add {{ addRewardCtrl.about }}
+            </strong>
+        </button>
+    </md-dialog-actions>
+
+</md-dialog>

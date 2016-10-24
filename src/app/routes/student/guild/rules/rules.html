@@ -185,10 +185,10 @@
                                 <span flex=70 layout layout-align="end">
                                     <div layout="column" layout-align="center center"
                                     flex=25
-                                    ng-repeat="user in guild.members"
-                                    ng-if="user.id !== guildRulesCtrl.user.id">
-                                        <img class="round" gravatar-size=45 gravatar-src-once="user.email">
-                                        {{ user | fullUserName}}
+                                    ng-repeat="member in guild.members"
+                                    ng-if="member.user.id !== guildRulesCtrl.user.id">
+                                        <img class="round" gravatar-size=45 gravatar-src-once="member.user.email">
+                                        {{ member.user | fullUserName}}
                                     </div>
                                 </span>
                             </span>
@@ -203,15 +203,15 @@
                                     <span flex=70 layout layout-align="end">
                                         <div layout="column" layout-align="center center"
                                         flex=25
-                                        ng-repeat="user in guild.members"
-                                        ng-if="user.id !== guildRulesCtrl.user.id">
+                                        ng-repeat="member in guild.members"
+                                        ng-if="member.user.id !== guildRulesCtrl.user.id">
                                             <md-checkbox
                                             style="margin-bottom: 0;"
-                                            ng-if="user.id !== guildRulesCtrl.user.id"
+                                            ng-if="member.user.id !== guildRulesCtrl.user.id"
                                             ng-model="$index"
                                             ng-disabled="guild.editable_week !== week.week"
-                                            ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, user)"
-                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, user, $index)"
+                                            ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)"
+                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, member.user, $index)"
                                             aria-label="checkbox">
                                              </md-checkbox>
                                         </div>
