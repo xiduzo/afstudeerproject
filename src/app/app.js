@@ -57,6 +57,7 @@
             // Lecturer
             'cmd.guilds',
             'cmd.assessments',
+            'cmd.stimulance',
 
             // Coordinator
             'cmd.worlds',

@@ -17,9 +17,11 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         services.addBehaviour = addBehaviour;
-        services.getBehavours = getBehavours;
+        services.getBehaviours = getBehaviours;
         services.removeBehaviour = removeBehaviour;
         services.addBehaviourRupeeReward = addBehaviourRupeeReward;
+        services.addRupee = addRupee;
+        services.patchRupeeAmount = patchRupeeAmount;
 
         return services;
 
@@ -43,7 +45,7 @@
             });
         }
 
-        function getBehavours() {
+        function getBehaviours() {
             return $http({
                 url: REST_API_URL + 'behaviour/behaviour/',
                 method: "GET"
@@ -75,6 +77,38 @@
                     behaviour: behaviour.url,
                     rupee: rupee,
                     amount: amount
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function addRupee(user_in_guild, rupee) {
+            return $http({
+                url: REST_API_URL + 'guild/userGuildRupees/',
+                method: "POST",
+                data: {
+                    user_in_guild: user_in_guild,
+                    rupee: rupee.rupee,
+                    amount: rupee.amount
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            }, function(error) {
+                return error;
+            });
+        }
+
+        function patchRupeeAmount(rupee) {
+            return $http({
+                url: REST_API_URL + 'guild/userGuildRupees/' + rupee.id+ '/',
+                method: "PATCH",
+                data: {
+                    amount: rupee.amount
                 }
             })
             .then(function(response) {

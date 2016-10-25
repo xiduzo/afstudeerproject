@@ -108,6 +108,13 @@
                         link_to: 'base.assessments.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
+                    {
+                        name: 'Stimulance',
+                        icon: 'loyalty_dark',
+                        link_to: 'base.stimulance.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
+                    },
+
                 ],
             },
             {

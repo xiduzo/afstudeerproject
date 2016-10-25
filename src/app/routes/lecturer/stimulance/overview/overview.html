@@ -1,0 +1,67 @@
+<section layout-fill>
+    <section ng-repeat="world in stimulanceOverviewCtrl.worlds"
+    ng-if="stimulanceOverviewCtrl.selected_world === world.world.id" layout layout-fill>
+        <section flex=80 layout-fill ng-scrollbars>
+            <section layout layout-wrap>
+                <div flex=25 layout-padding
+                ng-repeat="player in filtered = (world.players
+                | filter: {
+                    full_name: filters.free_search
+                }
+                )">
+                    <section layout-fill>
+                        <md-card layout-fill layout-align="space-between">
+                            <md-card-content layout="column">
+                                <section layout="column" layout-align="center center">
+                                    <img class="round" gravatar-size="75" gravatar-src="player.user.email" layout-padding>
+                                    <span class="md-title" layout layout-padding layout-align="center">
+                                        {{ player.user | fullUserName }}
+                                    </span>
+                                </section>
+                                <md-divider layout-margin></md-divider>
+                                <section layout layout-align="space-around">
+                                    <div ng-repeat="rupee in player.rupees | orderBy: 'rupee'">
+                                        <cmd-rupee type="ruby" amount="{{rupee.amount || 0 }}"
+                                        ng-if="rupee.rupee === 1"
+                                        ></cmd-rupee>
+                                        <cmd-rupee type="sapphire" amount="{{rupee.amount}}"
+                                        ng-if="rupee.rupee === 2"
+                                        ></cmd-rupee>
+                                        <cmd-rupee type="emerald" amount="{{rupee.amount}}"
+                                        ng-if="rupee.rupee === 3"
+                                        ></cmd-rupee>
+                                        <cmd-rupee type="amethyst" amount="{{rupee.amount}}"
+                                        ng-if="rupee.rupee === 4"
+                                        ></cmd-rupee>
+                                    </div>
+                                    <div layout-padding ng-if="player.rupees.length < 1" class="text--color--grey">
+                                        No rupees yet
+                                    </div>
+                                </section>
+                            </md-card-content>
+                            <md-card-actions layout="row" layout-align="center center">
+                                <md-button class="text--color--green"
+                                ng-click="stimulanceOverviewCtrl.rewardPlayer(player)">
+                                    <strong>
+                                        Reward
+                                    </strong>
+                                </md-button>
+                            </md-card-actions>
+                        </md-card>
+                    </section>
+                </div>
+            </section>
+        </section>
+        <md-content flex=20 layout-fill>
+            <md-subheader>
+                Filter options
+            </md-subheader>
+            <section layout-padding>
+                <md-input-container class="md-block">
+                    <label>Student</label>
+                    <input ng-model="filters.free_search">
+                </md-input-container>
+            </section>
+        </md-content>
+    </section>
+</section>

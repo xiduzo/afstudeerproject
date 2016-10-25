@@ -39,7 +39,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Behaviour.getBehavours()
+        Behaviour.getBehaviours()
         .then(function(response) {
             self.behaviours = response;
         })
