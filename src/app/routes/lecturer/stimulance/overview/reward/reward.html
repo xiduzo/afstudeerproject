@@ -12,7 +12,7 @@
                         Behaviours
                     </h2>
                     <span class="md-subhead text--color--grey">
-                        Select one or more behaviours which {{ rewardPlayersCtrl.player.user.first_name }} completed
+                        Reward {{ rewardPlayersCtrl.player.user | fullUserName }} on one or more behaviours.
                     </span>
                     <section layout layout-wrap>
                         <div layout-padding flex=33 ng-repeat="behaviour in rewardPlayersCtrl.behaviours"
