@@ -1,5 +1,13 @@
-<section layout flex>
-    <section flex=80 layout-fill ng-scrollbars>
+<cmd-loading-page ng-if="rulesOverviewCtrl.loading_page"></cmd-loading-page>
+<section layout flex ng-if="!rulesOverviewCtrl.loading_page">
+    <cmd-empty-state flex ng-if="rulesOverviewCtrl.rules.length < 1"
+        icon="rules_dark"
+        headline="Dobby has no master."
+        title="Dobby is a free elf."
+        subtitle="Or just add some rules on your right">
+    </cmd-empty-state>
+    <section flex=80 layout-fill ng-scrollbars
+     ng-if="rulesOverviewCtrl.rules.length >= 1">
         <section layout layout-wrap>
             <div flex=25 layout-padding
             ng-repeat="rule in filtered = (rulesOverviewCtrl.rules

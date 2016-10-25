@@ -1,5 +1,12 @@
-<section layout-fill layout>
-    <section flex=80 layout-fill ng-scrollbars>
+<cmd-loading-page ng-if="rewardsCtrl.loading_page"></cmd-loading-page>
+<section layout-fill layout ng-if="!rewardsCtrl.loading_page">
+    <cmd-empty-state flex ng-if="rewardsCtrl.rewards.length < 1"
+        icon="redeem_light"
+        headline="No rewards."
+        title="Add some to reward the students.">
+    </cmd-empty-state>
+    <section flex=80 layout-fill ng-scrollbars
+     ng-if="rewardsCtrl.rewards.length >= 1">
         <section layout layout-wrap>
             <div flex=33 layout-padding
             ng-repeat="reward in filtered = (rewardsCtrl.rewards

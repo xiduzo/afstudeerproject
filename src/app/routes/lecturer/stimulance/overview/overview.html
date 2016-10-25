@@ -1,9 +1,16 @@
-<section layout-fill>
+<cmd-loading-page ng-if="stimulanceOverviewCtrl.loading_page"></cmd-loading-page>
+<section layout-fill ng-if="!stimulanceOverviewCtrl.loading_page">
     <section ng-repeat="world in stimulanceOverviewCtrl.worlds"
     ng-if="stimulanceOverviewCtrl.selected_world === world.world.id" layout layout-fill>
-        <section flex=80 layout-fill ng-scrollbars>
+        <cmd-empty-state flex ng-if="world.players.length < 1"
+            icon="group_dark"
+            headline="No students in this class."
+            title="Wait for a coördinator to add some students to this class.">
+        </cmd-empty-state>
+        <section flex=80 layout-fill ng-scrollbars
+         ng-if="world.players.length >= 1">
             <section layout layout-wrap>
-                <div flex=25 layout-padding
+                <div flex=33 layout-padding
                 ng-repeat="player in filtered = (world.players
                 | filter: {
                     full_name: filters.free_search

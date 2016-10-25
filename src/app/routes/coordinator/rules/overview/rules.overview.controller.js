@@ -30,6 +30,7 @@
         self.addRule = addRule;
         self.deleteRule = deleteRule;
         self.typeFilter = typeFilter;
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -50,7 +51,7 @@
         Rules.getRules()
         .then(function(rules) {
             self.rules = rules;
-            console.log(self.rules);
+            self.loading_page = false;
         })
         .catch(function(error) {
             console.log(error);

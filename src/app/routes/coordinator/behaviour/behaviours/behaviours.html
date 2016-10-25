@@ -1,5 +1,12 @@
-<section layout-fill layout>
-    <section flex=80 layout-fill ng-scrollbars>
+<cmd-loading-page ng-if="behavioursCtrl.loading_page"></cmd-loading-page>
+<section layout-fill layout ng-if="!behavioursCtrl.loading_page">
+    <cmd-empty-state flex ng-if="behavioursCtrl.behaviours.length < 1"
+        icon="loyalty_dark"
+        headline="No behaviours."
+        title="Add some stimuli for the students.">
+    </cmd-empty-state>
+    <section flex=80 layout-fill ng-scrollbars
+     ng-if="behavioursCtrl.behaviours.length >= 1">
         <section layout layout-wrap>
             <div flex=33 layout-padding
             ng-repeat="behaviour in filtered = (behavioursCtrl.behaviours

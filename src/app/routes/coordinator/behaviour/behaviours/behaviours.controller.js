@@ -28,6 +28,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.addBehaviour = addBehaviour;
         self.removeBehaviour = removeBehaviour;
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -42,6 +43,7 @@
         Behaviour.getBehaviours()
         .then(function(response) {
             self.behaviours = response;
+            self.loading_page = false;
         })
         .catch(function(error) {
             console.log(error);

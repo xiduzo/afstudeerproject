@@ -28,6 +28,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.addReward = addReward;
         self.removeReward = removeReward;
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -42,7 +43,7 @@
         Reward.getRewards()
         .then(function(response) {
             self.rewards = response;
-            // console.log(response);
+            self.loading_page = false;
         })
         .catch(function(error) {
             console.log(error);

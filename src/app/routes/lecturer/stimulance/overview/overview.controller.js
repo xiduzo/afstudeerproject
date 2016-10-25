@@ -38,6 +38,7 @@
         self.access = Global.getAccess();
         self.selected_world = Global.getSelectedWorld();
         self.worlds = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -59,6 +60,8 @@
             if(_.findWhere(self.worlds, {id: self.selected_world})) {
                 Global.setRouteTitle('Stimulance', _.findWhere(self.worlds, {id: self.selected_world}).world.name);
             }
+
+            self.loading_page = false;
         })
         .catch(function(error) {
             console.log(error);
