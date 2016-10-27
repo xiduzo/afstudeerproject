@@ -15,6 +15,9 @@
                 | filter: {
                     full_name: filters.free_search
                 }
+                | filter: {
+                    guild_id: filters.guild
+                }
                 )">
                     <section layout-fill>
                         <md-card layout-fill layout-align="space-between">
@@ -24,6 +27,9 @@
                                     <span class="md-title" layout layout-padding layout-align="center">
                                         {{ player.user | fullUserName }}
                                     </span>
+                                    <em class="md-subhead" layout layout-align="center">
+                                        {{ player.guild_name }}
+                                    </em>
                                 </section>
                                 <md-divider layout-margin></md-divider>
                                 <section layout layout-align="space-around">
@@ -63,6 +69,18 @@
             <md-subheader>
                 Filter options
             </md-subheader>
+            <section layout-padding>
+                {{ filters.guild }}
+                <md-input-container class="md-block">
+                    <label>Guild</label>
+                    <md-select ng-model="filters.guild">
+                        <md-option ng-value="undefined"> All </md-option>
+                        <md-option ng-value="guild.id" ng-repeat="guild in world.world.guilds">
+                            {{ guild.name }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </section>
             <section layout-padding>
                 <md-input-container class="md-block">
                     <label>Student</label>

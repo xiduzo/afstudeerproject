@@ -29,21 +29,32 @@
         }, function(){
             alert('no');
         });
+
         TrelloApi.Rest('GET', 'members/me').then(function(res){
-            // console.log(res.idBoards);
+            var board = {
+                name: null,
+                id: res.idBoards[0],
+                cards: []
+            };
+            TrelloApi.Rest('GET', 'boards/'+res.idBoards[0]).then(function(res) {
+                board.name = res.name;
+            });
 
             TrelloApi.Rest('GET', 'boards/'+res.idBoards[0]+'/cards').then(function(res) {
-                console.log(res);
-                // TrelloApi.cards(res.id).then(function(res) {
-                //     console.log(res);
-                // }, function(err) {
-                //     console.log(err);
-                // });
                 res = _.groupBy(res, function(card) {
                     return card.idList;
                 });
 
                 console.log(res);
+
+                _.each(res, function(group) {
+                    _.each(group, function(card) {
+                        board.cards.push({card: card, done: false});
+                    });
+                });
+
+                console.log(board);
+
             }, function(err) {
                 console.log(err);
             });

@@ -37,7 +37,6 @@
                                 ng-repeat="activity in filtered = (guild.history_updates
                                 | filter : {
                                     action_type: (filters.action_type | parseInt ),
-
                                 } : true
                                 | filter: {
                                     user_id: filters.user

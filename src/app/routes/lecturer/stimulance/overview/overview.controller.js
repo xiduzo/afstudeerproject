@@ -51,6 +51,8 @@
                 _.each(world.world.guilds, function(guild) {
                     _.each(guild.members, function(member) {
                         member.full_name = $filter('fullUserName')(member.user);
+                        member.guild_name = guild.name;
+                        member.guild_id = guild.id;
                         world.players.push(member);
                     });
                 });
