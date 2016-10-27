@@ -17,7 +17,10 @@
         ngOnboardingDefaultsProvider,
         ScrollBarsProvider,
         cfpLoadingBarProvider,
-        DEBUG_ENABLED
+        TrelloApiProvider,
+        DEBUG_ENABLED,
+        TRELLO_KEY,
+        TRELLO_SECRET
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provier
@@ -176,6 +179,10 @@
             .icon('loyalty_dark', './assets/icons/material/ic_loyalty_black_48px.svg', 48)
             .icon('redeem_light', './assets/icons/material/ic_redeem_white_48px.svg', 48)
             .icon('redeem_dark', './assets/icons/material/ic_redeem_black_48px.svg', 48)
+            .icon('star_light', './assets/icons/material/ic_star_white_48px.svg', 48)
+            .icon('star_dark', './assets/icons/material/ic_star_black_48px.svg', 48)
+            .icon('star_border_light', './assets/icons/material/ic_star_border_white_48px.svg', 48)
+            .icon('star_border_dark', './assets/icons/material/ic_star_border_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)
@@ -229,7 +236,17 @@
         // How many miliseconds before showing the loading bar
         cfpLoadingBarProvider.latencyThreshold = 100;
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Trello
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        TrelloApiProvider.init({
+            key: TRELLO_KEY,
+            secret: TRELLO_SECRET,
+            expiration: "never",
+            scope: {read: true, write: false, account: true},
+            name: 'CMD TRELLO'
+        });
+
 
     }
-
 }());

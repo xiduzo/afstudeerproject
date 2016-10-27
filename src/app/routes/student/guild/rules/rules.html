@@ -67,7 +67,7 @@
                                 <md-checkbox ng-disabled="true" ng-model="guild.requirements.attitude.check">
                                     <strong ng-class="{
                                         'text--color--red': !guild.requirements.attitude.check,
-                                        'text--color--green': guild.requirements.attitude.check,
+                                        'text--color--lightGreen': guild.requirements.attitude.check,
                                     }">
                                         Houding ({{guild.requirements.attitude.selected}})
                                     </strong>
@@ -77,7 +77,7 @@
                                 <md-checkbox ng-disabled="true" ng-model="guild.requirements.functioning.check">
                                     <strong ng-class="{
                                         'text--color--red': !guild.requirements.functioning.check,
-                                        'text--color--green': guild.requirements.functioning.check,
+                                        'text--color--lightGreen': guild.requirements.functioning.check,
                                     }">
                                         Functioneren binnen het team ({{guild.requirements.functioning.selected}})
                                     </strong>
@@ -87,7 +87,7 @@
                                 <md-checkbox ng-disabled="true" ng-model="guild.requirements.knowledge.check">
                                     <strong ng-class="{
                                         'text--color--red': !guild.requirements.knowledge.check,
-                                        'text--color--green': guild.requirements.knowledge.check,
+                                        'text--color--lightGreen': guild.requirements.knowledge.check,
                                     }">
                                         Kennisontwikkeling ({{guild.requirements.knowledge.selected}})
                                     </strong>
@@ -97,7 +97,7 @@
                                 <md-checkbox ng-disabled="true" ng-model="guild.requirements.justification.check">
                                     <strong ng-class="{
                                         'text--color--red': !guild.requirements.justification.check,
-                                        'text--color--green': guild.requirements.justification.check,
+                                        'text--color--lightGreen': guild.requirements.justification.check,
                                     }">
                                         Verantwoording ({{guild.requirements.justification.selected}})
                                     </strong>
@@ -105,7 +105,7 @@
                             </span>
                             <span ng-if="guild.selected_rules.length >= 8">
                                 <md-checkbox ng-disabled="true" ng-model="self.fakektrue" ng-init="self.fakektrue = true">
-                                    <strong class="text--color--green">
+                                    <strong class="text--color--lightGreen">
                                         {{ guild.selected_rules.length }} gekozen afspraken
                                     </strong>
                                 </md-checkbox>
@@ -201,19 +201,83 @@
                                         {{ rule.rule }}
                                     </span>
                                     <span flex=70 layout layout-align="end">
-                                        <div layout="column" layout-align="center center"
+                                        <!-- <div layout="column" layout-align="center center"
                                         flex=25
                                         ng-repeat="member in guild.members"
                                         ng-if="member.user.id !== guildRulesCtrl.user.id">
                                             <md-checkbox
                                             style="margin-bottom: 0;"
                                             ng-if="member.user.id !== guildRulesCtrl.user.id"
-                                            ng-model="$index"
+                                            ng-model="rating"
                                             ng-disabled="guild.editable_week !== week.week"
-                                            ng-init="$index = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)"
-                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, member.user, $index)"
+                                            ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)"
+                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, member.user, rating)"
                                             aria-label="checkbox">
                                              </md-checkbox>
+                                        </div> -->
+                                        <div layout layout-align="center" flex=25
+                                        ng-repeat="member in guild.members"
+                                        ng-if="member.user.id !== guildRulesCtrl.user.id && guild.editable_week === week.week"
+                                        ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)">
+                                            <div ng-click="rating = (rating >= 1 ? 0 : 1)">
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--lightGreen"
+                                                ng-if="rating >= 1"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 0)">
+                                                </md-icon>
+                                                <md-icon md-svg-src="star_border_dark"
+                                                class="icon--color--red"
+                                                ng-if="rating < 1"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 1)">
+                                                </md-icon>
+                                            </div>
+                                            <div ng-click="rating = 2">
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--lightGreen"
+                                                ng-if="rating >= 2"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 2)">
+                                                </md-icon>
+                                                <md-icon md-svg-src="star_border_dark"
+                                                class="icon--color--red"
+                                                ng-if="rating < 2"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 2)">
+                                                </md-icon>
+                                            </div>
+                                            <div ng-click="rating = 3">
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--lightGreen"
+                                                ng-if="rating >= 3"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 3)">
+                                                </md-icon>
+                                                <md-icon md-svg-src="star_border_dark"
+                                                class="icon--color--red"
+                                                ng-if="rating < 3"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 3)">
+                                                </md-icon>
+                                            </div>
+                                        </div>
+                                        <div layout layout-align="center" flex=25
+                                        ng-repeat="member in guild.members"
+                                        ng-if="member.user.id !== guildRulesCtrl.user.id && guild.editable_week !== week.week"
+                                        ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)">
+                                            <div>
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--grey"
+                                                ng-if="rating >= 1">
+                                                </md-icon>
+                                            </div>
+                                            <div>
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--grey"
+                                                ng-if="rating >= 2">
+                                                </md-icon>
+                                            </div>
+                                            <div>
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--grey"
+                                                ng-if="rating >= 3">
+                                                </md-icon>
+                                            </div>
                                         </div>
                                     </span>
                                     <md-divider></md-divider>

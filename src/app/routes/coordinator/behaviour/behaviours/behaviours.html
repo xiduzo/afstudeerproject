@@ -17,12 +17,15 @@
                 <section layout-fill>
                     <md-card layout-fill layout-align="space-between">
                         <md-card-content layout="column">
-                            <section layout="column" layout-align="center center">
-                                <span class="md-title" layout layout-padding layout-align="center">
+                            <section layout="column" layout-align="center center" layout-padding>
+                                <span class="md-title" layout layout-align="center">
                                     {{ behaviour.behaviour }}
                                 </span>
                             </section>
-                            <md-divider layout-margin></md-divider>
+                            <strong style="text-align: center;">
+                                Reward
+                            </strong>
+                            <md-divider></md-divider>
                             <section layout="column">
                                 <section flex layout layout-align="space-around">
                                     <div ng-repeat="reward in behaviour.rewards | orderBy: 'rupee'">
@@ -83,7 +86,7 @@
         </md-subheader>
         <section layout-padding>
             <md-input-container class="md-block">
-                <label>Rule</label>
+                <label>Behaviour</label>
                 <input ng-model="filters.free_search">
             </md-input-container>
         </section>

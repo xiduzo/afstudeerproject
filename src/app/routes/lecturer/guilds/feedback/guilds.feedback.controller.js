@@ -141,7 +141,8 @@
                                     amount: 1
                                 });
                             }
-                            points += type_group.rule.points;
+
+                            points += type_group.rule.points * (type_group.rating * 1/3);
 
                             // Also make sure the endorsement types are safed
                             // per type on the user for the polar chart

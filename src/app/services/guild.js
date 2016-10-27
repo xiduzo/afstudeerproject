@@ -39,6 +39,8 @@
         service.addGuildRule = addGuildRule;
         service.addEndorsement = addEndorsement;
         service.removeEndorsement = removeEndorsement;
+        service.patchEndorsement = patchEndorsement;
+        service.patchGuildSettings = patchGuildSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -297,7 +299,7 @@
             }, function(error) { return error; });
         }
 
-        function addEndorsement(rule, user, endorsed_by, week) {
+        function addEndorsement(rule, user, endorsed_by, week, rating) {
             return $http({
                 url: REST_API_URL + 'guild/newGuildRulesEndorsments/',
                 method: "POST",
@@ -305,7 +307,8 @@
                     rule: rule,
                     user: user,
                     endorsed_by: endorsed_by,
-                    week: week
+                    week: week,
+                    rating: rating,
                 }
             })
             .then(function(response) { return response.data;
@@ -321,6 +324,30 @@
             }, function(error) { return error; });
         }
 
-    }
+        function patchEndorsement(endorsement, rating) {
+            return $http({
+                url: REST_API_URL + 'guild/guildRulesEndorsments/'+endorsement+'/',
+                method: "PATCH",
+                data: {
+                    rating: rating,
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
 
+        function patchGuildSettings(guild) {
+            return $http({
+                url: REST_API_URL + 'guild/guilds/' + guild.id + '/',
+                method: "PATCH",
+                data: {
+                    trello_board: guild.trello_board,
+                    trello_done_list: guild.trello_done_list
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+    }
 }());

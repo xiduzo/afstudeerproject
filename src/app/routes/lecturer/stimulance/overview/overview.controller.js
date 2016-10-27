@@ -119,7 +119,9 @@
                     }
                 });
 
-                Notifications.simpleToast('Added rupees to ' + player.full_name);
+                if(selected_behaviours.length >= 1) {
+                    Notifications.simpleToast('Added rupees to ' + player.full_name);
+                }
             })
             .catch(function() {
                 // Closed

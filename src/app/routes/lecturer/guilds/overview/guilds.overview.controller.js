@@ -90,7 +90,7 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function movePlayer(event, guild, player) {
-            if(guild.id === user.guildId) {
+            if(guild.id === player.user.guildId) {
                 return;
             }
             if((_.where(guild.members, { id: player.user.id })).length >=2) {

@@ -22,7 +22,10 @@
                                     {{ reward.reward }}
                                 </span>
                             </section>
-                            <md-divider layout-margin></md-divider>
+                            <strong style="text-align: center;">
+                                Cost
+                            </strong>
+                            <md-divider></md-divider>
                             <section layout="column">
                                 <section flex layout layout-align="space-around">
                                     <div ng-repeat="cost in reward.cost | orderBy: 'rupee'">

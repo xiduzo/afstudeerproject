@@ -1,27 +1,69 @@
-<section layout-padding flex>
+<section layout flex>
 
-    <section layout="row">
-        <h2 class="md-headline" flex>
-            Group settings of: {{ guildSettingsCtrl.guild.name }}
+    <section flex=80>
 
-            <md-button class="md-icon-button"
-            ng-click="guildSettingsCtrl.changeGuildName($event)">
-                <md-icon
-                    md-menu-align-target
-                    md-svg-icon="pencil_dark">
-                </md-icon>
-                <md-tooltip>
-                    Change group name
-                </md-tooltip>
-            </md-button>
-
-        </h2>
-        <md-button class="md-raised md-warn md-fab" ng-click="guildSettingsCtrl.deleteGuild($event)">
-            <md-icon md-svg-icon="delete_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Delete group
-            </md-tooltip>
-        </md-button>
     </section>
+    <md-content flex=20 layout-fill>
+        <md-subheader>
+            Actions
+        </md-subheader>
+        <section layout="column">
+            <md-button layout class="success md-raised"
+             ng-click="guildSettingsCtrl.changeGuildName($event)">
+                <md-icon md-svg-src="pencil_light">
+                </md-icon>
+                <span flex>
+                    Edit name
+                </span>
+            </md-button>
+            <md-button layout class="md-warn md-raised"
+             ng-click="guildSettingsCtrl.deleteGuild($event)">
+                <md-icon md-svg-src="delete_light">
+                </md-icon>
+                <span flex>
+                    Delete group
+                </span>
+            </md-button>
+        </section>
+        <md-subheader>
+            Settings
+        </md-subheader>
+        <section layout="column" layout-padding>
+            <md-input-container>
+                <label>
+                    Trello board ID
+                </label>
+                <input type="text" ng-model="guildSettingsCtrl.guild.trello_board"
+                ng-change="guildSettingsCtrl.patchSettings()"
+                ng-model-options="{ debounce: 500 }" />
+            </md-input-container>
+            <md-input-container>
+                <label>
+                    Done board
+                </label>
+                <md-select ng-model="guildSettingsCtrl.guild.trello_done_list">
+                    <md-option>DO</md-option>
+                    <md-option>DOING</md-option>
+                    <md-option>VALIDATE</md-option>
+                    <md-option>DONE</md-option>
+                </md-select>
+                <div class="hint text--color--grey">
+                    Which list should be the done list?
+                </div>
+            </md-input-container>
+        </section>
+        <md-subheader>
+            Students ({{guildSettingsCtrl.guild.members.length}})
+        </md-subheader>
+        <section layout layout-wrap>
+            <span flex=33 layout layout-padding layout-align="center"
+                ng-repeat="member in guildSettingsCtrl.guild.members">
+                <img class="round" gravatar-size="60" gravatar-src-once="member.user.email">
+                <md-tooltip md-delay="1000">
+                    {{ member.user | fullUserName }}
+                </md-tooltip>
+            </span>
+        </section>
+    </md-content>
 
 </section>

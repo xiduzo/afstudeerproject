@@ -22,6 +22,9 @@
             return;
         }
 
+        Global.setRouteTitle('Group settings');
+        Global.setRouteBackRoute('base.guilds.overview');
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,6 +32,12 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteGuild = deleteGuild;
         self.changeGuildName = changeGuildName;
+        self.patchSettings = patchSettings;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.guild = [];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -39,7 +48,7 @@
                     Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
-
+                Global.setRouteTitle('Group settings', response.name);
                 self.guild = response;
             }, function() {
                 // Err
@@ -93,6 +102,17 @@
             });
         }
 
-    }
+        function patchSettings() {
 
+            Guild.patchGuildSettings(self.guild)
+            .then(function(response) {
+                Notifications.simpleToast('Group settings saved.');
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
+
+
+    }
 }());

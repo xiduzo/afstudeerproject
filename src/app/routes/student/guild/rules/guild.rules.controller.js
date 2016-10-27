@@ -38,6 +38,7 @@
         self.toggleRuleEndorsement = toggleRuleEndorsement;
         self.checkRuleEndorsementStatus = checkRuleEndorsementStatus;
         self.showPasswordPrompt = showPasswordPrompt;
+        self.setRating = setRating;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -118,7 +119,9 @@
                     .then(function(response) {
                         guild.possible_rules = response;
                         self.guilds.push(guild);
-                        Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+                        if(_.findWhere(self.guilds, { id: self.selected_guild})) {
+                            Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
+                        }
                         self.loading_page = false;
                     })
                     .catch(function(error) {
@@ -140,6 +143,8 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function toggleRule(rule, guild) {
+            console.log(rule);
+            console.log(guild);
             if(rule.selected) {
                 guild.selected_rules.push(rule);
             } else {
@@ -264,8 +269,6 @@
                     rule_id: rule.id
                 });
 
-                console.log(endorsement);
-
                 Guild.removeEndorsement(endorsement.id)
                 .then(function(response) {
                     if(response.status === 204) {
@@ -291,7 +294,7 @@
                 rule_id: rule.id
             });
 
-            return endorsement ? true : false;
+            return endorsement ? endorsement.rating : 0;
         }
 
         function showPasswordPrompt() {
@@ -318,6 +321,38 @@
             });
         }
 
-    }
+        function setRating(guild, week, rule, user, rating) {
+            _.each(rule.endorsements, function(endorsement) {
+                endorsement.rule_id = endorsement.rule.id;
+            });
 
+            var endorsement = _.findWhere(rule.endorsements, {
+                endorsed_by: self.user.id,
+                week: week,
+                user: user.id,
+                rule_id: rule.id
+            });
+
+            if(endorsement) {
+                Guild.patchEndorsement(endorsement.id, rating)
+                .then(function(response) {
+                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule + ' with ' + rating + ' star(s)');
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            } else {
+                Guild.addEndorsement(rule.id, user.id, self.user.id, week, rating)
+                .then(function(response) {
+                    rule.endorsements.push(response);
+                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule + ' with ' + rating + ' star(s)');
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }
+        }
+
+
+    }
 }());
