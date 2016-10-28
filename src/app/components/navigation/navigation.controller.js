@@ -102,12 +102,12 @@
                         link_to: 'base.guilds.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
-                    // {
-                    //     name: 'Assessments',
-                    //     icon: 'book_dark',
-                    //     link_to: 'base.assessments.overview',
-                    //     access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
-                    // },
+                    {
+                        name: 'Assessments',
+                        icon: 'book_dark',
+                        link_to: 'base.assessments.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
+                    },
                     {
                         name: 'Stimulance',
                         icon: 'loyalty_dark',
@@ -148,16 +148,16 @@
                             STUDENT_ACCESS_LEVEL
                         ],
                     },
-                    // {
-                    //     name: 'Assessments',
-                    //     icon: 'book_dark',
-                    //     link_to: 'base.quests.log',
-                    //     access_levels: [
-                    //         COORDINATOR_ACCESS_LEVEL,
-                    //         LECTURER_ACCESS_LEVEL,
-                    //         STUDENT_ACCESS_LEVEL
-                    //     ],
-                    // },
+                    {
+                        name: 'Assessments',
+                        icon: 'book_dark',
+                        link_to: 'base.quests.log',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
+                    },
                     {
                         name: 'Activity',
                         icon: 'list_dark',

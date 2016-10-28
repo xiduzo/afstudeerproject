@@ -108,6 +108,7 @@
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
             self.functions.getAccessLevel(self.user, true);
+            $state.go('base.home');
         }
 
         return self.functions;
