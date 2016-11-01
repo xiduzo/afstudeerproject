@@ -14,7 +14,9 @@
         Global,
         Notifications,
         Guild,
-        LECTURER_ACCESS_LEVEL
+        TrelloApi,
+        LECTURER_ACCESS_LEVEL,
+        TRELLO_USER_ID
     ) {
 
         if(Global.getAccess() < LECTURER_ACCESS_LEVEL) {
@@ -38,6 +40,8 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.guild = [];
+        self.trello_boards = [];
+        self.trello_board_lists = [];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -50,6 +54,26 @@
                 }
                 Global.setRouteTitle('Group settings', response.name);
                 self.guild = response;
+
+                TrelloApi.Authenticate()
+                .then(function(response) {
+                    TrelloApi.Rest('GET', 'members/' + TRELLO_USER_ID + '/boards')
+                    .then(function(response){
+                        self.trello_boards = response;
+                    });
+                }, function(error){
+                    console.log(error);
+                });
+
+                if(self.guild.trello_board) {
+                    TrelloApi.Rest('GET', 'boards/' + self.guild.trello_board + '/lists')
+                    .then(function(response) {
+                        self.trello_board_lists = response;
+                    }, function(error){
+                        console.log(error);
+                    });
+                }
+
             }, function() {
                 // Err
             });
@@ -103,6 +127,14 @@
         }
 
         function patchSettings() {
+            if(self.guild.trello_board) {
+                TrelloApi.Rest('GET', 'boards/' + self.guild.trello_board + '/lists')
+                .then(function(response) {
+                    self.trello_board_lists = response;
+                }, function(error){
+                    console.log(error);
+                });
+            }
 
             Guild.patchGuildSettings(self.guild)
             .then(function(response) {

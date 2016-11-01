@@ -79,6 +79,8 @@
 
             World.getWorld(response.world.id)
             .then(function(response) {
+                response.course_duration = response.course_duration ? response.course_duration : 48;
+                response.start = response.start ? response.start : response.created_at;
                 self.guild.world_data = {
                     duration: response.course_duration,
                     start: response.start

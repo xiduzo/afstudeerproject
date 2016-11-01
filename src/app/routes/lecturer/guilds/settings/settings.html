@@ -31,21 +31,24 @@
         <section layout="column" layout-padding>
             <md-input-container>
                 <label>
-                    Trello board ID
+                    Trello board
                 </label>
-                <input type="text" ng-model="guildSettingsCtrl.guild.trello_board"
-                ng-change="guildSettingsCtrl.patchSettings()"
-                ng-model-options="{ debounce: 500 }" />
+                <md-select ng-model="guildSettingsCtrl.guild.trello_board"
+                ng-change="guildSettingsCtrl.patchSettings()">
+                    <md-option ng-value="board.id" ng-repeat="board in guildSettingsCtrl.trello_boards">
+                        {{ board.name }}
+                    </md-option>
+                </md-select>
             </md-input-container>
             <md-input-container>
                 <label>
-                    Done board
+                    Done list
                 </label>
-                <md-select ng-model="guildSettingsCtrl.guild.trello_done_list">
-                    <md-option>DO</md-option>
-                    <md-option>DOING</md-option>
-                    <md-option>VALIDATE</md-option>
-                    <md-option>DONE</md-option>
+                <md-select ng-model="guildSettingsCtrl.guild.trello_done_list"
+                ng-change="guildSettingsCtrl.patchSettings()">
+                    <md-option ng-value="list.id" ng-repeat="list in guildSettingsCtrl.trello_board_lists">
+                        {{ list.name }}
+                    </md-option>
                 </md-select>
                 <div class="hint text--color--grey">
                     Which list should be the done list?

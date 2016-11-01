@@ -3,13 +3,13 @@
 <section flex layout="column" ng-if="!guildDetailProgressCtrl.loading_page">
     <section flex layout="column" layout-fill layout-align="start stretch" layout-padding>
         <section flex=50 layout="row" layout-margin>
-            <section flex=60 id="completed__tasks" md-whiteframe=1></section>
-            <section flex=40 id="completed__tasks__explained" md-whiteframe=1>
+            <section flex=60 id="cards_per_week" md-whiteframe=1></section>
+            <section flex=40 id="cards_total" md-whiteframe=1>
             </section>
         </section>
         <section flex=50 ng-scrollbars>
             <section layout layout-wrap>
-                <div flex=25 ng-repeat="member in guildDetailProgressCtrl.members_data">
+                <div flex=25 ng-repeat="member in guildDetailProgressCtrl.board.members">
                     <md-card>
                         <md-toolbar
                         ng-style="{
@@ -25,41 +25,18 @@
                             <md-list flex>
                                 <md-list-item layout flex layout-align="space-between center">
                                     <span>
-                                        Completed tasks
+                                        Cards
                                     </span>
                                     <strong class="md-headline">
-                                        {{ member.completed__tasks }}
+                                        {{ member.cards.length }}
                                     </strong>
                                 </md-list-item>
                                 <md-list-item layout flex layout-align="space-between center">
                                     <span>
-                                        Highest points in one day
+                                        Completed Cards
                                     </span>
                                     <strong class="md-headline">
-                                        {{ _.max(member.data) || 0 }}
-                                    </strong>
-                                </md-list-item>
-                                <md-list-item layout flex layout-align="space-between center">
-                                    <span>
-                                        Average points per task
-                                    </span>
-                                    <strong class="md-headline">
-                                        {{ (member.points / member.completed__tasks | roundToTwo) || 0 }}
-                                    </strong>
-                                </md-list-item>
-                                <md-list-item layout flex layout-align="space-between center">
-                                    <span>
-                                        Average points per day
-                                    </span>
-                                    <strong class="md-headline" style="font-weight: 900;"
-                                    ng-class="{
-                                        'text--color--red':        member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.30,
-                                        'text--color--orange':     member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.45 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.6,
-                                        'text--color--amber':      member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.6 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.75,
-                                        'text--color--lightGreen': member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.75 && member.average_per_day < guildDetailProgressCtrl.max_average_per_day * 0.9,
-                                        'text--color--green':      member.average_per_day >= guildDetailProgressCtrl.max_average_per_day * 0.9
-                                    }">
-                                        {{member.average_per_day }}
+                                        {{ member.completed_cards }}
                                     </strong>
                                 </md-list-item>
                             </md-list>

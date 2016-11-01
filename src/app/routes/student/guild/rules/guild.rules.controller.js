@@ -95,6 +95,8 @@
 
                     guild.weeks = [];
                     guild.selected_week = null;
+                    self.world.course_duration = self.world.course_duration ? self.world.course_duration : 48;
+                    self.world.start = self.world.start ? self.world.start : self.world.created_at;
 
                     for(var i = self.world.course_duration; i > 0; i -= 7) {
                         var start_week = moment(self.world.start).add(guild.weeks.length * 7 , 'days');

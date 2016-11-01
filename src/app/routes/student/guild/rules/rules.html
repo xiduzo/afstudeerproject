@@ -201,20 +201,6 @@
                                         {{ rule.rule }}
                                     </span>
                                     <span flex=70 layout layout-align="end">
-                                        <!-- <div layout="column" layout-align="center center"
-                                        flex=25
-                                        ng-repeat="member in guild.members"
-                                        ng-if="member.user.id !== guildRulesCtrl.user.id">
-                                            <md-checkbox
-                                            style="margin-bottom: 0;"
-                                            ng-if="member.user.id !== guildRulesCtrl.user.id"
-                                            ng-model="rating"
-                                            ng-disabled="guild.editable_week !== week.week"
-                                            ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(guild, week.week, rule, member.user)"
-                                            ng-change="guildRulesCtrl.toggleRuleEndorsement(guild, week.week, rule, member.user, rating)"
-                                            aria-label="checkbox">
-                                             </md-checkbox>
-                                        </div> -->
                                         <div layout layout-align="center" flex=25
                                         ng-repeat="member in guild.members"
                                         ng-if="member.user.id !== guildRulesCtrl.user.id && guild.editable_week === week.week"
