@@ -77,10 +77,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function roundToTwo(num) {
-            return +(Math.round(num + "e+2")  + "e-2");
-        }
-
         function prepareGraphData(guild) {
             if(!guild.trello_board || !guild.trello_done_list) {
                 return Notifications.simpleToast('Please make sure the group has an trello board and done list set.');
@@ -102,6 +98,21 @@
 
             TrelloApi.Authenticate()
             .then(function() {
+
+                var graph_data = {
+                    total_cards: 0,
+                    bar: {
+                        categories: [],
+                        series: []
+                    },
+                    pie: {
+                        series: [{
+                            name: 'cards',
+                            data: []
+                        }]
+                    }
+                };
+
                 TrelloApi.Rest('GET', 'boards/' + guild.trello_board)
                 .then(function(response) {
                     self.board.name = response.name;
@@ -128,12 +139,14 @@
                                 // Adding the cards to the members of the group
                                 if(card.idMembers.length >= 1) {
                                     _.each(card.idMembers, function(member_id) {
+                                        graph_data.total_cards++;
                                         var member = _.findWhere(self.board.members, {id: member_id});
                                         member.cards.push(card);
                                         card.members.push(member);
                                     });
                                 } else {
                                     _.each(self.board.members, function(member) {
+                                        graph_data.total_cards++;
                                         member.cards.push(card);
                                         card.members.push(member);
                                     });
@@ -157,19 +170,6 @@
                                     }
                                 });
                             });
-
-                            var graph_data = {
-                                bar: {
-                                    categories: [],
-                                    series: []
-                                },
-                                pie: {
-                                    series: [{
-                                        name: 'cards',
-                                        data: []
-                                    }]
-                                }
-                            };
 
                             _.each(self.board.members, function(member) {
                                 graph_data.bar.series.push({
@@ -200,7 +200,54 @@
                                 graph_data.pie.series[0].data.push({
                                     name: member.name,
                                     color: member.color,
-                                    y: member.cards.length
+                                    y: member.cards.length * 100 / graph_data.total_cards,
+                                    cards: member.cards.length
+                                });
+                                member.labels = [];
+
+                                _.each(member.cards, function(card) {
+                                    if(card.done) {
+                                        _.each(card.labels, function(label) {
+                                            switch (label.color) {
+                                                case 'green':
+                                                    label.color = '#61BD4F';
+                                                    break;
+                                                case 'yellow':
+                                                    label.color = '#F2D600';
+                                                    break;
+                                                case 'orange':
+                                                    label.color = '#FFAB4A';
+                                                    break;
+                                                case 'red':
+                                                    label.color = '#EB5A46';
+                                                    break;
+                                                case 'purple':
+                                                    label.color = '#C377E0';
+                                                    break;
+                                                case 'blue':
+                                                    label.color = '#0079BF';
+                                                    break;
+                                                case 'sky':
+                                                    label.color = '#00C2E0';
+                                                    break;
+                                                case 'pink':
+                                                    label.color = '#FF80CE';
+                                                    break;
+                                                case 'black':
+                                                    label.color = '#4d4d4d';
+                                                    break;
+                                            }
+                                            if(_.findWhere(member.labels, { color: label.color})) {
+                                                _.findWhere(member.labels, { color: label.color}).amount_used++;
+                                            } else {
+                                                member.labels.push({
+                                                    color: label.color,
+                                                    amount_used: 1,
+                                                    name: label.name
+                                                });
+                                            }
+                                        });
+                                    }
                                 });
                             });
 
@@ -249,7 +296,7 @@
                 chart: { type: 'pie' },
                 exporting: { enabled: Global.getAccess() > 1 ? true : false },
                 title: { text: self.guild.name +': total cards per user' },
-                tooltip: { pointFormat: '{series.name}: <b>{point.y}</b>' },
+                tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },
                 plotOptions: {
                     pie: {
                         // Maybe for future use

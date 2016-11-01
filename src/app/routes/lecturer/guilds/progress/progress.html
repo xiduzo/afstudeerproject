@@ -21,7 +21,7 @@
                                 </strong>
                             </span>
                         </md-toolbar>
-                        <md-card-content layout>
+                        <md-card-content layout="column">
                             <md-list flex>
                                 <md-list-item layout flex layout-align="space-between center">
                                     <span>
@@ -40,6 +40,30 @@
                                     </strong>
                                 </md-list-item>
                             </md-list>
+                            <section>
+                                <md-subheader>
+                                    Focus
+                                </md-subheader>
+                                <section layout layout-wrap>
+                                    <div flex=50 layout ng-repeat="label in member.labels | orderBy: '-amount_used'">
+                                        <span flex md-whiteframe=1 layout-margin
+                                        layout layout-align="center center"
+                                        ng-style="{
+                                            'background': label.color
+                                        }" style="color: white; font-weight: bold; text-shadow: 2px 2px #000; border-radius: 4px;">
+                                            <div ng-if="label.name">
+                                                {{ label.name }}
+                                                <em>
+                                                    ({{ label.amount_used }}x)
+                                                </em>
+                                            </div>
+                                            <div ng-if="!label.name">
+                                                {{ label.amount_used }}x
+                                            </div>
+                                        </span>
+                                    </div>
+                                </section>
+                            </section>
                         </md-card-content>
                     </md-card>
                 </div>
