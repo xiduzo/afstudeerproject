@@ -7,6 +7,14 @@
     .timeline__container {
         margin-bottom: 1em;
 
+        &:hover {
+            text-decoration: none;
+            .timeline__item:before,
+            .timeline__content {
+                background: darken(#fff, 8);
+            }
+        }
+
         .timeline__icon {
             position: relative;
             left: -37px;

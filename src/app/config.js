@@ -183,6 +183,8 @@
             .icon('star_dark', './assets/icons/material/ic_star_black_48px.svg', 48)
             .icon('star_border_light', './assets/icons/material/ic_star_border_white_48px.svg', 48)
             .icon('star_border_dark', './assets/icons/material/ic_star_border_black_48px.svg', 48)
+            .icon('move_horizontal_light', './assets/icons/material/ic_swap_horiz_white_48px.svg', 48)
+            .icon('move_horizontal_dark', './assets/icons/material/ic_swap_horiz_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

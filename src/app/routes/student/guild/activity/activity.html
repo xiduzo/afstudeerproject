@@ -33,60 +33,52 @@
                                     </md-list-item>
                                 </div>
 
-                                <div class="timeline__container"
-                                ng-repeat="activity in filtered = (guild.history_updates
+                                <a class="timeline__container"
+                                ng-repeat="activity in filtered = (guild.board.activities
                                 | filter : {
-                                    action_type: (filters.action_type | parseInt ),
+                                    type: filters.action_type,
                                 } : true
                                 | filter: {
-                                    user_id: filters.user
+                                    creator_id: filters.user
                                 }
                                 | filter: {
-                                    about: filters.free_search
-                                })"
+                                    sentence: filters.free_search
+                                })" href="{{activity.link}}" target="_BLANK"
                                 layout layout-align="start start">
                                     <md-button class="timeline__icon md-fab md-accent" md-no-ink
                                     aria-label="timeline icon">
                                         <md-icon ng-repeat="action_type in guildActivityCtrl.action_types"
                                             md-svg-icon="{{action_type.icon}}"
-                                            ng-if="activity.action_type == action_type.type">
+                                            ng-if="activity.type == action_type.type">
                                         </md-icon>
                                     </md-button>
                                     <md-list-item class="timeline__item">
                                         <md-content class="timeline__content" md-whiteframe=1 layout="column" flex>
-                                            <section layout layout-align="space-between center">
-                                                <div>
-                                                    <span layout-margin>
-                                                        <img class="round" gravatar-size=32 gravatar-src-once="activity.user.email">
+                                            <section layout="column" layout-align="start space-between">
+                                                <div layout layout-padding>
+                                                    <span>
+                                                        <img ng-if="activity.memberCreator.avatar" class="round" gravatar-size=25 gravatar-src-once="activity.memberCreator.avatar">
+                                                        <span layout layout-align="center center"
+                                                        ng-if="!activity.memberCreator.avatar" class="initials icon__helper">
+                                                            {{ activity.memberCreator.initials }}
+                                                        </span>
                                                     </span>
-                                                    {{ activity.user | fullUserName }}
-                                                    <span ng-bind-html="activity.action | empasizeSubject : activity.about"></span>
+                                                    <span ng-bind-html="activity.sentence | empasizeSubject : activity.subject">
+                                                    </span>
                                                 </div>
-                                                <div class="text--color--grey">
-                                                    <md-icon class="icon--color--grey" md-svg-icon="clock_dark"></md-icon>
-                                                    {{ activity.created_at | fromNow }}
+                                                <div class="text--color--grey"
+                                                layout layout-align="end">
+                                                    <span>
+                                                        <md-icon class="icon--color--grey" md-svg-icon="clock_dark"></md-icon>
+                                                        {{ activity.date | fromNow }}
+                                                    </span>
                                                 </div>
                                             </section>
                                             <!-- {{ activity }} -->
                                         </md-content>
                                     </md-list-item>
-                                </div>
+                                </a>
                             </md-list>
-                            <section layout layout-align="center center" layout-margin>
-                                <md-button class="md-raised success"
-                                    ng-if="!guildActivityCtrl.nothing_more_to_load"
-                                    ng-click="guildActivityCtrl.loadMoreHistoryUpdates(guild)"
-                                    ng-disabled="guildActivityCtrl.getting_more_activities"
-                                    aria-label="Load more activities">
-                                    <span ng-if="!guildActivityCtrl.getting_more_activities">
-                                        LOAD MORE
-                                    </span>
-                                    <span ng-if="guildActivityCtrl.getting_more_activities">
-                                        GETTING MORE ACTIVITIES
-                                    </span>
-                                </md-button>
-
-                            </section>
                         </section>
 
                         <md-content flex=20>
@@ -113,10 +105,18 @@
                                     <label>User</label>
                                     <md-select ng-model="filters.user">
                                         <md-option ng-value="undefined"> All </md-option>
-                                        <md-option ng-repeat="user in guild.user_filter_list"
-                                            ng-value="user.id">
-                                            <img class="icon__helper round" gravatar-size=25 gravatar-src-once="user.email">
-                                            {{user.name}}
+                                        <md-option ng-repeat="user in guild.board.members"
+                                            ng-value="user.id" layout>
+                                            <div layout layout-align="start center">
+                                                <img ng-if="user.avatar" class="icon__helper round" gravatar-size=25 gravatar-src-once="user.avatar">
+                                                <span layout layout-align="center center"
+                                                ng-if="!user.avatar" class="initials icon__helper">
+                                                    {{ user.initials }}
+                                                </span>
+                                                <span flex>
+                                                    {{ user.name }}
+                                                </span>
+                                            </div>
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
