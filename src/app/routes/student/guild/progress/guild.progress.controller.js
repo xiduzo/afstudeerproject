@@ -140,7 +140,7 @@
                             pie: {
                                 series: [{
                                     type: 'pie',
-                                    name: 'Browser share',
+                                    name: 'Cards to complete',
                                     innerSize: '75%',
                                     data: [],
                                 }]
