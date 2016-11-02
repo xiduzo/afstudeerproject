@@ -15,7 +15,12 @@
             <section layout="column" layout-fill>
                 <section layout flex layout-align="start stretch">
                     <section layout-fill layout>
-                        <section ng-scrollbars flex=80>
+                        <cmd-empty-state flex=80 ng-if="guild.no_trello_board"
+                            icon="settings_dark"
+                            headline="No trello board set."
+                            title="Make sure your lecturer set your trello board in the group settings.">
+                        </cmd-empty-state>
+                        <section ng-scrollbars flex=80 ng-if="!guild.no_trello_board">
                             <md-list class="timeline">
                                 <div ng-if="filtered.length <= 0"
                                 class="timeline__container" layout layout-align="start start">

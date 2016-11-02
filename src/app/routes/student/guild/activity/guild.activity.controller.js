@@ -136,6 +136,8 @@
 
                         });
                     });
+                } else {
+                    self.guilds.push(guild);
                 }
             });
         }, function() {
