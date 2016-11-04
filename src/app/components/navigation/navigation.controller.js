@@ -126,7 +126,11 @@
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home.dashboards.student',
-                        access_levels: [STUDENT_ACCESS_LEVEL]
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                     {
                         name: 'Progress',
@@ -211,6 +215,10 @@
             }
         });
 
+        $rootScope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+        });
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -276,7 +284,14 @@
                     combo: 'a',
                     description: 'Goto assessments',
                     callback: function() {
-                        self.changeState('base.progress.overview');
+                        self.changeState('base.assessments.overview');
+                    }
+                })
+                .add({
+                    combo: 's',
+                    description: 'Goto stimulance',
+                    callback: function() {
+                        self.changeState('base.stimulance.overview');
                     }
                 })
                 .add({

@@ -1,1 +1,44 @@
-<h1>student dashboard</h1>
+<cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
+<section layout-fill layout layout-margin ng-repeat="guild in studentDashboardCtrl.guilds"
+ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page">
+    <section layout layout-fill  ng-if="!guild.trello_board && !guild.trello_done_list">
+        <cmd-empty-state flex
+            icon="settings_dark"
+            headline="No connection to trello."
+            title="Ask your lecturer to configure trello for your group.">
+        </cmd-empty-state>
+    </section>
+    <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
+        <section flex=50 layout="column">
+            <md-card flex=50>
+
+            </md-card>
+            <md-card flex=50>
+
+            </md-card>
+        </section>
+        <md-card flex=50 md-whiteframe=1>
+            <md-toolbar>
+                <span class="md-toolbar-tools">
+                    My unfinished cards
+                </span>
+            </md-toolbar>
+            <md-list>
+                <md-list-item ng-if="guild.todo_list.length < 1" class="text--color--grey">
+                    No more cards on your todo list
+                </md-list-item>
+                <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
+                    <span flex>
+                        {{ card.name }}
+                    </span>
+                    <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
+                        <md-icon md-svg-src="external_link_dark"></md-icon>
+                        <md-tooltip md-delay="1000">
+                            Goto card
+                        </md-tooltip>
+                    </md-button>
+                </md-list-item>
+            </md-list>
+        </md-card>
+    </section>
+</section>

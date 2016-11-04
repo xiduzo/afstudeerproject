@@ -246,7 +246,7 @@
             secret: TRELLO_SECRET,
             expiration: "never",
             scope: {read: true, write: false, account: true},
-            name: 'CMD TRELLO'
+            name: 'CMD Athena'
         });
 
 
