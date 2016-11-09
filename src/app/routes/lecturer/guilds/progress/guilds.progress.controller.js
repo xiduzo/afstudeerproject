@@ -154,7 +154,9 @@
 
                                 // Adding the cards to the weeks
                                 _.each(weeks, function(week) {
-                                    if(card.created_at.isBetween(week.start, week.end, 'day')) {
+                                    if(card.created_at.isBetween(week.start, week.end, 'day') ||
+                                    card.created_at.isSame(week.start, 'day') ||
+                                    card.created_at.isSame(week.end, 'day')) {
                                         week.cards.push(card);
                                     }
                                 });
@@ -182,6 +184,7 @@
 
                             // Building the bar chart
                             _.each(weeks, function(week, index) {
+                                console.log(week);
                                 _.each(graph_data.bar.series, function(serie) {
                                     serie.data.push(0);
                                 });

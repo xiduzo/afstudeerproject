@@ -12,7 +12,18 @@
         <section flex layout layout-fill
         ng-repeat="guild in guildProgressCtrl.guilds"
         ng-if="guild.id === guildProgressCtrl.selected_guild">
-            <section layout="column" flex=80 layout-align="start stretch" layout-padding>
+            <cmd-empty-state ng-if="guild.no_trello_settings"
+            icon="guild_dark"
+            headline="No trello settings set"
+            title="Ask your lecturer to set up your trello.">
+            </cmd-empty-state>
+            <cmd-empty-state ng-if="guild.no_world_settings"
+            icon="guild_dark"
+            headline="No class settings set"
+            title="Ask your lecturer to set up your class.">
+            </cmd-empty-state>
+            <section layout="column" flex=80 layout-align="start stretch" layout-padding
+            ng-if="!guild.no_trello_settings && !guild.no_world_settings">
                 <section flex=50 layout="row" layout-margin>
                     <section flex=25 layout="column">
                         <section flex=50 layout>
@@ -20,7 +31,12 @@
                                 <span class="md-display-3">
                                     {{ guild.insight_data.cards_done }}
                                 </span>
-                                cards completed
+                                <span ng-if="guild.insight_data.cards_done <= 1">
+                                    card done
+                                </span>
+                                <span ng-if="guild.insight_data.cards_done > 1">
+                                    cards completed
+                                </span>
                             </md-card>
                         </section>
                         <section flex=5>
@@ -31,15 +47,17 @@
                                 <span class="md-display-3">
                                     {{ guild.insight_data.cards_in_progress }}
                                 </span>
-                                open cards
+                                <span ng-if="guild.insight_data.cards_in_progress <= 1">
+                                    card to go
+                                </span>
+                                <span ng-if="guild.insight_data.cards_in_progress > 1">
+                                    cards to go
+                                </span>
                             </md-card>
                         </section>
                     </section>
                     <md-card flex=75 id="cards_to_do_{{guild.id}}">
                     </md-card>
-                    <section>
-
-                    </section>
                 </section>
                 <section flex=50 ng-scrollbars>
                     <section layout layout-wrap>
@@ -80,7 +98,8 @@
                     </section>
                 </section>
             </section>
-            <md-content flex=20 layout-fill layout="column">
+            <md-content flex=20 layout-fill layout="column"
+            ng-if="!guild.no_trello_settings && !guild.no_world_settings">
                 <md-subheader>
                     Actions
                 </md-subheader>

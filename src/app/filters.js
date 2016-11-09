@@ -21,7 +21,7 @@
         })
 
         .filter('fromNow', function() {
-            return function(datetime) {
+            return function(datetime, suffix) {
                 return moment(datetime).fromNow();
             };
         })

@@ -16,11 +16,11 @@
                                     Active
                                 </span>
                                 <span flex=25> Assessment </span>
-                                <span flex=30> Completion </span>
+                                <span flex=45> Completion </span>
                                 <span flex=10 layout layout-align="center center">
                                     Gradable
                                 </span>
-                                <span flex=15> Power </span>
+                                <!-- <span flex=15> Power </span> -->
                                 <span flex=10> <!-- placeholder --> </span>
                             </div>
                         </md-toolbar>
@@ -39,7 +39,7 @@
                                             </div>
                                         </span>
                                         <span flex=25> {{ quest.name }} </span>
-                                        <span flex=30 layout-padding>
+                                        <span flex=45 layout-padding>
                                             <div ng-if="!quest.total_guilds_conquering_quest"
                                             class="text--color--grey">
                                                 No groups have seen this quest yet.
@@ -79,7 +79,7 @@
                                                 </md-switch>
                                             </div>
                                         </span>
-                                        <span flex=15>
+                                        <!-- <span flex=15>
                                             <span ng-if="quest.gradable">
                                                 {{ quest.experience | number }}
                                             </span>
@@ -87,7 +87,7 @@
                                             ng-if="!quest.gradable">
                                                 Not gradable
                                             </span>
-                                        </span>
+                                        </span> -->
                                         <span flex=10 layout="row" layout-align="end">
                                             <md-button class="md-icon-button"
                                              ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">

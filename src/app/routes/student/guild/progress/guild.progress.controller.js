@@ -79,11 +79,15 @@
 
         $rootScope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
-            // guild = _.find(self.guilds, function(guild) {
-            //     return guild.id == self.selected_guild;
-            // });
-            // Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-            // self.buildGraphData(guild);
+
+            if(_.findWhere(self.guilds, { id: self.selected_guild })) {
+                Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild }).name);
+
+                guild = _.findWhere(self.guilds, { id: self.selected_guild});
+
+                self.buildGraphData(guild);
+            }
+
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,16 +115,30 @@
             // Err get user guilds
         });
 
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function roundToTwo(num) {
+            return parseFloat(num.toFixed(2));
+        }
+
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function buildGraphData(guild) {
+            guild.no_trello_settings = false;
+            guild.no_world_settings = false;
+
+            self.guilds.push(guild);
+
             if(!guild.trello_board || !guild.trello_done_list) {
-                return Notifications.simpleToast('Please make sure the group has an trello board and done list set.');
+                guild.no_trello_settings = true;
+                return false;
             }
             if(!guild.world.start || !guild.world.course_duration) {
-                return Notifications('Please make sure the class start and the course duration are set.');
+                guild.no_world_settings = true;
+                return false;
             }
 
             TrelloApi.Authenticate()
@@ -189,18 +207,16 @@
                                 }
                             });
 
-                            console.log(guild.insight_data);
                             _.each(guild.board.members, function(member) {
                                 member.completed_cards = _.filter(member.cards,function(card) { return card.done;}).length;
                                 guild.board.pie.series[0].data.push({
                                     name: member.name,
                                     color: member.color,
-                                    y: member.cards.length * 100 / guild.board.total_assigned_cards,
+                                    y: roundToTwo((member.cards.length - member.completed_cards) * 100 / guild.insight_data.cards_in_progress),
                                     cards: _.filter(member.cards,function(card) { return !card.done;}).length
                                 });
                             });
                             self.loading_page = false;
-                            self.guilds.push(guild);
 
                             setTimeout(function () {
                                 self.createChart(guild);
@@ -226,7 +242,7 @@
                 plotOptions: {
                     pie: {
                         dataLabels: {
-                            format: '<b>{point.name}</b>: {point.y}%',
+                            format: '<b>{point.name}</b>',
                         },
                         startAngle: -90,
                         endAngle: 90,

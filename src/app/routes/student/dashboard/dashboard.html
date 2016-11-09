@@ -1,5 +1,5 @@
 <cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
-<section layout-fill layout layout-margin ng-repeat="guild in studentDashboardCtrl.guilds"
+<section layout-fill layout layout-margin layout-padding ng-repeat="guild in studentDashboardCtrl.guilds"
 ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page">
     <section layout layout-fill  ng-if="!guild.trello_board && !guild.trello_done_list">
         <cmd-empty-state flex
@@ -9,18 +9,62 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
         </cmd-empty-state>
     </section>
     <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
-        <section flex=50 layout="column">
+        <section flex=60 layout="column">
+            <section flex=50 layout="column">
+                <section flex=55 layout>
+                    <md-card flex=50 class="background--color--green" layout="column" layout-align="center center">
+                        <span class="md-display-2">
+                            {{ guild.world.end }}
+                        </span>
+                        <span>
+                            untill {{ guild.world.name }} is over
+                        </span>
+                    </md-card>
+                    <md-card flex=50 class="background--color--blue" layout="column" layout-align="center center">
+                        <span class="md-display-2">
+                            {{ guild.world.feedback_days_left }} days
+                        </span>
+                        <span>
+                            left to give feedback for this week
+                        </span>
+                    </md-card>
+                </section>
+                <md-card flex=45 layout="column">
+                    <md-toolbar>
+                        <span class="md-toolbar-tools">
+                            My collected rupees
+                        </span>
+                    </md-toolbar>
+                    <md-card-content layout layout-align="space-around center">
+                        <div ng-repeat="rupee in guild.member.rupees">
+                            <cmd-rupee type="ruby"
+                            ng-if="rupee.rupee === 1"
+                            amount="{{rupee.amount}}"
+                            ></cmd-rupee>
+                            <cmd-rupee type="sapphire"
+                            amount="{{rupee.amount}}"
+                            ng-if="rupee.rupee === 2">
+                            </cmd-rupee>
+                            <cmd-rupee type="emerald"
+                            amount="{{rupee.amount}}"
+                            ng-if="rupee.rupee === 3">
+                            </cmd-rupee>
+                            <cmd-rupee type="amethyst"
+                            amount="{{rupee.amount}}"
+                            ng-if="rupee.rupee === 4">
+                            </cmd-rupee>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </section>
             <md-card flex=50>
-
-            </md-card>
-            <md-card flex=50>
-
+                <div id={{guild.id}}></div>
             </md-card>
         </section>
         <md-card flex=50 md-whiteframe=1>
             <md-toolbar>
                 <span class="md-toolbar-tools">
-                    My unfinished cards
+                    Todo
                 </span>
             </md-toolbar>
             <md-list>
@@ -28,8 +72,19 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                     No more cards on your todo list
                 </md-list-item>
                 <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
-                    <span flex>
-                        {{ card.name }}
+                    <span flex layout="column">
+                        <span class="md-title">
+                            {{ card.name }}
+                        </span>
+                        <em class="md-subhead">
+                            {{ card.desc | limitTo : 150 }}<span ng-if="card.desc.length > 150">....</span>
+                        </em>
+                        <em class="md-subhead" ng-if="!card.desc">
+                            No card description available
+                        </em>
+                        <span class="text--color--grey">
+                            card created: {{ card.created_at | fromNow }}
+                        </span>
                     </span>
                     <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
                         <md-icon md-svg-src="external_link_dark"></md-icon>

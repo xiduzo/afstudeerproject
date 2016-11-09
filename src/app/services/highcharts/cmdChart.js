@@ -683,7 +683,7 @@
                             [profiles.focus.self.x, profiles.focus.self.y]
                         ],
                         marker: {
-                            radius: 15,
+                            radius: 10,
                             symbol: 'circle'
                         }
                     },
