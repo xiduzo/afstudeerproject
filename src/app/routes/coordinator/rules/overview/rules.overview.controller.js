@@ -94,8 +94,6 @@
                     response.points = 1;
                 }
 
-                console.log(response);
-
                 // Add rule to the system
                 Rules.addRule(response)
                 .then(function(response) {
@@ -140,12 +138,6 @@
                     return rule;
                 }
             });
-            // console.log(self.filters);
-            // return _.map(self.rules, function(rule) {
-            //
-            // });
         }
-
-
     }
 }());

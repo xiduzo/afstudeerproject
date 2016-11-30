@@ -367,7 +367,10 @@
                 _.each(response.worlds, function(world) {
                     self.worlds.push({id: world.world.id, name: world.world.name});
                 });
-                self.selected_world = _.first(self.worlds).id;
+
+                if(self.worlds.length >= 1) {
+                    self.selected_world = _.first(self.worlds).id;
+                }
                 Global.setSelectedWorld(self.selected_world);
             })
             .catch(function() {
@@ -381,7 +384,10 @@
                 _.each(response.guilds, function(guild) {
                     self.guilds.push({id: guild.guild.id, name: guild.guild.name});
                 });
-                self.selected_guild = _.first(self.guilds).id;
+
+                if(self.guilds.length >= 1) {
+                    self.selected_guild = _.first(self.guilds).id;
+                }
                 Global.setSelectedGuild(self.selected_guild);
             })
             .catch(function() {

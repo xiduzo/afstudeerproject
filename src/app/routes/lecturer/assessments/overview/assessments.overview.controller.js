@@ -45,20 +45,20 @@
         World.getWorldsOfGamemaster(Global.getUser().id)
         .then(function(response) {
             if(response.status >= 400) {
-                Global.statusCode(response);
-                return;
+                return Global.statusCode(response);
             }
 
             _.each(response.worlds, function(world) {
                 self.worlds.push(world.world);
             });
 
-
-            if(_.findWhere(self.worlds, {id: self.selected_world})) {
-                Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
-                self.selected_guild = _.first(_.findWhere(self.worlds, {id: self.selected_world}).guilds);
-            } else {
-                self.selected_guild = _.first(_.first(self.worlds).guilds);
+            if(self.worlds.length >= 1) {
+                if(_.findWhere(self.worlds, {id: self.selected_world})) {
+                    Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
+                    self.selected_guild = _.first(_.findWhere(self.worlds, {id: self.selected_world}).guilds);
+                } else {
+                    self.selected_guild = _.first(_.first(self.worlds).guilds);
+                }
             }
 
             self.loading_page = false;
@@ -72,8 +72,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('world-changed', function(event, world) {
             self.selected_world = world;
-            self.selected_guild = _.first(_.findWhere(self.worlds, {id: world}).guilds);
-            Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
+            if(self.worlds.length >= 1) {
+                self.selected_guild = _.first(_.findWhere(self.worlds, {id: world}).guilds);
+                Global.setRouteTitle('Assessments', _.findWhere(self.worlds, {id: self.selected_world}).name);
+            }
         });
 
 

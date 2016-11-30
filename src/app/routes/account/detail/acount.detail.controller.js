@@ -72,6 +72,8 @@
                         }, 100);
                     });
                 });
+            } else {
+                self.authenticate();
             }
 
         }, function(error) {
@@ -95,12 +97,15 @@
                 localStorage.removeItem('trello_token');
             }
 
-            TrelloApi.Authenticate().then(function(){
+            TrelloApi.Authenticate()
+            .then(function(){
+                console.log(true);
                 TrelloApi.Rest('GET', 'members/me')
                 .then(function(response) {
                     self.trello_account = response;
                     localStorageService.set('trello_user', response);
                     Notifications.simpleToast('Authentication succeeded');
+                    self.loading_page = false;
                 });
             }, function(){
                 Notifications.simpleToast('Authentication failed');

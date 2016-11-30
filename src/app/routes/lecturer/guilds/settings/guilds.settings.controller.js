@@ -54,6 +54,7 @@
                 }
                 Global.setRouteTitle('Group settings', response.name);
                 self.guild = response;
+                console.log(self.guild);
 
                 TrelloApi.Authenticate()
                 .then(function(response) {
