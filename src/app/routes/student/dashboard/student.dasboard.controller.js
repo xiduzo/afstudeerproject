@@ -52,11 +52,17 @@
             }
 
             guild = _.findWhere(self.guilds, {id: self.selected_guild});
-            if(guild.graphs_data) {
-                setTimeout(function () {
-                    self.createChart(guild);
-                }, 100);
+	
+            if(!guild.trello_board || !guild.trello_done_list) {
+                self.loading_page = false;
+            } else {
+                if(guild.graphs_data) {
+                    setTimeout(function () {
+                        self.createChart(guild);
+                    }, 100);
+                }
             }
+
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

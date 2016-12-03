@@ -141,6 +141,23 @@
 
             <section>
                 <md-subheader>
+                    Settings
+                </md-subheader>
+                <section layout="column" layout-padding>
+                    <section layout="column">
+                        <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-placeholder="Pick a date"></md-datepicker>
+                        <div class="hint text--color--grey">Starting date of this class</div>
+                    </section>
+                    <md-input-container>
+                        <label>Duration</label>
+                        <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
+                        <div class="hint text--color--grey">In days</div>
+                    </md-input-container>
+                </section>
+            </section>
+
+            <section>
+                <md-subheader>
                     Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
                 </md-subheader>
                 <section layout layout-wrap>

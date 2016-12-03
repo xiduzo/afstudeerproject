@@ -36,20 +36,14 @@
         self.changeWorldName = changeWorldName;
         self.deleteQuest = deleteQuest;
         self.patchQuest = patchQuest;
-        self.deleteRule = deleteRule;
         self.addHotkeys = addHotkeys;
+        self.patchWorldSettings = patchWorldSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.world = [];
         self.loading_page = true;
-        self.rule_types = [
-            { type: 1, name: 'Houding', icon: 'work_dark', },
-            { type: 2, name: 'Functioneren binnen het team', icon: 'group_work_dark', },
-            { type: 3, name: 'Kennisontwikkeling', icon: 'lightbulb_dark', },
-            { type: 4, name: 'Verantwoording', icon: 'description_dark', },
-        ];
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -61,6 +55,7 @@
                     $state.go('base.guilds.overview');
                 }
 
+                response.start = new Date(moment(response.start));
                 self.world = response;
 
                 Global.setRouteTitle('Class settings', self.world.name);
@@ -180,28 +175,6 @@
             });
         }
 
-        function deleteRule(event, rule) {
-            Notifications.confirmation(
-                'Are you sure you want to delete this rule?',
-                'Please consider your answer, this action can not be undone.',
-                'Delete quest',
-                event
-            )
-            .then(function() {
-                World.removeRule(rule.id)
-                .then(function(response) {
-                    Notifications.simpleToast(rule.rule + ' got removed from ' + self.world.name);
-                    // Remove the quest in the frontend
-                    self.world.rules.splice(_.indexOf(self.world.rules, rule), 1);
-
-                }, function() {
-                    // Err delete rule
-                });
-            }, function() {
-                // No
-            });
-        }
-
         function addHotkeys() {
             hotkeys.bindTo($scope)
             .add({
@@ -238,6 +211,16 @@
             })
 
             ; // End of hotkeys
+        }
+
+        function patchWorldSettings() {
+            World.patchWorldSettings(self.world)
+            .then(function(response) {
+                Notifications.simpleToast('Class settings updated');
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         }
 
     }
