@@ -26,15 +26,15 @@
                                 md-svg-icon="{{type.icon}}"
                                 ng-click="addGuildRuleCtrl.formInput.type = type.type">
                             </md-icon>
+                            <span ng-click="addGuildRuleCtrl.formInput.type = type.type">
+                                {{ type.name }}
+                            </span>
                             <md-radio-button
                                 layout-padding
                                 value="{{type.type}}"
                                 aria-label="{{type.type}}"
                                 style="width: 20px;">
                             </md-radio-button>
-                            <md-tooltip md-delay="100" md-direction="top">
-                                {{ type.name }}
-                            </md-tooltip>
                         </div>
                     </md-radio-group>
                 </section>

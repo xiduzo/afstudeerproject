@@ -145,8 +145,6 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function toggleRule(rule, guild) {
-            console.log(rule);
-            console.log(guild);
             if(rule.selected) {
                 guild.selected_rules.push(rule);
             } else {
@@ -256,7 +254,6 @@
             if(state) {
                 Guild.addEndorsement(rule.id, user.id, self.user.id, week)
                 .then(function(response) {
-                    console.log(response);
                     rule.endorsements.push(response);
                     Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
                 })

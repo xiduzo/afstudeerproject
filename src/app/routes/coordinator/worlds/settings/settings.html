@@ -79,15 +79,6 @@
                                                 </md-switch>
                                             </div>
                                         </span>
-                                        <!-- <span flex=15>
-                                            <span ng-if="quest.gradable">
-                                                {{ quest.experience | number }}
-                                            </span>
-                                            <span class="text--color--grey"
-                                            ng-if="!quest.gradable">
-                                                Not gradable
-                                            </span>
-                                        </span> -->
                                         <span flex=10 layout="row" layout-align="end">
                                             <md-button class="md-icon-button"
                                              ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
@@ -177,8 +168,7 @@
                 </md-subheader>
                 <section>
                     <md-list>
-                        <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds"
-                        ui-sref="base.guilds.detail({guildUuid: guild.id})">
+                        <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds">
                             {{ guild.name }}
                             <md-tooltip md-delay="1000">
                                 View {{ guild.name }}
