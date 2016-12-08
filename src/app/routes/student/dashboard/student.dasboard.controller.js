@@ -52,7 +52,7 @@
             }
 
             guild = _.findWhere(self.guilds, {id: self.selected_guild});
-	
+
             if(!guild.trello_board || !guild.trello_done_list) {
                 self.loading_page = false;
             } else {
@@ -166,7 +166,7 @@
 
             var week = 0;
             for(var i = guild.world.course_duration; i > 0; i-=7) {
-                guild.graphs_data.line.push(week);
+                guild.graphs_data.line.push(0);
                 guild.horizontal_axis.push(week);
                 week++;
             }
@@ -197,7 +197,6 @@
                             points += type_group.rule.points * (type_group.rating * 1/3);
                         });
                     });
-
                     guild.graphs_data.line[index] += points;
                     member.line_data.push(points);
                 });
