@@ -261,13 +261,27 @@
                         self.changeState('base.worlds.overview');
                     }
                 })
-                // .add({
-                //     combo: 'd',
-                //     description: 'Goto dashboard',
-                //     callback: function() {
-                //         self.changeState('base.home.dashboards.coordinator');
-                //     }
-                // })
+                .add({
+                    combo: 'r',
+                    description: 'Goto rules',
+                    callback: function() {
+                        self.changeState('base.rules.overview');
+                    }
+                })
+                .add({
+                    combo: 'b',
+                    description: 'Goto behaviours',
+                    callback: function() {
+                        self.changeState('base.behaviour.behaviours');
+                    }
+                })
+                .add({
+                    combo: 'e',
+                    description: 'Goto rewards',
+                    callback: function() {
+                        self.changeState('base.behaviour.rewards');
+                    }
+                })
                 ; // End of hotkeys
             }
 
@@ -321,6 +335,13 @@
                     }
                 })
                 .add({
+                    combo: 'f',
+                    description: 'Goto feedback',
+                    callback: function() {
+                        self.changeState('base.guild.rules');
+                    }
+                })
+                .add({
                     combo: 'd',
                     description: 'Goto dashboard',
                     callback: function() {
@@ -350,16 +371,13 @@
         }
 
         function removeHotkeys() {
-            hotkeys.del('c');
-            hotkeys.del('g');
-            hotkeys.del('a');
-            hotkeys.del('p');
-            hotkeys.del('d');
-            hotkeys.del('l');
+            var alphabeth = 'abcdefghijklmnopqrstuvwxyz';
+            _.each(alphabeth, function(letter) {
+                hotkeys.del(letter);
+            });
         }
 
         function getWorldsAndGuilds() {
-
             World.getWorldsOfGamemaster(self.user.id)
             .then(function(response) {
                 self.worlds = [];

@@ -112,7 +112,7 @@
                     student_number:    user.hvastudentnumber,
                     email:             user.email,
                     initials:          user.initials,
-                    first_name:        user.displayname,
+                    first_name:        user.first_name,
                     surname_prefix:    user.surname_prefix,
                     surname:           user.surname,
                     gender:            user.gender,
