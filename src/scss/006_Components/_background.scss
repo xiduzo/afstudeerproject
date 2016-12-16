@@ -2,8 +2,8 @@
     &--color {
         @each $name, $color in $colors {
             &--#{$name} {
-                background: $color;
-                color: white;
+                background: $color !important;
+                color: white !important;
                 font-weight: bold;
                 text-shadow: 2px 2px #000;
             }

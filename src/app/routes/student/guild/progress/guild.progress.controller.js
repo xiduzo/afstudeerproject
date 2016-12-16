@@ -46,35 +46,6 @@
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.loading_page = true;
-        self.first_time = false;
-        self.onboarding_enabled = false;
-        self.onboarding_step_index = 0;
-        self.onboarding_steps = [
-            {
-                title: "Oh, hello "+self.user.first_name+"!",
-                description: "I can't help to notice this is your first time over here. Follow this steps and I'll show you how to get around.",
-                position: "centered"
-            },
-            {
-                title: "Group progress",
-                position: "bottom",
-                description: "Over here you will see your group progress, this will indicate the amount of work your team will have to do. It will also indicate the amount of work your group has been doing over time.",
-                attachTo: "#step1",
-                width: 300
-            },
-            {
-                title: "Tasks",
-                position: "top",
-                description: "The group progress will be influenced by the groups' tasks. Tasks can be added by everybody in the group.",
-                attachTo: "#step2",
-            },
-            {
-                title: "Adding an task",
-                position: "centered",
-                description: "By clicking on bottom right button you can add an task for your group. Let's add one ourself, shall we?",
-                attachTo: "#step3",
-            },
-        ];
 
 
         $rootScope.$on('guild-changed', function(event, guild) {

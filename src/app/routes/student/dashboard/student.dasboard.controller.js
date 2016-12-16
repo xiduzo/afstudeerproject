@@ -42,6 +42,66 @@
         self.user.trello = null;
         self.guilds = [];
         self.loading_page = true;
+        self.first_time = false;
+
+        self.onboarding_step_index = 0;
+        self.onboarding_enabled = true;
+        self.onboarding_steps = [
+            {
+                title: "Oh, hello "+self.user.first_name+"!",
+                description: "I can't help to notice this is your first time over here. Follow this steps and I'll show you how to get around.",
+                position: "centered"
+            },
+            {
+                title: "In 3... 2... 1...",
+                position: "bottom",
+                description: "These two dates are the most important dates you'll need to watch out for.",
+                attachTo: "#numbers",
+                yOffset: -75,
+                xOffset: -125
+            },
+            {
+                title: "Till the end!",
+                position: "right",
+                description: "This card will let you know how many days you and your team still have to finish this course.",
+                attachTo: "#world",
+                width: 300,
+                xOffset: -325
+            },
+            {
+                title: "#feedback",
+                position: "left",
+                description: "Every week you and your team will give each other feedback, make sure you give your's in time!",
+                attachTo: "#feedback",
+                width: 300
+            },
+            {
+                title: "#feedback",
+                position: "top",
+                description: "Your teammates will give you feedback too, this will be visable in this graph.",
+                attachTo: "#feedback__graph",
+                width: 300
+            },
+            {
+                title: "What to do next?",
+                position: "left",
+                description: "Never lose track on the things your group has to do! Over here you'll see an short list of the items your group still has to finish.",
+                attachTo: "#tasks",
+                width: 400
+            },
+            {
+                title: "Let's play a game.",
+                position: "top",
+                description: "You can earn rupees by playing CMD Athena. These rupees can earn you some awesome perks during this course.",
+                attachTo: "#rupees",
+                width: 300
+            },
+            {
+                title: 'Thats it',
+                position: "centered",
+                description: "That's it for now, you can allways ask your teacher for more information. Goodbye for now.",
+            },
+        ];
 
 
         $rootScope.$on('guild-changed', function(event, guild) {
@@ -225,8 +285,7 @@
             });
 
             guild.horizontal_axis = _.map(guild.horizontal_axis, function(axis_point) {
-                axis_point = 'Week ' + (axis_point+1);
-                return axis_point;
+                return 'Week ' + (axis_point+1);
             });
 
             setTimeout(function () {

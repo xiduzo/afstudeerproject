@@ -1,6 +1,12 @@
 <cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
 <section layout-fill layout layout-margin layout-padding ng-repeat="guild in studentDashboardCtrl.guilds"
 ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page">
+    <onboarding-popover
+        enabled="studentDashboardCtrl.onboarding_enabled"
+        steps="studentDashboardCtrl.onboarding_steps"
+        step-index="studentDashboardCtrl.onboarding_step_index">
+    </onboarding-popover>
+    <!-- on-finish-callback='myCallbackFunction' -->
     <section layout layout-fill  ng-if="!guild.trello_board && !guild.trello_done_list">
         <cmd-empty-state flex
             icon="settings_dark"
@@ -10,9 +16,9 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
     </section>
     <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
         <section flex=60 layout="column">
-            <section flex=50 layout="column">
-                <section flex=55 layout>
-                    <md-card flex=50 class="background--color--green" layout="column" layout-align="center center">
+            <section flex=80 layout="column">
+                <section flex=30 layout id="numbers">
+                    <md-card flex=50 class="background--color--green" layout="column" layout-align="center center" id="world">
                         <span class="md-display-2">
                             {{ guild.world.end }}
                         </span>
@@ -20,7 +26,7 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                             untill {{ guild.world.name }} is over
                         </span>
                     </md-card>
-                    <md-card flex=50 class="background--color--blue" layout="column" layout-align="center center">
+                    <md-card flex=50 class="background--color--blue" layout="column" layout-align="center center" id="feedback">
                         <span class="md-display-2">
                             {{ guild.world.feedback_days_left }} days
                         </span>
@@ -29,39 +35,39 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                         </span>
                     </md-card>
                 </section>
-                <md-card flex=45 layout="column">
-                    <md-toolbar>
-                        <span class="md-toolbar-tools">
-                            My collected rupees
-                        </span>
-                    </md-toolbar>
-                    <md-card-content layout layout-align="space-around center">
-                        <div ng-repeat="rupee in guild.member.rupees">
-                            <cmd-rupee type="ruby"
-                            ng-if="rupee.rupee === 1"
-                            amount="{{rupee.amount}}"
-                            ></cmd-rupee>
-                            <cmd-rupee type="sapphire"
-                            amount="{{rupee.amount}}"
-                            ng-if="rupee.rupee === 2">
-                            </cmd-rupee>
-                            <cmd-rupee type="emerald"
-                            amount="{{rupee.amount}}"
-                            ng-if="rupee.rupee === 3">
-                            </cmd-rupee>
-                            <cmd-rupee type="amethyst"
-                            amount="{{rupee.amount}}"
-                            ng-if="rupee.rupee === 4">
-                            </cmd-rupee>
-                        </div>
-                    </md-card-content>
+                <md-card flex=70 id="feedback__graph">
+                    <div id={{guild.id}}></div>
                 </md-card>
             </section>
-            <md-card flex=50>
-                <div id={{guild.id}}></div>
+            <md-card flex=20 layout="column" id="rupees">
+                <md-toolbar>
+                    <span class="md-toolbar-tools">
+                        My collected rupees
+                    </span>
+                </md-toolbar>
+                <md-card-content layout layout-align="space-around center">
+                    <div ng-repeat="rupee in guild.member.rupees">
+                        <cmd-rupee type="ruby"
+                        ng-if="rupee.rupee === 1"
+                        amount="{{rupee.amount}}"
+                        ></cmd-rupee>
+                        <cmd-rupee type="sapphire"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.rupee === 2">
+                        </cmd-rupee>
+                        <cmd-rupee type="emerald"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.rupee === 3">
+                        </cmd-rupee>
+                        <cmd-rupee type="amethyst"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.rupee === 4">
+                        </cmd-rupee>
+                    </div>
+                </md-card-content>
             </md-card>
         </section>
-        <md-card flex=50 md-whiteframe=1>
+        <md-card flex=40 md-whiteframe=1 id="tasks">
             <md-toolbar>
                 <span class="md-toolbar-tools">
                     Todo
