@@ -17,7 +17,7 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
     <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
         <section flex=60 layout="column">
             <section flex=80 layout="column">
-                <section flex=30 layout id="numbers">
+                <section flex=35 layout id="numbers">
                     <md-card flex=50 class="background--color--green" layout="column" layout-align="center center" id="world">
                         <span class="md-display-2">
                             {{ guild.world.end }}
@@ -35,8 +35,8 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                         </span>
                     </md-card>
                 </section>
-                <md-card flex=70 id="feedback__graph">
-                    <div id={{guild.id}}></div>
+                <md-card flex=65 id="feedback__graph" layout layout-align="center center">
+                    <div style="min-width: 95%;" id={{guild.id}}></div>
                 </md-card>
             </section>
             <md-card flex=20 layout="column" id="rupees">

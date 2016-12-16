@@ -45,20 +45,20 @@
         self.first_time = false;
 
         self.onboarding_step_index = 0;
-        self.onboarding_enabled = true;
         self.onboarding_steps = [
             {
                 title: "Oh, hello "+self.user.first_name+"!",
-                description: "I can't help to notice this is your first time over here. Follow this steps and I'll show you how to get around.",
-                position: "centered"
+                description: "I can't help to notice this is your first time over here. My name is Sander, follow this steps and I'll show you how to get around.",
+                position: "centered",
+                width: 400,
             },
             {
                 title: "In 3... 2... 1...",
                 position: "bottom",
-                description: "These two dates are the most important dates you'll need to watch out for.",
+                description: "These two dates are the most important dates you'll need to watch out for, let me explain what they are for.",
                 attachTo: "#numbers",
+                width: 400,
                 yOffset: -75,
-                xOffset: -125
             },
             {
                 title: "Till the end!",
@@ -66,40 +66,41 @@
                 description: "This card will let you know how many days you and your team still have to finish this course.",
                 attachTo: "#world",
                 width: 300,
-                xOffset: -325
+                xOffset: -325,
             },
             {
                 title: "#feedback",
                 position: "left",
                 description: "Every week you and your team will give each other feedback, make sure you give your's in time!",
                 attachTo: "#feedback",
-                width: 300
+                width: 300,
             },
             {
                 title: "#feedback",
                 position: "top",
-                description: "Your teammates will give you feedback too, this will be visable in this graph.",
+                description: "Your teammates will give you feedback as well. This will be visable in this graph along with the average score of your team.",
                 attachTo: "#feedback__graph",
-                width: 300
+                width: 300,
             },
             {
                 title: "What to do next?",
                 position: "left",
                 description: "Never lose track on the things your group has to do! Over here you'll see an short list of the items your group still has to finish.",
                 attachTo: "#tasks",
-                width: 400
+                width: 400,
             },
             {
                 title: "Let's play a game.",
                 position: "top",
                 description: "You can earn rupees by playing CMD Athena. These rupees can earn you some awesome perks during this course.",
                 attachTo: "#rupees",
-                width: 300
+                width: 300,
             },
             {
                 title: 'Thats it',
                 position: "centered",
-                description: "That's it for now, you can allways ask your teacher for more information. Goodbye for now.",
+                description: "That's it for now, you can allways ask your teacher for more information. Goodbye, for now.",
+                width: 400,
             },
         ];
 
@@ -234,7 +235,7 @@
             _.each(guild.rules, function(rule) {
                 // Order the endorsements per user
                 _.each(rule.endorsements, function(endorsement) {
-                    _.findWhere(guild.members_data, { id: endorsement.user}).endorsements.push(endorsement);
+                    _.findWhere(guild.members_data, {id: endorsement.user}).endorsements.push(endorsement);
                 });
             });
 
@@ -257,6 +258,7 @@
                             points += type_group.rule.points * (type_group.rating * 1/3);
                         });
                     });
+
                     guild.graphs_data.line[index] += points;
                     member.line_data.push(points);
                 });
@@ -277,7 +279,7 @@
                 if(member.id === self.user.id) {
                     guild.graphs_data.line.push({
                         visible: member.selected,
-                        name: member.name,
+                        name: 'You',
                         data: member.line_data,
                         color: member.color
                     });
@@ -288,6 +290,9 @@
                 return 'Week ' + (axis_point+1);
             });
 
+            self.onboarding_enabled = true;
+            
+
             setTimeout(function () {
                 self.createChart(guild);
             }, 100);
@@ -295,23 +300,12 @@
 
         function createChart(data) {
             $('#'+data.id).highcharts({
-                chart: {
-                    type: 'spline',
-                    animation: true
-                },
-                title: {
-                    text: 'My endorsements'
-                },
-                subtitle: {
-                    text: 'Feedback of you by your team members'
-                },
-                xAxis: {
-                    categories: data.horizontal_axis
-                },
+                chart: { type: 'spline', animation: true },
+                title: { text: 'My endorsements' },
+                subtitle: { text: 'Feedback of you by your team members' },
+                xAxis: { categories: data.horizontal_axis },
                 yAxis: {
-                    title: {
-                        text: 'Points'
-                    },
+                    title: { text: 'Points' },
                     minorGridLineWidth: 0,
                     gridLineWidth: 1,
                     alternateGridColor: null,
@@ -323,16 +317,12 @@
                 plotOptions: {
                     spline: {
                         lineWidth: 4,
-                        marker: {
-                            enabled: false,
-                        },
+                        marker: { enabled: false, },
                     },
                     series: {
                         animation: self.first_line_graph_load,
                         events: {
-                            legendItemClick: function () {
-                                return false;
-                            }
+                            legendItemClick: function () { return false; }
                         }
                     },
                 },
