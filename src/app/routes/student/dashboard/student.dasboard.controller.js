@@ -169,6 +169,27 @@
                     });
                 });
 
+                console.log(guild);
+
+                guild.member.rupees = _.groupBy(guild.member.rupees, function(rupee) {
+                    return rupee.rupee;
+                });
+
+                // guild.member.rupees
+                guild.member.rupees = _.map(guild.member.rupees, function(rupees) {
+                    var tempObj = { type: null, amount: 0 };
+
+                    _.each(rupees, function(rupee) {
+                        tempObj.type = rupee.rupee;
+                        tempObj.amount += rupee.amount;
+                    });
+
+                    return tempObj;
+                });
+
+                console.log(guild.member.rupees);
+
+
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     guild.world.name = response.name;
@@ -290,8 +311,8 @@
                 return 'Week ' + (axis_point+1);
             });
 
-            self.onboarding_enabled = true;
-            
+            self.onboarding_enabled = false;
+
 
             setTimeout(function () {
                 self.createChart(guild);

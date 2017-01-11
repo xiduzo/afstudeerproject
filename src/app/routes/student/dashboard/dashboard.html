@@ -48,20 +48,20 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                 <md-card-content layout layout-align="space-around center">
                     <div ng-repeat="rupee in guild.member.rupees">
                         <cmd-rupee type="ruby"
-                        ng-if="rupee.rupee === 1"
+                        ng-if="rupee.type === 1"
                         amount="{{rupee.amount}}"
                         ></cmd-rupee>
                         <cmd-rupee type="sapphire"
                         amount="{{rupee.amount}}"
-                        ng-if="rupee.rupee === 2">
+                        ng-if="rupee.type === 2">
                         </cmd-rupee>
                         <cmd-rupee type="emerald"
                         amount="{{rupee.amount}}"
-                        ng-if="rupee.rupee === 3">
+                        ng-if="rupee.type === 3">
                         </cmd-rupee>
                         <cmd-rupee type="amethyst"
                         amount="{{rupee.amount}}"
-                        ng-if="rupee.rupee === 4">
+                        ng-if="rupee.type === 4">
                         </cmd-rupee>
                     </div>
                 </md-card-content>
