@@ -53,6 +53,20 @@
                         member.full_name = $filter('fullUserName')(member.user);
                         member.guild_name = guild.name;
                         member.guild_id = guild.id;
+
+                        member.rupees = _.groupBy(member.rupees, function(rupee) {
+                            return rupee.rupee;
+                        });
+
+                        member.rupees = _.map(member.rupees, function(rupees) {
+                            var tempObj = { type: null, amount: 0 };
+                            _.each(rupees, function(rupee) {
+                                tempObj.type = rupee.rupee;
+                                tempObj.amount += rupee.amount;
+                            });
+                            return tempObj;
+                        });
+
                         world.players.push(member);
                     });
                 });
