@@ -169,7 +169,6 @@
                     });
                 });
 
-                console.log(guild);
 
                 guild.member.rupees = _.groupBy(guild.member.rupees, function(rupee) {
                     return rupee.rupee;
@@ -186,8 +185,6 @@
 
                     return tempObj;
                 });
-
-                console.log(guild.member.rupees);
 
 
                 World.getWorld(guild.world.id)
