@@ -73,33 +73,35 @@ ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl
                     Todo
                 </span>
             </md-toolbar>
-            <md-list>
-                <md-list-item ng-if="guild.todo_list.length < 1" class="text--color--grey">
-                    No more cards on your todo list
-                </md-list-item>
-                <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
-                    <span flex layout="column">
-                        <span class="md-title">
-                            {{ card.name }}
+            <div layout flex ng-scrollbars>
+                <md-list>
+                    <md-list-item ng-if="guild.todo_list.length < 1" class="text--color--grey">
+                        No more cards on your todo list
+                    </md-list-item>
+                    <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
+                        <span flex layout="column">
+                            <span class="md-title">
+                                {{ card.name }}
+                            </span>
+                            <em class="md-subhead">
+                                {{ card.desc | limitTo : 150 }}<span ng-if="card.desc.length > 150">....</span>
+                            </em>
+                            <em class="md-subhead" ng-if="!card.desc">
+                                No card description available
+                            </em>
+                            <span class="text--color--grey">
+                                card created: {{ card.created_at | fromNow }}
+                            </span>
                         </span>
-                        <em class="md-subhead">
-                            {{ card.desc | limitTo : 150 }}<span ng-if="card.desc.length > 150">....</span>
-                        </em>
-                        <em class="md-subhead" ng-if="!card.desc">
-                            No card description available
-                        </em>
-                        <span class="text--color--grey">
-                            card created: {{ card.created_at | fromNow }}
-                        </span>
-                    </span>
-                    <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
-                        <md-icon md-svg-src="external_link_dark"></md-icon>
-                        <md-tooltip md-delay="1000">
-                            Goto card
-                        </md-tooltip>
-                    </md-button>
-                </md-list-item>
-            </md-list>
+                        <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
+                            <md-icon md-svg-src="external_link_dark"></md-icon>
+                            <md-tooltip md-delay="1000">
+                                Goto card
+                            </md-tooltip>
+                        </md-button>
+                    </md-list-item>
+                </md-list>
+            </div>
         </md-card>
     </section>
 </section>

@@ -24,8 +24,7 @@
     ) {
 
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
 
         Global.setRouteTitle('Progress');
