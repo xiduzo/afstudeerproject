@@ -59,9 +59,9 @@
                         });
 
                         member.rupees = _.map(member.rupees, function(rupees) {
-                            var tempObj = { type: null, amount: 0 };
+                            var tempObj = { rupee: null, amount: 0 };
                             _.each(rupees, function(rupee) {
-                                tempObj.type = rupee.rupee;
+                                tempObj.rupee = rupee.rupee;
                                 tempObj.amount += rupee.amount;
                             });
                             return tempObj;

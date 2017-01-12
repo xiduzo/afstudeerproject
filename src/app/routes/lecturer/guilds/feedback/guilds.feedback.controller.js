@@ -106,7 +106,7 @@
             var horizontal_axis = [];
             var week = 0;
             for(var i = data.world_data.duration; i > 0; i-=7) {
-                self.graphs_data.line.push(week);
+                self.graphs_data.line.push(0);
                 horizontal_axis.push(week);
                 week++;
             }
