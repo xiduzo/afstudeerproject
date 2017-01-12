@@ -222,10 +222,10 @@
                     animation: self.first_line_graph_load
                 },
                 title: {
-                    text: 'Endorsement points'
+                    text: 'Feedback points'
                 },
                 subtitle: {
-                    text: 'May 31 and and June 1, 2015 at two locations in Vik i Sogn, Norway'
+                    text: ''
                 },
                 xAxis: {
                     categories: self.horizontal_axis
@@ -246,7 +246,9 @@
                     spline: {
                         lineWidth: 4,
                         marker: {
-                            enabled: false,
+                            enabled: true,
+                            // radius: 5
+                            symbol: 'circle'
                         },
                     },
                     series: {
@@ -268,7 +270,7 @@
                 chart: {
                     polar: true
                 },
-                title: { text: 'Endorsement focus' },
+                title: { text: 'Feedback focus' },
                 xAxis: {
                     categories: [
                         'Houding',
