@@ -9,7 +9,12 @@
                         <h1 class="md-title">
                             {{ accountDetailCtrl.user | fullUserName }}
                         </h1>
-                        <em>@{{ accountDetailCtrl.trello_account.username }}</em>
+                        <span>
+                            Trello
+                            <a href="http://www.trello.com/{{ accountDetailCtrl.trello_account.username }}" target="_BLANK">
+                                @{{ accountDetailCtrl.trello_account.username }}
+                            </a>
+                        </span>
                     </section>
                 </section>
             </md-card>
