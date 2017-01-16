@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function AccountDetailController(
+        $rootScope,
         $state,
         Global,
         Guild,
@@ -64,12 +65,12 @@
 
                         setTimeout(function () {
                             var user = {
-                                techniek: Math.random() * 30 + 40,
-                                interaction: Math.random() * 30 + 40,
-                                visual: Math.random() * 30 + 40
+                                techniek: Math.random() * 40 + 25,
+                                interaction: Math.random() * 40 + 25,
+                                visual: Math.random() * 40 + 25
                             };
 
-                            CMDChart.createChart('cmdChart', user, 'small');
+                            CMDChart.createChart('cmdChart', user, 'small', true);
                         }, 100);
                     });
                 });
@@ -120,6 +121,7 @@
 
         function patchLocalSettings() {
             Global.setLocalSettings(self.local_settings);
+            $rootScope.$broadcast('patched-local-settings');
         }
 
     }

@@ -71,7 +71,9 @@
                 Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
             }
 
-            self.addHotkeys();
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            }
             self.loading_page = false;
         }, function() {
             // Err
@@ -82,7 +84,9 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $rootScope.$on('world-changed', function(event, world) {
             self.selected_world = world;
-            self.addHotkeys();
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            }
             Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
         });
 

@@ -83,7 +83,9 @@
                     });
                 });
 
-                self.addHotkeys();
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                }
                 self.loading_page = false;
 
             }, function() {

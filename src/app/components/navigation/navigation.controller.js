@@ -198,7 +198,9 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         if(self.user.id) {
             self.getWorldsAndGuilds();
-            self.addHotkeys();
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            }
         }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -209,7 +211,11 @@
             self.access = $rootScope.Global.getAccess();
             if(self.user.id) {
                 self.getWorldsAndGuilds();
-                self.addHotkeys();
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                } else {
+                    self.removeHotkeys();
+                }
             } else {
                 self.removeHotkeys();
             }
@@ -217,6 +223,14 @@
 
         $rootScope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
+        });
+
+        $rootScope.$on('patched-local-settings', function() {
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            } else {
+                self.removeHotkeys();
+            }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
