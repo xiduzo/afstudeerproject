@@ -22,7 +22,7 @@
                         </em>
                     </span>
                     <span>
-                        <md-switch ng-model="accountDetailCtrl.switches.hotkeys" aria-label="hotkeys">
+                        <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_hotkeys" aria-label="hotkeys">
                         </md-switch>
                     </span>
                 </section>
@@ -34,7 +34,7 @@
                         </em>
                     </span>
                     <span>
-                        <md-switch ng-model="accountDetailCtrl.switches.confirmation" aria-label="confirmation">
+                        <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_confirmation" aria-label="confirmation">
                         </md-switch>
                     </span>
                 </section>
@@ -66,7 +66,7 @@
             Trello
         </md-subheader>
         <section layout="column">
-            <md-button class="md-raised success" ng-click="accountDetailCtrl.authenticate()" layout>
+            <md-button aria-label="trello authentication" class="md-raised success" ng-click="accountDetailCtrl.authenticate()" layout>
                 <md-icon md-svg-src="book_light"></md-icon>
                 <span flex ng-if="!accountDetailCtrl.trello_account">
                     Authenticate

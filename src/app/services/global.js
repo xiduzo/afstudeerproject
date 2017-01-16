@@ -107,6 +107,8 @@
             },
             setLocalSettings: function(settings) {
                 self.local_settings = settings;
+                localStorageService.set('settings', self.local_settings);
+                Notifications.simpleToast('settings patched');
             },
         };
 
@@ -123,6 +125,7 @@
 
         if(localStorageService.get('settings')) {
             self.local_settings = localStorageService.get('settings');
+            console.log(self.local_settings);
         } else {
             localStorageService.set('settings', self.local_settings);
         }

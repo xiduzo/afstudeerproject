@@ -21,8 +21,7 @@
     ) {
 
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
 
         Global.setRouteTitle('Profile');
@@ -35,6 +34,7 @@
         self.createSpiderChart = createSpiderChart;
         self.authenticate = authenticate;
         self.selectGuild = selectGuild;
+        self.patchLocalSettings = patchLocalSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -42,6 +42,7 @@
         self.user = Global.getUser();
         self.trello_account = null;
         self.loading_page = true;
+        self.local_settings = Global.getLocalSettings();
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -115,6 +116,10 @@
         function selectGuild(guild) {
             Global.setSelectedGuild(guild.id);
             $state.go('base.home.dashboards.student');
+        }
+
+        function patchLocalSettings() {
+            Global.setLocalSettings(self.local_settings);
         }
 
     }
