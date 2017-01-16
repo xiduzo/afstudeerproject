@@ -22,6 +22,10 @@
         self.active_page = '';
         self.selected_world = null;
         self.selected_guild = null;
+        self.local_settings = {
+            enabled_confirmation: true,
+            enabled_hotkeys: true
+        };
 
         self.functions = {
             setUser: function(user) {
@@ -97,7 +101,13 @@
             },
             setRouteBackRoute: function(route, params) {
                 $rootScope.$broadcast('back-route', route, params);
-            }
+            },
+            getLocalSettings: function() {
+                return self.local_settings;
+            },
+            setLocalSettings: function(settings) {
+                self.local_settings = settings;
+            },
         };
 
         $rootScope.$on('new-user-login', function(event, user) {
@@ -109,6 +119,12 @@
             self.user = localStorageService.get('user');
             self.functions.getAccessLevel(self.user, true);
             $state.go('base.home');
+        }
+
+        if(localStorageService.get('settings')) {
+            self.local_settings = localStorageService.get('settings');
+        } else {
+            localStorageService.set('settings', self.local_settings);
         }
 
         return self.functions;
