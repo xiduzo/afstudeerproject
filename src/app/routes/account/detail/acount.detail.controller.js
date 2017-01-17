@@ -55,7 +55,7 @@
                 self.user.guilds.push(guild.guild);
             });
 
-            if(localStorage.getItem('trello_token')) {
+            if(localStorageService.get('trello_token')) {
                 TrelloApi.Authenticate()
                 .then(function(response) {
                     TrelloApi.Rest('GET', 'members/me')
@@ -95,13 +95,12 @@
         }
 
         function authenticate() {
-            if(localStorage.getItem('trello_token')) {
-                localStorage.removeItem('trello_token');
+            if(localStorageService.get('trello_token')) {
+                localStorageService.remove('trello_token');
             }
 
             TrelloApi.Authenticate()
             .then(function(){
-                console.log(true);
                 TrelloApi.Rest('GET', 'members/me')
                 .then(function(response) {
                     self.trello_account = response;

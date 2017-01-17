@@ -57,7 +57,6 @@
         function login() {
             Account.login(self.login_form.username, self.login_form.password, self.login_form.login_type)
                 .then(function(response) {
-                    console.log(response);
                     if(response.uid) {
 
                         // Only work with the information we need
