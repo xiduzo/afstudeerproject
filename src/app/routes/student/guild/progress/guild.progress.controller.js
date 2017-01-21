@@ -128,7 +128,7 @@
                             pie: {
                                 series: [{
                                     type: 'pie',
-                                    name: 'Cards to complete',
+                                    name: 'Open cards',
                                     innerSize: '75%',
                                     data: [],
                                 }]

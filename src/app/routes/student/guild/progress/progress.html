@@ -48,10 +48,10 @@
                                     {{ guild.insight_data.cards_in_progress }}
                                 </span>
                                 <span ng-if="guild.insight_data.cards_in_progress <= 1">
-                                    card to go
+                                    card open
                                 </span>
                                 <span ng-if="guild.insight_data.cards_in_progress > 1">
-                                    cards to go
+                                    cards open
                                 </span>
                             </md-card>
                         </section>
@@ -77,10 +77,10 @@
                                     <md-list flex>
                                         <md-list-item layout flex layout-align="space-between center">
                                             <span>
-                                                Cards
+                                                Open cards
                                             </span>
                                             <strong class="md-headline">
-                                                {{ member.cards.length }}
+                                                {{ member.cards.length - member.completed_cards }}
                                             </strong>
                                         </md-list-item>
                                         <md-list-item layout flex layout-align="space-between center">
