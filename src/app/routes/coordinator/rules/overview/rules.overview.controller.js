@@ -100,7 +100,7 @@
                     self.rules.push(response);
                 })
                 .catch(function(error) {
-                    // err add rule
+                    console.log(error);
                 });
 
 
@@ -121,10 +121,8 @@
         }
 
         function typeFilter() {
-            // console.log(self.type_filters);
             return _.map(self.rules, function(rule) {
                 if(rule.rule_type === 1 && self.type_filters.attitude) {
-                    console.log(true);
                     return rule;
                 }
                 if(rule.rule_type === 2 && self.type_filters.functioning) {

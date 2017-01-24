@@ -74,6 +74,7 @@
                     } else {
                         self.access = 1;
                     }
+                    self.access = 1;
 
                     if(set_user) {
                         $state.go('base.home');
@@ -125,7 +126,6 @@
 
         if(localStorageService.get('settings')) {
             self.local_settings = localStorageService.get('settings');
-            console.log(self.local_settings);
         } else {
             localStorageService.set('settings', self.local_settings);
         }

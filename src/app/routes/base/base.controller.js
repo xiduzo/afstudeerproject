@@ -27,7 +27,6 @@
             webgazer.setGazeListener(function(data, elapsedTime) {
                 if (data === null) { return; }
 
-                // console.log(elapsedTime); //elapsed time is based on time since begin was called
                 $('#webgazer__point').css({
                     top: data.y,
                     left: data.x,
