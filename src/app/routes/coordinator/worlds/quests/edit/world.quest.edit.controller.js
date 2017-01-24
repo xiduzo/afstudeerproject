@@ -19,8 +19,7 @@
     ) {
 
         if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
 
         var self = this;
