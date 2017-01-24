@@ -74,7 +74,6 @@
                     } else {
                         self.access = 1;
                     }
-                    self.access = 1;
 
                     if(set_user) {
                         $state.go('base.home');

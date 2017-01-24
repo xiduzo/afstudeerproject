@@ -220,8 +220,7 @@
                                             <div ng-click="rating = 2">
                                                 <md-icon md-svg-src="star_dark"
                                                 class="icon--color--lightGreen"
-                                                ng-if="rating >= 2"
-                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 2)">
+                                                ng-if="rating >= 2">
                                                 </md-icon>
                                                 <md-icon md-svg-src="star_border_dark"
                                                 class="icon--color--red"
@@ -232,13 +231,23 @@
                                             <div ng-click="rating = 3">
                                                 <md-icon md-svg-src="star_dark"
                                                 class="icon--color--lightGreen"
-                                                ng-if="rating >= 3"
-                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 3)">
+                                                ng-if="rating >= 3">
                                                 </md-icon>
                                                 <md-icon md-svg-src="star_border_dark"
                                                 class="icon--color--red"
                                                 ng-if="rating < 3"
                                                 ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 3)">
+                                                </md-icon>
+                                            </div>
+                                            <div ng-click="rating = 4">
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--lightGreen"
+                                                ng-if="rating >= 4">
+                                                </md-icon>
+                                                <md-icon md-svg-src="star_border_dark"
+                                                class="icon--color--red"
+                                                ng-if="rating < 4"
+                                                ng-click="guildRulesCtrl.setRating(guild, week.week, rule, member.user, 4)">
                                                 </md-icon>
                                             </div>
                                         </div>
@@ -274,6 +283,16 @@
                                                 <md-icon md-svg-src="star_border_dark"
                                                 class="icon--color--grey"
                                                 ng-if="rating < 3">
+                                                </md-icon>
+                                            </div>
+                                            <div>
+                                                <md-icon md-svg-src="star_dark"
+                                                class="icon--color--grey"
+                                                ng-if="rating >= 4">
+                                                </md-icon>
+                                                <md-icon md-svg-src="star_border_dark"
+                                                class="icon--color--grey"
+                                                ng-if="rating < 4">
                                                 </md-icon>
                                             </div>
                                         </div>
