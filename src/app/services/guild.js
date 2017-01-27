@@ -29,13 +29,6 @@
         service.getQuests = getQuests;
         service.addQuest = addQuest;
         service.patchQuest = patchQuest;
-        service.addObjective = addObjective;
-        service.removeObjective = removeObjective;
-        service.patchObjective = patchObjective;
-        service.addHistoryUpdate = addHistoryUpdate;
-        service.addObjectiveAssignment = addObjectiveAssignment;
-        service.removeObjectiveAssignment = removeObjectiveAssignment;
-        service.loadMoreHistoryUpdates = loadMoreHistoryUpdates;
         service.addGuildRule = addGuildRule;
         service.addEndorsement = addEndorsement;
         service.removeEndorsement = removeEndorsement;
@@ -190,94 +183,6 @@
                 data: {
                     completed: quest.completed,
                     grade: quest.grade,
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addObjective(guild, objective) {
-            return $http({
-                url: REST_API_URL + 'guild/guildObjective/',
-                method: "POST",
-                data: {
-                    guild: guild,
-                    name: objective.name,
-                    objective: objective.objective,
-                    points: objective.points
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function removeObjective(objective) {
-            return $http({
-                url: REST_API_URL + 'guild/guildObjective/'+objective+'/',
-                method: "DELETE"
-            })
-            .then(function(response) { return response;
-            }, function(error) { return error; });
-        }
-
-        function patchObjective(objective) {
-            return $http({
-                url: REST_API_URL + 'guild/guildObjective/'+objective.id+'/',
-                method: "PATCH",
-                data:  {
-                    completed: !objective.completed,
-                    completed_at: objective.completed_at
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addHistoryUpdate(user, guild, update) {
-            return $http({
-                url:  REST_API_URL + 'guild/guildHistory/',
-                method: "POST",
-                data: {
-                    user: user,
-                    guild: guild,
-                    action: update.action,
-                    action_type: update.type,
-                    about: update.about,
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addObjectiveAssignment(objective, user) {
-            return $http({
-                url: REST_API_URL + 'guild/guildObjectiveAssignment/',
-                method: "POST",
-                data: {
-                    objective: objective,
-                    user: user
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function removeObjectiveAssignment(assignment) {
-            return $http({
-                url: REST_API_URL + 'guild/guildObjectiveAssignment/'+assignment+'/',
-                method: "DELETE"
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function loadMoreHistoryUpdates(guild, start) {
-            return $http({
-                url: REST_API_URL + 'guild/guildFullHistory',
-                method: "GET",
-                params: {
-                    guild: guild,
-                    start: start
                 }
             })
             .then(function(response) { return response.data;
