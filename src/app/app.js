@@ -21,6 +21,7 @@
             'cfp.hotkeys',
             'angular-md5',
             'trello',
+            'angular-websocket',
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
