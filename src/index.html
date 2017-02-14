@@ -28,11 +28,13 @@
 
     <div ui-view></div>
 
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <!-- build:js(src) scripts/vendor.js -->
     <!-- bower:js -->
     <!-- run `gulp inject` to automatically populate bower script dependencies -->
     <!-- endbower -->
     <!-- endbuild -->
+    <script>if (window.module) module = window.module;</script>
 
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
     <!-- inject:js -->
