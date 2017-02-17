@@ -11,7 +11,6 @@
         $state,
         Global,
         Guild,
-        Quest,
         World,
         CMDChart,
         Spiderchart,

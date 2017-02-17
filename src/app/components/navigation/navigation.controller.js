@@ -248,20 +248,6 @@
                         self.changeState('base.rules.overview');
                     }
                 })
-                .add({
-                    combo: 'b',
-                    description: 'Goto behaviours',
-                    callback: function() {
-                        self.changeState('base.behaviour.behaviours');
-                    }
-                })
-                .add({
-                    combo: 'e',
-                    description: 'Goto rewards',
-                    callback: function() {
-                        self.changeState('base.behaviour.rewards');
-                    }
-                })
                 ; // End of hotkeys
             }
 
@@ -305,13 +291,6 @@
                     description: 'Goto group',
                     callback: function() {
                         self.changeState('base.guild.overview');
-                    }
-                })
-                .add({
-                    combo: 'a',
-                    description: 'Goto assessments',
-                    callback: function() {
-                        self.changeState('base.quest.log');
                     }
                 })
                 .add({

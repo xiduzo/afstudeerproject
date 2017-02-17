@@ -16,7 +16,6 @@
         Global,
         localStorageService,
         Notifications,
-        Quest,
         World,
         TrelloApi,
         STUDENT_ACCESS_LEVEL,

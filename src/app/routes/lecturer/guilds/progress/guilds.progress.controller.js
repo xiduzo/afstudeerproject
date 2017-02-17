@@ -183,7 +183,6 @@
 
                             // Building the bar chart
                             _.each(weeks, function(week, index) {
-                                console.log(week);
                                 _.each(graph_data.bar.series, function(serie) {
                                     serie.data.push(0);
                                 });

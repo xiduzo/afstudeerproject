@@ -308,7 +308,7 @@
                 return 'Week ' + (axis_point+1);
             });
 
-            self.onboarding_enabled = true;
+            self.onboarding_enabled = false;
 
 
             setTimeout(function () {

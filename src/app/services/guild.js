@@ -26,9 +26,6 @@
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
-        service.getQuests = getQuests;
-        service.addQuest = addQuest;
-        service.patchQuest = patchQuest;
         service.addGuildRule = addGuildRule;
         service.addEndorsement = addEndorsement;
         service.removeEndorsement = removeEndorsement;
@@ -146,44 +143,6 @@
             return $http({
                 url: REST_API_URL + 'user/userGuilds/'+user+'/',
                 method: "GET"
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function getQuests(guild) {
-            return $http({
-                url: REST_API_URL + 'guild/guildQuest/',
-                method: "GET",
-                params: {
-                    guild: guild
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addQuest(guild, quest) {
-            return $http({
-                url: REST_API_URL + 'guild/guildQuest/',
-                method: "POST",
-                data: {
-                    guild: guild,
-                    quest: quest
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function patchQuest(quest) {
-            return $http({
-                url: REST_API_URL + 'guild/guildQuest/'+quest.id+'/',
-                method: "PATCH",
-                data: {
-                    completed: quest.completed,
-                    grade: quest.grade,
-                }
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
