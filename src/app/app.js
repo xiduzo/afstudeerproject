@@ -52,18 +52,14 @@
             'cmd.account',
 
             // Student
-            'cmd.quests',
             'cmd.guild',
 
             // Lecturer
             'cmd.guilds',
-            'cmd.assessments',
-            'cmd.stimulance',
 
             // Coordinator
             'cmd.worlds',
             'cmd.rules',
-            'cmd.behaviour',
 
             // Research
             'cmd.research',
