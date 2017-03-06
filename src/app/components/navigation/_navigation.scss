@@ -1,9 +1,9 @@
 #main__navigation {
     md-content {
-        .md-subheader {
-        }
+      background: $navigation_background;
         md-list {
             md-list-item {
+                color: $navigation_color;
                 &:focus{
                     outline: none;
                 }
@@ -11,7 +11,11 @@
                     margin: 0;
                 }
                 &.active_menu_item {
-                    background-color: #ECF0F1;
+                    background-color: #FFCC00;
+                    color: white;
+                    md-icon {
+                        @extend .icon--color--white;
+                    }
                 }
             }
         }

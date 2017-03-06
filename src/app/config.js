@@ -51,9 +51,27 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $mdThemingProvider
             // Add palettes
-            .definePalette('cmd', $mdThemingProvider.extendPalette('amber', {
+            .definePalette('cmd', {
+                // 'contrastDefaultColor': 'light',
+                // 'default': 'FFCC00' // #FFCC00
+                // Im color blind, not that creative with colors
+                '50':   'FFF8E1', // #FFF8E1
+                '100':  'FFECB3', // #FFECB3
+                '200':  'FFE082', // #FFE082
+                '300':  'FFD54F', // #FFD54F
+                '400':  'FFCA28', // #FFCA28
+                '500':  'FFCC00', // #FFCC00
+                '600':  'FFB300', // #FFB300
+                '700':  'FFA000', // #FFA000
+                '800':  'FF8F00', // #FF8F00
+                '900':  'FF6F00', // #FF6F00
+                'A100': 'FFE57F', // #FFE57F
+                'A200': 'FFD740', // #FFD740
+                'A400': 'FFC400', // #FFC400
+                'A700': 'FFAB00', // #FFAB00
                 'contrastDefaultColor': 'light',
-            }))
+                'default': 'FFCC00' // #FFCC00
+            })
             .definePalette('cmdContrast', {
                 // Im color blind, not that creative with colors
                 '50':   'FAFAFA', // #FAFAFA
@@ -185,6 +203,8 @@
             .icon('star_border_dark', './assets/icons/material/ic_star_border_black_48px.svg', 48)
             .icon('move_horizontal_light', './assets/icons/material/ic_swap_horiz_white_48px.svg', 48)
             .icon('move_horizontal_dark', './assets/icons/material/ic_swap_horiz_black_48px.svg', 48)
+            .icon('expand_more_light', './assets/icons/material/ic_expand_more_white_48px.svg', 48)
+            .icon('expand_more_dark', './assets/icons/material/ic_expand_more_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

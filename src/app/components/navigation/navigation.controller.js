@@ -8,14 +8,10 @@
     /** @ngInject */
     function NavigationController(
         $scope,
-        $rootScope,
         $mdSidenav,
         $state,
         hotkeys,
-        Account,
         Global,
-        Guild,
-        World,
         STUDENT_ACCESS_LEVEL,
         LECTURER_ACCESS_LEVEL,
         COORDINATOR_ACCESS_LEVEL
@@ -27,15 +23,10 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.toggleNavigation = toggleNavigation;
-        self.logout = logout;
         self.active_menu_item = $state.current.name;
-        self.changedWorld = changedWorld;
-        self.changedGuild = changedGuild;
         self.changeState = changeState;
         self.addHotkeys = addHotkeys;
         self.removeHotkeys = removeHotkeys;
-        self.getWorldsAndGuilds = getWorldsAndGuilds;
-
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -50,7 +41,6 @@
         self.main_navigation = [
             {
                 subgroup: 'coordinator',
-                verbose: 'Coordinator',
                 access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
                     // {
@@ -75,7 +65,6 @@
             },
             {
                 subgroup: 'lecturer',
-                verbose: 'Lecturer',
                 access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                 items: [
                     {
@@ -95,7 +84,6 @@
             },
             {
                 subgroup: 'student',
-                verbose: 'Student',
                 access_levels: [COORDINATOR_ACCESS_LEVEL, STUDENT_ACCESS_LEVEL],
                 items: [
                     {
@@ -142,19 +130,6 @@
             },
         ];
 
-        self.account_navigation = {
-            access_level: STUDENT_ACCESS_LEVEL,
-            subgroup: 'account',
-            verbose: 'Account',
-            items: [
-                {
-                    name: 'Profile',
-                    icon: 'person_dark',
-                    link_to: 'base.account.detail'
-                }
-            ]
-        };
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -163,7 +138,6 @@
               Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         if(self.user.id) {
-            self.getWorldsAndGuilds();
             if(Global.getLocalSettings().enabled_hotkeys) {
                 self.addHotkeys();
             }
@@ -172,11 +146,9 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $rootScope.$on('user-changed', function() {
-            self.user = $rootScope.Global.getUser();
-            self.access = $rootScope.Global.getAccess();
+        $scope.$on('user-changed', function() {
+            self.access = Global.getAccess();
             if(self.user.id) {
-                self.getWorldsAndGuilds();
                 if(Global.getLocalSettings().enabled_hotkeys) {
                     self.addHotkeys();
                 } else {
@@ -187,11 +159,11 @@
             }
         });
 
-        $rootScope.$on('guild-changed', function(event, guild) {
+        $scope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
         });
 
-        $rootScope.$on('patched-local-settings', function() {
+        $scope.$on('patched-local-settings', function() {
             if(Global.getLocalSettings().enabled_hotkeys) {
                 self.addHotkeys();
             } else {
@@ -205,25 +177,6 @@
         function toggleNavigation() {
             // Opens and closes navigation
             $mdSidenav('main__navigation').toggle();
-        }
-
-        function logout() {
-            // Close the navigation
-            self.toggleNavigation();
-
-            // Logout the user
-            Account.logout();
-
-            // Remove all the hotkeys
-            self.removeHotkeys();
-        }
-
-        function changedWorld() {
-            Global.setSelectedWorld(self.selected_world);
-        }
-
-        function changedGuild() {
-            Global.setSelectedGuild(self.selected_guild);
         }
 
         function changeState(state) {
@@ -319,13 +272,6 @@
                     self.changeState('base.account.detail');
                 }
             })
-            .add({
-                combo: 'l',
-                description: 'Logout',
-                callback: function() {
-                    self.logout();
-                }
-            })
             ; // End of hotkeys
         }
 
@@ -333,42 +279,6 @@
             var alphabeth = 'abcdefghijklmnopqrstuvwxyz';
             _.each(alphabeth, function(letter) {
                 hotkeys.del(letter);
-            });
-        }
-
-        function getWorldsAndGuilds() {
-            World.getWorldsOfGamemaster(self.user.id)
-            .then(function(response) {
-                self.worlds = [];
-                self.selected_world = null;
-                _.each(response.worlds, function(world) {
-                    self.worlds.push({id: world.world.id, name: world.world.name});
-                });
-
-                if(self.worlds.length >= 1) {
-                    self.selected_world = _.first(self.worlds).id;
-                }
-                Global.setSelectedWorld(self.selected_world);
-            })
-            .catch(function() {
-
-            });
-
-            Guild.getUserGuilds(self.user.id)
-            .then(function(response) {
-                self.guilds = [];
-                self.selected_guild = null;
-                _.each(response.guilds, function(guild) {
-                    self.guilds.push({id: guild.guild.id, name: guild.guild.name});
-                });
-
-                if(self.guilds.length >= 1) {
-                    self.selected_guild = _.first(self.guilds).id;
-                }
-                Global.setSelectedGuild(self.selected_guild);
-            })
-            .catch(function() {
-
             });
         }
 
