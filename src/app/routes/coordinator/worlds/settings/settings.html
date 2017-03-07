@@ -1,87 +1,78 @@
-<section flex layout="column">
-    <section flex layout>
-        <section flex=80 layout="column" layout-padding>
-            <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
-            <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout-margin layout="column">
-                <cmd-empty-state flex ng-if="worldsSettingsCtrl.world.quests.length < 1"
-                    icon="book_dark"
-                    headline="No assessments in this class."
-                    title="Add a new assessments to your right.">
-                </cmd-empty-state>
+<section flex layout>
+    <md-content flex=80 layout="column" layout-padding md-whiteframe="2">
+        <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
+        <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
+            test
+        </section>
+    </md-content>
+
+    <section flex=20 layout-padding layout="column" style="overflow-x: hidden;">
+        <section>
+            <section layout="column">
+                <md-button class="md-raised md-accent"
+                ng-click="worldsSettingsCtrl.changeWorldName($event)" layout>
+                    <md-icon md-svg-src="pencil_light"></md-icon>
+                    <span flex>
+                        Change class name
+                    </span>
+                </md-button>
+                <md-button class="md-warn md-raised"
+                ng-click="worldsSettingsCtrl.deleteWorld($event)" layout>
+                    <md-icon md-svg-src="delete_light"></md-icon>
+                    <span flex>
+                        Delete class
+                    </span>
+                </md-button>
             </section>
         </section>
 
-        <md-content flex=20 layout="column" style="overflow-x: hidden;">
-            <section>
-                <md-subheader>
-                    Actions
-                </md-subheader>
+        <section>
+            <md-subheader>
+                Settings
+            </md-subheader>
+            <section layout="column" layout-padding>
                 <section layout="column">
-                    <md-button class="md-raised md-accent"
-                    ng-click="worldsSettingsCtrl.changeWorldName($event)" layout>
-                        <md-icon md-svg-src="pencil_light"></md-icon>
-                        <span flex>
-                            Change class name
-                        </span>
-                    </md-button>
-                    <md-button class="md-warn md-raised"
-                    ng-click="worldsSettingsCtrl.deleteWorld($event)" layout>
-                        <md-icon md-svg-src="delete_light"></md-icon>
-                        <span flex>
-                            Delete class
-                        </span>
-                    </md-button>
+                    <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-placeholder="Pick a date"></md-datepicker>
+                    <div class="hint text--color--grey">Starting date of this class</div>
                 </section>
+                <md-input-container>
+                    <label>Duration</label>
+                    <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
+                    <div class="hint text--color--grey">In days</div>
+                </md-input-container>
             </section>
+        </section>
 
-            <section>
-                <md-subheader>
-                    Settings
-                </md-subheader>
-                <section layout="column" layout-padding>
-                    <section layout="column">
-                        <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-placeholder="Pick a date"></md-datepicker>
-                        <div class="hint text--color--grey">Starting date of this class</div>
-                    </section>
-                    <md-input-container>
-                        <label>Duration</label>
-                        <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
-                        <div class="hint text--color--grey">In days</div>
-                    </md-input-container>
-                </section>
+        <section>
+            <md-subheader>
+                Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
+            </md-subheader>
+            <section layout layout-wrap>
+                <span flex=33 layout layout-padding layout-align="center"
+                    ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
+                    <img class="round" gravatar-size="60" gravatar-src-once="gamemaster.email">
+                    <md-tooltip md-delay="1000">
+                        {{ gamemaster | fullUserName }}
+                    </md-tooltip>
+                </span>
             </section>
+        </section>
 
+        <section>
+            <md-subheader>
+                Groups ({{worldsSettingsCtrl.world.guilds.length}})
+            </md-subheader>
             <section>
-                <md-subheader>
-                    Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
-                </md-subheader>
-                <section layout layout-wrap>
-                    <span flex=33 layout layout-padding layout-align="center"
-                        ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
-                        <img class="round" gravatar-size="60" gravatar-src-once="gamemaster.email">
+                <md-list>
+                    <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds">
+                        {{ guild.name }}
                         <md-tooltip md-delay="1000">
-                            {{ gamemaster | fullUserName }}
+                            View {{ guild.name }}
                         </md-tooltip>
-                    </span>
-                </section>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-list-item>
+                </md-list>
             </section>
-
-            <section>
-                <md-subheader>
-                    Groups ({{worldsSettingsCtrl.world.guilds.length}})
-                </md-subheader>
-                <section>
-                    <md-list>
-                        <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds">
-                            {{ guild.name }}
-                            <md-tooltip md-delay="1000">
-                                View {{ guild.name }}
-                            </md-tooltip>
-                            <md-divider ng-if="!$last"></md-divider>
-                        </md-list-item>
-                    </md-list>
-                </section>
-            </section>
-        </md-content>
+        </section>
     </section>
 </section>

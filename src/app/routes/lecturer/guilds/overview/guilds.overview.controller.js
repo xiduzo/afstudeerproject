@@ -66,10 +66,6 @@
                 self.worlds.push(world.world);
             });
 
-            if(_.findWhere(self.worlds, {id: self.selected_world})) {
-                Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
-            }
-
             if(Global.getLocalSettings().enabled_hotkeys) {
                 self.addHotkeys();
             }
@@ -86,7 +82,6 @@
             if(Global.getLocalSettings().enabled_hotkeys) {
                 self.addHotkeys();
             }
-            Global.setRouteTitle('Groups overview', _.findWhere(self.worlds, {id: self.selected_world}).name);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -36,8 +36,9 @@
         self.login_form = {
             username: '',
             password: '',
-            login_type: 'student'
         };
+
+        self.login_type = 'student';
 
         hotkeys.bindTo($scope)
         .add({
@@ -47,15 +48,13 @@
                 self.login();
             }
         })
-        // you can chain these methods for ease of use:
-        // .add ({...})
         ; // End of hotkeys
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function login() {
-            Account.login(self.login_form.username, self.login_form.password, self.login_form.login_type)
+            Account.login(self.login_form.username, self.login_form.password, self.login_type)
                 .then(function(response) {
                     if(response.uid) {
 
@@ -69,7 +68,7 @@
                             surname_prefix:    response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
                             surname:           response.sn[0],
                             gender:            response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-                            is_staff:          self.login_form.login_type === 'student' ? false : true
+                            is_staff:          self.login_type === 'student' ? false : true
                         };
 
                         Account.checkForExistingUser(logged_in_user.uid)
@@ -107,7 +106,12 @@
                         });
 
                     } else {
+                      if(self.login_type === 'student') {
+                        self.login_type = 'lecturer';
+                        self.login();
+                      } else {
                         Notifications.simpleToast(response.message);
+                      }
                     }
                 });
         }

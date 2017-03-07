@@ -120,9 +120,6 @@
                     .then(function(response) {
                         guild.possible_rules = response;
                         self.guilds.push(guild);
-                        if(_.findWhere(self.guilds, { id: self.selected_guild})) {
-                            Global.setRouteTitle('Feedback', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-                        }
                         self.loading_page = false;
                     })
                     .catch(function(error) {

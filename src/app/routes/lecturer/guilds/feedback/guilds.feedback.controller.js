@@ -54,7 +54,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getGuild($stateParams.guildUuid)
         .then(function(response) {
-            Global.setRouteTitle('Group feedback', response.name);
             self.guild = response;
             _.each(response.members, function(member, index) {
                 self.members_data.push({

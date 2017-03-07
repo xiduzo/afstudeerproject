@@ -50,8 +50,6 @@
             self.selected_guild = guild;
 
             if(_.findWhere(self.guilds, { id: self.selected_guild })) {
-                Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild }).name);
-
                 guild = _.findWhere(self.guilds, { id: self.selected_guild});
 
                 self.buildGraphData(guild);
@@ -71,11 +69,6 @@
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     guild.world = response;
-
-                    if(_.findWhere(self.guilds, { id: self.selected_guild})) {
-                        Global.setRouteTitle('Progress', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-                    }
-
                     self.buildGraphData(guild);
                 });
             });

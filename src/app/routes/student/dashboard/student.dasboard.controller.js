@@ -108,10 +108,6 @@
         $rootScope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
 
-            if(_.findWhere(self.guilds, {id: self.selected_guild})) {
-                Global.setRouteTitle('Dashboard', _.findWhere(self.guilds, {id: self.selected_guild}).name);
-            }
-
             guild = _.findWhere(self.guilds, {id: self.selected_guild});
 
             if(!guild.trello_board || !guild.trello_done_list) {
@@ -141,10 +137,6 @@
             _.each(response.guilds, function(guild) {
                 self.guilds.push(guild.guild);
             });
-
-            if(_.findWhere(self.guilds, {id: self.selected_guild})) {
-                Global.setRouteTitle('Dashboard', _.findWhere(self.guilds, {id: self.selected_guild}).name);
-            }
 
             _.each(self.guilds, function(guild) {
                 self.loading_page = true;

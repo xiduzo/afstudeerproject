@@ -145,14 +145,6 @@
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Broadcasts
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $rootScope.$on('guild-changed', function(event, guild) {
-            self.selected_guild = guild;
-            Global.setRouteTitle('Activity', _.findWhere(self.guilds, { id: self.selected_guild}).name);
-        });
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

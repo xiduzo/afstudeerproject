@@ -54,8 +54,6 @@
                 response.start = new Date(moment(response.start));
                 self.world = response;
 
-                Global.setRouteTitle('Class settings', self.world.name);
-
                 if(Global.getLocalSettings().enabled_hotkeys) {
                     self.addHotkeys();
                 }

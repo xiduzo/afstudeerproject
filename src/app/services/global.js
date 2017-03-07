@@ -75,7 +75,8 @@
                         self.access = 1;
                     }
 
-                    self.access = 3;
+                    self.access = 1;
+
                     if(set_user) {
                         $state.go('base.home');
                     }
@@ -97,8 +98,8 @@
             getSelectedWorld: function() {
                 return self.selected_world;
             },
-            setRouteTitle: function(title, subtitle) {
-                $rootScope.$broadcast('route-title', title, subtitle);
+            setRouteTitle: function(title) {
+                $rootScope.$broadcast('route-title', title);
             },
             setRouteBackRoute: function(route, params) {
                 $rootScope.$broadcast('back-route', route, params);
@@ -114,7 +115,7 @@
         };
 
         $rootScope.$on('new-user-login', function(event, user) {
-            self.functions.getAccessLevel(user);
+            // self.functions.getAccessLevel(user);
             $state.go('base.home');
         });
 

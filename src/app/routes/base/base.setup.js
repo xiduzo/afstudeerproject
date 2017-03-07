@@ -55,7 +55,7 @@
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
             if($rootScope.Global.getAccess() < 1) {
-                $state.go('base.account.login');
+              $state.go('base.account.login');
             }
             $rootScope.$previousState = !fromState.name ? {name: 'base.home', isRoot: true} : fromState;
         });

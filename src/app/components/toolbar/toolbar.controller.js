@@ -34,7 +34,6 @@
         self.user = Global.getUser();
         self.access = Global.getAccess();
         self.route_title = '';
-        self.route_subtitle = '';
         self.back_route = null;
         self.back_route_params = null;
 
@@ -43,9 +42,8 @@
             self.access = Global.getAccess();
         });
 
-        $scope.$on('route-title', function(event, title, subtitle) {
+        $scope.$on('route-title', function(event, title) {
             self.route_title = title;
-            self.route_subtitle = subtitle;
         });
 
         $scope.$on('back-route', function(event, route, params) {

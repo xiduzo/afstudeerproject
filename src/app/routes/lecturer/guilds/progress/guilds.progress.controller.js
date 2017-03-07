@@ -59,8 +59,6 @@
 
                 self.guild = response;
 
-                Global.setRouteTitle('Group progress', self.guild.name);
-
                 World.getWorld(response.world.id)
                 .then(function(response) {
                     self.guild.world = response;

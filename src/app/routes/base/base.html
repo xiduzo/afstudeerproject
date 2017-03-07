@@ -9,10 +9,10 @@
 
     <cmd-navigation></cmd-navigation>
 
-    <md-content layout="column" flex md-whiteframe=3>
-        <cmd-toolbar md-whiteframe=1></cmd-toolbar>
+    <section layout="column" flex>
+        <cmd-toolbar md-whiteframe="3"></cmd-toolbar>
 
-        <md-content ui-view="main" id="main__content" flex layout="row" style="overflow: hidden;"></md-content>
-    </md-content>
+        <main ui-view="main" id="main__content" flex layout="row" style="overflow: hidden;"></main>
+    </section>
 
 </div>
