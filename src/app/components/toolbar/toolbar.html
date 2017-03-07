@@ -25,7 +25,8 @@
                 </h1>
                 <md-menu-bar ng-if="toolbarCtrl.access >= 1 && toolbarCtrl.guilds.length >= 1">
                     <md-menu ng-if="toolbarCtrl.guilds.length >= 2">
-                        <button ng-click="$mdOpenMenu()">
+                        <!-- https://github.com/angular/material/issues/6802 -->
+                        <button ng-click="$mdOpenMenu($event)">
                             <md-icon md-svg-src="guild_dark"></md-icon>
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_guild.name }}
@@ -34,8 +35,10 @@
                         </button>
                         <md-menu-content width="4">
                             <md-menu-item ng-repeat="guild in toolbarCtrl.guilds" ng-if="guild.id != toolbarCtrl.selected_guild.id" ng-click="toolbarCtrl.changeGuild(guild)">
-                                <md-button uit-sref="base.account.detail">
-                                    {{ guild.name }}
+                                <md-button>
+                                    <div layout="row">
+                                        <p flex>{{ guild.name }}</p>
+                                    </div>
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
@@ -51,7 +54,8 @@
                 </md-menu-bar>
                 <md-menu-bar ng-if="toolbarCtrl.access >= 2 && toolbarCtrl.worlds.length >= 1">
                     <md-menu ng-if="toolbarCtrl.worlds.length >= 2">
-                        <button ng-click="$mdOpenMenu()">
+                        <!-- https://github.com/angular/material/issues/6802 -->
+                        <button ng-click="$mdOpenMenu($event)">
                             <md-icon md-svg-src="world_dark"></md-icon>
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_world.name }}
@@ -60,8 +64,10 @@
                         </button>
                         <md-menu-content width="4">
                             <md-menu-item ng-repeat="world in toolbarCtrl.worlds" ng-if="world.id != toolbarCtrl.selected_world.id" ng-click="toolbarCtrl.changeWorld(world)">
-                                <md-button uit-sref="base.account.detail">
-                                    {{ world.name }}
+                                <md-button>
+                                    <div layout="row">
+                                        <p flex>{{ world.name }}</p>
+                                    </div>
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
@@ -80,7 +86,8 @@
         <section layout layout-align="start center">
             <md-menu-bar>
                 <md-menu>
-                    <button ng-click="$mdOpenMenu()">
+                    <!-- https://github.com/angular/material/issues/6802 -->
+                    <button ng-click="$mdOpenMenu($event)">
                         <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
                         <strong layout-padding>
                             {{ toolbarCtrl.user | fullUserName }}
@@ -88,17 +95,21 @@
                         <md-icon md-svg-src="expand_more_dark"></md-icon>
                     </button>
                     <md-menu-content width="4">
-                        <md-menu-item class="md-indent">
-                            <md-icon md-svg-icon="person_dark"></md-icon>
-                            <md-button ui-sref="base.account.detail">
-                                Profile
+                        <md-menu-item ui-sref="base.account.detail">
+                            <md-button>
+                                <div layout="row">
+                                    <md-icon md-menu-align-target md-svg-icon="person_dark"> </md-icon>
+                                    <p flex>Profile</p>
+                                </div>
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
-                        <md-menu-item class="md-indent">
-                            <md-icon md-svg-icon="settings_dark"></md-icon>
-                            <md-button ng-click="toolbarCtrl.logout()">
-                                Logout
+                        <md-menu-item ng-click="toolbarCtrl.logout()">
+                            <md-button>
+                                <div layout="row">
+                                    <md-icon md-menu-align-target md-svg-icon="settings_dark"> </md-icon>
+                                    <p flex>Logout</p>
+                                </div>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
