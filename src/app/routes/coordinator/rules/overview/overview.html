@@ -6,7 +6,7 @@
         title="Dobby is a free elf."
         subtitle="Or just add some rules on your right">
     </cmd-empty-state>
-    <section flex=80 layout-fill ng-scrollbars
+    <md-content flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content"
      ng-if="rulesOverviewCtrl.rules.length >= 1">
         <section layout layout-wrap>
             <div flex=25 layout-padding
@@ -60,12 +60,9 @@
                 </section>
             </div>
         </section>
-    </section>
+    </md-content>
 
-    <md-content layout="column" layout-fill flex=20>
-        <md-subheader>
-            Actions
-        </md-subheader>
+    <section flex=20 layout-padding layout="column" id="sidebar__content">
         <section layout="column">
             <md-button layout flex class="success md-raised"
             ng-click="rulesOverviewCtrl.addRule()">
@@ -76,15 +73,12 @@
                 </span>
             </md-button>
         </section>
-        <md-subheader>
-            Filter options
-        </md-subheader>
-        <section layout-padding>
+        <section>
             <md-input-container class="md-block">
-                <label>Rule</label>
+                <label>Search rule</label>
                 <input ng-model="filters.free_search">
             </md-input-container>
         </section>
-    </md-content>
+    </section>
 
 </section>

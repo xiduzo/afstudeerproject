@@ -205,6 +205,14 @@
             .icon('move_horizontal_dark', './assets/icons/material/ic_swap_horiz_black_48px.svg', 48)
             .icon('expand_more_light', './assets/icons/material/ic_expand_more_white_48px.svg', 48)
             .icon('expand_more_dark', './assets/icons/material/ic_expand_more_black_48px.svg', 48)
+            .icon('pie_light', './assets/icons/material/ic_pie_chart_white_48px.svg', 48)
+            .icon('pie_dark', './assets/icons/material/ic_pie_chart_black_48px.svg', 48)
+            .icon('trending_up_light', './assets/icons/material/ic_trending_up_white_48px.svg', 48)
+            .icon('trending_up_dark', './assets/icons/material/ic_trending_up_black_48px.svg', 48)
+            .icon('trending_down_light', './assets/icons/material/ic_trending_down_white_48px.svg', 48)
+            .icon('trending_down_dark', './assets/icons/material/ic_trending_down_black_48px.svg', 48)
+            .icon('trending_flat_light', './assets/icons/material/ic_trending_flat_white_48px.svg', 48)
+            .icon('trending_flat_dark', './assets/icons/material/ic_trending_flat_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

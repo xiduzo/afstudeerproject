@@ -1,0 +1,151 @@
+<cmd-loading-page ng-if="guildWorkloadCtrl.loading_page"></cmd-loading-page>
+
+<section layout-fill ng-if="!guildWorkloadCtrl.loading_page">
+    <cmd-empty-state ng-if="guildWorkloadCtrl.guilds.length < 1"
+        icon="guild_dark"
+        headline="No group found."
+        title="Wait for a lecturer to add you to a group.">
+    </cmd-empty-state>
+
+    <section layout-fill ng-repeat="guild in guildWorkloadCtrl.guilds" ng-if="guild.id === guildWorkloadCtrl.selected_guild">
+        <cmd-empty-state ng-if="guild.no_trello_settings"
+            icon="settings_dark"
+            headline="Trello not configured"
+            title="Wait for a lecturer to configure this group correctly.">
+        </cmd-empty-state>
+        <cmd-empty-state ng-if="guild.no_world_settings"
+            icon="settings_dark"
+            headline="Class not configured"
+            title="Wait for a coordinator to configure this class correctly.">
+        </cmd-empty-state>
+        <section ng-if="!guild.no_trello_settings && !guild.no_world_settings" layout layout-fill>
+            <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
+                <section layout>
+                    <md-card flex=50 style="min-height: 400px;" id="chart__{{guild.id}}"></md-card>
+                    <section layout="column" flex>
+                        <section flex layout>
+                            <md-card flex layout layout-align="space-around center">
+                                <section layout="column" layout-align="center center">
+                                    <h1 class="md-display-2">
+                                        {{ guild.current_week.cards.length }}
+                                    </h1>
+                                    <div>
+                                        kaart<span ng-if="guild.current_week.cards.length >= 2 || guild.current_week.cards.length === 0">en</span> voltooid deze week
+                                    </div>
+                                    <md-tooltip>
+                                        Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end  | momentDate : 'DD/MM/YYYY' }}
+                                    </md-tooltip>
+                                </section>
+                                <section layout="column" layout-align="center center">
+                                    <h1 class="md-display-2">
+                                        <md-icon class="icon--size--48" md-svg-src="trending_up_dark" ng-class="{
+                                            'icon--color--red': guild.insight_data.workload_percentage <= -60,
+                                            'icon--color--deepOrange': guild.insight_data.workload_percentage <= -20,
+                                            'icon--color--orange': guild.insight_data.workload_percentage <= -5,
+                                            'icon--color--black': guild.insight_data.workload_percentage >= -4 && guild.insight_data.workload_percentage <= 4,
+                                            'icon--color--lime': guild.insight_data.workload_percentage >= 5 && guild.insight_data.workload_percentage <= 19,
+                                            'icon--color--lightGreen': guild.insight_data.workload_percentage >= 20 && guild.insight_data.workload_percentage <= 59,
+                                            'icon--color--green': guild.insight_data.workload_percentage >= 60
+                                        }">
+                                        </md-icon>
+                                    </h1>
+                                    <strong>
+                                        <span ng-if="guild.insight_data.workload_percentage > 0">+</span>{{ guild.insight_data.workload_percentage | number : 0 }}%
+                                    </strong>
+                                    <md-tooltip>
+                                        T.o.v.: {{ guild.previous_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.previous_week.end  | momentDate : 'DD/MM/YYYY' }}
+                                    </md-tooltip>
+                                </section>
+                            </md-card>
+                        </section>
+                        <section flex layout>
+                            <md-card flex layout="column" layout-align="center center">
+                            </md-card>
+                        </section>
+                    </section>
+                </section>
+                <md-card>
+                    <md-toolbar>
+                        <div class="md-toolbar-tools" flex layout>
+                            <span flex=5>
+                                <!-- Color -->
+                            </span>
+                            <span flex=25>
+                                Groepslid
+                            </span>
+                            <span flex=60>
+                                Focus
+                            </span>
+                            <span flex=10>
+                                <!-- Actions -->
+                            </span>
+                        </div>
+                    </md-toolbar>
+                    <md-list>
+                        <md-list-item ng-repeat="member in guild.board.members | orderBy: '-completed_cards'" flex layout style="padding: 0 16px;">
+                            <span flex=5 layout layout-align="center center">
+                                <div style="width: 25px; height: 25px;" ng-style="{ 'background': member.color }"></div>
+                            </span>
+                            <span flex=25>
+                                {{ member.name }}
+                            </span>
+                            <span flex=60 class="focuses" layout>
+                                <div flex="{{ focus.times * 100 / member.total_focus | roundup5 }}" ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}}">
+                                    {{ focus.name }}
+                                    <md-tooltip md-delay="500">
+                                        {{ focus.times }} kaart<span ng-if="focus.times >= 2">en</span>
+                                        <strong>
+                                            ({{ focus.times * 100 / member.total_focus | number : 0 }}%)
+                                        </strong>
+                                    </md-tooltip>
+                                </div>
+                            </span>
+                            <span flex=10 layout layout-align="end">
+                                <md-button class="md-icon-button" aria-label="View statistics of {{member.name}}" ng-click="guildWorkloadCtrl.showMemberWorkload(member, guild.board.members, guild)">
+                                    <md-icon md-svg-src="timeline_dark"></md-icon>
+                                </md-button>
+                            </span>
+                        </md-list-item>
+                    </md-list>
+                </md-card>
+            </md-content>
+            <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+                <section>
+                    <h1 class="md-title text--color--grey">
+                        Trello board
+                    </h1>
+                    <md-list>
+                        <md-list-item layout>
+                            <p flex>
+                                Aantal kaarten
+                            </p>
+                            <span class="md-headline">
+                                {{ guild.insight_data.total_cards }}
+                            </span>
+                        </md-list-item>
+                        <md-list-item layout class="text--color--grey">
+                            <em flex class>
+                                Waarvan voltooid
+                            </em>
+                            <span class="md-subhead">
+                                {{ guild.insight_data.cards_done }}
+                            </span>
+                        </md-list-item>
+                    </md-list>
+                </section>
+                <section>
+                    <md-button class="md-raised success" href="https://trello.com/b/{{guild.trello_board}}" target="_BLANK" layout>
+                        <md-icon md-svg-src="external_link_light"></md-icon>
+                        <span flex>
+                            Goto board
+                        </span>
+                    </md-button>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+
+<!-- <section layout ng-if="!guildWorkloadCtrl.loading_page && guildWorkloadCtrl.guilds.length >= 1">
+    testing
+</section> -->

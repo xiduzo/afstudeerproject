@@ -2,6 +2,10 @@
     background: $mainBackground;
 }
 
+#sidebar__content {
+  background: $sidebarBackground;
+}
+
 .bullet__points {
     .point {
         width: 45px;

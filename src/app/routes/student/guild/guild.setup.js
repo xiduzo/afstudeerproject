@@ -15,13 +15,13 @@
                 abstract: true
             })
 
-            .state('base.guild.progress', {
-                url: '/progress',
+            .state('base.guild.workload', {
+                url: '/workload',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/student/guild/progress/progress.html',
-                        controller: 'GuildProgressController',
-                        controllerAs: 'guildProgressCtrl'
+                        templateUrl: 'app/routes/student/guild/workload/workload.html',
+                        controller: 'GuildWorkloadController',
+                        controllerAs: 'guildWorkloadCtrl'
                     }
                 }
             })

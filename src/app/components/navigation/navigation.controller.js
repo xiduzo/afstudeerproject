@@ -97,9 +97,9 @@
                         ],
                     },
                     {
-                        name: 'Progress',
-                        icon: 'timeline_dark',
-                        link_to: 'base.guild.progress',
+                        name: 'Workload',
+                        icon: 'pie_dark',
+                        link_to: 'base.guild.workload',
                         access_levels: [
                             COORDINATOR_ACCESS_LEVEL,
                             LECTURER_ACCESS_LEVEL,

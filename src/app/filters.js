@@ -65,6 +65,19 @@
             };
         })
 
+        .filter('roundup5', function() {
+            return function(number) {
+                return (number%5)?number-number%5+5:number;
+            };
+        })
+
+        .filter('momentDate', function() {
+            return function(date, format) {
+                return moment(date).format(format);
+            };
+        })
+
+
 
     ; // End of filters
 

@@ -15,19 +15,28 @@
         .constant('LECTURER_ACCESS_LEVEL', 2)
         .constant('COORDINATOR_ACCESS_LEVEL', 3)
         .constant('COLORS', [
+            // CMD colors first
+            '#FFCC00',
+            '#00AD68',
+            '#EB5D56',
+            '#595959',
+
+            // Other sexy colors nex
             '#00BCD4',
-            '#8BC34A',
-            '#673AB7',
-            '#E91E63',
             '#3F51B5',
+            '#E91E63',
+            '#FFEB3B',
+            '#03A9F4',
+            '#8BC34A',
+
+            // And some backup colors when things are getting crazy
+            '#673AB7',
             '#009688',
             '#795548',
             '#f44336',
             '#2196F3',
             '#4CAF50',
-            '#03A9F4',
             '#FF9800',
-            '#FFEB3B',
             '#FF5722',
             '#9C27B0',
             '#FFC107',
