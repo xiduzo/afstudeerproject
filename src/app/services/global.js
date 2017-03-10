@@ -30,6 +30,7 @@
         self.functions = {
             setUser: function(user) {
                 self.user = user;
+                console.log(self.user);
                 self.functions.getAccessLevel(user, true);
             },
             getUser: function() {
@@ -78,7 +79,7 @@
                     self.access = 3;
 
                     if(set_user) {
-                        // $state.go('base.home');
+                        $state.go('base.home');
                     }
 
                     $rootScope.$broadcast('user-changed');
@@ -115,14 +116,13 @@
         };
 
         $rootScope.$on('new-user-login', function(event, user) {
-            // self.functions.getAccessLevel(user);
-            $state.go('base.home');
+            self.functions.setUser(user);
+            self.functions.getAccessLevel(user, true);
         });
 
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
-            self.functions.getAccessLevel(self.user, true);
-            $state.go('base.home');
+            self.functions.getAccessLevel(self.user);
         }
 
         if(localStorageService.get('settings')) {

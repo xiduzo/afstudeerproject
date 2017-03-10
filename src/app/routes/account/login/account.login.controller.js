@@ -36,6 +36,7 @@
         self.login_form = {
             username: '',
             password: '',
+            remember: false,
         };
 
         self.login_type = 'student';
@@ -78,7 +79,7 @@
                             }
                             if(response.length) {
                                 response[0].password = md5(self.login_form.password);
-                                Account.setUser(response[0]);
+                                Account.setUser(response[0], self.login_form.remember);
                             } else {
                                 // TODO
                                 // When the user is logging in for the first times
@@ -96,7 +97,7 @@
                                     }
                                     if(response) {
                                         logged_in_user.password = md5(self.login_form.password);
-                                        Account.setUser(logged_in_user);
+                                        Account.setUser(logged_in_user, self.login_form.remember);
                                     }
                                 })
                                 .catch(function() {

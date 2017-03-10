@@ -37,20 +37,6 @@
         self.back_route = null;
         self.back_route_params = null;
 
-        $scope.$on('user-changed', function() {
-            self.user = Global.getUser();
-            self.access = Global.getAccess();
-        });
-
-        $scope.$on('route-title', function(event, title) {
-            self.route_title = title;
-        });
-
-        $scope.$on('back-route', function(event, route, params) {
-            self.back_route = route;
-            self.back_route_params = params;
-        });
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -64,6 +50,15 @@
         $scope.$on('user-changed', function() {
             self.user = Global.getUser();
             self.access = Global.getAccess();
+        });
+
+        $scope.$on('route-title', function(event, title) {
+            self.route_title = title;
+        });
+
+        $scope.$on('back-route', function(event, route, params) {
+            self.back_route = route;
+            self.back_route_params = params;
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

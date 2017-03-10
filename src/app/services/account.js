@@ -55,7 +55,8 @@
         }
 
         function logout() {
-            $rootScope.Global.clearUser();
+            // Global.clearUser();
+            localStorageService.remove('user');
             $rootScope.$broadcast('user-changed');
 
             // Close the sidenav for the login page
@@ -80,10 +81,10 @@
             });
         }
 
-        function setUser(user) {
-            localStorageService.set('user', user);
-            $rootScope.Global.setUser(user);
-
+        function setUser(user, remember) {
+            if(remember) {
+                localStorageService.set('user', user);
+            }
             // Get the access level from the DB just to be sure no one will give himself access
             $rootScope.$broadcast('new-user-login', user);
         }

@@ -24,7 +24,7 @@
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
             return Global.notAllowed();
         }
-
+        
         Global.setRouteTitle('Workload');
         Global.setRouteBackRoute(null);
 
@@ -44,7 +44,6 @@
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.loading_page = true;
-
 
         $scope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
@@ -68,6 +67,7 @@
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     guild.world = response;
+                    self.guilds.push(guild);
                     self.buildGraphData(guild);
                 });
             });
@@ -90,8 +90,6 @@
         function buildGraphData(guild) {
             guild.no_trello_settings = false;
             guild.no_world_settings = false;
-
-            self.guilds.push(guild);
 
             if(!guild.trello_board || !guild.trello_done_list) {
                 guild.no_trello_settings = true;

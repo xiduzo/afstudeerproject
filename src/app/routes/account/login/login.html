@@ -28,10 +28,13 @@
                     Lecturer
                 </md-radio-button>
             </md-radio-group> -->
-            <section layout layout-align="end center">
-                <md-button ui-sref="base.account.forgot" class="md-primary md-hue-1" md-no-ink>
-                    Forgot password
-                </md-button>
+            <section layout layout-align="space-between center">
+              <md-checkbox ng-model="accountLoginCtrl.login_form.remember" style="margin-bottom: 0;">
+                Remember me
+              </md-checkbox>
+              <md-button ui-sref="base.account.forgot" class="md-primary md-hue-1" md-no-ink>
+                Forgot password
+              </md-button>
             </section>
 
         </md-card-content>
