@@ -18,25 +18,25 @@
                 <section layout-fill>
                     <md-card layout-fill layout-align="space-between">
                         <md-card-content layout="column" layout-align="space-between center">
-                            <md-icon class="icon--size--48"
+                            <md-icon class="icon--size--36"
                             md-svg-icon="work_dark"
                             ng-if="rule.rule_type === 1">
                             </md-icon>
-                            <md-icon class="icon--size--48"
+                            <md-icon class="icon--size--36"
                             md-svg-icon="group_work_dark"
                             ng-if="rule.rule_type === 2">
                             </md-icon>
-                            <md-icon class="icon--size--48"
+                            <md-icon class="icon--size--36"
                             md-svg-icon="lightbulb_dark"
                             ng-if="rule.rule_type === 3">
                             </md-icon>
-                            <md-icon class="icon--size--48"
+                            <md-icon class="icon--size--36"
                             md-svg-icon="description_dark"
                             ng-if="rule.rule_type === 4">
                             </md-icon>
                             <section layout="column" layout-align="center center">
                                 <strong layout-padding>
-                                    The student:
+                                    De student:
                                 </strong>
                                 <em class="md-title" style="text-align: center;">
                                     {{ rule.rule }}
@@ -62,7 +62,16 @@
         </section>
     </md-content>
 
-    <section flex=20 layout-padding layout="column" id="sidebar__content">
+    <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
+        <section>
+            <h1 class="md-title text--color--grey">
+                Options
+            </h1>
+            <md-input-container class="md-block">
+                <label>Search rule</label>
+                <input ng-model="filters.free_search">
+            </md-input-container>
+        </section>
         <section layout="column">
             <md-button layout flex class="success md-raised"
             ng-click="rulesOverviewCtrl.addRule()">
@@ -72,12 +81,6 @@
                     New rule
                 </span>
             </md-button>
-        </section>
-        <section>
-            <md-input-container class="md-block">
-                <label>Search rule</label>
-                <input ng-model="filters.free_search">
-            </md-input-container>
         </section>
     </section>
 

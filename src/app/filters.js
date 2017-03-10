@@ -77,6 +77,22 @@
             };
         })
 
+        .filter('daysToGo', function() {
+            return function(date) {
+              var end = moment(date);  // or whatever start date you have
+              var today = moment().startOf('day');
+              return Math.round(moment.duration(end - today).asDays());
+            };
+        })
+
+        .filter('hoursToGo', function() {
+            return function(date) {
+              var end = moment(date);  // or whatever start date you have
+              var today = moment();
+              return Math.round(moment.duration(end - today).asHours());
+            };
+        })
+
 
 
     ; // End of filters

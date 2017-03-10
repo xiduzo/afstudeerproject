@@ -213,6 +213,8 @@
             .icon('trending_down_dark', './assets/icons/material/ic_trending_down_black_48px.svg', 48)
             .icon('trending_flat_light', './assets/icons/material/ic_trending_flat_white_48px.svg', 48)
             .icon('trending_flat_dark', './assets/icons/material/ic_trending_flat_black_48px.svg', 48)
+            .icon('history_light', './assets/icons/material/ic_history_white_48px.svg', 48)
+            .icon('history_dark', './assets/icons/material/ic_history_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)

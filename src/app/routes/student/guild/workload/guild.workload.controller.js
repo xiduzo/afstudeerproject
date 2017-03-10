@@ -95,10 +95,12 @@
 
             if(!guild.trello_board || !guild.trello_done_list) {
                 guild.no_trello_settings = true;
+                self.loading_page = false;
                 return false;
             }
             if(!guild.world.start || !guild.world.course_duration) {
                 guild.no_world_settings = true;
+                self.loading_page = false;
                 return false;
             }
 
@@ -170,7 +172,8 @@
                                     start: moment(guild.world.start).add(index, 'weeks'),
                                     end: moment(guild.world.start).add(index+1, 'weeks'),
                                     current_week: moment().isBetween(moment(guild.world.start).add(index, 'weeks'), moment(guild.world.start).add(index+1, 'weeks'), 'day'),
-                                    cards: []
+                                    cards: [],
+                                    cards_due: []
                                 });
                             }
                             _.each(response, function(card) {
@@ -181,7 +184,7 @@
 
                                 if(card.done) {
                                     guild.insight_data.cards_done++;
-                                _   .each(guild.insight_data.course_weeks, function(course_week) {
+                                    _.each(guild.insight_data.course_weeks, function(course_week) {
                                         if(moment(card.dateLastActivity).isBetween(
                                             course_week.start,
                                             course_week.end,
@@ -191,6 +194,19 @@
                                             moment(card.dateLastActivity).isSame(course_week.end, 'day')
                                         ) {
                                             course_week.cards.push(card);
+                                        }
+                                    });
+                                } else {
+                                    _.each(guild.insight_data.course_weeks, function(course_week) {
+                                        if(moment(card.due).isBetween(
+                                            course_week.start,
+                                            course_week.end,
+                                            'day'
+                                            ) ||
+                                            moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
+                                            moment(card.dateLastActivity).isSame(course_week.end, 'day')
+                                        ) {
+                                            course_week.cards_due.push(card);
                                         }
                                     });
                                 }
@@ -210,15 +226,11 @@
                             });
 
                             guild.current_week = _.findWhere(guild.insight_data.course_weeks, { current_week: true});
+
                             if(guild.current_week.index !== 0) {
                                 guild.previous_week = guild.insight_data.course_weeks[_.indexOf(guild.insight_data.course_weeks, guild.current_week) - 1];
                                 guild.insight_data.workload_percentage = guild.current_week.cards.length * 100 / guild.previous_week.cards.length - 100;
-                                guild.insight_data.workload_percentage = 5;
-                                guild.insight_data.workload_percentage_icon = guild.insight_data.workload_percentage < -4 ? 'trending_down_black' : guild.insight_data.workload_percentage > 4 ? 'trending_up_black' : 'trending_flat_black';
-                                // if(!isFinite(guild.insight_data.workload_percentage)) {
-                                //     console.log(true);
-                                //     guild.insight_data.workload_percentage = 100;
-                                // }
+                                guild.insight_data.workload_percentage_icon = guild.insight_data.workload_percentage < -4 ? 'trending_down_dark' : guild.insight_data.workload_percentage > 4 ? 'trending_up_dark' : 'trending_flat_dark';
                             } else {
                                 guild.previous_week = null;
                             }
@@ -235,8 +247,9 @@
 
                                 member.total_focus = 0;
                                 member.focus = _.groupBy(member.focus, function(focus) {
-                                    return focus.name;
+                                    return focus.color;
                                 });
+
                                 member.focus = _.map(member.focus, function(focus) {
                                     member.total_focus += focus.length;
                                     return {
@@ -251,7 +264,6 @@
                                     color: member.color,
                                     y: roundToTwo(member.cards.length * 100 / guild.insight_data.total_cards),
                                     cards: member.cards.length
-                                    // cards: _.filter(member.cards,function(card) { return !card.done;}).length
                                 });
 
                                 guild.board.pie.series[1].data.push({
