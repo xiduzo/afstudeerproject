@@ -1,80 +1,63 @@
-<md-dialog md-theme="default" aria-label="{{ addGuildRuleCtrl.about }}" flex="40">
+<md-dialog aria-label="Add rule" flex=40>
 
-    <md-dialog-content class="md-dialog-content" layout-padding>
-        <h1 class="md-title ng-binding">
-            {{ addGuildRuleCtrl.title }}
-        </h1>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h1>
+        Stel afspraak op
+      </h1>
+    </div>
+  </md-toolbar>
 
-        <div class="md-dialog-content-body">
-            <form layout="column">
-                <section layout>
-                    <md-input-container flex>
-                        De student:
-                        <input md-autofocus
-                        aria-label="afspraak"
-                        ng-model="addGuildRuleCtrl.formInput.rule" />
-                    </md-input-container>
-                </section>
-                <section>
-                    <h2 class="md-subhead">
-                        Categorie
-                    </h2>
-                    <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
-                        <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center">
-                            <md-icon
-                                class="icon--size--48 icon--color--black"
-                                md-svg-icon="{{type.icon}}"
-                                ng-click="addGuildRuleCtrl.formInput.type = type.type">
-                            </md-icon>
-                            <span ng-click="addGuildRuleCtrl.formInput.type = type.type">
-                                {{ type.name }}
-                            </span>
-                            <md-radio-button
-                                layout-padding
-                                value="{{type.type}}"
-                                aria-label="{{type.type}}"
-                                style="width: 20px;">
-                            </md-radio-button>
-                        </div>
-                    </md-radio-group>
-                </section>
-                <section>
-                    <h2 class="md-subhead">
-                        Hoe belangrijk vinden julllie deze regel als groep?
-                    </h2>
-                    <md-slider flex class="md-primary"
-                    step="1"
-                    min="0"
-                    max="100"
-                    ng-model="addGuildRuleCtrl.formInput.importance"
-                    aria-label="Importance">
-                    </md-slider>
-                    <div layout layout-align="space-between">
-                        <strong>Minder belangrijk</strong>
-                        <strong>Belangrijk</strong>
-                        <strong>Heel Belangrijk</strong>
-                    </div>
-                </section>
-            </form>
+  <md-dialog-content layout-padding>
+
+    <form layout="column">
+
+      <md-input-container flex>
+        <label>De student</label>
+        <input md-autofocus placeholder="is op tijd in de les" ng-model="addGuildRuleCtrl.formInput.rule" />
+      </md-input-container>
+
+      <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
+        <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center" ng-click="addGuildRuleCtrl.formInput.type = type.type">
+          <md-icon class="icon--size--48" md-svg-icon="{{type.icon}}"></md-icon>
+          <span>
+            {{ type.name }}
+          </span>
+          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;"></md-radio-button>
         </div>
+      </md-radio-group>
 
-        <section>
-            <em>
-                De nieuwe afspraak word automatisch geselecteerd voor het samenwerkingscontract.
-            </em>
-        </section>
+      <h3 class="md-subhead">
+        Hoe belangrijk vinden julllie deze regel als groep?
+      </h3>
 
-    </md-dialog-content>
+      <md-slider flex class="md-primary" step="1" min="0" max="100" ng-model="addGuildRuleCtrl.formInput.importance" aria-label="Importance"></md-slider>
 
-    <md-dialog-actions>
-        <button class="md-primary md-button" type="button" aria-label="Cancel"
-            ng-click="addGuildRuleCtrl.close()" md-ink-ripple>
-            Cancel
-        </button>
-        <button class="md-primary md-button" type="button" aria-label="{{ addGuildRuleCtrl.about }}"
-            ng-click="addGuildRuleCtrl.addRule()" md-ink-ripple>
-            Add {{ addGuildRuleCtrl.about }}
-        </button>
-    </md-dialog-actions>
+      <div layout>
+        <strong flex=33 layout layout-align="start">Minder belangrijk</strong>
+        <strong flex=33 layout layout-align="center">Belangrijk</strong>
+        <strong flex=33 layout layout-align="end">Heel Belangrijk</strong>
+      </div>
+
+    </form>
+
+    <em>
+      De nieuwe afspraak word automatisch geselecteerd voor het samenwerkingscontract.
+    </em>
+
+  </md-dialog-content>
+
+  <md-dialog-actions>
+    <md-button ng-click="addGuildRuleCtrl.close()">
+      <strong class="text--color--red">
+        Cancel
+      </strong>
+    </md-button>
+    <md-button ng-click="addGuildRuleCtrl.addRule()">
+      <strong class="text--color--green">
+        Add
+      </strong>
+    </md-button>
+  </md-dialog-actions>
 
 </md-dialog>

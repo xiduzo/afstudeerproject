@@ -1,61 +1,49 @@
-<md-dialog md-theme="default" aria-label="{{ confirmGuildRulesCtrl.about }}" flex="40">
+<md-dialog aria-label="Accepteer regels" flex="40">
 
-    <md-dialog-content class="md-dialog-content" layout-padding>
-        <h1 class="md-title ng-binding">
-            {{ confirmGuildRulesCtrl.title }}
-        </h1>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h1>
+        Controleer afspraken
+      </h1>
+    </div>
+  </md-toolbar>
 
-        <div class="md-dialog-content-body">
-            <article>
-                <p>
-                    Please consider your choices before accepting the rules.
-                    Make sure every member of your group agrees to the rules
-                    before you accept them.
-                </p>
-                <p>
-                    <em class="text--color--red">
-                        Caution: Rules <strong>can not</strong> be changed anymore when you accept the rules.
-                    </em>
-                </p>
-            </article>
-            <h2 class="md-subhead">
-                Selected rules:
-            </h2>
-            <md-list>
-                <md-list-item ng-repeat="rule in confirmGuildRulesCtrl.rules | orderBy: 'rule_type'">
-                    <md-icon class="icon__helper"
-                        md-svg-icon="work_dark"
-                        ng-if="rule.rule_type === 1">
-                    </md-icon>
-                    <md-icon class="icon__helper"
-                        md-svg-icon="group_work_dark"
-                        ng-if="rule.rule_type === 2">
-                    </md-icon>
-                    <md-icon class="icon__helper"
-                        md-svg-icon="lightbulb_dark"
-                        ng-if="rule.rule_type === 3">
-                    </md-icon>
-                    <md-icon class="icon__helper"
-                        md-svg-icon="description_dark"
-                        ng-if="rule.rule_type === 4">
-                    </md-icon>
-                    The student {{ rule.rule }}
-                </md-list-item>
-            </md-list>
+  <md-dialog-content layout-padding>
+    <article>
+      <p>
+        Zorg ervoor dat elk lid van je team akkoord gaat met de afspraken voordat je deze accepteeerd.
+      </p>
+      <p>
+        <span class="text--color--red">Let op:</span> Afspraken kunnen <strong>niet</strong> meer veranderd worden nadat deze geaccepteerd zijn.
+      </p>
+    </article>
 
-        </div>
+    <h2 class="md-subhead text--color--grey">
+      Gekozen afspraken
+    </h2>
 
-    </md-dialog-content>
+    <md-list>
+      <md-list-item ng-repeat="rule in confirmGuildRulesCtrl.rules | orderBy: 'rule_type'">
+        <md-icon class="icon__helper" md-svg-icon="work_dark" ng-if="rule.rule_type === 1"></md-icon>
+        <md-icon class="icon__helper" md-svg-icon="group_work_dark" ng-if="rule.rule_type === 2"></md-icon>
+        <md-icon class="icon__helper" md-svg-icon="lightbulb_dark" ng-if="rule.rule_type === 3"></md-icon>
+        <md-icon class="icon__helper" md-svg-icon="description_dark" ng-if="rule.rule_type === 4"></md-icon>
+        De student {{ rule.rule }}
+      </md-list-item>
+    </md-list>
+  </md-dialog-content>
 
-    <md-dialog-actions>
-        <button class="md-primary md-button" type="button" aria-label="Cancel"
-            ng-click="confirmGuildRulesCtrl.close()" md-ink-ripple>
-            Cancel
-        </button>
-        <button class="md-primary md-button" type="button" aria-label="{{ confirmGuildRulesCtrl.about }}"
-            ng-click="confirmGuildRulesCtrl.addRules()" md-ink-ripple>
-            Accept {{ confirmGuildRulesCtrl.about }}
-        </button>
-    </md-dialog-actions>
+  <md-dialog-actions>
+    <md-button ng-click="confirmGuildRulesCtrl.close()">
+      <strong class="text--color--red">
+        Cancel
+      </strong>
+    </md-button>
+    <md-button ng-click="confirmGuildRulesCtrl.addRules()">
+      <strong class="text--color--green">
+        Accept
+      </strong>
+      </md-button>
+  </md-dialog-actions>
 
 </md-dialog>

@@ -8,9 +8,7 @@
     /** @ngInject */
     function confirmGuildRulesController(
         $mdDialog,
-        rules,
-        about,
-        title
+        rules
     ) {
 
         var self = this;
@@ -26,8 +24,6 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.rules = rules;
-        self.about = about;
-        self.title = title;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services

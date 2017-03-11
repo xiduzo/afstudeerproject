@@ -10,6 +10,7 @@
         $filter,
         $mdDialog,
         $state,
+        $scope,
         Global,
         Guild,
         World,
@@ -32,6 +33,7 @@
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.toggleRule = toggleRule;
+        self.removeRule = removeRule;
         self.addRule = addRule;
         self.addRulesToGuild = addRulesToGuild;
         self.toggleRuleEndorsement = toggleRuleEndorsement;
@@ -51,6 +53,13 @@
         self.password_protection = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
@@ -63,7 +72,7 @@
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     self.world = response;
-
+                    guild.rules_selected = false;
                     if(guild.rules.length < 8) {
                         guild.requirements = {
                             attitude: {
@@ -86,6 +95,7 @@
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
                     } else {
+                        guild.rules_selected = true;
                         // TODO
                         // build angular prompt which has a password field
                         // self.password_protection = true;
@@ -118,7 +128,9 @@
 
                     Rules.getRules()
                     .then(function(response) {
-                        guild.possible_rules = response;
+                        guild.possible_rules = _.groupBy(response, function(rule) {
+                            return rule.rule_type;
+                        });
                         self.guilds.push(guild);
                         self.loading_page = false;
                     })
@@ -140,6 +152,12 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function removeRule(rule, guild) {
+            rule.selected = false;
+            self.toggleRule(rule, guild);
+            rule = null;
+        }
+
         function toggleRule(rule, guild) {
             if(rule.selected) {
                 guild.selected_rules.push(rule);
@@ -149,23 +167,31 @@
 
             guild.minimun_rules_selected = guild.selected_rules.length >= 8 ? true : false;
 
-            switch (rule.rule_type) {
-                case 1:
-                    guild.requirements.attitude.selected = guild.requirements.attitude.selected + (rule.selected ? 1 : -1);
-                    guild.requirements.attitude.check = guild.requirements.attitude.selected >= 1 ? true: false;
-                    break;
-                case 2:
-                    guild.requirements.functioning.selected = guild.requirements.functioning.selected + (rule.selected ? 1 : -1);
-                    guild.requirements.functioning.check = guild.requirements.functioning.selected >= 1 ? true: false;
-                    break;
-                case 3:
-                    guild.requirements.knowledge.selected = guild.requirements.knowledge.selected + (rule.selected ? 1 : -1);
-                    guild.requirements.knowledge.check = guild.requirements.knowledge.selected >= 1 ? true: false;
-                    break;
-                case 4:
-                    guild.requirements.justification.selected = guild.requirements.justification.selected + (rule.selected ? 1 : -1);
-                    guild.requirements.justification.check = guild.requirements.justification.selected >= 1 ? true: false;
-                    break;
+            // This should be done in a better way somehow
+            if(rule.own_rule) {
+                if(rule.selected === false) {
+                    guild.own_rule = null;
+                }
+                rule.selected = false;
+            } else {
+                switch (rule.rule_type) {
+                    case 1:
+                        guild.requirements.attitude.selected = guild.requirements.attitude.selected + (rule.selected ? 1 : -1);
+                        guild.requirements.attitude.check = guild.requirements.attitude.selected >= 1 ? true: false;
+                        break;
+                    case 2:
+                        guild.requirements.functioning.selected = guild.requirements.functioning.selected + (rule.selected ? 1 : -1);
+                        guild.requirements.functioning.check = guild.requirements.functioning.selected >= 1 ? true: false;
+                        break;
+                    case 3:
+                        guild.requirements.knowledge.selected = guild.requirements.knowledge.selected + (rule.selected ? 1 : -1);
+                        guild.requirements.knowledge.check = guild.requirements.knowledge.selected >= 1 ? true: false;
+                        break;
+                    case 4:
+                        guild.requirements.justification.selected = guild.requirements.justification.selected + (rule.selected ? 1 : -1);
+                        guild.requirements.justification.check = guild.requirements.justification.selected >= 1 ? true: false;
+                        break;
+                }
             }
         }
 
@@ -176,16 +202,12 @@
                 templateUrl: 'app/routes/student/guild/rules/add/add.html',
                 targetEvent: event,
                 clickOutsideToClose: true,
-                locals: {
-                    title: 'Add rule for ' + guild.name,
-                    about: 'rule',
-                }
             })
             .then(function(response) {
                 if(!response.type ||
                 !response.importance ||
                 !response.rule) {
-                    Notifications.simpleToast('Please fill in all the fields');
+                    return Notifications.simpleToast('Please fill in all the fields');
                 }
 
                 if(response.importance >= 95) {
@@ -206,10 +228,10 @@
                     points: response.points,
                     rule: response.rule,
                     rule_type: response.type,
-                    selected: true
+                    selected: true,
+                    own_rule: true,
                 };
-
-                guild.possible_rules.push(tempObj);
+                guild.own_rule = (tempObj);
                 self.toggleRule(tempObj, guild);
             }, function() {
                 // Err dialog
@@ -224,23 +246,22 @@
                 targetEvent: event,
                 clickOutsideToClose: true,
                 locals: {
-                    title: 'Check rules for ' + guild.name,
-                    about: 'rules',
                     rules: guild.selected_rules,
                 }
             })
-            .then(function() {
-
-                _.each(guild.selected_rules, function(rule) {
-                    self.loading_page = true;
-                    Guild.addGuildRule(guild.id, rule)
-                    .then(function(response) {
-                        self.loading_page = false;
-                    })
-                    .catch(function(error) {
-                        console.log(error);
+            .then(function(response) {
+                if(response) {
+                    _.each(guild.selected_rules, function(rule) {
+                        self.loading_page = true;
+                        Guild.addGuildRule(guild.id, rule)
+                        .then(function(response) {
+                            self.loading_page = false;
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
                     });
-                });
+                }
             }, function() {
                 // Err dialog
             });

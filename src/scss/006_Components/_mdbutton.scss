@@ -3,4 +3,9 @@
         background: $green_500 !important;
         color: white !important;
     }
+    &[disabled] {
+        &.success {
+            background: lighten($green_500, 25) !important;
+        }
+    }
 }

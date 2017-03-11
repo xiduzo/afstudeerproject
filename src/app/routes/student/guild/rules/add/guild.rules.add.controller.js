@@ -7,10 +7,9 @@
 
     /** @ngInject */
     function addGuildRuleController(
-        $mdDialog,
-        title,
-        about
+        $mdDialog
     ) {
+
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,17 +18,15 @@
         self.close = close;
         self.addRule = addRule;
 
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.title = title;
-        self.about = about;
         self.formInput = {
-            type: 1,
+            type: undefined,
             rule: undefined,
-            importance: 50
+            importance: undefined
         };
+
         self.types = [
             { type: 1, name: 'Houding', icon: 'work_dark', },
             { type: 2, name: 'Functioneren binnen het team', icon: 'group_work_dark', },
@@ -40,7 +37,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
