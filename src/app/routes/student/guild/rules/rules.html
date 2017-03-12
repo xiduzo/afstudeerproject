@@ -11,11 +11,15 @@
   <section ng-if="!guildRulesCtrl.loading_page && guildRulesCtrl.guilds.length >= 1" layout-fill>
     <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
 
-      <section ng-if="guild.rules_selected">
+      <section ng-if="guild.rules.length >= 8">
+        <md-content layout="column" flex=80 id="main__content" ng-scrollbars layout-padding md-whiteframe=1>
+        </md-content>
+        <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+        </section>
         {{ guild.rules.length }}
       </section>
 
-      <section layout layout-fill ng-if="!guild.rules_selected">
+      <section layout layout-fill ng-if="guild.rules.length < 8">
 
         <md-content layout="column" flex=80 id="main__content" ng-scrollbars layout-padding md-whiteframe=1>
           <md-card layout-padding>

@@ -72,7 +72,6 @@
                 World.getWorld(guild.world.id)
                 .then(function(response) {
                     self.world = response;
-                    guild.rules_selected = false;
                     if(guild.rules.length < 8) {
                         guild.requirements = {
                             attitude: {
@@ -95,7 +94,6 @@
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
                     } else {
-                        guild.rules_selected = true;
                         // TODO
                         // build angular prompt which has a password field
                         // self.password_protection = true;
@@ -251,11 +249,14 @@
             })
             .then(function(response) {
                 if(response) {
-                    _.each(guild.selected_rules, function(rule) {
-                        self.loading_page = true;
+                    self.loading_page = true;
+                    _.each(guild.selected_rules, function(rule, index) {
                         Guild.addGuildRule(guild.id, rule)
                         .then(function(response) {
-                            self.loading_page = false;
+                            guild.rules.push(rule);
+                            if(index === (guild.selected_rules.length - 1)) {
+                                self.loading_page = false;
+                            }
                         })
                         .catch(function(error) {
                             console.log(error);
