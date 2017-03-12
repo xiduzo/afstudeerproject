@@ -251,7 +251,7 @@
             // wavatar:   generated faces with differing features and backgrounds
             // retro:     awesome generated, 8-bit arcade-style pixelated faces
             // blank:     a transparent PNG image (border added to HTML below for demonstration purposes)
-            "default": "monsterid"
+            "default": "retro"
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
