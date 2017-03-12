@@ -48,6 +48,13 @@
         self.prepareGraphData();
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function roundToDecimalPoint(num, decimal) {
+            return parseFloat(num.toFixed(decimal));
+        }
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function close() {
@@ -71,7 +78,9 @@
                             moment(card.dateLastActivity).isBetween(
                                 moment(self.guild.world.start).add(index, 'weeks'),
                                 moment(self.guild.world.start).add(index+1, 'weeks'), 'day'
-                            ) || moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day')
+                            ) ||
+                            moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
+                            moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
                         ) {
                             count_member++;
                         }
@@ -86,15 +95,18 @@
                             if(
                                 moment(card.dateLastActivity).isBetween(
                                     moment(self.guild.world.start).add(index, 'weeks'),
-                                    moment(self.guild.world.start).add(index+1, 'weeks'), 'day'
-                                ) || moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day')
+                                    moment(self.guild.world.start).add(index+1, 'weeks'),
+                                    'day'
+                                ) ||
+                                moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
+                                moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
                             ) {
                                 count_average++;
                             }
                         }
                     });
                 });
-                self.series[1].data.push((count_average+count_member) / (self.others.length + 1));
+                self.series[1].data.push(roundToDecimalPoint((count_average+count_member) / (self.others.length + 1), 1));
             });
 
             setTimeout(function () {

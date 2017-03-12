@@ -24,7 +24,7 @@
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
             return Global.notAllowed();
         }
-        
+
         Global.setRouteTitle('Workload');
         Global.setRouteBackRoute(null);
 
@@ -168,12 +168,19 @@
                                 guild.insight_data.course_weeks.push({
                                     name: 'Week ' + (index+1),
                                     start: moment(guild.world.start).add(index, 'weeks'),
-                                    end: moment(guild.world.start).add(index+1, 'weeks'),
-                                    current_week: moment().isBetween(moment(guild.world.start).add(index, 'weeks'), moment(guild.world.start).add(index+1, 'weeks'), 'day'),
+                                    end: moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                                    current_week: moment().isBetween(
+                                        moment(guild.world.start).add(index, 'weeks'),
+                                        moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                                        'day'
+                                    ) ||
+                                    moment().isSame(moment(guild.world.start).add(index, 'weeks'), 'day') ||
+                                    moment().isSame(moment(guild.world.start).add(index, 'weeks').add(6, 'days'), 'day'),
                                     cards: [],
                                     cards_due: []
                                 });
                             }
+
                             _.each(response, function(card) {
                                 guild.insight_data.total_cards++;
                                 card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
@@ -182,32 +189,32 @@
 
                                 if(card.done) {
                                     guild.insight_data.cards_done++;
-                                    _.each(guild.insight_data.course_weeks, function(course_week) {
-                                        if(moment(card.dateLastActivity).isBetween(
-                                            course_week.start,
-                                            course_week.end,
-                                            'day'
-                                            ) ||
-                                            moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
-                                            moment(card.dateLastActivity).isSame(course_week.end, 'day')
-                                        ) {
-                                            course_week.cards.push(card);
-                                        }
-                                    });
-                                } else {
-                                    _.each(guild.insight_data.course_weeks, function(course_week) {
+                                }
+
+                                _.each(guild.insight_data.course_weeks, function(course_week) {
+                                    if(moment(card.dateLastActivity).isBetween(
+                                        course_week.start,
+                                        course_week.end,
+                                        'day'
+                                        ) ||
+                                        moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
+                                        moment(card.dateLastActivity).isSame(course_week.end, 'day')
+                                    ) {
+                                        course_week.cards.push(card);
+                                    }
+                                    if(card.due) {
                                         if(moment(card.due).isBetween(
                                             course_week.start,
                                             course_week.end,
                                             'day'
                                             ) ||
-                                            moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
-                                            moment(card.dateLastActivity).isSame(course_week.end, 'day')
+                                            moment(card.due).isSame(course_week.start, 'day') ||
+                                            moment(card.due).isSame(course_week.end, 'day')
                                         ) {
                                             course_week.cards_due.push(card);
                                         }
-                                    });
-                                }
+                                    }
+                                });
 
                                 if(card.idMembers.length >= 1) {
                                     _.each(card.idMembers, function(member_id) {
@@ -223,7 +230,7 @@
                                 }
                             });
 
-                            guild.current_week = _.findWhere(guild.insight_data.course_weeks, { current_week: true});
+                            guild.current_week = _.findWhere(guild.insight_data.course_weeks, { current_week: true });
 
                             if(guild.current_week.index !== 0) {
                                 guild.previous_week = guild.insight_data.course_weeks[_.indexOf(guild.insight_data.course_weeks, guild.current_week) - 1];
