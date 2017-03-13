@@ -81,7 +81,6 @@
             return function(date) {
               var end = moment(date);
               var today = moment().startOf('day');
-              console.log(moment.duration(end - today));
               return Math.round(moment.duration(end - today).asDays() + 1);
             };
         })
