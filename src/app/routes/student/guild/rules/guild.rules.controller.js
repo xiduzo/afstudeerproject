@@ -36,7 +36,6 @@
         self.removeRule = removeRule;
         self.addRule = addRule;
         self.addRulesToGuild = addRulesToGuild;
-        self.toggleRuleEndorsement = toggleRuleEndorsement;
         self.checkRuleEndorsementStatus = checkRuleEndorsementStatus;
         self.showPasswordPrompt = showPasswordPrompt;
         self.setRating = setRating;
@@ -47,8 +46,6 @@
         self.user = Global.getUser();
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
-        self.world = [];
-        self.rules = [];
         self.loading_page = true;
         self.password_protection = false;
 
@@ -71,7 +68,7 @@
 
                 World.getWorld(guild.world.id)
                 .then(function(response) {
-                    self.world = response;
+                    guild.world = response;
                     if(guild.rules.length < 8) {
                         guild.requirements = {
                             attitude: {
@@ -101,28 +98,26 @@
                     }
 
                     guild.weeks = [];
-                    guild.selected_week = null;
-                    self.world.course_duration = self.world.course_duration ? self.world.course_duration : 48;
-                    self.world.start = self.world.start ? self.world.start : self.world.created_at;
 
-                    for(var i = self.world.course_duration; i > 0; i -= 7) {
-                        var start_week = moment(self.world.start).add(guild.weeks.length * 7 , 'days');
-                        var end_week = moment(self.world.start).add(guild.weeks.length * 7 + 7 , 'days');
-                        var tempObj = {
-                            week: guild.weeks.length,
-                            start: start_week,
-                            end: end_week,
-                            editable: false
-                        };
-
-                        if (moment().isBetween(start_week, end_week)) {
-                            tempObj.editable = true;
-                            guild.selected_week = guild.weeks.length;
-                            guild.editable_week = guild.weeks.length;
-                        }
-
-                        guild.weeks.push(tempObj);
+                    for(var index = 0; index <= guild.world.course_duration; index++) {
+                        guild.weeks.push({
+                            index: index,
+                            name: 'Week ' + (index+1),
+                            start: moment(guild.world.start).add(index, 'weeks'),
+                            end: moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                            editable: moment().isBetween(
+                            moment(guild.world.start).add(index, 'weeks'),
+                            moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                            'day'
+                            ) ||
+                            moment().isSame(moment(guild.world.start).add(index, 'weeks'), 'day') ||
+                            moment().isSame(moment(guild.world.start).add(index, 'weeks').add(6, 'days'), 'day'),
+                            future_week: moment().isBefore(moment(guild.world.start).add(index, 'weeks'), 'day')
+                        });
                     }
+
+                    // Set the selected week on the current week
+                    guild.selected_week = _.findWhere(guild.weeks, {editable: true});
 
                     Rules.getRules()
                     .then(function(response) {
@@ -268,38 +263,7 @@
             });
         }
 
-        function toggleRuleEndorsement(guild, week, rule, user, state) {
-            if(state) {
-                Guild.addEndorsement(rule.id, user.id, self.user.id, week)
-                .then(function(response) {
-                    rule.endorsements.push(response);
-                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-            } else {
-                var endorsement = _.findWhere(rule.endorsements, {
-                    endorsed_by: self.user.id,
-                    week: week,
-                    user: user.id,
-                    rule_id: rule.id
-                });
-
-                Guild.removeEndorsement(endorsement.id)
-                .then(function(response) {
-                    if(response.status === 204) {
-                        rule.endorsements.splice(_.indexOf(rule.endorsements, rule), 1);
-                        Notifications.simpleToast('Removed endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule);
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-            }
-        }
-
-        function checkRuleEndorsementStatus(guild, week, rule, user) {
+        function checkRuleEndorsementStatus(week, rule, user) {
             _.each(rule.endorsements, function(endorsement) {
                 endorsement.rule_id = endorsement.rule.id;
             });
@@ -311,7 +275,7 @@
                 rule_id: rule.id
             });
 
-            return endorsement ? endorsement.rating : 0;
+            return endorsement ? endorsement.rating : null;
         }
 
         function showPasswordPrompt() {
@@ -338,11 +302,7 @@
             });
         }
 
-        function setRating(guild, week, rule, user, rating) {
-            _.each(rule.endorsements, function(endorsement) {
-                endorsement.rule_id = endorsement.rule.id;
-            });
-
+        function setRating(week, rule, user, rating) {
             var endorsement = _.findWhere(rule.endorsements, {
                 endorsed_by: self.user.id,
                 week: week,
