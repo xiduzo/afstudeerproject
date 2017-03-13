@@ -71,42 +71,48 @@
                 var count_member = 0;
                 var count_average = 0;
 
-                // Build the graph for the user clicked on
-                _.each(self.member.cards, function(card) {
-                    if(card.done) {
-                        if(
-                            moment(card.dateLastActivity).isBetween(
-                                moment(self.guild.world.start).add(index, 'weeks'),
-                                moment(self.guild.world.start).add(index+1, 'weeks'), 'day'
-                            ) ||
-                            moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
-                            moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
-                        ) {
-                            count_member++;
-                        }
-                    }
-                });
-                self.series[0].data.push(count_member);
+                // Check if now is before of this weeks' start
+                if(moment().isBefore(moment(self.guild.world.start).add(index, 'weeks'), 'day')) {
+                  self.series[0].data.push(null);
+                  self.series[1].data.push(null);
+                } else {
+                  // Build the graph for the user clicked on
+                  _.each(self.member.cards, function(card) {
+                      if(card.done) {
+                          if(
+                              moment(card.dateLastActivity).isBetween(
+                                  moment(self.guild.world.start).add(index, 'weeks'),
+                                  moment(self.guild.world.start).add(index+1, 'weeks'), 'day'
+                              ) ||
+                              moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
+                              moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
+                          ) {
+                              count_member++;
+                          }
+                      }
+                  });
+                  self.series[0].data.push(count_member);
 
-                // Build the graph for the average
-                _.each(self.others, function(other) {
-                    _.each(other.cards, function(card) {
-                        if(card.done) {
-                            if(
-                                moment(card.dateLastActivity).isBetween(
-                                    moment(self.guild.world.start).add(index, 'weeks'),
-                                    moment(self.guild.world.start).add(index+1, 'weeks'),
-                                    'day'
-                                ) ||
-                                moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
-                                moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
-                            ) {
-                                count_average++;
-                            }
-                        }
-                    });
-                });
-                self.series[1].data.push(roundToDecimalPoint((count_average+count_member) / (self.others.length + 1), 1));
+                  // Build the graph for the average
+                  _.each(self.others, function(other) {
+                      _.each(other.cards, function(card) {
+                          if(card.done) {
+                              if(
+                                  moment(card.dateLastActivity).isBetween(
+                                      moment(self.guild.world.start).add(index, 'weeks'),
+                                      moment(self.guild.world.start).add(index+1, 'weeks'),
+                                      'day'
+                                  ) ||
+                                  moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks'), 'day') ||
+                                  moment(card.dateLastActivity).isSame(moment(self.guild.world.start).add(index, 'weeks').add(6, 'days'), 'day')
+                              ) {
+                                  count_average++;
+                              }
+                          }
+                      });
+                  });
+                  self.series[1].data.push(roundToDecimalPoint((count_average+count_member) / (self.others.length + 1), 1));
+                }
             });
 
             setTimeout(function () {
