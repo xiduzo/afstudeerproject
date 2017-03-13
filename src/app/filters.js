@@ -4,12 +4,6 @@
     angular
         .module('filters', [])
 
-        .filter('secondsToDateTime', function() {
-            return function(seconds) {
-                return new Date(1970, 0, 1).setSeconds(seconds);
-            };
-        })
-
         .filter('fullUserName', function() {
             return function(user) {
                 if(user.surname_prefix) {
@@ -26,25 +20,6 @@
             };
         })
 
-        .filter('percentageToGrade', function() {
-            return function(percentage) {
-                return percentage / 10;
-            };
-        })
-
-        .filter('roundToTwo', function() {
-            return function(number) {
-                return +(Math.round(number + "e+2")  + "e-2");
-            };
-        })
-
-        .filter('parseInt', function() {
-            return function(number) {
-                if(!number) { return; }
-                return parseInt(number , 10);
-            };
-        })
-
         .filter('positiveInteger', function() {
             return function(number) {
                 return number < 0 ? 0 : number;
@@ -54,7 +29,6 @@
         .filter('empasizeSubject', function() {
             return function(sentence, subject) {
                 return sentence.replace(subject, '<strong>'+subject+'</strong>');
-                // return parseInt(number , 10);
             };
         })
 
@@ -65,9 +39,9 @@
             };
         })
 
-        .filter('roundup5', function() {
+        .filter('roundUp5', function() {
             return function(number) {
-                return (number%5)?number-number%5+5:number;
+                return (number % 5) ? number - number % 5 + 5 : number;
             };
         })
 
@@ -81,7 +55,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment().startOf('day');
-              return Math.round(moment.duration(end - today).asDays() + 1);
+              return Math.round(moment.duration(end - today).asDays() + 1); // Be sure to calculate the last day
             };
         })
 
@@ -89,7 +63,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment();
-              return Math.round(moment.duration(end - today).asHours() + 24);
+              return Math.round(moment.duration(end - today).asHours() + 24); // Be sure to calculate the last day
             };
         })
 
