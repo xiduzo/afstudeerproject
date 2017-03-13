@@ -89,9 +89,11 @@
                                             <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.current_week.end | hoursToGo) * 100 / (7*24) }}"></md-progress-circular>
                                         </h1>
                                         <div>
-                                            {{ guild.current_week.end | daysToGo }} dagen tot einde week
+                                            {{ guild.current_week.end | daysToGo }}
+                                            dag<span ng-if="(guild.current_week.end | daysToGo) != 1">en</span>
+                                            tot einde week
                                         </div>
-                                        <md-tooltip md-delay="5000">
+                                        <md-tooltip md-delay="3000">
                                             {{ guild.current_week.end | hoursToGo }} uur om precies te zijn
                                         </md-tooltip>
                                     </div>

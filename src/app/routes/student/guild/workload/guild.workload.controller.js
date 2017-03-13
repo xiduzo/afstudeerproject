@@ -187,29 +187,28 @@
                                 card.done = card.idList === guild.trello_done_list ? true : false;
                                 card.members = [];
 
-                                if(card.done) {
-                                    guild.insight_data.cards_done++;
-                                }
-
                                 _.each(guild.insight_data.course_weeks, function(course_week) {
-                                    if(moment(card.dateLastActivity).isBetween(
+                                    if((moment(card.dateLastActivity).isBetween(
                                         course_week.start,
                                         course_week.end,
                                         'day'
                                         ) ||
                                         moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
-                                        moment(card.dateLastActivity).isSame(course_week.end, 'day')
+                                        moment(card.dateLastActivity).isSame(course_week.end, 'day')) &&
+                                        card.done
                                     ) {
+                                        guild.insight_data.cards_done++;
                                         course_week.cards.push(card);
                                     }
                                     if(card.due) {
-                                        if(moment(card.due).isBetween(
+                                        if((moment(card.due).isBetween(
                                             course_week.start,
                                             course_week.end,
                                             'day'
                                             ) ||
                                             moment(card.due).isSame(course_week.start, 'day') ||
-                                            moment(card.due).isSame(course_week.end, 'day')
+                                            moment(card.due).isSame(course_week.end, 'day')) &&
+                                            !card.done
                                         ) {
                                             course_week.cards_due.push(card);
                                         }
@@ -235,6 +234,9 @@
                             if(guild.current_week.index !== 0) {
                                 guild.previous_week = guild.insight_data.course_weeks[_.indexOf(guild.insight_data.course_weeks, guild.current_week) - 1];
                                 guild.insight_data.workload_percentage = guild.current_week.cards.length * 100 / guild.previous_week.cards.length - 100;
+                                if(isNaN(guild.insight_data.workload_percentage)) {
+                                    guild.insight_data.workload_percentage = 0;
+                                }
                                 guild.insight_data.workload_percentage_icon = guild.insight_data.workload_percentage < -4 ? 'trending_down_dark' : guild.insight_data.workload_percentage > 4 ? 'trending_up_dark' : 'trending_flat_dark';
                             } else {
                                 guild.previous_week = null;

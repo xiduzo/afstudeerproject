@@ -79,17 +79,18 @@
 
         .filter('daysToGo', function() {
             return function(date) {
-              var end = moment(date);  // or whatever start date you have
+              var end = moment(date);
               var today = moment().startOf('day');
-              return Math.round(moment.duration(end - today).asDays());
+              console.log(moment.duration(end - today));
+              return Math.round(moment.duration(end - today).asDays() + 1);
             };
         })
 
         .filter('hoursToGo', function() {
             return function(date) {
-              var end = moment(date);  // or whatever start date you have
+              var end = moment(date);
               var today = moment();
-              return Math.round(moment.duration(end - today).asHours());
+              return Math.round(moment.duration(end - today).asHours() + 24);
             };
         })
 
