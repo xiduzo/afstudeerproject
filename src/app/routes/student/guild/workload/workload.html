@@ -128,7 +128,7 @@
                                 {{ member.name }}
                             </span>
                             <span flex=60 class="focuses" layout>
-                                <div flex="{{ focus.times * 100 / member.total_focus | roundup5 }}" ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}}">
+                                <div flex="{{ focus.times * 100 / member.total_focus | roundUp5 }}" ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}}">
                                     {{ focus.name || focus.color }}
                                     <md-tooltip md-delay="500">
                                         {{ focus.times }} kaart<span ng-if="focus.times >= 2">en</span>
