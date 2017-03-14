@@ -47,7 +47,13 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $scope.$on('user-changed', function() {
+        $scope.$on('new-user-set', function() {
+            self.user = Global.getUser();
+            self.access = Global.getAccess();
+            self.getWorldsAndGuilds();
+        });
+
+        $scope.$on('user-logged-out', function() {
             self.user = Global.getUser();
             self.access = Global.getAccess();
         });

@@ -30,7 +30,6 @@
         self.functions = {
             setUser: function(user) {
                 self.user = user;
-                console.log(self.user);
                 self.functions.getAccessLevel(user, true);
             },
             getUser: function() {
@@ -80,9 +79,11 @@
 
                     if(set_user) {
                         $state.go('base.home');
+                        $rootScope.$broadcast('new-user-set');
+                    } else {
+                      $rootScope.$broadcast('user-logged-out');
                     }
 
-                    $rootScope.$broadcast('user-changed');
                 });
             },
             setSelectedGuild: function(guild) {

@@ -12,8 +12,10 @@
         hotkeys,
         Account,
         Global,
+        TrelloApi,
         md5,
-        Notifications
+        Notifications,
+        localStorageService
     ) {
 
         // If the user is logged in send him back to the homepage
@@ -29,6 +31,8 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.login = login;
+        self.authenticateTrello = authenticateTrello;
+        self.setUser = setUser;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -54,6 +58,25 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function authenticateTrello(user) {
+            TrelloApi.Authenticate()
+            .then(function(){
+                TrelloApi.Rest('GET', 'members/me')
+                .then(function(response) {
+                    localStorageService.set('trello_user', response);
+                    Notifications.simpleToast('Authentication succeeded');
+                    self.setUser(user);
+                });
+            })
+            .catch(function() {
+                Notifications.simpleToast('Authentication failed');
+            });
+        }
+
+        function setUser(user) {
+            Account.setUser(user, self.login_form.remember);
+        }
+
         function login() {
             Account.login(self.login_form.username, self.login_form.password, self.login_type)
                 .then(function(response) {
@@ -79,7 +102,11 @@
                             }
                             if(response.length) {
                                 response[0].password = md5(self.login_form.password);
-                                Account.setUser(response[0], self.login_form.remember);
+                                if(!localStorageService.get('trello_user')) {
+                                    self.authenticateTrello(response[0]);
+                                } else {
+                                    self.setUser(response[0], self.login_form.remember);
+                                }
                             } else {
                                 // TODO
                                 // When the user is logging in for the first times
@@ -97,7 +124,11 @@
                                     }
                                     if(response) {
                                         logged_in_user.password = md5(self.login_form.password);
-                                        Account.setUser(logged_in_user, self.login_form.remember);
+                                        if(!localStorageService.get('trello_user')) {
+                                            self.authenticateTrello(logged_in_user);
+                                        } else {
+                                            self.setUser(logged_in_user, self.login_form.remember);
+                                        }
                                     }
                                 })
                                 .catch(function() {

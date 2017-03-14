@@ -55,9 +55,9 @@
         }
 
         function logout() {
-            // Global.clearUser();
+            $rootScope.Global.clearUser();
             localStorageService.remove('user');
-            $rootScope.$broadcast('user-changed');
+            $rootScope.$broadcast('user-logged-out');
 
             // Close the sidenav for the login page
             $mdSidenav('main__navigation').close();

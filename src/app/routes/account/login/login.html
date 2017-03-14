@@ -1,5 +1,5 @@
 <section layout flex layout-align="center center" layout-wrap id="login__page">
-    <md-card md-whiteframe="10" flex="20" layout-padding>
+    <md-card md-whiteframe=10 flex=80 flex-gt-sm=60 flex-gt-md=25 flex-gt-lg=20 layout-padding>
         <md-card-content layout="column">
 
             <section layout="column" layout-align="center center">
@@ -18,16 +18,6 @@
                 <input type="password" ng-model="accountLoginCtrl.login_form.password">
             </md-input-container>
 
-            <!-- What kind of account do you want to login to -->
-
-            <!-- <md-radio-group layout="row" ng-model="accountLoginCtrl.login_form.login_type">
-                <md-radio-button value="student">
-                    Student
-                </md-radio-button>
-                <md-radio-button value="lecturer">
-                    Lecturer
-                </md-radio-button>
-            </md-radio-group> -->
             <section layout layout-align="space-between center">
               <md-checkbox ng-model="accountLoginCtrl.login_form.remember" style="margin-bottom: 0;">
                 Remember me
@@ -40,10 +30,6 @@
         </md-card-content>
         <md-divider></md-divider>
         <md-card-actions layout="column">
-            <!-- <md-button ui-sref="base.account.forgot">
-                <md-icon md-svg-icon="help_dark"></md-icon>
-                Forgot password
-            </md-button> -->
             <md-button class="md-primary md-raised" ng-click="accountLoginCtrl.login()">
                 Login
             </md-button>

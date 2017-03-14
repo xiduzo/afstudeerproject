@@ -146,7 +146,20 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $scope.$on('user-changed', function() {
+        $scope.$on('new-user-set', function() {
+            self.access = Global.getAccess();
+            if(self.user.id) {
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                } else {
+                    self.removeHotkeys();
+                }
+            } else {
+                self.removeHotkeys();
+            }
+        });
+
+        $scope.$on('user-logged-out', function() {
             self.access = Global.getAccess();
             if(self.user.id) {
                 if(Global.getLocalSettings().enabled_hotkeys) {

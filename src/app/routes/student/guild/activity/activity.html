@@ -108,7 +108,7 @@
             <label>Type</label>
             <md-select ng-model="filters.action_type">
               <md-optgroup label="Type">
-                <md-option ng-value="undefined"> All </md-option>
+                <md-option ng-value="undefined"> Alle </md-option>
                 <md-option ng-value="action_type.type" ng-repeat="action_type in guildActivityCtrl.action_types" layout layout-align="start center">
                   <md-icon class="icon__helper icon--color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
                   {{ action_type.name }}
@@ -117,10 +117,10 @@
             </md-select>
           </md-input-container>
           <md-input-container class="md-block">
-            <label>User</label>
+            <label>Gebruiker</label>
             <md-select ng-model="filters.user">
-              <md-optgroup label="User">
-                <md-option ng-value="undefined"> All </md-option>
+              <md-optgroup label="Gebruiker">
+                <md-option ng-value="undefined"> Ieder </md-option>
                 <md-option ng-repeat="user in guild.board.members" ng-value="user.id" layout>
                   <div layout layout-align="start center">
                     <img ng-if="user.avatar" class="size--24 icon__helper round" gravatar-size=24 gravatar-src-once="user.avatar">

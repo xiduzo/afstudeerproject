@@ -63,10 +63,12 @@
 
         function prepareGraphData() {
             self.guild.categories = [];
-            for(var i = 0; i <= self.guild.world.course_duration - 1; i++ ) {
-                self.guild.categories.push('Week ' + (i + 1) );
+            for(var index = 0; index <= self.guild.world.course_duration - 1; index++ ) {
+                // Only show weeks that have been in the past
+                if(!moment().isBefore(moment(self.guild.world.start).add(index, 'weeks'), 'day')) {
+                    self.guild.categories.push('Week ' + (index + 1) );
+                }
             }
-
             _.each(self.guild.categories, function(categories, index) {
                 var count_member = 0;
                 var count_average = 0;

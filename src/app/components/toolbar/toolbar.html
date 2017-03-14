@@ -14,22 +14,20 @@
                 </md-tooltip>
             </md-button>
             <section class="md-toolbar-tools">
-                <h1 class="md-title">
-                    <md-icon ng-if="toolbarCtrl.access <= 0" md-svg-icon="cmd_unicorn">
-                    </md-icon>
+                <h1>
                     {{ toolbarCtrl.route_title }}
                 </h1>
                 <md-menu-bar ng-if="toolbarCtrl.access >= 1 && toolbarCtrl.guilds.length >= 1">
+                    <md-icon md-svg-src="guild_dark"></md-icon>
                     <md-menu ng-if="toolbarCtrl.guilds.length >= 2">
                         <!-- https://github.com/angular/material/issues/6802 -->
-                        <button ng-click="$mdOpenMenu($event)">
-                            <md-icon md-svg-src="guild_dark"></md-icon>
+                        <button ng-click="$mdOpenMenu($event)" class="md-button">
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_guild.name }}
                             </strong>
                             <md-icon md-svg-src="expand_more_dark"></md-icon>
                         </button>
-                        <md-menu-content width="4">
+                        <md-menu-content width="4" class="main__toolbar__menu">
                             <md-menu-item ng-repeat="guild in toolbarCtrl.guilds" ng-if="guild.id != toolbarCtrl.selected_guild.id" ng-click="toolbarCtrl.changeGuild(guild)">
                                 <md-button>
                                     <div layout="row">
@@ -49,16 +47,16 @@
                     </section>
                 </md-menu-bar>
                 <md-menu-bar ng-if="toolbarCtrl.access >= 2 && toolbarCtrl.worlds.length >= 1">
+                    <md-icon md-svg-src="world_dark"></md-icon>
                     <md-menu ng-if="toolbarCtrl.worlds.length >= 2">
                         <!-- https://github.com/angular/material/issues/6802 -->
-                        <button ng-click="$mdOpenMenu($event)">
-                            <md-icon md-svg-src="world_dark"></md-icon>
+                        <button ng-click="$mdOpenMenu($event)" class="md-button">
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_world.name }}
                             </strong>
                             <md-icon md-svg-src="expand_more_dark"></md-icon>
                         </button>
-                        <md-menu-content width="4">
+                        <md-menu-content width="4" class="main__toolbar__menu">
                             <md-menu-item ng-repeat="world in toolbarCtrl.worlds" ng-if="world.id != toolbarCtrl.selected_world.id" ng-click="toolbarCtrl.changeWorld(world)">
                                 <md-button>
                                     <div layout="row">
@@ -81,16 +79,16 @@
         </section>
         <section layout layout-align="start center">
             <md-menu-bar>
+                <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
                 <md-menu>
                     <!-- https://github.com/angular/material/issues/6802 -->
-                    <button ng-click="$mdOpenMenu($event)">
-                        <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
+                    <button ng-click="$mdOpenMenu($event)" class="md-button">
                         <strong layout-padding>
                             {{ toolbarCtrl.user | fullUserName }}
                         </strong>
                         <md-icon md-svg-src="expand_more_dark"></md-icon>
                     </button>
-                    <md-menu-content width="4">
+                    <md-menu-content width="4" class="main__toolbar__menu">
                         <md-menu-item ui-sref="base.account.detail">
                             <md-button>
                                 <div layout="row">

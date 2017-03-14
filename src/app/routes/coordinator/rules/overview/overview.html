@@ -9,7 +9,7 @@
     <md-content flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content"
      ng-if="rulesOverviewCtrl.rules.length >= 1">
         <section layout layout-wrap>
-            <div flex=25 layout-padding
+            <div flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25 layout-padding
             ng-repeat="rule in filtered = (rulesOverviewCtrl.rules
             | filter: {
                 rule: filters.free_search
