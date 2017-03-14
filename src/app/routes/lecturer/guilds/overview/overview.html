@@ -1,121 +1,132 @@
-<section>
-    <md-tabs md-dynamic-height md-border-bottom class="md-primary">
-        <md-tab ng-repeat="world in guildsOverviewCtrl.worlds">
-            <md-tab-label>
-                {{ world.name }}
-            </md-tab-label>
-            <md-tab-body>
-                <section layout-padding>
-                    <div layout="row">
-                        <h2 class="md-headline" flex>
-                            Groups overview of {{ world.name }}
-                        </h2>
-                        <md-button class="md-raised md-accent md-fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
-                            <md-icon md-svg-icon="guild_light"></md-icon>
-                            <md-tooltip md-direction="left">
-                                Create new group
-                            </md-tooltip>
-                        </md-button>
+<section flex layout="column">
+
+    <cmd-loading-page ng-if="guildsOverviewCtrl.loading_page"></cmd-loading-page>
+
+    <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1 && !guildsOverviewCtrl.loading_page"
+    icon="world_dark"
+    headline="No classes found."
+    title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
+    </cmd-empty-state>
+
+    <section ng-if="guildsOverviewCtrl.worlds.length >= 1 && !guildsOverviewCtrl.loading_page"
+        layout-fill>
+        <section flex layout="column" layout-fill
+        ng-repeat="world in guildsOverviewCtrl.worlds"
+        ng-if="world.id === guildsOverviewCtrl.selected_world">
+            <section layout="row" layout-align="start stretch">
+                <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
+                    <md-icon md-svg-icon="guild_light"></md-icon>
+                    <md-tooltip md-direction="left">
+                        Create new group
+                    </md-tooltip>
+                </md-button>
+            </section>
+            <section flex layout="column">
+                <section flex layout="row" layout-margin>
+                    <cmd-empty-state ng-if="world.guilds.length < 1"
+                    icon="guild_dark"
+                    tooltip="Nope, the one in the corner"
+                    headline="No groups found."
+                    title="Add a new group by clicking on the shield.">
+                    </cmd-empty-state>
+                    <div ng-scrollbars flex>
+                        <div layout="row" layout-wrap>
+                            <div flex=33
+                                ng-repeat="guild in world.guilds | orderBy: '-created_at'">
+                                <md-card>
+                                    <md-toolbar layout-align="end center" layout>
+                                        <md-card-title class="md-toolbar-tools">
+                                            <md-card-title-text layout="row">
+                                                <span class="md-headline" flex>
+                                                    {{guild.name}}
+                                                </span>
+                                            </md-card-title-text>
+                                        </md-card-title>
+                                        <md-menu>
+                                            <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                                                <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
+                                            </md-button>
+                                            <md-menu-content width="4" >
+                                                <md-menu-item aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
+                                                    <md-button>
+                                                        <div layout="row">
+                                                            <md-icon
+                                                                md-menu-align-target
+                                                                md-svg-icon="timeline_dark">
+                                                            </md-icon>
+                                                            <p flex>Progress</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
+                                                    <md-button>
+                                                        <div layout="row">
+                                                            <md-icon
+                                                                md-menu-align-target
+                                                                md-svg-icon="feedback_dark">
+                                                            </md-icon>
+                                                            <p flex>Feedback</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.id})">
+                                                    <md-button>
+                                                        <div layout="row">
+                                                            <md-icon
+                                                                md-menu-align-target
+                                                                md-svg-icon="settings_dark">
+                                                            </md-icon>
+                                                            <p flex>Settings</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
+                                                    <md-button>
+                                                        <div layout="row">
+                                                            <md-icon
+                                                                md-menu-align-target
+                                                                md-svg-icon="add_dark">
+                                                            </md-icon>
+                                                            <p flex>Add student</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </md-toolbar>
+
+                                    <md-card-content>
+                                        <md-list
+                                            dnd-list="guild.members"
+                                            dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
+                                            <md-list-item ng-if="guild.members.length < 1"
+                                                 class="text--color--grey" layout layout-align="center center">
+                                                No students in this group yet.
+                                            </md-list-item>
+                                            <md-list-item ng-repeat="player in guild.members"
+                                                ng-if="guild.members.length >= 1"
+                                                dnd-draggable="player"
+                                                dnd-moved="guild.members.splice($index, 1)"
+                                                dnd-effect-allowed="move">
+                                                <img class="round icon__helper" gravatar-size="45" gravatar-src="player.user.email" layout-padding>
+                                                <span flex>
+                                                    {{ player.user | fullUserName }}
+                                                </span>
+                                                <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
+                                                    <md-tooltip md-direction="bottom" md-delay="1000">
+                                                        Remove student from group
+                                                    </md-tooltip>
+                                                </md-icon>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-card-content>
+                                </md-card>
+
+                            </div> <!-- End of guilds -->
+                        </div>
                     </div>
-                    <div layout="row" layout-wrap>
-                        <h3 ng-if="world.guilds.length < 1" class="md-title">
-                            No groups yet
-                        </h3>
-                        <div flex="100"
-                            flex-gt-xs="50"
-                            flex-gt-sm="100"
-                            flex-gt-md="50"
-                            flex-lg="33"
-                            flex-gt-lg="25"
-                            ng-repeat="guild in world.guilds | orderBy: '-created_at'">
-
-                            <md-card>
-                                <md-toolbar layout-align="end center" layout>
-                                    <md-card-title class="md-toolbar-tools">
-                                        <md-card-title-text layout="row">
-                                            <span class="md-headline" flex>
-                                                {{guild.name}}
-                                            </span>
-                                        </md-card-title-text>
-                                    </md-card-title>
-                                    <md-menu>
-                                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                                            <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
-                                        </md-button>
-                                        <md-menu-content width="4" >
-                                            <md-menu-item aria-label="View {{ guild.name }}" ui-sref="base.guilds.detail({guildUuid: guild.id})">
-                                                <md-button>
-                                                    <div layout="row">
-                                                        <md-icon
-                                                            md-menu-align-target
-                                                            md-svg-icon="eye_dark">
-                                                        </md-icon>
-                                                        <p flex>
-                                                            View
-                                                        </p>
-                                                    </div>
-                                                </md-button>
-                                            </md-menu-item>
-                                            <md-menu-item aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.id})">
-                                                <md-button>
-                                                    <div layout="row">
-                                                        <md-icon
-                                                            md-menu-align-target
-                                                            md-svg-icon="settings_dark">
-                                                        </md-icon>
-                                                        <p flex>
-                                                            Settings
-                                                        </p>
-                                                    </div>
-                                                </md-button>
-                                            </md-menu-item>
-                                            <md-menu-item ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
-                                                <md-button>
-                                                    <div layout="row">
-                                                        <md-icon
-                                                            md-menu-align-target
-                                                            md-svg-icon="add_dark">
-                                                        </md-icon>
-                                                        <p flex>
-                                                            Add student
-                                                        </p>
-                                                    </div>
-                                                </md-button>
-                                            </md-menu-item>
-                                        </md-menu-content>
-                                    </md-menu>
-                                </md-toolbar>
-
-                                <md-divider></md-divider>
-
-                                <md-card-content>
-                                    <md-list dnd-list="guild.members"
-                                        dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
-                                        <md-list-item ng-repeat="player in guild.members"
-                                            dnd-draggable="player"
-                                            dnd-moved="guild.members.splice($index, 1)"
-                                            dnd-effect-allowed="move">
-                                            <img class="round" gravatar-size="45" gravatar-src="player.email" layout-padding>
-                                            <span flex>
-                                                {{ player.first_name }} {{ player.surname }}
-                                            </span>
-                                            <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
-                                                <md-tooltip md-direction="bottom">
-                                                    Remove player from guild
-                                                </md-tooltip>
-                                            </md-icon>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-card-content>
-                            </md-card>
-
-                        </div> <!-- End of guilds -->
-
-                    </div>
-
-
                 </section>
-            </md-tab-body>
-        </md-tab>
-    </md-tabs>
+            </section>
+        </section>
+    </section>
 </section>

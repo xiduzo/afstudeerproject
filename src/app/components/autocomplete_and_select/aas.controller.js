@@ -7,6 +7,7 @@
 
     /** @ngInject */
     function AasController(
+        $filter,
         $mdDialog,
         title,
         subtitle,
@@ -45,7 +46,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         _.each(self.players, function(player) {
             player.selected = false;
-            player.filter_name = player.first_name + ' ' + player.surname;
+            player.filter_name = $filter('fullUserName')(player);
         });
 
 

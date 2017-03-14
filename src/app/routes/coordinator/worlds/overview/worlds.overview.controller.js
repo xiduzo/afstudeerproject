@@ -7,18 +7,24 @@
 
     /** @ngInject */
     function WorldsOverviewController(
+        $scope,
+        $state,
         $mdDialog,
         $mdToast,
+        hotkeys,
         Account,
         Global,
+        Notifications,
         World,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
         if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
+
+        Global.setRouteTitle('Classes overview');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 
@@ -29,11 +35,13 @@
         self.newWorldDialog = newWorldDialog;
         self.addGamemaster = addGamemaster;
         self.removeGamemaster = removeGamemaster;
+        self.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.worlds = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -53,9 +61,20 @@
                 });
                 self.worlds.push(world);
             });
+
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            }
+
+            self.loading_page = false;
         }, function() {
             // Err getting worlds
         });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -76,13 +95,7 @@
                     }
 
                     gamemaster.worldId = world.id;
-                    $mdToast.show(
-                        $mdToast
-                        .simple()
-                        .position('bottom right')
-                        .textContent(gamemaster.first_name + ' moved to ' + world.name)
-                        .hideDelay(1000)
-                    );
+                    Notifications.simpleToast(gamemaster.first_name + ' moved to ' + world.name);
                 }, function() {
                     // Err patching gamemasters world
                 });
@@ -90,39 +103,22 @@
         }
 
         function newWorldDialog(event) {
-            var dialog = $mdDialog.prompt()
-                .title('Add a new class')
-                .textContent('How would you like to name the class?')
-                .clickOutsideToClose(true)
-                .placeholder('New class name')
-                .ariaLabel('New class name')
-                .targetEvent(event)
-                .ok('Create new class')
-                .cancel('Cancel');
-
-            $mdDialog.show(dialog)
+            Notifications.prompt(
+                'Add a new class',
+                'How would you like to name the class?',
+                'New class name',
+                event
+            )
             .then(function(result) {
                 // Checks for the world name
                 if(!result) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Please enter a name')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
-                    return;
+                    return Notifications.simpleToast('Please enter a name');
                 }
 
                 World.addWorld(result)
                 .then(function(response) {
-                    response.gamemasters = [];
                     self.worlds.unshift(response);
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent('Class ' + response.name + ' created')
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+                    Notifications.simpleToast('Class ' + response.name + ' created');
                 }, function() {
                     // Err creating world
                 });
@@ -167,12 +163,7 @@
                             }
                             user.worldId = world.id;
                             world.gamemasters.push(user);
-                            $mdToast.show(
-                                $mdToast.simple()
-                                .textContent(user.first_name + ' added to ' + world.name)
-                                .position('bottom right')
-                                .hideDelay(3000)
-                            );
+                            Notifications.simpleToast(user.first_name + ' added to ' + world.name);
                         }, function() {
                             // Err adding gamemaster to world
                         });
@@ -187,23 +178,25 @@
 
         function removeGamemaster(gamemaster, world) {
             World.removeGamemasterFromWorld(gamemaster.uid, world.uuid)
-                .then(function(response) {
-                    if(!response) {
-                        return;
-                    }
+            .then(function(response) {
+                Notifications.simpleToast(gamemaster.first_name + ' got removed from ' + world.name);
+                world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
+            }, function() {
+                // Err remove gamemaster from world
+            });
+        }
 
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent(gamemaster.displayname + ' got removed from ' + world.name)
-                        .position('bottom right')
-                        .hideDelay(3000)
-                    );
+        function addHotkeys() {
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Add new world',
+                callback: function(event) {
+                    event.preventDefault();
+                    self.newWorldDialog(event);
+                }
+            });
 
-                    world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
-
-                }, function() {
-                    // Err
-                });
         }
 
     }

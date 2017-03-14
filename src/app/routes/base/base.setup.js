@@ -40,6 +40,9 @@
         Global
     ) {
 
+        // Using underscore in html, how awsome
+        $rootScope._ = _;
+
         // Set the global information on the rootScope
         $rootScope.Global = Global;
 
@@ -52,7 +55,7 @@
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
             if($rootScope.Global.getAccess() < 1) {
-                $state.go('base.account.login');
+              $state.go('base.account.login');
             }
             $rootScope.$previousState = !fromState.name ? {name: 'base.home', isRoot: true} : fromState;
         });

@@ -7,102 +7,120 @@
 
     /** @ngInject */
     function AccountDetailController(
+        $rootScope,
+        $state,
         Global,
         Guild,
+        World,
+        CMDChart,
         Spiderchart,
+        TrelloApi,
+        Notifications,
+        localStorageService,
         STUDENT_ACCESS_LEVEL
     ) {
 
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
+
+        Global.setRouteTitle('Profile');
 
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        self.createSpiderChart = createSpiderChart;
+        self.authenticate = authenticate;
+        self.selectGuild = selectGuild;
+        self.patchLocalSettings = patchLocalSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
-
-        // var average_score = {
-        //     name: 'Average score',
-        //     data: [
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100),
-        //         Math.floor(Math.random() * 100)
-        //     ],
-        //     color: '#95a5a6',
-        //     pointPlacement: 'on'
-        // };
+        self.trello_account = null;
+        self.loading_page = true;
+        self.local_settings = Global.getLocalSettings();
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
-            var my_scores = {
-                interaction_design: 0,
-                visual_interface_design: 0,
-                frontend_development: 0,
-                content_management: 0,
-                project_management: 0,
-            };
-            var total_completed_quests = 0;
-
-            // Calculate my chart
+            self.user.guilds = [];
             _.each(response.guilds, function(guild) {
-                _.each(guild.guild.quests, function(quest) {
-                    if(quest.completed) {
-                        total_completed_quests++;
-                        my_scores.interaction_design += quest.quest.interaction_design;
-                        my_scores.visual_interface_design += quest.quest.visual_interface_design;
-                        my_scores.frontend_development += quest.quest.frontend_development;
-                        my_scores.content_management += quest.quest.content_management;
-                        my_scores.project_management += quest.quest.project_management;
-                    }
+                self.user.guilds.push(guild.guild);
+            });
+
+            if(localStorageService.get('trello_token')) {
+                TrelloApi.Authenticate()
+                .then(function(response) {
+                    TrelloApi.Rest('GET', 'members/me')
+                    .then(function(response) {
+                        self.trello_account = response;
+                        self.loading_page = false;
+
+                        setTimeout(function () {
+                            var user = {
+                                techniek: Math.random() * 40 + 25,
+                                interaction: Math.random() * 40 + 25,
+                                visual: Math.random() * 40 + 25
+                            };
+
+                            CMDChart.createChart('cmdChart', user, 'small', true);
+                        }, 100);
+                    });
                 });
-            });
-            my_scores = _.map(my_scores, function(score) {
-                return score / total_completed_quests;
-            });
-
-            my_scores = {
-                name: 'My score',
-                data: my_scores,
-                color: '#FFCC00',
-                pointPlacement: 'on'
-            };
-
-            Spiderchart.createChart(
-                'container',
-                '',
-                350,
-                350,
-                65,
-                // [average_score, my_scores],
-                [my_scores],
-                true,
-                true,
-                {
-                    text: moment().format("DD/MM/YY HH:mm"),
-                    href: ''
-                }
-            );
+            } else {
+                self.authenticate();
+            }
 
         }, function(error) {
             // Error get user guilds
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		      Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function createSpiderChart(average, my_scores) {
+
+        }
+
+        function authenticate() {
+            if(localStorageService.get('trello_token')) {
+                localStorageService.remove('trello_token');
+            }
+
+            TrelloApi.Authenticate()
+            .then(function(){
+                TrelloApi.Rest('GET', 'members/me')
+                .then(function(response) {
+                    self.trello_account = response;
+                    localStorageService.set('trello_user', response);
+                    Notifications.simpleToast('Authentication succeeded');
+                    self.loading_page = false;
+                });
+            }, function(){
+                Notifications.simpleToast('Authentication failed');
+            });
+        }
+
+        function selectGuild(guild) {
+            Global.setSelectedGuild(guild.id);
+            $state.go('base.home.dashboards.student');
+        }
+
+        function patchLocalSettings() {
+            Global.setLocalSettings(self.local_settings);
+            $rootScope.$broadcast('patched-local-settings');
+        }
 
     }
 

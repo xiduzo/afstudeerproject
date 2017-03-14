@@ -11,7 +11,7 @@
         return {
             restrict: 'E',
             templateUrl: 'app/components/toolbar/toolbar.html',
-            controller: 'Toolbarontroller',
+            controller: 'Toolbarcontroller',
             controllerAs: 'toolbarCtrl',
             replace: true,
             bindToController: true,

@@ -55,9 +55,9 @@
         }
 
         function logout() {
-            localStorageService.clearAll();
             $rootScope.Global.clearUser();
-            $rootScope.$broadcast('user-changed');
+            localStorageService.remove('user');
+            $rootScope.$broadcast('user-logged-out');
 
             // Close the sidenav for the login page
             $mdSidenav('main__navigation').close();
@@ -81,14 +81,12 @@
             });
         }
 
-        function setUser(user) {
-            localStorageService.set('user', user);
-            $rootScope.Global.setUser(user);
-
+        function setUser(user, remember) {
+            if(remember) {
+                localStorageService.set('user', user);
+            }
             // Get the access level from the DB just to be sure no one will give himself access
-            $rootScope.$broadcast('user-changed');
-            $state.go('base.home');
-
+            $rootScope.$broadcast('new-user-login', user);
         }
 
         function getAccessLevel(uid) {
@@ -115,7 +113,8 @@
                     student_number:    user.hvastudentnumber,
                     email:             user.email,
                     initials:          user.initials,
-                    first_name:        user.displayname,
+                    first_name:        user.first_name,
+                    surname_prefix:    user.surname_prefix,
                     surname:           user.surname,
                     gender:            user.gender,
                     is_staff:          user.access

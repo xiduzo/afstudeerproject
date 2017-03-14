@@ -1,27 +1,77 @@
-<section layout-padding>
+<section layout flex>
 
-    <section layout="row">
-        <h2 class="md-headline" flex>
-            Guild settings of: {{ guildSettingsCtrl.guild.name }}
-
-            <md-button class="md-icon-button"
-            ng-click="guildSettingsCtrl.changeGuildName($event)">
-                <md-icon
-                    md-menu-align-target
-                    md-svg-icon="pencil_dark">
-                </md-icon>
-                <md-tooltip>
-                    Change group name
-                </md-tooltip>
-            </md-button>
-
-        </h2>
-        <md-button class="md-raised md-warn md-fab" ng-click="guildSettingsCtrl.deleteGuild($event)">
-            <md-icon md-svg-icon="delete_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Delete guild
-            </md-tooltip>
-        </md-button>
+    <section flex=80>
+        <cmd-empty-state flex
+            icon="cmd_unicorn"
+            headline="Nothing to see here (yet)."
+            title="Have a brilliant idea? Let us know."
+            subtitle="And we might build it over here ;)">
+        </cmd-empty-state>
     </section>
+    <md-content flex=20 layout-fill>
+        <md-subheader>
+            Actions
+        </md-subheader>
+        <section layout="column">
+            <md-button layout class="success md-raised"
+             ng-click="guildSettingsCtrl.changeGuildName($event)">
+                <md-icon md-svg-src="pencil_light">
+                </md-icon>
+                <span flex>
+                    Edit name
+                </span>
+            </md-button>
+            <md-button layout class="md-warn md-raised"
+             ng-click="guildSettingsCtrl.deleteGuild($event)">
+                <md-icon md-svg-src="delete_light">
+                </md-icon>
+                <span flex>
+                    Delete group
+                </span>
+            </md-button>
+        </section>
+        <md-subheader>
+            Settings
+        </md-subheader>
+        <section layout="column" layout-padding>
+            <md-input-container>
+                <label>
+                    Trello board
+                </label>
+                <md-select ng-model="guildSettingsCtrl.guild.trello_board"
+                ng-change="guildSettingsCtrl.patchSettings()">
+                    <md-option ng-value="board.id" ng-repeat="board in guildSettingsCtrl.trello_boards">
+                        {{ board.name }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>
+                    Done list
+                </label>
+                <md-select ng-model="guildSettingsCtrl.guild.trello_done_list"
+                ng-change="guildSettingsCtrl.patchSettings()">
+                    <md-option ng-value="list.id" ng-repeat="list in guildSettingsCtrl.trello_board_lists">
+                        {{ list.name }}
+                    </md-option>
+                </md-select>
+                <div class="hint text--color--grey">
+                    Which list should be the done list?
+                </div>
+            </md-input-container>
+        </section>
+        <md-subheader>
+            Students ({{guildSettingsCtrl.guild.members.length}})
+        </md-subheader>
+        <section layout layout-wrap>
+            <span flex=33 layout layout-padding layout-align="center"
+                ng-repeat="member in guildSettingsCtrl.guild.members">
+                <img class="round" gravatar-size="60" gravatar-src-once="member.user.email">
+                <md-tooltip md-delay="1000">
+                    {{ member.user | fullUserName }}
+                </md-tooltip>
+            </span>
+        </section>
+    </md-content>
 
 </section>

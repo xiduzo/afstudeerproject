@@ -1,29 +1,25 @@
-<section layout-padding>
+<section layout-fill>
+  <cmd-loading-page ng-if="worldsOverviewCtrl.loading_page"></cmd-loading-page>
 
-    <section layout="row">
-        <h2 class="md-headline" flex>
-            Classes overview
-        </h2>
-        <md-button class="md-raised md-accent md-fab" ng-click="worldsOverviewCtrl.newWorldDialog()">
-            <md-icon md-svg-icon="world_light"></md-icon>
-            <md-tooltip md-direction="left">
-                Create new class
-            </md-tooltip>
-        </md-button>
-    </section>
+  <section ng-if="!worldsOverviewCtrl.loading_page" layout-fill>
 
-    <section layout="row" layout-wrap>
-        <h3 ng-if="worldsOverviewCtrl.worlds.length < 1" class="md-title">
-            No classes have been found, add a new world by clicking on the 'Create new class' button.
-        </h3>
-        <div flex="100"
-            flex-gt-xs="50"
-            flex-gt-sm="100"
-            flex-gt-md="50"
-            flex-lg="33"
-            flex-gt-lg="25"
-            ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'created_at'">
+    <md-button class="md-fab icon__fab" ng-click="worldsOverviewCtrl.newWorldDialog($event)">
+      <md-icon md-svg-icon="world_light"></md-icon>
+      <md-tooltip md-direction="left">
+        Create new class
+      </md-tooltip>
+    </md-button>
 
+    <cmd-empty-state ng-if="worldsOverviewCtrl.worlds.length < 1"
+      icon="world_dark"
+      headline="No classes found."
+      title="Add a new class by clicking on the icon in the corner.">
+    </cmd-empty-state>
+
+    <section ng-if="worldsOverviewCtrl.worlds.length >= 1" layout layout-fill>
+      <md-content layout-padding flex layout-fill ng-scrollbars id="main__content">
+        <section layout layout-wrap>
+          <div flex=33 ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'created_at'">
             <md-card>
                 <md-toolbar layout-align="end center" layout>
                     <md-card-title class="md-toolbar-tools">
@@ -45,9 +41,7 @@
                                             md-menu-align-target
                                             md-svg-icon="settings_dark">
                                         </md-icon>
-                                        <p flex>
-                                            Settings
-                                        </p>
+                                        <p flex> Settings </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -58,9 +52,7 @@
                                             md-menu-align-target
                                             md-svg-icon="add_dark">
                                         </md-icon>
-                                        <p flex>
-                                            Add lecturer
-                                        </p>
+                                        <p flex> Add lecturer </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -68,18 +60,22 @@
                     </md-menu>
                 </md-toolbar>
 
-                <md-divider></md-divider>
-
                 <md-card-content>
-                    <md-list dnd-list="world.gamemasters"
+                    <section ng-if="world.gamemasters.length < 1">
+                        <span class="text--color--grey" layout layout-align="center">
+                            No lecturers in this class yet.
+                        </span>
+                    </section>
+                    <md-list ng-if="world.gamemasters.length >= 1"
+                        dnd-list="world.gamemasters"
                         dnd-inserted="worldsOverviewCtrl.moveGamemaster(event, world, item)">
                         <md-list-item ng-repeat="gamemaster in world.gamemasters"
                             dnd-draggable="gamemaster"
                             dnd-moved="world.gamemasters.splice($index, 1)"
                             dnd-effect-allowed="move">
-                            <img class="round" gravatar-size="45" gravatar-src="gamemaster.email" layout-padding>
+                            <img class="round icon__helper" gravatar-size="45" gravatar-src="gamemaster.email" layout-padding>
                             <span flex>
-                                {{ gamemaster.first_name }} {{ gamemaster.surname }}
+                                {{ gamemaster | fullUserName }}
                             </span>
                             <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
                                 <md-tooltip md-direction="bottom">
@@ -91,9 +87,10 @@
                 </md-card-content>
 
             </md-card>
-
-        </div> <!-- End of worlds -->
-
+          </div>
+        </section>
+      </md-content>
     </section>
 
+  </section>
 </section>

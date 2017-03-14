@@ -1,13 +1,11 @@
 .md-button {
     &.success {
-        background: $green_500;
-        color: white;
+        background: $green_500 !important;
+        color: white !important;
     }
-
-    &:not([disabled]):hover {
+    &[disabled] {
         &.success {
-            background: $green_400;
+            background: lighten($green_500, 25) !important;
         }
     }
-
 }

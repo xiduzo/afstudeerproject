@@ -1,0 +1,17 @@
+#main__toolbar {
+  z-index: 58;
+}
+
+.main__toolbar__menu {
+  &.md-dense {
+    padding: 8px 0 !important;
+    md-menu-item {
+      min-height: 48px !important;
+      height: 48px !important;
+      .md-button {
+        min-height: 48px !important;
+        height: 48px !important;
+      }
+    }
+  }
+}

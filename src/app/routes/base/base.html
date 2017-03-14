@@ -1,12 +1,16 @@
-<div id="wrapper" layout="column" style="height: 100vh; overflow: hidden;">
+<div id="wrapper" layout style="height: 100vh; overflow: hidden;">
 
-    <cmd-toolbar></cmd-toolbar>
-
-    <div layout="row" flex>
-
-        <cmd-navigation></cmd-navigation>
-
-        <md-content ui-view="main" id="main__content" ng-scrollbars flex></md-content>
+    <div class="bullet__points">
+        <div ng-repeat="point in [1,2,3,4,5,6,7,8,9]" class="point point--{{point}}">
+        </div>
     </div>
+    <div id="webgazer__point"></div>
+
+    <cmd-navigation flex-gt-md=15 md-whiteframe=3></cmd-navigation>
+
+    <section layout="column" flex>
+        <cmd-toolbar md-whiteframe=1></cmd-toolbar>
+        <main ui-view="main" flex layout="row" style="overflow: hidden;"></main>
+    </section>
 
 </div>

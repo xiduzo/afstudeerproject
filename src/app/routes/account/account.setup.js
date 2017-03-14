@@ -27,7 +27,7 @@
 
             .state('base.account.forgot', {
                 onEnter: function($window) {
-                    $window.open('https://id.hva.nl/idm/user/login.jsp', '_blank');
+                    $window.open('https://id.student.hva.nl/user-activation/HVA/id', '_blank');
                 }
             })
 

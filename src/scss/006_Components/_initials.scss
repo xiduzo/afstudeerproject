@@ -1,0 +1,17 @@
+.initials {
+    width: 24px;
+    height: 24px;
+    max-height: 24px;
+    max-width: 24px;
+    background: #607D8B;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+
+    &--big {
+        width: 36px;
+        height: 36px;
+        max-height: 36px;
+        max-width: 36px;
+    }
+}

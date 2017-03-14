@@ -37,13 +37,24 @@
                 }
             })
 
-            .state('base.guilds.detail', {
-                url: '/:guildUuid/detail',
+            .state('base.guilds.progress', {
+                url: '/:guildUuid/progress',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/lecturer/guilds/detail/detail.html',
-                        controller: 'GuildDetailController',
-                        controllerAs: 'guildDetailCtrl'
+                        templateUrl: 'app/routes/lecturer/guilds/progress/progress.html',
+                        controller: 'GuildDetailProgressController',
+                        controllerAs: 'guildDetailProgressCtrl'
+                    }
+                }
+            })
+
+            .state('base.guilds.feedback', {
+                url: '/:guildUuid/feedback',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/lecturer/guilds/feedback/feedback.html',
+                        controller: 'GuildDetailFeedbackController',
+                        controllerAs: 'guildDetailFeedbackCtrl'
                     }
                 }
             })

@@ -7,9 +7,11 @@
 
     /** @ngInject */
     function NavigationController(
-        $rootScope,
+        $scope,
         $mdSidenav,
-        Account,
+        $state,
+        hotkeys,
+        Global,
         STUDENT_ACCESS_LEVEL,
         LECTURER_ACCESS_LEVEL,
         COORDINATOR_ACCESS_LEVEL
@@ -21,89 +23,161 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.toggleNavigation = toggleNavigation;
-        self.logout = logout;
+        self.active_menu_item = $state.current.name;
+        self.changeState = changeState;
+        self.addHotkeys = addHotkeys;
+        self.removeHotkeys = removeHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = $rootScope.Global.getUser();
-        self.access = $rootScope.Global.getAccess();
+        self.user = Global.getUser();
+        self.access = Global.getAccess();
 
         self.main_navigation = [
             {
                 subgroup: 'coordinator',
-                verbose: 'Coordinator',
-                access_level: COORDINATOR_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
-                    {
-                        name: 'Dashboard',
-                        icon: 'dashboard_dark',
-                        link_to: 'base.home',
-                    },
+                    // {
+                    //     name: 'Dashboard',
+                    //     icon: 'dashboard_dark',
+                    //     link_to: 'base.home.dashboards.coordinator',
+                    //     access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    // },
                     {
                         name: 'Classes',
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
-                    }
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
+                    {
+                        name: 'Rules',
+                        icon: 'rules_dark',
+                        link_to: 'base.rules.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
                 ],
             },
             {
                 subgroup: 'lecturer',
-                verbose: 'Lecturer',
-                access_level: LECTURER_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base.home',
+                        link_to: 'base.home.dashboards.lecturer',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                     {
                         name: 'Groups',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
+
                 ],
             },
             {
                 subgroup: 'student',
-                verbose: 'Student',
-                access_level: STUDENT_ACCESS_LEVEL,
+                access_levels: [COORDINATOR_ACCESS_LEVEL, STUDENT_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
-                        link_to: 'base.home',
+                        link_to: 'base.home.dashboards.student',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                     {
-                        name: 'Group',
-                        icon: 'guild_dark',
-                        link_to: 'base.guild.overview',
+                        name: 'Workload',
+                        icon: 'pie_dark',
+                        link_to: 'base.guild.workload',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                     {
-                        name: 'Assignments',
-                        icon: 'book_dark',
-                        link_to: 'base.quests.log',
+                        name: 'Feedback',
+                        icon: 'feedback_dark',
+                        link_to: 'base.guild.rules',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
+                    },
+                    {
+                        name: 'Activity log',
+                        icon: 'list_dark',
+                        link_to: 'base.guild.activity',
+                        access_levels: [
+                            COORDINATOR_ACCESS_LEVEL,
+                            LECTURER_ACCESS_LEVEL,
+                            STUDENT_ACCESS_LEVEL
+                        ],
                     },
                 ],
             },
         ];
 
-        self.account_navigation = {
-            access_level: STUDENT_ACCESS_LEVEL,
-            subgroup: 'account',
-            verbose: 'Account',
-            items: [
-                {
-                    name: 'Profile',
-                    icon: 'person_dark',
-                    link_to: 'base.account.detail'
-                }
-            ]
-        };
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Services
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-        $rootScope.$on('user-changed', function() {
-            self.user = $rootScope.Global.getUser();
-            self.access = $rootScope.Global.getAccess();
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        if(self.user.id) {
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            }
+        }
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('new-user-set', function() {
+            self.access = Global.getAccess();
+            if(self.user.id) {
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                } else {
+                    self.removeHotkeys();
+                }
+            } else {
+                self.removeHotkeys();
+            }
+        });
+
+        $scope.$on('user-logged-out', function() {
+            self.access = Global.getAccess();
+            if(self.user.id) {
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                } else {
+                    self.removeHotkeys();
+                }
+            } else {
+                self.removeHotkeys();
+            }
+        });
+
+        $scope.$on('patched-local-settings', function() {
+            if(Global.getLocalSettings().enabled_hotkeys) {
+                self.addHotkeys();
+            } else {
+                self.removeHotkeys();
+            }
+        });
+
+        $scope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
+            self.active_menu_item = toState.name;
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,12 +188,108 @@
             $mdSidenav('main__navigation').toggle();
         }
 
-        function logout() {
-            // Close the navigation
+        function changeState(state) {
+            $state.go(state);
+            self.active_menu_item = state;
             self.toggleNavigation();
+        }
 
-            // Logout the user
-            Account.logout();
+        function addHotkeys() {
+            if(self.user.is_superuser) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'c',
+                    description: 'Goto classes',
+                    callback: function() {
+                        self.changeState('base.worlds.overview');
+                    }
+                })
+                .add({
+                    combo: 'r',
+                    description: 'Goto rules',
+                    callback: function() {
+                        self.changeState('base.rules.overview');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            if(self.user.is_staff) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'g',
+                    description: 'Goto groups',
+                    callback: function() {
+                        self.changeState('base.guilds.overview');
+                    }
+                })
+                .add({
+                    combo: 'a',
+                    description: 'Goto assessments',
+                    callback: function() {
+                        self.changeState('base.assessments.overview');
+                    }
+                })
+                .add({
+                    combo: 's',
+                    description: 'Goto stimulance',
+                    callback: function() {
+                        self.changeState('base.stimulance.overview');
+                    }
+                })
+                .add({
+                    combo: 'd',
+                    description: 'Goto dashboard',
+                    callback: function() {
+                        self.changeState('base.home.dashboards.lecturer');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            if(!self.user.is_superuser && !self.user.is_staff) {
+                hotkeys.bindTo($scope)
+                .add({
+                    combo: 'g',
+                    description: 'Goto group',
+                    callback: function() {
+                        self.changeState('base.guild.overview');
+                    }
+                })
+                .add({
+                    combo: 'f',
+                    description: 'Goto feedback',
+                    callback: function() {
+                        self.changeState('base.guild.rules');
+                    }
+                })
+                .add({
+                    combo: 'd',
+                    description: 'Goto dashboard',
+                    callback: function() {
+                        self.changeState('base.home.dashboards.student');
+                    }
+                })
+                ; // End of hotkeys
+            }
+
+            // Every one can see this one
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'p',
+                description: 'Goto profile',
+                callback: function() {
+                    self.changeState('base.account.detail');
+                }
+            })
+            ; // End of hotkeys
+        }
+
+        function removeHotkeys() {
+            var alphabeth = 'abcdefghijklmnopqrstuvwxyz';
+            _.each(alphabeth, function(letter) {
+                hotkeys.del(letter);
+            });
         }
 
     }

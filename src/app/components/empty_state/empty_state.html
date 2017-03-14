@@ -1,0 +1,18 @@
+<section layout-fill layout="column" layout-align="center center">
+    <span ng-if="emptyStateCtrl.icon">
+        <md-icon class="icon--size--192 icon--color--grey" md-svg-icon="{{emptyStateCtrl.icon}}">
+        </md-icon>
+        <md-tooltip md-direction="top" ng-if="emptyStateCtrl.tooltip">
+            {{ emptyStateCtrl.tooltip }}
+        </md-tooltip>
+    </span>
+    <span class="md-headline">
+        {{ emptyStateCtrl.headline }}
+    </span>
+    <span class="md-title text--color--blueGrey">
+        {{ emptyStateCtrl.title }}
+    </span>
+    <span class="md-subtitle text--color--grey" ng-if="emptyStateCtrl.subtitle">
+        {{ emptyStateCtrl.subtitle }}
+    </span>
+</section>

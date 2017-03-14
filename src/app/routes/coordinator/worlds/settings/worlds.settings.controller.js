@@ -8,19 +8,22 @@
     /** @ngInject */
     function WorldsSettingsController(
         $mdDialog,
-        $mdToast,
         $state,
         $stateParams,
+        $scope,
+        hotkeys,
         Global,
-        Quest,
+        Notifications,
         World,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
         if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
-            Global.notAllowed();
-            return;
+            return Global.notAllowed();
         }
+
+        Global.setRouteTitle('Class settings');
+        Global.setRouteBackRoute('base.worlds.overview');
 
         var self = this;
 
@@ -29,13 +32,14 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.deleteWorld = deleteWorld;
         self.changeWorldName = changeWorldName;
-        self.deleteQuest = deleteQuest;
-        self.toggleQuest = toggleQuest;
+        self.addHotkeys = addHotkeys;
+        self.patchWorldSettings = patchWorldSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.world = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -43,11 +47,17 @@
         World.getWorld($stateParams.worldUuid)
             .then(function(response) {
                 if(response.status === 404) {
-                    Global.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
+                    Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
 
+                response.start = new Date(moment(response.start));
                 self.world = response;
+
+                if(Global.getLocalSettings().enabled_hotkeys) {
+                    self.addHotkeys();
+                }
+                self.loading_page = false;
 
             }, function() {
                 // Err
@@ -58,19 +68,16 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteWorld(event) {
-            var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this Class?')
-                        .textContent('Please consider your answer, this action can not be undone.')
-                        .clickOutsideToClose(true)
-                        .ariaLabel('Delete world')
-                        .targetEvent(event)
-                        .ok('Yes, I accept the consequences')
-                        .cancel('No, take me back!');
-
-            $mdDialog.show(dialog).then(function() {
+            Notifications.confirmation(
+                'Are you sure you want to delete this class?',
+                'Please consider your answer, this action can not be undone.',
+                'Delete class',
+                event
+            )
+            .then(function() {
                 World.deleteWorld(self.world.id)
                     .then(function(response) {
-                        Global.simpleToast('Class ' + self.world.name + ' has been deleted');
+                        Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
                         $state.go('base.worlds.overview');
                     }, function() {
                         // Err
@@ -81,76 +88,68 @@
         }
 
         function changeWorldName(event) {
-            var dialog = $mdDialog.prompt()
-                        .title('Change the world name of "' +self.world.name+ '"')
-                        .textContent('How would you like to name this world?')
-                        .clickOutsideToClose(true)
-                        .placeholder('World name')
-                        .ariaLabel('World name')
-                        .targetEvent(event)
-                        .ok('Change world name')
-                        .cancel('Cancel');
+            Notifications.prompt(
+                'Change the class name of \'' +self.world.name+ '\'',
+                'How would you like to name this class?',
+                'Class name',
+                event
+            )
+            .then(function(result) {
+                if(!result) {
+                    return Notifications.simpleToast('Please enter a name');
+                }
 
-            $mdDialog.show(dialog)
-                .then(function(result) {
-                    // Ok
-
-                    // Checks for thw world name
-                    if(!result) {
-                        Global.simpleToast('Please enter a name');
-                        return;
-                    }
-
-                    World.changeWorldName(result, self.world.id)
-                        .then(function(response) {
-                            self.world.name = result;
-                            Global.simpleToast('Name change to ' + result);
-                        }, function() {
-                            // Err
-                        });
-
-                }, function() {
-                    // Cancel
-                });
-        }
-
-        function deleteQuest(event, quest) {
-            var dialog = $mdDialog.confirm()
-                        .title('Are you sure you want to delete this assignment?')
-                        .textContent('Please consider your answer, this action can not be undone.')
-                        .clickOutsideToClose(true)
-                        .ariaLabel('Delete quest')
-                        .targetEvent(event)
-                        .ok('Yes, I accept the consequences')
-                        .cancel('No, take me back!');
-
-            $mdDialog.show(dialog).then(function() {
-                Quest.deleteQuest(quest.id)
-                    .then(function(response) {
-                        if(response.status >= 400) {
-                            Global.statusCode(response);
-                            return;
-                        }
-
-                        Global.simpleToast(quest.name + ' got removed from ' + self.world.name);
-                        // Remove the quest in the frontend
-                        self.world.quests.splice(self.world.quests.indexOf(quest), 1);
-
-                    }, function() {
-                        // Err
-                    });
-            }, function() {
-                // No
-            });
-        }
-
-        function toggleQuest(quest) {
-            Quest.toggleQuest(quest.id, quest.active)
+                World.changeWorldName(result, self.world.id)
                 .then(function(response) {
-                    Global.simpleToast('Assignment ' + (quest.active ? 'activated' : 'deactivated'));
+                    self.world.name = result;
+                    Notifications.simpleToast('Name change to ' + result);
                 }, function() {
                     // Err
                 });
+
+            }, function() {
+                // Cancel
+            });
+        }
+
+        function addHotkeys() {
+            hotkeys.bindTo($scope)
+            .add({
+                combo: 'shift+c',
+                description: 'Change class name',
+                callback: function(event) {
+                    event.preventDefault();
+                    self.changeWorldName();
+                }
+            })
+            .add({
+                combo: 'shift+r',
+                description: 'Add rule',
+                callback: function(event) {
+                    event.preventDefault();
+                    self.addRule();
+                }
+            })
+            .add({
+                combo: 'shift+d',
+                description: 'Delete ' + self.world.name,
+                callback: function(event) {
+                    event.preventDefault();
+                    self.deleteWorld();
+                }
+            })
+
+            ; // End of hotkeys
+        }
+
+        function patchWorldSettings() {
+            World.patchWorldSettings(self.world)
+            .then(function(response) {
+                Notifications.simpleToast('Class settings updated');
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         }
 
     }

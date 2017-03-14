@@ -1,0 +1,54 @@
+<md-dialog md-theme="default" aria-label="{{ addTaskCtrl.about }}" flex="40">
+
+    <md-toolbar>
+        <span class="md-toolbar-tools" layout layout-align="center center">
+            {{ addTaskCtrl.title }}
+        </span>
+    </md-toolbar>
+
+    <md-dialog-content class="md-dialog-content">
+        <div class="md-dialog-content-body">
+            <form layout="column">
+                <div layout>
+                    <md-input-container flex>
+                        <label>Task</label>
+                        <input md-autofocus ng-model="addTaskCtrl.formInput.name" />
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Points</label>
+                        <md-select ng-model="addTaskCtrl.formInput.points">
+                            <md-option ng-repeat="points in [1,2,3,5,8,13,21,34,55,89]" value="{{points}}">
+                            {{ points }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <md-input-container flex>
+                    <label>Description</label>
+                    <textarea
+                        ng-model="addTaskCtrl.formInput.objective"
+                        rows="25"
+                        md-maxlength="400">
+                    </textarea>
+                </md-input-container>
+            </form>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button class="md-button" type="button" aria-label="Cancel"
+            ng-click="addTaskCtrl.close()" md-ink-ripple>
+            <strong class="text--color--red">
+                Cancel
+            </strong>
+        </button>
+        <button class="md-primary md-button" type="button" aria-label="{{ addTaskCtrl.about }}"
+            ng-click="addTaskCtrl.addTask()" md-ink-ripple>
+            <strong class="text--color--green">
+                Add {{ addTaskCtrl.about }}
+            </strong>
+        </button>
+    </md-dialog-actions>
+
+</md-dialog>

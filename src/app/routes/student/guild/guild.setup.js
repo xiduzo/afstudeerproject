@@ -15,13 +15,35 @@
                 abstract: true
             })
 
-            .state('base.guild.overview', {
-                url: '/overview',
+            .state('base.guild.workload', {
+                url: '/workload',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/student/guild/overview/overview.html',
-                        controller: 'GuildOverviewController',
-                        controllerAs: 'guildOverviewCtrl'
+                        templateUrl: 'app/routes/student/guild/workload/workload.html',
+                        controller: 'GuildWorkloadController',
+                        controllerAs: 'guildWorkloadCtrl'
+                    }
+                }
+            })
+
+            .state('base.guild.activity', {
+                url: '/activity',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/student/guild/activity/activity.html',
+                        controller: 'GuildActivityController',
+                        controllerAs: 'guildActivityCtrl'
+                    }
+                }
+            })
+
+            .state('base.guild.rules', {
+                url: '/rules',
+                views: {
+                    'main@base': {
+                        templateUrl: 'app/routes/student/guild/rules/rules.html',
+                        controller: 'GuildRulesController',
+                        controllerAs: 'guildRulesCtrl'
                     }
                 }
             })

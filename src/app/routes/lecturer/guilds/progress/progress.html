@@ -1,0 +1,74 @@
+<cmd-loading-page ng-if="guildDetailProgressCtrl.loading_page"></cmd-loading-page>
+
+<section flex layout="column" ng-if="!guildDetailProgressCtrl.loading_page">
+    <section flex layout="column" layout-fill layout-align="start stretch" layout-padding>
+        <section flex=50 layout="row" layout-margin>
+            <section flex=60 id="cards_per_week" md-whiteframe=1></section>
+            <section flex=40 id="cards_total" md-whiteframe=1>
+            </section>
+        </section>
+        <section flex=50 ng-scrollbars>
+            <section layout layout-wrap>
+                <div flex=25 ng-repeat="member in guildDetailProgressCtrl.board.members">
+                    <md-card>
+                        <md-toolbar
+                        ng-style="{
+                            'background': member.color
+                        }">
+                            <span class="md-toolbar-tools" layout layout-align="center center">
+                                <strong>
+                                    {{ member.name }}
+                                </strong>
+                            </span>
+                        </md-toolbar>
+                        <md-card-content layout="column">
+                            <md-list flex>
+                                <md-list-item layout flex layout-align="space-between center">
+                                    <span>
+                                        Cards
+                                    </span>
+                                    <strong class="md-headline">
+                                        {{ member.cards.length }}
+                                    </strong>
+                                </md-list-item>
+                                <md-list-item layout flex layout-align="space-between center">
+                                    <span>
+                                        Completed Cards
+                                    </span>
+                                    <strong class="md-headline">
+                                        {{ member.completed_cards }}
+                                    </strong>
+                                </md-list-item>
+                            </md-list>
+                            <section>
+                                <md-subheader>
+                                    Focus
+                                </md-subheader>
+                                <section layout layout-wrap>
+                                    <div flex=50 layout ng-repeat="label in member.labels | orderBy: '-amount_used'">
+                                        <span flex md-whiteframe=2 layout-margin
+                                        layout layout-align="center center"
+                                        ng-style="{
+                                            'background': label.color
+                                        }" style="color: white; font-weight: bold; text-shadow: 2px 2px #000; border-radius: 4px;">
+                                            <div ng-if="label.name">
+                                                {{ label.name }}
+                                                <em>
+                                                    ({{ label.amount_used }}x)
+                                                </em>
+                                            </div>
+                                            <div ng-if="!label.name">
+                                                {{ label.amount_used }}x
+                                            </div>
+                                        </span>
+                                    </div>
+                                </section>
+                            </section>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </section>
+        </section>
+    </section>
+
+</section>

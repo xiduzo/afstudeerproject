@@ -1,12 +1,27 @@
 #main__navigation {
-    md-list {
-        &:focus{
-            outline: none;
-        }
-        md-list-item {
-            a {
-                margin: 0;
+    md-content {
+      background: $navigation_background;
+        md-list {
+            md-list-item {
+                color: $navigation_color;
+                &:focus{
+                    outline: none;
+                }
+                a {
+                    margin: 0;
+                }
+                &.active_menu_item {
+                    background-color: #FFCC00;
+                    color: white;
+                    md-icon {
+                        @extend .icon--color--white;
+                    }
+                }
             }
         }
     }
+}
+
+.active_menu_item {
+    background-color: darken($sidebarBackground, 10);
 }

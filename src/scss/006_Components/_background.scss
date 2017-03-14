@@ -1,0 +1,14 @@
+.background {
+    &--color {
+        @each $name, $color in $colors {
+            &--#{$name} {
+                background: $color !important;
+                @each $opacity in (1,2,3,4,5,6,7,8,9) {
+                    &--#{$opacity} {
+                        background: rgba($color, ($opacity * 0.1)) !important;
+                    }
+                }
+            }
+        }
+    }
+}

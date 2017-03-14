@@ -1,0 +1,18 @@
+<md-dialog flex=50 md-theme="default" aria-label="Workload of {{ memberWorkloadCtrl.member.name }}">
+
+    <md-dialog-content class="md-dialog-content" layout-padding>
+        <div class="md-dialog-content-body">
+            <div id="workload__graph"></div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button class="md-primary md-button" type="button" aria-label="Cancel"
+            ng-click="memberWorkloadCtrl.close()" md-ink-ripple>
+            <strong class="text--color--red">
+                Close
+            </strong>
+        </button>
+    </md-dialog-actions>
+
+</md-dialog>

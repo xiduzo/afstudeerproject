@@ -1,63 +1,37 @@
 <md-sidenav
-    md-is-locked-open="$mdMedia('gt-sm') && navigationCtrl.access >= 1"
+    md-is-locked-open="$mdMedia('gt-md') && navigationCtrl.access >= 1"
     md-component-id="main__navigation"
     id="main__navigation"
     layout="column">
 
-    <md-toolbar ng-if="navigationCtrl.user.email" flex="none">
-        <div class="user__information" layout="row">
-            <div flex="30" layout-margin layout="row" layout-align="center center">
-                <img class="round" gravatar-size="75" gravatar-src-once="navigationCtrl.user.email">
+    <section layout="column">
+        <md-toolbar class="md-accent" md-whiteframe="1">
+            <div class="md-toolbar-tools" layout layout-align="center center">
+                <md-button class="md-icon-button" ui-sref="base.home" aria-label="home">
+                    <md-icon md-svg-icon="cmd_unicorn"></md-icon>
+                </md-button>
+                <h1 class="md-headline">
+                    Athena
+                </h1>
             </div>
-            <div flex layout="column" layout-align="center start">
-                <div class="md-headline">
-                    {{ navigationCtrl.user.first_name }} {{ navigationCtrl.user.surname }}
-                </div>
-                <div class="md-subhead">
-                    [PLACEHOLDER]
-                </div>
-            </br/>
-            </div>
-        </div>
-    </md-toolbar>
+        </md-toolbar>
+    </section>
 
-    <!-- Adding ng-scrollbars over here will overrule the subheader effect -->
-    <md-content flex>
-
+    <md-content flex ng-scrollbars>
         <section ng-repeat="group in navigationCtrl.main_navigation"
-            ng-if="navigationCtrl.access >= group.access_level">
-            <md-subheader>
-                {{ group.verbose }}
-            </md-subheader>
+            ng-if="_.contains(group.access_levels, navigationCtrl.access)">
             <md-list>
-                <md-list-item ui-sref="{{ item.link_to }}" ng-repeat="item in group.items"
-                    ng-click="navigationCtrl.toggleNavigation()">
-                    <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
-                    <span flex>{{ item.name }}</span>
+                <md-list-item ng-repeat="item in group.items"
+                ng-click="navigationCtrl.changeState(item.link_to)"
+                ng-class="{
+                    'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
+                }"
+                ng-if="_.contains(item.access_levels, navigationCtrl.access)">
+                  <md-icon class="icon--color--grey icon__helper"
+                  md-svg-icon="{{ item.icon }}"></md-icon>
+                  <span flex>{{ item.name }}</span>
                 </md-list-item>
             </md-list>
         </section>
-
-        <!-- All users -->
-        <section ng-if="navigationCtrl.access >= navigationCtrl.account_navigation.access_level">
-            <md-subheader>
-                {{ navigationCtrl.account_navigation.verbose }}
-            </md-subheader>
-            <md-list>
-                <md-list-item ng-repeat="item in navigationCtrl.account_navigation.items"
-                    ui-sref="{{ item.link_to }}"
-                    ng-click="navigationCtrl.toggleNavigation()">
-                    <md-icon md-svg-icon="{{ item.icon }}"></md-icon>
-                    <span flex>{{ item.name }}</span>
-                </md-list-item>
-                <md-list-item md-ink-ripple ng-click="navigationCtrl.logout()">
-                    <md-icon md-svg-icon="settings_dark"></md-icon>
-                    <span flex>Logout</span>
-                </md-list-item>
-            </md-list>
-        </section>
-
     </md-content>
-
-
 </md-sidenav>

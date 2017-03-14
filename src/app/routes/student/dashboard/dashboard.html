@@ -1,0 +1,107 @@
+<cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
+<section layout-fill layout layout-margin layout-padding ng-repeat="guild in studentDashboardCtrl.guilds"
+ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page">
+    <onboarding-popover
+        enabled="studentDashboardCtrl.onboarding_enabled"
+        steps="studentDashboardCtrl.onboarding_steps"
+        step-index="studentDashboardCtrl.onboarding_step_index">
+    </onboarding-popover>
+    <!-- on-finish-callback='myCallbackFunction' -->
+    <section layout layout-fill  ng-if="!guild.trello_board && !guild.trello_done_list">
+        <cmd-empty-state flex
+            icon="settings_dark"
+            headline="No connection to trello."
+            title="Ask your lecturer to configure trello for your group.">
+        </cmd-empty-state>
+    </section>
+    <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
+        <section flex=60 layout="column">
+            <section flex=80 layout="column">
+                <section flex=35 layout id="numbers">
+                    <md-card flex=50 class="background--color--green" layout="column" layout-align="center center" id="world">
+                        <span class="md-display-2">
+                            {{ guild.world.end }}
+                        </span>
+                        <span>
+                            untill {{ guild.world.name }} is over
+                        </span>
+                    </md-card>
+                    <md-card flex=50 class="background--color--blue" layout="column" layout-align="center center" id="feedback">
+                        <span class="md-display-2">
+                            {{ guild.world.feedback_days_left }} days
+                        </span>
+                        <span>
+                            left to give feedback for this week
+                        </span>
+                    </md-card>
+                </section>
+                <md-card flex=65 id="feedback__graph" layout layout-align="center center">
+                    <div style="min-width: 95%;" id={{guild.id}}></div>
+                </md-card>
+            </section>
+            <md-card flex=20 layout="column" id="rupees">
+                <md-toolbar>
+                    <span class="md-toolbar-tools">
+                        My collected rupees
+                    </span>
+                </md-toolbar>
+                <md-card-content layout layout-align="space-around center">
+                    <div ng-repeat="rupee in guild.member.rupees">
+                        <cmd-rupee type="ruby"
+                        ng-if="rupee.type === 1"
+                        amount="{{rupee.amount}}"
+                        ></cmd-rupee>
+                        <cmd-rupee type="sapphire"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.type === 2">
+                        </cmd-rupee>
+                        <cmd-rupee type="emerald"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.type === 3">
+                        </cmd-rupee>
+                        <cmd-rupee type="amethyst"
+                        amount="{{rupee.amount}}"
+                        ng-if="rupee.type === 4">
+                        </cmd-rupee>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </section>
+        <md-card flex=40 md-whiteframe=1 id="tasks">
+            <md-toolbar>
+                <span class="md-toolbar-tools">
+                    Todo ({{ guild.todo_list.length }})
+                </span>
+            </md-toolbar>
+            <div layout flex ng-scrollbars>
+                <md-list>
+                    <md-list-item ng-if="guild.todo_list.length < 1" class="text--color--grey">
+                        No more cards on your todo list
+                    </md-list-item>
+                    <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
+                        <span flex layout="column">
+                            <span class="md-title">
+                                {{ card.name }}
+                            </span>
+                            <em class="md-subhead">
+                                {{ card.desc | limitTo : 150 }}<span ng-if="card.desc.length > 150">....</span>
+                            </em>
+                            <em class="md-subhead" ng-if="!card.desc">
+                                No card description available
+                            </em>
+                            <span class="text--color--grey">
+                                card created: {{ card.created_at | fromNow }}
+                            </span>
+                        </span>
+                        <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
+                            <md-icon md-svg-src="external_link_dark"></md-icon>
+                            <md-tooltip md-delay="1000">
+                                Goto card
+                            </md-tooltip>
+                        </md-button>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </md-card>
+    </section>
+</section>

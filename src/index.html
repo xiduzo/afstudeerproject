@@ -2,10 +2,11 @@
 <html ng-app="cmd">
   <head>
     <meta charset="utf-8">
-    <title>CMD</title>
+    <title>CMD Athena</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <meta name="theme-color" content="#FFC107">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
@@ -19,19 +20,22 @@
     <!-- css files will be automatically insert here -->
     <!-- endinject -->
     <!-- endbuild -->
+
   </head>
-  <body>
+  <body class="animated">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <div ui-view></div>
 
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <!-- build:js(src) scripts/vendor.js -->
     <!-- bower:js -->
     <!-- run `gulp inject` to automatically populate bower script dependencies -->
     <!-- endbower -->
     <!-- endbuild -->
+    <script>if (window.module) module = window.module;</script>
 
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
     <!-- inject:js -->

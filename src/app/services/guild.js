@@ -10,7 +10,6 @@
         $http,
         $q,
         Account,
-        API_URL,
         REST_API_URL
     ) {
 
@@ -27,12 +26,11 @@
         service.patchGuildName = patchGuildName;
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
-        service.getQuests = getQuests;
-        service.addQuest = addQuest;
-        service.addObjective = addObjective;
-        service.removeObjective = removeObjective;
-        service.patchObjective = patchObjective;
-        service.addHistoryUpdate = addHistoryUpdate;
+        service.addGuildRule = addGuildRule;
+        service.addEndorsement = addEndorsement;
+        service.removeEndorsement = removeEndorsement;
+        service.patchEndorsement = patchEndorsement;
+        service.patchGuildSettings = patchGuildSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -55,7 +53,7 @@
 
         function addGuild(name, world) {
             return $http({
-                url: REST_API_URL + 'guild/guilds/',
+                url: REST_API_URL + 'guild/newGuild/',
                 method: "POST",
                 data: {
                     name: name,
@@ -150,81 +148,70 @@
             }, function(error) { return error; });
         }
 
-        function getQuests(guild) {
+        function addGuildRule(guild, rule) {
             return $http({
-                url: REST_API_URL + 'guild/guildQuest/',
-                method: "GET",
-                params: {
-                    guild: guild
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addQuest(guild, quest) {
-            return $http({
-                url: REST_API_URL + 'guild/guildQuest/',
+                url: REST_API_URL + 'guild/guildRules/',
                 method: "POST",
                 data: {
                     guild: guild,
-                    quest: quest
+                    rule: rule.rule,
+                    rule_type: rule.rule_type,
+                    points: rule.points
                 }
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
         }
 
-        function addObjective(guild, objective) {
+        function addEndorsement(rule, user, endorsed_by, week, rating) {
             return $http({
-                url: REST_API_URL + 'guild/guildObjective/',
+                url: REST_API_URL + 'guild/newGuildRulesEndorsments/',
                 method: "POST",
                 data: {
-                    guild: guild,
-                    name: objective.name,
-                    objective: objective.objective,
-                    points: objective.points
+                    rule: rule,
+                    user: user,
+                    endorsed_by: endorsed_by,
+                    week: week,
+                    rating: rating,
                 }
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
         }
 
-        function removeObjective(objective) {
+        function removeEndorsement(endorsement) {
             return $http({
-                url: REST_API_URL + 'guild/guildObjective/'+objective+'/',
+                url: REST_API_URL + 'guild/guildRulesEndorsments/'+endorsement+'/',
                 method: "DELETE"
             })
             .then(function(response) { return response;
             }, function(error) { return error; });
         }
 
-        function patchObjective(objective) {
+        function patchEndorsement(endorsement, rating) {
             return $http({
-                url: REST_API_URL + 'guild/guildObjective/'+objective.id+'/',
+                url: REST_API_URL + 'guild/guildRulesEndorsments/'+endorsement+'/',
                 method: "PATCH",
-                data:  {
-                    completed: !objective.completed,
-                    completed_at: objective.completed_at
-                }
-            })
-            .then(function(response) { return response.data;
-            }, function(error) { return error; });
-        }
-
-        function addHistoryUpdate(user, guild, update) {
-            return $http({
-                url:  REST_API_URL + 'guild/guildHistory/',
-                method: "POST",
                 data: {
-                    user: user,
-                    guild: guild,
-                    action: update
+                    rating: rating,
                 }
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
         }
-    }
 
+        function patchGuildSettings(guild) {
+            return $http({
+                url: REST_API_URL + 'guild/guilds/' + guild.id + '/',
+                method: "PATCH",
+                data: {
+                    trello_board: guild.trello_board,
+                    trello_done_list: guild.trello_done_list
+                }
+            })
+            .then(function(response) { return response.data;
+            }, function(error) { return error; });
+        }
+
+    }
 }());

@@ -1,29 +1,96 @@
-<section layout-padding>
+<cmd-loading-page ng-if="accountDetailCtrl.loading_page"></cmd-loading-page>
+<section flex layout ng-if="!accountDetailCtrl.loading_page">
+    <section flex=80 layout-padding layout="column">
+        <section flex layout>
+            <md-card flex=50 layout="column">
+                <section layout="column" layout-align="center center" layout-fill layout-padding class="background--color--green">
+                    <section flex=25 layout-padding layout="column" layout-align="space-around center">
+                        <img class="round" gravatar-size="150" gravatar-src="accountDetailCtrl.user.email">
+                        <h1 class="md-title">
+                            {{ accountDetailCtrl.user | fullUserName }}
+                        </h1>
+                        <span>
+                            Trello
+                            <a href="http://www.trello.com/{{ accountDetailCtrl.trello_account.username }}" target="_BLANK">
+                                @{{ accountDetailCtrl.trello_account.username }}
+                            </a>
+                        </span>
+                    </section>
+                </section>
+            </md-card>
+            <md-card flex=50 layout="column" layout-padding>
+                <section layout layout-align="start center">
+                    <span flex layout="column">
+                        Hotkeys
+                        <em class="text--color--grey">
+                            Enable hotkeys to use fast navigation.
+                        </em>
+                    </span>
+                    <span>
+                        <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_hotkeys" aria-label="hotkeys">
+                        </md-switch>
+                    </span>
+                </section>
+                <section layout layout-align="start center">
+                    <span flex layout="column">
+                        Confirmation
+                        <em class="text--color--grey">
+                            Enable confirmation to give you some security before deleting critical items.
+                        </em>
+                    </span>
+                    <span>
+                        <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_confirmation" aria-label="confirmation">
+                        </md-switch>
+                    </span>
+                </section>
+                <section layout layout-align="start center">
+                    <span flex layout="column">
+                        Profile
+                        <em class="text--color--grey">
+                            Enable profile to open your profile for the public.
+                        </em>
+                    </span>
+                    <span>
+                        <md-switch ng-model="accountDetailCtrl.switches.profile" aria-label="profile">
+                        </md-switch>
+                    </span>
+                </section>
+            </md-card>
+        </section>
+        <section flex layout>
+            <md-card flex=50 layout layout-align="center center">
+                <div id="cmdChart"></div>
+            </md-card>
+            <md-card flex=50>
 
-    <section layout="row">
-
-        <md-card flex=70 class="md-whiteframe-z1">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    {{ accountDetailCtrl.user | fullUserName }}
-                </div>
-            </md-toolbar>
-            <md-card-content>
-                <md-list>
-                    <md-list-item>
-
-                    </md-list-item>
-                </md-list>
-                {{ accountDetailCtrl.user }}
-            </md-card-content>
-        </md-card>
-
-        <md-card flex=30 class="md-whiteframe-z1" layout="row" layout-align="center center">
-            <div id="container"></div>
-        </md-card>
-
+            </md-card>
+        </section>
     </section>
+    <md-content flex=20 layout-fill layout="column">
+        <md-subheader>
+            Trello
+        </md-subheader>
+        <section layout="column">
+            <md-button aria-label="trello authentication" class="md-raised success" ng-click="accountDetailCtrl.authenticate()" layout>
+                <md-icon md-svg-src="book_light"></md-icon>
+                <span flex ng-if="!accountDetailCtrl.trello_account">
+                    Authenticate
+                </span>
+            </md-button>
+        </section>
+        <md-subheader>
+            Groups
+        </md-subheader>
+        <md-list>
+            <md-list-item ng-repeat="guild in accountDetailCtrl.user.guilds"
+            ng-click="accountDetailCtrl.selectGuild(guild)">
+                {{ guild.name }}
+            </md-list-item>
+        </md-list>
+    </md-content>
+    <!-- <md-card flex=100 layout-fill md-whiteframe=1 layout="row" layout-align="center center">
+        <div class="md-whiteframe-z2" id="testContainer"></div>
+    </md-card> -->
 
-    <img class="round" gravatar-size="75" gravatar-src-once="accountDetailCtrl.user.email">
 
 </section>

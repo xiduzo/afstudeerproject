@@ -1,0 +1,302 @@
+<section layout-fill>
+
+  <cmd-loading-page ng-if="guildRulesCtrl.loading_page"></cmd-loading-page>
+
+  <cmd-empty-state ng-if="guildRulesCtrl.guilds.length < 1"
+      icon="guild_dark"
+      headline="No group found"
+      title="Wait for a lecturer to add you to a group">
+  </cmd-empty-state>
+
+  <section ng-if="!guildRulesCtrl.loading_page && guildRulesCtrl.guilds.length >= 1" layout-fill>
+    <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
+
+      <section ng-if="guild.rules.length >= 8" layout layout-fill>
+        <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
+          <md-card>
+            <md-toolbar>
+              <div class="md-toolbar-tools" layout layout-align="space-between center">
+                <strong>
+                  {{ guild.selected_week.name }}
+                </strong>
+                <span class="md-subhead">
+                  {{ guild.selected_week.start | momentDate : 'DD/MM/YYYY' }}
+                  -
+                  {{ guild.selected_week.end | momentDate : 'DD/MM/YYYY' }}
+                </span>
+              </div>
+            </md-toolbar>
+            <md-list ng-repeat="week in guild.weeks" ng-if="week.index == guild.selected_week.index">
+              <md-list-item ng-repeat="rule in guild.rules" layout="column" layout-align="center start">
+                <h1 class="md-title">
+                  De student {{ rule.rule }}
+                </h1>
+                <section layout layout-fill layout-wrap>
+                  <section flex=100 flex-gt-xs=50 flex-gt-md=25 flex-gt-lg=20 ng-repeat="member in guild.members" ng-if="guildRulesCtrl.user.id != member.user.id">
+                    <md-card layout="column" layout-align="center center"
+                    ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user)">
+                      <md-card-header>
+                        <md-card-avatar>
+                          <img class="round size--36" gravatar-size="36" gravatar-src="member.user.email">
+                        </md-card-avatar>
+                        <md-card-header-text>
+                          <span class="md-title">
+                            {{ member.user | fullUserName }}
+                          </span>
+                          <!-- <span class="md-subhead">subhead</span> -->
+                        </md-card-header-text>
+                      </md-card-header>
+                      <md-card-content>
+                        <section ng-if="week.editable" layout>
+                          <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0))">
+                              <md-icon md-svg-src="star_dark"
+                              class="icon--color--lightGreen"
+                              ng-if="rating >= 1">
+                              </md-icon>
+                              <md-icon md-svg-src="star_border_dark"
+                              ng-if="rating < 1">
+                              </md-icon>
+                          </div>
+                          <div ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2)">
+                              <md-icon md-svg-src="star_dark"
+                              class="icon--color--lightGreen"
+                              ng-if="rating >= 2">
+                              </md-icon>
+                              <md-icon md-svg-src="star_border_dark" ng-if="rating < 2">
+                              </md-icon>
+                          </div>
+                          <div ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3)">
+                              <md-icon md-svg-src="star_dark"
+                              class="icon--color--lightGreen"
+                              ng-if="rating >= 3">
+                              </md-icon>
+                              <md-icon md-svg-src="star_border_dark"
+                              ng-if="rating < 3">
+                              </md-icon>
+                          </div>
+                          <div ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4)">
+                              <md-icon md-svg-src="star_dark"
+                              class="icon--color--lightGreen"
+                              ng-if="rating >= 4">
+                              </md-icon>
+                              <md-icon md-svg-src="star_border_dark"
+                              ng-if="rating < 4">
+                              </md-icon>
+                          </div>
+                        </section>
+                        <section ng-if="!week.editable" layout>
+                          <div ng-repeat="star in [1,2,3,4]">
+                            <md-icon md-svg-src="star_dark" ng-class="{
+                              'icon--color--grey': rating < star,
+                              'icon--color--lightGreen': rating >= star
+                            }"></md-icon>
+                          </div>
+                          <md-tooltip>
+                            Je kunt deze week niet meer bewerken
+                          </md-tooltip>
+                        </section>
+                      </md-card-content>
+                    </md-card>
+                  </section>
+                </section>
+                <md-divider ng-if="!$last"></md-divider>
+              </md-list-item>
+            </md-list>
+          </md-card>
+        </md-content>
+        <section layout-padding id="sidebar__content" flex=20>
+          <h1 class="md-headline text--color--grey">
+              Weken
+          </h1>
+          <md-list>
+            <md-list-item ng-repeat="week in guild.weeks" flex
+              ng-click="guild.selected_week = week"
+              ng-if="!week.future_week"
+              ng-class="{
+                  'active_menu_item': week.index === guild.selected_week.index,
+                  'text--color--grey': !week.editable
+              }">
+              <div flex layout layout-align="space-between center">
+                <strong>
+                  {{ week.name }}
+                </strong>
+                <span hide-xs hide-sm hide-md hide-lg>
+                  {{ week.start | momentDate : 'DD/MM/YYYY' }} - {{ week.end | momentDate : 'DD/MM/YYYY' }}
+                </span>
+              </div>
+            </md-list-item>
+          </md-list>
+        </section>
+      </section>
+
+      <section layout layout-fill ng-if="guild.rules.length < 8">
+
+        <md-content layout="column" flex=80 id="main__content" ng-scrollbars layout-padding md-whiteframe=1>
+          <md-card layout-padding>
+            <article>
+              <h1 class="md-healine">
+                Samenwerkingscontract
+              </h1>
+              <p>
+                Om de samenwerking zo eerlijk mogenlijk te laten verlopen
+                vragen wij elke project team afspraken op te stellen.
+                Hieronder zie je een lijst met afspraken waarvan wij denken
+                waaraan gehouden zou kunnen worden. Deze afspraken zijn
+                onderverdeeld in vier categorieën:
+              </p>
+              <p layout layout-align="space-around" layout-padding>
+                <span layout="column" layout-align="center center">
+                    <md-icon class="icon--size--36" md-svg-icon="work_dark"></md-icon>
+                    Houding
+                </span>
+                <span layout="column" layout-align="center center">
+                    <md-icon class="icon--size--36" md-svg-icon="group_work_dark"></md-icon>
+                    Functioneren binnen het team
+                </span>
+                <span layout="column" layout-align="center center">
+                    <md-icon class="icon--size--36" md-svg-icon="lightbulb_dark"></md-icon>
+                    Kennisontwikkeling
+                </span>
+                <span layout="column" layout-align="center center">
+                    <md-icon class="icon--size--36" md-svg-icon="description_dark"></md-icon>
+                    Verantwoording
+                </span>
+              </p>
+              <p>
+                  Kies tenminste acht afspraken met uit elke categorie
+                  tenminste één afspraak. Ook kun je als team één eigen
+                  afspraak opstellen.
+              </p>
+                  <em class="text--color--red">Let op:</em> elke week zal iedereen elkaar
+                  beoordelen op de gemaakte afspraken.
+              </p>
+            </article>
+          </md-card>
+          <md-card>
+            <md-toolbar>
+              <div class="md-toolbar-tools">
+                Afspraken
+              </div>
+            </md-toolbar>
+            <md-list ng-if="guild.own_rule">
+              <md-subheader>
+                Eigen afspraak
+              </md-subheader>
+              <md-list-item layout>
+                <span flex>
+                  De student {{ guild.own_rule.rule }}
+                </span>
+                <md-icon md-svg-src="delete_dark" class="icon--color--red" ng-click="guildRulesCtrl.toggleRule(guild.own_rule,guild);">
+                  <md-tooltip md-direction="left">
+                    Verwijder afspraak
+                  </md-tooltip>
+                </md-icon>
+              </md-list-item>
+            </md-list>
+            <md-list ng-repeat="rules in guild.possible_rules">
+              <md-subheader class="md-no-sticky">
+                <span ng-if="rules[0].rule_type === 1">
+                  Houding
+                </span>
+                <span ng-if="rules[0].rule_type === 2">
+                  Functioneren binnen het team
+                </span>
+                <span ng-if="rules[0].rule_type === 3">
+                  Kennisontwikkeling
+                </span>
+                <span ng-if="rules[0].rule_type === 4">
+                  Verantwoording
+                </span>
+              </md-subheader>
+              <md-list-item ng-repeat="rule in rules">
+                <md-checkbox ng-change="guildRulesCtrl.toggleRule(rule, guild)"
+                ng-model="rule.selected"
+                aria-label="Select rule">
+                </md-checkbox>
+                De student {{ rule.rule }}
+              </md-list-item>
+            </md-list>
+          </md-card>
+        </md-content>
+
+        <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+          <section>
+              <h1 class="md-headline text--color--grey">
+                  Checklist
+              </h1>
+              <md-list>
+                  <md-list-item layout>
+                    <span flex>
+                      Houding ({{guild.requirements.attitude.selected}})
+                    </span>
+                    <md-icon ng-if="!guild.requirements.attitude.check" md-svg-src="close_dark" class="icon--color--red"></md-icon>
+                    <md-icon ng-if="guild.requirements.attitude.check" md-svg-src="done_dark" class="icon--color--green"></md-icon>
+                  </md-list-item>
+                  <md-list-item layout>
+                    <span flex>
+                      Functioneren binnen het team ({{guild.requirements.functioning.selected}})
+                    </span>
+                    <md-icon ng-if="!guild.requirements.functioning.check" md-svg-src="close_dark" class="icon--color--red"></md-icon>
+                    <md-icon ng-if="guild.requirements.functioning.check" md-svg-src="done_dark" class="icon--color--green"></md-icon>
+                  </md-list-item>
+                  <md-list-item layout>
+                    <span flex>
+                      Kennisontwikkeling ({{guild.requirements.knowledge.selected}})
+                    </span>
+                    <md-icon ng-if="!guild.requirements.knowledge.check" md-svg-src="close_dark" class="icon--color--red"></md-icon>
+                    <md-icon ng-if="guild.requirements.knowledge.check" md-svg-src="done_dark" class="icon--color--green"></md-icon>
+                  </md-list-item>
+                  <md-list-item layout>
+                    <span flex>
+                      Verantwoording ({{guild.requirements.justification.selected}})
+                    </span>
+                    <md-icon ng-if="!guild.requirements.justification.check" md-svg-src="close_dark" class="icon--color--red"></md-icon>
+                    <md-icon ng-if="guild.requirements.justification.check" md-svg-src="done_dark" class="icon--color--green"></md-icon>
+                  </md-list-item>
+              </md-list>
+              <h2 class="md-title text--color--grey">
+                  Opstellen
+              </h2>
+              <section>
+                <div ng-if="guild.selected_rules.length < 8">
+                    <md-progress-linear flex md-mode="determinate" value="{{ guild.selected_rules.length * 100 / 8 }}">
+                    </md-progress-linear>
+                    <div class="text--color--grey">
+                      Kies nog minimaal {{ 8 - guild.selected_rules.length | positiveInteger }}
+                      <span ng-if="8 - guild.selected_rules.length === 1">afspraak</span>
+                      <span ng-if="8 - guild.selected_rules.length != 1">afspraken</span>
+                    </div>
+                </div>
+                <div ng-if="guild.selected_rules.length >= 8">
+                  <div ng-if="!guild.requirements.attitude.check || !guild.requirements.functioning.check || !guild.requirements.knowledge.check || !guild.requirements.justification.check" layout layout-align="center">
+                      <span class="text--color--grey">
+                        Kies uit elke categorie tenminste één afspraak
+                      </span>
+                  </div>
+                  <div ng-if="guild.requirements.attitude.check && guild.requirements.functioning.check && guild.requirements.knowledge.check && guild.requirements.justification.check" layout layout-align="center">
+                      <md-button class="success md-raised" ng-click="guildRulesCtrl.addRulesToGuild($event, guild)">
+                        Bekijk samenwerkingscontract
+                      </md-button>
+                  </div>
+                </div>
+              </section>
+          </section>
+          <section>
+              <md-button ng-disabled="guild.own_rule" class="md-raised success md-block" layout-fill layout ng-click="guildRulesCtrl.addRule($event, guild)">
+                  <md-icon md-svg-src="rules_light" ng-class="{'icon--color--grey' : guild.own_rule}"></md-icon>
+                  <span flex>
+                    Add rule
+                  </span>
+              </md-button>
+              <md-tooltip md-direction="top" ng-if="guild.own_rule">
+                Max één eigen regel per team
+              </md-tooltip>
+          </section>
+        </section>
+
+      </section>
+
+    </section>
+  </section>
+
+</section>

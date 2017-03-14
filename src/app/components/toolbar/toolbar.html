@@ -1,38 +1,112 @@
-<md-toolbar layout="row"
-    layout-padding
-    md-component-id="main__toolbar"
-    id="main__toolbar">
-    <md-button aria-label="toggle menu"
-        ng-click="toolbarCtrl.toggleNavigation()"
-        ng-if="toolbarCtrl.access >= 1"
-        hide-gt-sm>
-        <md-icon
-            md-svg-icon="menu_light">
-        </md-icon>
-    </md-button>
-    <h1 class="md-title" flex>
-        [PLATFORM NAME]
-    </h1>
-    <md-icon md-svg-icon="school_light"
-        ng-if="toolbarCtrl.access === toolbarCtrl.LECTURER_ACCESS_LEVEL"
-        class="icon--size--36">
-        <md-tooltip md-direction="left">
-            You have game master access
-        </md-tooltip>
-    </md-icon>
-    <!-- <md-icon md-svg-icon="research_light"
-        ng-if="toolbarCtrl.user.uid === 'boera006'"
-        class="icon--size--36"
-        ui-sref="base.research">
-        <md-tooltip md-direction="left">
-            Research
-        </md-tooltip>
-    </md-icon> -->
-    <md-icon md-svg-icon="gavel_light"
-        ng-if="toolbarCtrl.access === toolbarCtrl.COORDINATOR_ACCESS_LEVEL"
-        class="icon--size--36">
-        <md-tooltip md-direction="left">
-            You have god access
-        </md-tooltip>
-    </md-icon>
+<md-toolbar md-component-id="main__toolbar" id="main__toolbar" class="md-menu-toolbar" layout layout-align="start center" ng-if="toolbarCtrl.user.id">
+    <section layout flex layout-align="start center">
+        <md-button aria-label="toggle menu" class="md-icon-button" ng-click="toolbarCtrl.toggleNavigation()" hide-gt-md>
+            <md-icon md-svg-icon="menu_dark">
+            </md-icon>
+        </md-button>
+        <section layout layout-align="start center" flex>
+            <section class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-if="toolbarCtrl.back_route" ng-click="toolbarCtrl.changeState()">
+                    <md-icon md-svg-src="back_dark"></md-icon>
+                    <md-tooltip md-delay="1000">
+                        Take me back
+                    </md-tooltip>
+                </md-button>
+                <h1>
+                    {{ toolbarCtrl.route_title }}
+                </h1>
+                <md-menu-bar ng-if="toolbarCtrl.access >= 1 && toolbarCtrl.guilds.length >= 1">
+                    <md-icon md-svg-src="guild_dark"></md-icon>
+                    <md-menu ng-if="toolbarCtrl.guilds.length >= 2">
+                        <!-- https://github.com/angular/material/issues/6802 -->
+                        <button ng-click="$mdOpenMenu($event)" class="md-button">
+                            <strong layout-padding>
+                                {{ toolbarCtrl.selected_guild.name }}
+                            </strong>
+                            <md-icon md-svg-src="expand_more_dark"></md-icon>
+                        </button>
+                        <md-menu-content width="4" class="main__toolbar__menu">
+                            <md-menu-item ng-repeat="guild in toolbarCtrl.guilds" ng-if="guild.id != toolbarCtrl.selected_guild.id" ng-click="toolbarCtrl.changeGuild(guild)">
+                                <md-button>
+                                    <div layout="row">
+                                        <p flex>{{ guild.name }}</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <section ng-if="toolbarCtrl.guilds.length === 1">
+                        <button ng-disabled="true">
+                            <md-icon md-svg-src="guild_dark"></md-icon>
+                            <strong layout-padding>
+                                {{ toolbarCtrl.selected_guild.name }}
+                            </strong>
+                        </button>
+                    </section>
+                </md-menu-bar>
+                <md-menu-bar ng-if="toolbarCtrl.access >= 2 && toolbarCtrl.worlds.length >= 1">
+                    <md-icon md-svg-src="world_dark"></md-icon>
+                    <md-menu ng-if="toolbarCtrl.worlds.length >= 2">
+                        <!-- https://github.com/angular/material/issues/6802 -->
+                        <button ng-click="$mdOpenMenu($event)" class="md-button">
+                            <strong layout-padding>
+                                {{ toolbarCtrl.selected_world.name }}
+                            </strong>
+                            <md-icon md-svg-src="expand_more_dark"></md-icon>
+                        </button>
+                        <md-menu-content width="4" class="main__toolbar__menu">
+                            <md-menu-item ng-repeat="world in toolbarCtrl.worlds" ng-if="world.id != toolbarCtrl.selected_world.id" ng-click="toolbarCtrl.changeWorld(world)">
+                                <md-button>
+                                    <div layout="row">
+                                        <p flex>{{ world.name }}</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <section ng-if="toolbarCtrl.worlds.length === 1">
+                        <button ng-disabled="true">
+                            <md-icon md-svg-src="world_dark"></md-icon>
+                            <strong layout-padding>
+                                {{ toolbarCtrl.selected_world.name }}
+                            </strong>
+                        </button>
+                    </section>
+                </md-menu-bar>
+            </section>
+        </section>
+        <section layout layout-align="start center">
+            <md-menu-bar>
+                <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
+                <md-menu>
+                    <!-- https://github.com/angular/material/issues/6802 -->
+                    <button ng-click="$mdOpenMenu($event)" class="md-button">
+                        <strong layout-padding>
+                            {{ toolbarCtrl.user | fullUserName }}
+                        </strong>
+                        <md-icon md-svg-src="expand_more_dark"></md-icon>
+                    </button>
+                    <md-menu-content width="4" class="main__toolbar__menu">
+                        <md-menu-item ui-sref="base.account.detail">
+                            <md-button>
+                                <div layout="row">
+                                    <md-icon md-menu-align-target md-svg-icon="person_dark"> </md-icon>
+                                    <p flex>Profile</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item ng-click="toolbarCtrl.logout()">
+                            <md-button>
+                                <div layout="row">
+                                    <md-icon md-menu-align-target md-svg-icon="settings_dark"> </md-icon>
+                                    <p flex>Logout</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+        </section>
+    </section>
 </md-toolbar>

@@ -1,105 +1,78 @@
-<section layout-padding>
+<section flex layout>
+    <md-content flex=80 layout="column" layout-padding md-whiteframe="2">
+        <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
+        <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
+            test
+        </section>
+    </md-content>
 
-    <section layout="row" layout-align="start center">
-        <h2 class="md-headline" flex layout="row" layout-align="start center">
-            Class settings of: {{ worldsSettingsCtrl.world.name }}
+    <section flex=20 layout-padding layout="column" style="overflow-x: hidden;">
+        <section>
+            <section layout="column">
+                <md-button class="md-raised md-accent"
+                ng-click="worldsSettingsCtrl.changeWorldName($event)" layout>
+                    <md-icon md-svg-src="pencil_light"></md-icon>
+                    <span flex>
+                        Change class name
+                    </span>
+                </md-button>
+                <md-button class="md-warn md-raised"
+                ng-click="worldsSettingsCtrl.deleteWorld($event)" layout>
+                    <md-icon md-svg-src="delete_light"></md-icon>
+                    <span flex>
+                        Delete class
+                    </span>
+                </md-button>
+            </section>
+        </section>
 
-            <md-button class="md-icon-button"
-                ng-click="worldsSettingsCtrl.changeWorldName($event)">
-                <md-icon md-svg-icon="pencil_dark">
-                </md-icon>
-                <md-tooltip md-direction="right" md-delay="1000">
-                    Change class name
-                </md-tooltip>
-            </md-button>
-        </h2>
-        <md-button class="md-raised md-warn md-fab"
-            ng-click="worldsSettingsCtrl.deleteWorld($event)">
-            <md-icon md-svg-icon="delete_light"></md-icon>
-            <md-tooltip md-direction="left" md-delay="1000">
-                Delete class
-            </md-tooltip>
-        </md-button>
-    </section>
+        <section>
+            <md-subheader>
+                Settings
+            </md-subheader>
+            <section layout="column" layout-padding>
+                <section layout="column">
+                    <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-placeholder="Pick a date"></md-datepicker>
+                    <div class="hint text--color--grey">Starting date of this class</div>
+                </section>
+                <md-input-container>
+                    <label>Duration</label>
+                    <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
+                    <div class="hint text--color--grey">In weeks</div>
+                </md-input-container>
+            </section>
+        </section>
 
-    <section layout="row">
-        <section flex class="md-whiteframe-z1">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <span flex=20>
-                        Name
-                    </span>
-                    <span flex=50>
-                        Assignment
-                    </span>
-                    <span flex=10>
-                        Active
-                    </span>
-                    <span flex=20 layout="row" layout-align="end">
-                        <md-button class="md-icon-button"
-                        ui-sref="base.worlds.quests.new({worldUuid: worldsSettingsCtrl.world.id})">
-                            <md-icon md-svg-icon="add_light"></md-icon>
-                            <md-tooltip md-direction="bottom" md-delay=1000>
-                                New assignment
-                            </md-tooltip>
-                        </md-button>
-                    </span>
-                </div>
-            </md-toolbar>
-            <md-content>
+        <section>
+            <md-subheader>
+                Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
+            </md-subheader>
+            <section layout layout-wrap>
+                <span flex=33 layout layout-padding layout-align="center"
+                    ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
+                    <img class="round" gravatar-size="60" gravatar-src-once="gamemaster.email">
+                    <md-tooltip md-delay="1000">
+                        {{ gamemaster | fullUserName }}
+                    </md-tooltip>
+                </span>
+            </section>
+        </section>
+
+        <section>
+            <md-subheader>
+                Groups ({{worldsSettingsCtrl.world.guilds.length}})
+            </md-subheader>
+            <section>
                 <md-list>
-                    <md-list-item
-                    ng-repeat="quest in worldsSettingsCtrl.world.quests | orderBy : 'created_at'">
-                        <span flex=20>
-                            {{ quest.name }}
-                        </span>
-                        <span flex=50>
-                            {{ quest.description }}
-                        </span>
-                        <span flex=10>
-                            <div ng-repeat="v in [0]">
-                                <md-switch class="md-primary"
-                                ng-change="worldsSettingsCtrl.toggleQuest(quest)"
-                                md-no-ink
-                                aria-label="Toggle quest"
-                                ng-model="quest.active">
-                                </md-switch>
-                            </div>
-                        </span>
-                        <span flex=20 layout="row">
-                            <md-button class="md-icon-button"
-                             ui-sref="base.worlds.quests.edit({questUuid: quest.id, worldUuid: worldsSettingsCtrl.world.id })">
-                                    <md-icon md-svg-icon="pencil_dark"></md-icon>
-                                    <md-tooltip md-delay="1000">
-                                        Edit
-                                    </md-tooltip>
-                            </md-button>
-                            <md-button class="md-icon-button"
-                             ng-click="worldsSettingsCtrl.deleteQuest($event, quest)">
-                                <md-icon md-svg-icon="delete_dark"></md-icon>
-                                <md-tooltip md-delay="1000">
-                                    Delete
-                                </md-tooltip>
-                            </md-button>
-                        </span>
+                    <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds">
+                        {{ guild.name }}
+                        <md-tooltip md-delay="1000">
+                            View {{ guild.name }}
+                        </md-tooltip>
+                        <md-divider ng-if="!$last"></md-divider>
                     </md-list-item>
                 </md-list>
-            </md-content>
+            </section>
         </section>
-    </section>
-
-
-    <section layout="row">
-        <h3 class="md-title" flex>
-            Rewards and punishments
-        </h3>
-        <md-button class="md-raised md-accent md-fab">
-            <md-icon
-                md-svg-icon="pencil_light">
-            </md-icon>
-            <md-tooltip md-direction="right" md-delay="1000">
-                New reward / punishment
-            </md-tooltip>
-        </md-button>
     </section>
 </section>

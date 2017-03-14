@@ -15,11 +15,17 @@
             'ngMaterial',
             'ngScrollbars',
             'dndLists',
-
+            'textAngular',
+            'angular-loading-bar',
+            'ngOnboarding',
+            'cfp.hotkeys',
+            'angular-md5',
+            'trello',
+            'angular-websocket',
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-            'secondsToDateTime',
+            'filters',
 
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Config
@@ -46,15 +52,14 @@
             'cmd.account',
 
             // Student
-            'cmd.quests',
             'cmd.guild',
 
             // Lecturer
             'cmd.guilds',
-            'cmd.progress',
 
             // Coordinator
             'cmd.worlds',
+            'cmd.rules',
 
             // Research
             'cmd.research',

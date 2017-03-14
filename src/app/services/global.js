@@ -11,26 +11,26 @@
         $state,
         $rootScope,
         localStorageService,
-        Account
+        Account,
+        Notifications
     ) {
 
         var self = this;
 
         self.user = {};
         self.access = null;
+        self.active_page = '';
+        self.selected_world = null;
+        self.selected_guild = null;
+        self.local_settings = {
+            enabled_confirmation: true,
+            enabled_hotkeys: true
+        };
 
         self.functions = {
             setUser: function(user) {
                 self.user = user;
-
-                // Setting the user access level
-                if(user.is_superuser) {
-                    self.acccess = 3;
-                } else if (user.is_staff) {
-                    self.access = 2;
-                } else {
-                    self.access = 1;
-                }
+                self.functions.getAccessLevel(user, true);
             },
             getUser: function() {
                 return self.user;
@@ -43,61 +43,102 @@
                 return Number(self.access);
             },
             notAllowed: function() {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('You are not allowed to view this page')
-                    .position('bottom right')
-                    .hideDelay(3000)
-                );
+                Notifications.simpleToast('You are not allowed to view this page');
                 $state.go('base.home');
             },
             noConnection: function() {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('There seems to be a problem establishing a database connection')
-                    .position('bottom right')
-                    .hideDelay(3000)
-                );
+                Notifications.simpleToast('There seems to be a problem establishing a database connection');
             },
             statusCode: function(response) {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent(response.status+': '+response.statusText)
-                    .position('bottom right')
-                    .hideDelay(5000)
-                );
+                Notifications.simpleToast(response.status+': '+response.statusText);
             },
-            simpleToast: function(toast) {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent(toast)
-                    .position('bottom right')
-                    .hideDelay(5000)
-                );
-            }
+            setActivePage: function(page) {
+                self.page = page;
+            },
+            getAcitvePage: function() {
+                return self.page;
+            },
+            getAccessLevel: function(user, set_user) {
+                Account.getAccessLevel(user.uid)
+                .then(function(response) {
+                    if(response.status === -1) {
+                        return self.functions.noConnection();
+                    }
 
+                    var user = response[0];
+
+                    if(user.is_superuser) {
+                        self.access = 3;
+                    } else if(user.is_staff) {
+                        self.access = 2;
+                    } else {
+                        self.access = 1;
+                    }
+
+                    self.access = 3;
+
+                    if(set_user) {
+                        $state.go('base.home');
+                        $rootScope.$broadcast('new-user-set');
+                    } else {
+                      $rootScope.$broadcast('user-logged-out');
+                    }
+
+                });
+            },
+            setSelectedGuild: function(guild) {
+                self.selected_guild = guild;
+                $rootScope.$broadcast('guild-changed', guild);
+            },
+            getSelectedGuild: function() {
+                return self.selected_guild;
+            },
+            setSelectedWorld: function(world) {
+                self.selected_world = world;
+                $rootScope.$broadcast('world-changed', world);
+            },
+            getSelectedWorld: function() {
+                return self.selected_world;
+            },
+            setRouteTitle: function(title) {
+                if(self.active_page) {
+                    $rootScope.$broadcast('route-title', title);
+                } else {
+                    self.active_page = title;
+                    setTimeout(function () {
+                        $rootScope.$broadcast('route-title', title);
+                    }, 100);
+                }
+            },
+            setRouteBackRoute: function(route, params) {
+                setTimeout(function () {
+                    $rootScope.$broadcast('back-route', route, params);
+                }, 50);
+            },
+            getLocalSettings: function() {
+                return self.local_settings;
+            },
+            setLocalSettings: function(settings) {
+                self.local_settings = settings;
+                localStorageService.set('settings', self.local_settings);
+                Notifications.simpleToast('settings patched');
+            },
         };
+
+        $rootScope.$on('new-user-login', function(event, user) {
+            self.functions.setUser(user);
+            self.functions.getAccessLevel(user, true);
+        });
 
         if(localStorageService.get('user')) {
             self.user = localStorageService.get('user');
+            self.functions.getAccessLevel(self.user);
+        }
 
-            // Account.getAccessLevel(self.user.uid)
-            //     .then(function(response) {
-            //         if(response.status === -1) {
-            //             self.functions.noConnection();
-            //             return;
-            //         }
-            //         if(response.is_superuser) {
-            //             self.acccess = 3;
-            //         } else if (response.is_staff) {
-            //             self.access = 2;
-            //         } else {
-            //             self.access = 1;
-            //         }
-            //         self.access = 3;
-            //     });
-            self.access = 3;
-            $state.go('base.home');
+        if(localStorageService.get('settings')) {
+            self.local_settings = localStorageService.get('settings');
+        } else {
+            localStorageService.set('settings', self.local_settings);
         }
 
         return self.functions;

@@ -14,8 +14,13 @@
         $urlRouterProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
+        ngOnboardingDefaultsProvider,
         ScrollBarsProvider,
-        DEBUG_ENABLED
+        cfpLoadingBarProvider,
+        TrelloApiProvider,
+        DEBUG_ENABLED,
+        TRELLO_KEY,
+        TRELLO_SECRET
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provier
@@ -44,12 +49,29 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
         $mdThemingProvider
             // Add palettes
-            .definePalette('cmd', $mdThemingProvider.extendPalette('amber', {
+            .definePalette('cmd', {
+                // 'contrastDefaultColor': 'light',
+                // 'default': 'FFCC00' // #FFCC00
+                // Im color blind, not that creative with colors
+                '50':   'FFF8E1', // #FFF8E1
+                '100':  'FFECB3', // #FFECB3
+                '200':  'FFE082', // #FFE082
+                '300':  'FFD54F', // #FFD54F
+                '400':  'FFCA28', // #FFCA28
+                '500':  'FFCC00', // #FFCC00
+                '600':  'FFB300', // #FFB300
+                '700':  'FFA000', // #FFA000
+                '800':  'FF8F00', // #FF8F00
+                '900':  'FF6F00', // #FF6F00
+                'A100': 'FFE57F', // #FFE57F
+                'A200': 'FFD740', // #FFD740
+                'A400': 'FFC400', // #FFC400
+                'A700': 'FFAB00', // #FFAB00
                 'contrastDefaultColor': 'light',
-            }))
+                'default': 'FFCC00' // #FFCC00
+            })
             .definePalette('cmdContrast', {
                 // Im color blind, not that creative with colors
                 '50':   'FAFAFA', // #FAFAFA
@@ -84,7 +106,6 @@
         // I actualy love this one b/c I won't be using
         // a fontset with 80% unused shit I don't need .__.
         $mdIconProvider
-
             // Material icons @ https://design.google.com/icons/
             .icon('menu_light', './assets/icons/material/ic_menu_white_48px.svg', 48)
             .icon('menu_dark', './assets/icons/material/ic_menu_black_48px.svg', 48)
@@ -132,9 +153,81 @@
             .icon('add_dark', './assets/icons/material/ic_add_black_48px.svg', 48)
             .icon('key_light', './assets/icons/material/ic_vpn_key_white_48px.svg', 48)
             .icon('key_dark', './assets/icons/material/ic_vpn_key_black_48px.svg', 48)
+            .icon('done_light', './assets/icons/material/ic_done_white_48px.svg', 48)
+            .icon('done_dark', './assets/icons/material/ic_done_black_48px.svg', 48)
+            .icon('add_person_light', './assets/icons/material/ic_person_add_white_48px.svg', 48)
+            .icon('add_person_dark', './assets/icons/material/ic_person_add_black_48px.svg', 48)
+            .icon('close_light', './assets/icons/material/ic_close_white_48px.svg', 48)
+            .icon('close_dark', './assets/icons/material/ic_close_black_48px.svg', 48)
+            .icon('rules_light', './assets/icons/material/ic_receipt_white_48px.svg', 48)
+            .icon('rules_dark', './assets/icons/material/ic_receipt_black_48px.svg', 48)
+            .icon('warning_light', './assets/icons/material/ic_report_problem_white_48px.svg', 48)
+            .icon('warning_dark', './assets/icons/material/ic_report_problem_black_48px.svg', 48)
+            .icon('external_link_light', './assets/icons/material/ic_open_in_new_white_48px.svg', 48)
+            .icon('external_link_dark', './assets/icons/material/ic_open_in_new_black_48px.svg', 48)
+            .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
+            .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
+            .icon('remove_light', './assets/icons/material/ic_remove_white_48px.svg', 48)
+            .icon('remove_dark', './assets/icons/material/ic_remove_black_48px.svg', 48)
+            .icon('activity_light', './assets/icons/material/ic_storage_white_48px.svg', 48)
+            .icon('activity_dark', './assets/icons/material/ic_storage_black_48px.svg', 48)
+            .icon('clock_light', './assets/icons/material/ic_query_builder_white_48px.svg', 48)
+            .icon('clock_dark', './assets/icons/material/ic_query_builder_black_48px.svg', 48)
+            .icon('person_outline_light', './assets/icons/material/ic_person_outline_white_48px.svg', 48)
+            .icon('person_outline_dark', './assets/icons/material/ic_person_outline_black_48px.svg', 48)
+            .icon('again_light', './assets/icons/material/ic_cached_white_48px.svg', 48)
+            .icon('again_dark', './assets/icons/material/ic_cached_black_48px.svg', 48)
+            .icon('check_light', './assets/icons/material/ic_check_box_white_24px.svg', 24)
+            .icon('check_dark', './assets/icons/material/ic_check_box_black_24px.svg', 24)
+            .icon('uncheck_light', './assets/icons/material/ic_check_box_outline_blank_white_24px.svg', 24)
+            .icon('uncheck_dark', './assets/icons/material/ic_check_box_outline_blank_black_24px.svg', 24)
+            .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
+            .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
+            .icon('feedback_light', './assets/icons/material/ic_feedback_white_48px.svg', 48)
+            .icon('feedback_dark', './assets/icons/material/ic_feedback_black_48px.svg', 48)
+            .icon('group_work_light', './assets/icons/material/ic_group_work_white_48px.svg', 48)
+            .icon('group_work_dark', './assets/icons/material/ic_group_work_black_48px.svg', 48)
+            .icon('description_light', './assets/icons/material/ic_description_white_48px.svg', 48)
+            .icon('description_dark', './assets/icons/material/ic_description_black_48px.svg', 48)
+            .icon('lightbulb_light', './assets/icons/material/ic_lightbulb_outline_white_48px.svg', 48)
+            .icon('lightbulb_dark', './assets/icons/material/ic_lightbulb_outline_black_48px.svg', 48)
+            .icon('work_light', './assets/icons/material/ic_work_white_48px.svg', 48)
+            .icon('work_dark', './assets/icons/material/ic_work_black_48px.svg', 48)
+            .icon('loyalty_light', './assets/icons/material/ic_loyalty_white_48px.svg', 48)
+            .icon('loyalty_dark', './assets/icons/material/ic_loyalty_black_48px.svg', 48)
+            .icon('redeem_light', './assets/icons/material/ic_redeem_white_48px.svg', 48)
+            .icon('redeem_dark', './assets/icons/material/ic_redeem_black_48px.svg', 48)
+            .icon('star_light', './assets/icons/material/ic_star_white_48px.svg', 48)
+            .icon('star_dark', './assets/icons/material/ic_star_black_48px.svg', 48)
+            .icon('star_border_light', './assets/icons/material/ic_star_border_white_48px.svg', 48)
+            .icon('star_border_dark', './assets/icons/material/ic_star_border_black_48px.svg', 48)
+            .icon('move_horizontal_light', './assets/icons/material/ic_swap_horiz_white_48px.svg', 48)
+            .icon('move_horizontal_dark', './assets/icons/material/ic_swap_horiz_black_48px.svg', 48)
+            .icon('expand_more_light', './assets/icons/material/ic_expand_more_white_48px.svg', 48)
+            .icon('expand_more_dark', './assets/icons/material/ic_expand_more_black_48px.svg', 48)
+            .icon('pie_light', './assets/icons/material/ic_pie_chart_white_48px.svg', 48)
+            .icon('pie_dark', './assets/icons/material/ic_pie_chart_black_48px.svg', 48)
+            .icon('trending_up_light', './assets/icons/material/ic_trending_up_white_48px.svg', 48)
+            .icon('trending_up_dark', './assets/icons/material/ic_trending_up_black_48px.svg', 48)
+            .icon('trending_down_light', './assets/icons/material/ic_trending_down_white_48px.svg', 48)
+            .icon('trending_down_dark', './assets/icons/material/ic_trending_down_black_48px.svg', 48)
+            .icon('trending_flat_light', './assets/icons/material/ic_trending_flat_white_48px.svg', 48)
+            .icon('trending_flat_dark', './assets/icons/material/ic_trending_flat_black_48px.svg', 48)
+            .icon('history_light', './assets/icons/material/ic_history_white_48px.svg', 48)
+            .icon('history_dark', './assets/icons/material/ic_history_black_48px.svg', 48)
+            .icon('comment_light', './assets/icons/material/ic_comment_white_48px.svg', 48)
+            .icon('comment_dark', './assets/icons/material/ic_comment_black_48px.svg', 48)
+            .icon('attachment_light', './assets/icons/material/ic_attach_file_white_48px.svg', 48)
+            .icon('attachment_dark', './assets/icons/material/ic_attach_file_black_48px.svg', 48)
+            .icon('event_light', './assets/icons/material/ic_event_white_48px.svg', 48)
+            .icon('event_dark', './assets/icons/material/ic_event_black_48px.svg', 48)
+            .icon('date_range_light', './assets/icons/material/ic_date_range_white_48px.svg', 48)
+            .icon('date_range_dark', './assets/icons/material/ic_date_range_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
-            .icon('cmd_enter', '/assets/icons/cmd/enter.svg', 48)
+            .icon('cmd_enter', './assets/icons/cmd/enter.svg', 48)
+            .icon('cmd_unicorn', './assets/icons/cmd/unicorn.svg', 48)
+            .icon('cmd_book', './assets/icons/cmd/book.svg', 48)
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -166,10 +259,102 @@
             // wavatar:   generated faces with differing features and backgrounds
             // retro:     awesome generated, 8-bit arcade-style pixelated faces
             // blank:     a transparent PNG image (border added to HTML below for demonstration purposes)
-            "default": "monsterid"
+            "default": "retro"
         };
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Onboarding
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        ngOnboardingDefaultsProvider.set({
+            closeButtonText: '',
+            overlayOpacity: 0.8,
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Loading bar provier
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // How many miliseconds before showing the loading bar
+        cfpLoadingBarProvider.latencyThreshold = 100;
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Trello
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        TrelloApiProvider.init({
+            key: TRELLO_KEY,
+            secret: TRELLO_SECRET,
+            expiration: "never",
+            scope: {read: true, write: false, account: true},
+            name: 'CMD Athena'
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Momnent
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        moment.defineLocale('nl', {
+            months : 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),
+            monthsShort : function (m, format) {
+                if (/-MMM-/.test(format)) {
+                    return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()];
+                } else {
+                    return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()];
+                }
+            },
+
+            monthsRegex: /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i,
+            monthsShortRegex: /^(januari|februari|maart|april|mei|april|ju[nl]i|augustus|september|oktober|november|december|jan\.?|feb\.?|mrt\.?|apr\.?|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i,
+            monthsStrictRegex: /^(januari|februari|maart|mei|ju[nl]i|april|augustus|september|oktober|november|december)/i,
+            monthsShortStrictRegex: /^(jan\.?|feb\.?|mrt\.?|apr\.?|mei|ju[nl]\.?|aug\.?|sep\.?|okt\.?|nov\.?|dec\.?)/i,
+
+            monthsParse : [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i],
+            longMonthsParse : [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i],
+            shortMonthsParse : [/^jan/i, /^feb/i, /^maart|mrt.?$/i, /^apr/i, /^mei$/i, /^jun[i.]?$/i, /^jul[i.]?$/i, /^aug/i, /^sep/i, /^okt/i, /^nov/i, /^dec/i],
+
+            weekdays : 'zondag_maandag_dinsdag_woensdag_donderdag_vrijdag_zaterdag'.split('_'),
+            weekdaysShort : 'zo._ma._di._wo._do._vr._za.'.split('_'),
+            weekdaysMin : 'Zo_Ma_Di_Wo_Do_Vr_Za'.split('_'),
+            weekdaysParseExact : true,
+            longDateFormat : {
+                LT : 'HH:mm',
+                LTS : 'HH:mm:ss',
+                L : 'DD-MM-YYYY',
+                LL : 'D MMMM YYYY',
+                LLL : 'D MMMM YYYY HH:mm',
+                LLLL : 'dddd D MMMM YYYY HH:mm'
+            },
+            calendar : {
+                sameDay: '[vandaag om] LT',
+                nextDay: '[morgen om] LT',
+                nextWeek: 'dddd [om] LT',
+                lastDay: '[gisteren om] LT',
+                lastWeek: '[afgelopen] dddd [om] LT',
+                sameElse: 'L'
+            },
+            relativeTime : {
+                future : 'over %s',
+                past : '%s geleden',
+                s : 'een paar seconden',
+                m : 'één minuut',
+                mm : '%d minuten',
+                h : 'één uur',
+                hh : '%d uur',
+                d : 'één dag',
+                dd : '%d dagen',
+                M : 'één maand',
+                MM : '%d maanden',
+                y : 'één jaar',
+                yy : '%d jaar'
+            },
+            ordinalParse: /\d{1,2}(ste|de)/,
+            ordinal : function (number) {
+                return number + ((number === 1 || number === 8 || number >= 20) ? 'ste' : 'de');
+            },
+            week : {
+                dow : 1, // Monday is the first day of the week.
+                doy : 4  // The week that contains Jan 4th is the first week of the year.
+            }
+        });
+        moment.locale('nl');
 
 
     }
-
 }());
