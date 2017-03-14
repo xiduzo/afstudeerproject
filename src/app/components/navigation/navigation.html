@@ -23,14 +23,13 @@
             <md-list>
                 <md-list-item ng-repeat="item in group.items"
                 ng-click="navigationCtrl.changeState(item.link_to)"
-                    ng-class="{
-                        'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
-                    }"
-                    ng-if="_.contains(item.access_levels, navigationCtrl.access)"
-                    ng-click="navigationCtrl.toggleNavigation(); navigationCtrl.active_menu_item = item.link_to">
-                    <md-icon class="icon--color--grey"
-                    md-svg-icon="{{ item.icon }}"></md-icon>
-                    <span flex>{{ item.name }}</span>
+                ng-class="{
+                    'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
+                }"
+                ng-if="_.contains(item.access_levels, navigationCtrl.access)">
+                  <md-icon class="icon--color--grey icon__helper"
+                  md-svg-icon="{{ item.icon }}"></md-icon>
+                  <span flex>{{ item.name }}</span>
                 </md-list-item>
             </md-list>
         </section>

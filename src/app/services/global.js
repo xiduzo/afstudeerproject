@@ -101,10 +101,19 @@
                 return self.selected_world;
             },
             setRouteTitle: function(title) {
-                $rootScope.$broadcast('route-title', title);
+                if(self.active_page) {
+                    $rootScope.$broadcast('route-title', title);
+                } else {
+                    self.active_page = title;
+                    setTimeout(function () {
+                        $rootScope.$broadcast('route-title', title);
+                    }, 100);
+                }
             },
             setRouteBackRoute: function(route, params) {
-                $rootScope.$broadcast('back-route', route, params);
+                setTimeout(function () {
+                    $rootScope.$broadcast('back-route', route, params);
+                }, 50);
             },
             getLocalSettings: function() {
                 return self.local_settings;

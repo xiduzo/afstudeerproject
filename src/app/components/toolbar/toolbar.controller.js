@@ -112,7 +112,6 @@
         }
 
         function changeState() {
-            var route = self.back_route;
             $state.go(self.back_route, self.back_route_params);
         }
 

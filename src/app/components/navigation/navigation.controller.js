@@ -33,10 +33,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
         self.access = Global.getAccess();
-        self.worlds = [];
-        self.guilds = [];
-        self.selected_world = null;
-        self.selected_guild = null;
 
         self.main_navigation = [
             {
@@ -172,16 +168,16 @@
             }
         });
 
-        $scope.$on('guild-changed', function(event, guild) {
-            self.selected_guild = guild;
-        });
-
         $scope.$on('patched-local-settings', function() {
             if(Global.getLocalSettings().enabled_hotkeys) {
                 self.addHotkeys();
             } else {
                 self.removeHotkeys();
             }
+        });
+
+        $scope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
+            self.active_menu_item = toState.name;
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,6 +191,7 @@
         function changeState(state) {
             $state.go(state);
             self.active_menu_item = state;
+            self.toggleNavigation();
         }
 
         function addHotkeys() {

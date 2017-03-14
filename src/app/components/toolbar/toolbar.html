@@ -5,15 +5,13 @@
             </md-icon>
         </md-button>
         <section layout layout-align="start center" flex>
-            <md-button class="md-icon-button"
-                ng-if="toolbarCtrl.back_route"
-                ng-click="toolbarCtrl.changeState()">
-                <md-icon md-svg-src="back_dark"></md-icon>
-                <md-tooltip md-delay="1000">
-                    Take me back
-                </md-tooltip>
-            </md-button>
             <section class="md-toolbar-tools">
+                <md-button class="md-icon-button" ng-if="toolbarCtrl.back_route" ng-click="toolbarCtrl.changeState()">
+                    <md-icon md-svg-src="back_dark"></md-icon>
+                    <md-tooltip md-delay="1000">
+                        Take me back
+                    </md-tooltip>
+                </md-button>
                 <h1>
                     {{ toolbarCtrl.route_title }}
                 </h1>
