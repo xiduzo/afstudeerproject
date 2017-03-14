@@ -5,6 +5,8 @@ img {
     &.size {
         @each $size in $sizes {
             &--#{$size} {
+                width: $size + px;
+                height: $size + px;
                 max-width: $size + px;
                 max-height: $size + px;
             }

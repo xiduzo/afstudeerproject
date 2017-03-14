@@ -1,16 +1,17 @@
 .timeline {
   padding: 0;
-    md-list-item {
-        .md-subheader {
-            border-bottom: 1px solid #FFCC00;
-        }
-        md-list {
-            padding: 0px;
-            md-list-item:first-child {
-                md-card {
-                    margin: 0 8px 8px 8px;
-                }
-            }
-        }
+  margin: 0;
+  md-list-item {
+    .md-subheader {
+      border-bottom: 1px solid #FFCC00;
     }
+    md-list {
+      padding: 0px;
+      md-list-item:first-child {
+        md-card {
+          margin: 0 8px 8px 8px;
+        }
+      }
+    }
+  }
 }

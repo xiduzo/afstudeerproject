@@ -32,12 +32,12 @@
                   De student {{ rule.rule }}
                 </h1>
                 <section layout layout-fill layout-wrap>
-                  <section flex=100 flex-gt-xs=50 flex-gt-md=25 ng-repeat="member in guild.members" ng-if="guildRulesCtrl.user.id != member.user.id">
+                  <section flex=100 flex-gt-xs=50 flex-gt-md=25 flex-gt-lg=20 ng-repeat="member in guild.members" ng-if="guildRulesCtrl.user.id != member.user.id">
                     <md-card layout="column" layout-align="center center"
                     ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user)">
                       <md-card-header>
                         <md-card-avatar>
-                          <img class="round size--48" gravatar-size="48" gravatar-src="member.user.email">
+                          <img class="round size--36" gravatar-size="36" gravatar-src="member.user.email">
                         </md-card-avatar>
                         <md-card-header-text>
                           <span class="md-title">

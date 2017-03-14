@@ -36,10 +36,10 @@
         self.loading_page = true;
         self.guilds = [];
         self.action_types = [
-            { type: 'addMemberToCard', name: 'Persoon toegevoegd aan kaart', icon: 'add_person_dark', },
-            { type: 'removeMemberFromCard', name: 'Persoon verwijderd van kaart', icon: 'person_outline_dark', },
+            { type: 'addMemberToCard', name: 'Persoon toegevoegd', icon: 'add_person_dark', },
+            { type: 'removeMemberFromCard', name: 'Persoon verwijderd', icon: 'person_outline_dark', },
             { type: 'createCard', name: 'Kaart toegevoegd', icon: 'add_dark', },
-            { type: 'updateCard', name: 'Kaart geupdate', icon: 'pencil_dark', },
+            { type: 'updateCard', name: 'Kaart hernoemd', icon: 'pencil_dark', },
             { type: 'addChecklistToCard', name: 'Checklist toegevoegd', icon: 'list_dark', },
             { type: 'updateCheckItemStateOnCard', name: 'Checklist geupdate', icon: 'list_dark', },
             { type: 'addAttachmentToCard', name: 'Bijlage toegevoegd', icon: 'attachment_dark', },
@@ -140,11 +140,11 @@
                                             activity.sentence += activity.data.card.name + ' verplaatst van ' + activity.data.listBefore.name + ' naar ' + activity.data.listAfter.name;
                                         } else if(activity.data.old.due || activity.data.old.due === null) {
                                             if(activity.data.old.due === null) {
-                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' geplaatst op ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
+                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' veplaatst naar ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
                                                 activity.type = 'updateDueDate';
                                             } else {
+                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' geplaatst op ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
                                                 activity.type = 'addDueDate';
-                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' veplaatst naar ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
                                             }
                                         } else if(activity.data.old.name) {
                                             activity.sentence += activity.data.old.name + ' hernoemd naar ' + activity.data.card.name;
