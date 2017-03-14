@@ -21,18 +21,18 @@
         <section ng-if="!guild.no_trello_settings && !guild.no_world_settings" layout layout-fill>
             <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
                 <section layout>
-                    <md-card flex=50 style="min-height: 400px;" id="chart__{{guild.id}}"></md-card>
-                    <section layout="column" flex>
+                    <md-card flex=50 style="height: 350px;" id="chart__{{guild.id}}"></md-card>
+                    <section layout="column" flex=50>
                         <section flex layout>
                             <md-card flex layout="column" layout-align="space-between">
-                                <section layout flex>
+                                <section layout flex layout-padding>
                                     <section flex=50 layout layout-align="center center">
                                         <div layout="column" layout-align="center center">
                                             <h1 class="md-display-2">
                                                 {{ guild.current_week.cards.length }}
                                             </h1>
                                             <div>
-                                                kaart<span ng-if="guild.current_week.cards.length >= 2 || guild.current_week.cards.length === 0">en</span> voltooid deze week
+                                                kaart<span ng-if="guild.current_week.cards.length >= 2 || guild.current_week.cards.length === 0">en</span> voltooid
                                             </div>
                                             <md-tooltip>
                                                 Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end  | momentDate : 'DD/MM/YYYY' }}
@@ -73,14 +73,17 @@
                         </section>
                         <section flex layout>
                             <md-card flex layout>
-                                <section flex=50 layout layout-align="center center">
+                                <section flex=50 layout layout-align="center center" layout-padding>
                                     <div layout="column" layout-align="center center">
                                         <h1 class="md-display-2">
                                             {{ guild.current_week.cards_due.length }}
                                         </h1>
                                         <div>
-                                            deadline<span ng-if="guild.current_week.cards_due.length >= 2 || guild.current_week.cards_due.length === 0">s</span> te gaan deze week
+                                            deadline<span ng-if="guild.current_week.cards_due.length >= 2 || guild.current_week.cards_due.length === 0">s</span> te gaan
                                         </div>
+                                        <md-tooltip>
+                                            Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end  | momentDate : 'DD/MM/YYYY' }}
+                                        </md-tooltip>
                                     </div>
                                 </section>
                                 <section flex=50 layout layout-align="center center">

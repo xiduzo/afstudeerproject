@@ -215,6 +215,14 @@
             .icon('trending_flat_dark', './assets/icons/material/ic_trending_flat_black_48px.svg', 48)
             .icon('history_light', './assets/icons/material/ic_history_white_48px.svg', 48)
             .icon('history_dark', './assets/icons/material/ic_history_black_48px.svg', 48)
+            .icon('comment_light', './assets/icons/material/ic_comment_white_48px.svg', 48)
+            .icon('comment_dark', './assets/icons/material/ic_comment_black_48px.svg', 48)
+            .icon('attachment_light', './assets/icons/material/ic_attach_file_white_48px.svg', 48)
+            .icon('attachment_dark', './assets/icons/material/ic_attach_file_black_48px.svg', 48)
+            .icon('event_light', './assets/icons/material/ic_event_white_48px.svg', 48)
+            .icon('event_dark', './assets/icons/material/ic_event_black_48px.svg', 48)
+            .icon('date_range_light', './assets/icons/material/ic_date_range_white_48px.svg', 48)
+            .icon('date_range_dark', './assets/icons/material/ic_date_range_black_48px.svg', 48)
 
             // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
             .icon('cmd_enter', './assets/icons/cmd/enter.svg', 48)

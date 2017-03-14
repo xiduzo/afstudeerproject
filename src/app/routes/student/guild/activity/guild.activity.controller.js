@@ -7,10 +7,7 @@
 
     /** @ngInject */
     function GuildActivityController(
-        $rootScope,
-        $filter,
         $scope,
-        hotkeys,
         Global,
         Guild,
         TrelloApi,
@@ -21,7 +18,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Activity');
+        Global.setRouteTitle('Activity log');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -39,16 +36,25 @@
         self.loading_page = true;
         self.guilds = [];
         self.action_types = [
-            { type: 'createCard', name: 'Added card', icon: 'add_light', },
-            { type: 'updateCard', name: 'Updated card', icon: 'pencil_light', },
-            { type: 'movedCard', name: 'Moved card', icon: 'move_horizontal_light', },
-            { type: 'addMemberToCard', name: 'Add member to card', icon: 'add_person_light', },
-            { type: 'removeMemberFromCard', name: 'Removed member from card', icon: 'person_outline_light', },
-            { type: 'createList', name: 'Created list', icon: 'list_light', },
-            { type: 'updateList', name: 'Updated list', icon: 'pencil_light', },
+            { type: 'addMemberToCard', name: 'Persoon toegevoegd aan kaart', icon: 'add_person_dark', },
+            { type: 'removeMemberFromCard', name: 'Persoon verwijderd van kaart', icon: 'person_outline_dark', },
+            { type: 'createCard', name: 'Kaart toegevoegd', icon: 'add_dark', },
+            { type: 'updateCard', name: 'Kaart geupdate', icon: 'pencil_dark', },
+            { type: 'addChecklistToCard', name: 'Checklist toegevoegd', icon: 'list_dark', },
+            { type: 'updateCheckItemStateOnCard', name: 'Checklist geupdate', icon: 'list_dark', },
+            { type: 'addAttachmentToCard', name: 'Bijlage toegevoegd', icon: 'attachment_dark', },
+            { type: 'commentCard', name: 'Comment geplaatst', icon: 'comment_dark', },
+            { type: 'movedCard', name: 'Kaart verplaatst', icon: 'move_horizontal_dark', },
+            { type: 'addDueDate', name: 'Vervaldatum toegevoegd', icon: 'event_dark', },
+            { type: 'updateDueDate', name: 'Vervaldatum aangepast', icon: 'date_range_dark', },
         ];
 
-
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('guild-changed', function(event, guild) {
+            self.selected_guild = guild;
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -58,10 +64,11 @@
             _.each(response.guilds, function(guildObject) {
                 var guild = guildObject.guild;
                 self.loading_page = true;
-
                 guild.no_trello_board = true;
-                if(guild.trello_board) {
+
+                if(guild.trello_board !== null) {
                     guild.no_trello_board = false;
+
                     TrelloApi.Authenticate()
                     .then(function() {
 
@@ -71,8 +78,33 @@
                         };
 
 
-                        TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/actions')
+                        TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/actions', { limit: 1000 })
                         .then(function(response) {
+
+                            response = _.filter(response, function(activity) {
+                                switch (activity.type) {
+                                    case 'createList':
+                                    case 'updateList':
+                                    case 'enablePlugin':
+                                    case 'disablePlugin':
+                                    case 'addToOrganizationBoard':
+                                    case 'addMemberToBoard':
+                                    case 'createBoard':
+                                    case 'deleteCard':
+                                        // Do nothing basicly
+                                        break;
+                                    case 'updateCard':
+                                        if(typeof activity.data.old.desc === "string" || activity.data.old.pos) {
+                                            // Do nothing again
+                                        } else {
+                                            return activity;
+                                        }
+                                        break;
+                                    default:
+                                        return activity;
+                                }
+                            });
+
                             _.each(response, function(activity) {
                                 if(!_.findWhere(guild.board.members, {id: activity.memberCreator.id})) {
                                     guild.board.members.push({
@@ -90,45 +122,56 @@
                                 }
 
                                 activity.creator_id = activity.memberCreator.id;
-
+                                // console.log(activity);
+                                activity.sentence = activity.memberCreator.fullName + ' heeft ';
                                 switch (activity.type) {
                                     case 'addMemberToCard':
-                                        activity.sentence = activity.memberCreator.fullName + ' added ' + activity.member.fullName + ' to ' + activity.data.card.name;
-                                        activity.subject = activity.data.card.name;
-                                        guild.board.activities.push(activity);
+                                        activity.sentence += activity.member.fullName + ' toegevoegd aan ' + activity.data.card.name;
                                         break;
                                     case 'removeMemberFromCard':
-                                        activity.sentence = activity.memberCreator.fullName + ' removed ' + activity.member.fullName + ' from ' + activity.data.card.name;
-                                        activity.subject = activity.data.card.name;
-                                        guild.board.activities.push(activity);
+                                        activity.sentence += activity.member.fullName + ' verwijderd van ' + activity.data.card.name;
                                         break;
                                     case 'createCard':
-                                        activity.sentence = activity.memberCreator.fullName + ' added ' + activity.data.card.name + ' to ' + activity.data.list.name;
-                                        activity.subject = activity.data.card.name;
-                                        guild.board.activities.push(activity);
+                                        activity.sentence += activity.data.card.name + ' toegevoegd aan ' + activity.data.list.name;
                                         break;
                                     case 'updateCard':
-                                        activity.subject = activity.data.card.name;
                                         if(activity.data.listAfter) {
                                             activity.type = 'movedCard';
-                                            activity.sentence = activity.memberCreator.fullName + ' moved ' + activity.data.card.name + ' from ' + activity.data.listBefore.name + ' to ' + activity.data.listAfter.name;
-                                            guild.board.activities.push(activity);
+                                            activity.sentence += activity.data.card.name + ' verplaatst van ' + activity.data.listBefore.name + ' naar ' + activity.data.listAfter.name;
+                                        } else if(activity.data.old.due || activity.data.old.due === null) {
+                                            if(activity.data.old.due === null) {
+                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' geplaatst op ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
+                                                activity.type = 'updateDueDate';
+                                            } else {
+                                                activity.type = 'addDueDate';
+                                                activity.sentence += 'de vervaldatum van ' + activity.data.card.name + ' veplaatst naar ' + moment(activity.data.card.due).format('DD/MM/YYYY') + ' om ' + moment(activity.data.card.due).format('HH:mm');
+                                            }
+                                        } else if(activity.data.old.name) {
+                                            activity.sentence += activity.data.old.name + ' hernoemd naar ' + activity.data.card.name;
                                         } else {
-                                            activity.sentence = activity.memberCreator.fullName + ' renamed ' + activity.data.old.name + ' to ' + activity.data.card.name;
-                                            guild.board.activities.push(activity);
+                                            console.log(activity);
                                         }
                                         break;
-                                    case 'createList':
-                                        activity.subject = activity.data.list.name;
-                                        activity.sentence = activity.memberCreator.fullName + ' created ' + activity.data.list.name;
-                                        guild.board.activities.push(activity);
+                                    case 'updateCheckItemStateOnCard':
+                                        activity.sentence += activity.data.checkItem.name + ' gemarkeed als ' + (activity.data.checkItem.state === 'complete' ? 'compleet' : 'oncompleet') + ' op ' + activity.data.card.name;
                                         break;
-                                    case 'updateList':
-                                        activity.subject = activity.data.list.name;
-                                        activity.sentence = activity.memberCreator.fullName + ' renamed ' + activity.data.old.name + ' to ' + activity.data.list.name;
-                                        guild.board.activities.push(activity);
+                                    case 'addChecklistToCard':
+                                        activity.sentence += activity.data.checklist.name + ' toegevoegd aan ' + activity.data.card.name;
                                         break;
+                                    case 'addAttachmentToCard':
+                                        activity.sentence += activity.data.attachment.name + ' bijgevoegd bij ' + activity.data.card.name;
+                                        break;
+                                    case 'commentCard':
+                                        activity.sentence += ' gecomment op ' + activity.data.card.name + ': <q>' + activity.data.text + '</q>';
+                                        break;
+                                    default:
+                                        console.log(activity.type);
                                 }
+                                activity.sentence += '.';
+                            });
+
+                            guild.activities = _.groupBy(response, function(activity) {
+                                return moment(activity.date).startOf('day');
                             });
 
                             self.guilds.push(guild);
@@ -138,6 +181,7 @@
                     });
                 } else {
                     self.guilds.push(guild);
+                    self.loading_page = false;
                 }
             });
         }, function() {

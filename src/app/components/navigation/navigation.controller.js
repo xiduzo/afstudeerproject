@@ -117,7 +117,7 @@
                         ],
                     },
                     {
-                        name: 'Activity',
+                        name: 'Activity log',
                         icon: 'list_dark',
                         link_to: 'base.guild.activity',
                         access_levels: [

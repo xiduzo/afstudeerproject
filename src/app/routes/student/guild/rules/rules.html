@@ -12,7 +12,7 @@
     <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
 
       <section ng-if="guild.rules.length >= 8" layout layout-fill>
-        <md-content layout="column" flex=100 flex-gt-md=80 id="main__content" ng-scrollbars layout-padding md-whiteframe=1>
+        <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
           <md-card>
             <md-toolbar>
               <div class="md-toolbar-tools" layout layout-align="space-between center">
@@ -104,7 +104,7 @@
             </md-list>
           </md-card>
         </md-content>
-        <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" hide-xs hide-sm hide-md flex=20 ng-scrollbars>
+        <section layout-padding id="sidebar__content" flex=20>
           <h1 class="md-headline text--color--grey">
               Weken
           </h1>
@@ -118,9 +118,9 @@
               }">
               <div flex layout layout-align="space-between center">
                 <strong>
-                  {{ week.name }}:
+                  {{ week.name }}
                 </strong>
-                <span>
+                <span hide-xs hide-sm hide-md hide-lg>
                   {{ week.start | momentDate : 'DD/MM/YYYY' }} - {{ week.end | momentDate : 'DD/MM/YYYY' }}
                 </span>
               </div>

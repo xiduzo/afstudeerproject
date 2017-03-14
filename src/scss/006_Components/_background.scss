@@ -3,12 +3,11 @@
         @each $name, $color in $colors {
             &--#{$name} {
                 background: $color !important;
-                color: white !important;
-                font-weight: bold;
-                text-shadow: 2px 2px #000;
-
-                a {
-                    color: white;
+                @each $opacity in (1,2,3,4,5,6,7,8,9) {
+                    &--#{$opacity} {
+                        background: rgba($color, ($opacity * 0.1)) !important;
+                        // opacity: 0.1 * $opacity;
+                    }
                 }
             }
         }
