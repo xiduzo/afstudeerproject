@@ -16,6 +16,7 @@
         World,
         Rules,
         Notifications,
+        localStorageService,
         md5,
         STUDENT_ACCESS_LEVEL
     ) {
@@ -47,6 +48,7 @@
         self.selected_guild = Global.getSelectedGuild();
         self.guilds = [];
         self.loading_page = true;
+        self.active_password_promp = false;
         self.password_protection = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,6 +56,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
+            if(localStorageService.get('settings').password_protection && !self.active_password_promp) {
+              self.password_protection = true;
+              self.showPasswordPrompt();
+            }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,10 +97,10 @@
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
                     } else {
-                        // TODO
-                        // build angular prompt which has a password field
-                        // self.password_protection = true;
-                        // self.showPasswordPrompt();
+                        if(localStorageService.get('settings').password_protection && !self.active_password_promp) {
+                          self.password_protection = true;
+                          self.showPasswordPrompt();
+                        }
                     }
 
                     guild.weeks = [];
@@ -279,26 +285,35 @@
         }
 
         function showPasswordPrompt() {
-            Notifications.prompt(
-                'Password Required',
-                'This page contains sensitive information, please enter your password to continue',
-                'password',
-                event
-            )
+            self.active_password_promp = true;
+            $mdDialog.show({
+                controller: 'passwordProtectionController',
+                controllerAs: 'passwordProtectionCtrl',
+                templateUrl: 'app/components/password_protection/password_protection.html',
+                targetEvent: event,
+                clickOutsideToClose: true,
+                locals: {
+                    reason: 'Deze pagina bevat gevoelige informatie en is daarom beveiligd met een wachtwoord.' 
+                }
+            })
             .then(function(result) {
-                // Checks for the world name
+                self.active_password_promp = false;
                 if(!result) {
+                    self.need_password = true;
                     return Notifications.simpleToast('Please enter a password');
                 }
 
                 if(md5(result) === self.user.password) {
                     self.password_protection = false;
                 } else {
+                    self.need_password = true;
                     Notifications.simpleToast('Incorrect password');
                 }
 
             }, function() {
                 // Cancel dialog
+                self.active_password_promp = false;
+                self.need_password = true;
             });
         }
 

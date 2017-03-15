@@ -11,7 +11,23 @@
   <section ng-if="!guildRulesCtrl.loading_page && guildRulesCtrl.guilds.length >= 1" layout-fill>
     <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
 
-      <section ng-if="guild.rules.length >= 8" layout layout-fill>
+      <section layout-fill ng-if="guild.rules.length >= 8 && guildRulesCtrl.password_protection && guildRulesCtrl.need_password" layout="column">
+        <section flex=80>
+          <cmd-empty-state
+          icon="key_dark"
+          headline="Not vissible"
+          title="This page contains some sensitive information"
+          subtitle="Enter your password to see this information">
+        </cmd-empty-state>
+        </section>
+        <section flex=20 layout layout-align="center center">
+          <md-button class="md-raised success" ng-click="guildRulesCtrl.showPasswordPrompt()">
+            Probeer opnieuw
+          </md-button>
+        </section>
+      </section>
+
+      <section ng-if="guild.rules.length >= 8 && !guildRulesCtrl.password_protection" layout layout-fill>
         <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
           <md-card>
             <md-toolbar>
@@ -32,7 +48,7 @@
                   De student {{ rule.rule }}
                 </h1>
                 <section layout layout-fill layout-wrap>
-                  <section flex=100 flex-gt-xs=50 flex-gt-md=25 flex-gt-lg=20 ng-repeat="member in guild.members" ng-if="guildRulesCtrl.user.id != member.user.id">
+                  <section flex=100 flex-gt-xs=50 flex-gt-md=25 flex-gt-lg=20 ng-repeat="member in guild.members">
                     <md-card layout="column" layout-align="center center"
                     ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user)">
                       <md-card-header>
