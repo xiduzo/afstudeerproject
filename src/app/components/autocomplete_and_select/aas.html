@@ -1,4 +1,4 @@
-<md-dialog flex="30" md-theme="default" aria-label="{{ aasCtrl.about }}">
+<md-dialog flex=40 md-theme="default" aria-label="{{ aasCtrl.about }}">
 
     <md-toolbar class="md-title ng-binding" layout="row" layout-align="center center">
         <span class="md-headline">
@@ -24,7 +24,7 @@
                     md-menu-class="aas__autocomplete">
                     <md-item-template class="item--metadata"
                         <span class="item--metastat">
-                            <img class="round" gravatar-size="35" gravatar-src="player.email">
+                            <img class="round size--24" gravatar-size="24" gravatar-src="player.email">
                         </span>
                         <span class="item--metastat" md-highlight-text="aasCtrl.search_text" md-highlight-flags="^i">
                             {{ player.filter_name }}

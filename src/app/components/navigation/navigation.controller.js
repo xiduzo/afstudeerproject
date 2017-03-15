@@ -144,6 +144,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('new-user-set', function() {
             self.access = Global.getAccess();
+            self.user = Global.getUser();
             if(self.user.id) {
                 if(Global.getLocalSettings().enabled_hotkeys) {
                     self.addHotkeys();
@@ -157,15 +158,7 @@
 
         $scope.$on('user-logged-out', function() {
             self.access = Global.getAccess();
-            if(self.user.id) {
-                if(Global.getLocalSettings().enabled_hotkeys) {
-                    self.addHotkeys();
-                } else {
-                    self.removeHotkeys();
-                }
-            } else {
-                self.removeHotkeys();
-            }
+            self.removeHotkeys();
         });
 
         $scope.$on('patched-local-settings', function() {
@@ -224,20 +217,6 @@
                     }
                 })
                 .add({
-                    combo: 'a',
-                    description: 'Goto assessments',
-                    callback: function() {
-                        self.changeState('base.assessments.overview');
-                    }
-                })
-                .add({
-                    combo: 's',
-                    description: 'Goto stimulance',
-                    callback: function() {
-                        self.changeState('base.stimulance.overview');
-                    }
-                })
-                .add({
                     combo: 'd',
                     description: 'Goto dashboard',
                     callback: function() {
@@ -250,10 +229,17 @@
             if(!self.user.is_superuser && !self.user.is_staff) {
                 hotkeys.bindTo($scope)
                 .add({
-                    combo: 'g',
-                    description: 'Goto group',
+                  combo: 'd',
+                  description: 'Goto dashboard',
+                  callback: function() {
+                    self.changeState('base.home.dashboards.student');
+                  }
+                })
+                .add({
+                    combo: 'w',
+                    description: 'Goto workload',
                     callback: function() {
-                        self.changeState('base.guild.overview');
+                        self.changeState('base.guild.workload');
                     }
                 })
                 .add({
@@ -264,12 +250,13 @@
                     }
                 })
                 .add({
-                    combo: 'd',
-                    description: 'Goto dashboard',
+                    combo: 'a',
+                    description: 'Goto activity log',
                     callback: function() {
-                        self.changeState('base.home.dashboards.student');
+                        self.changeState('base.guild.activity');
                     }
                 })
+
                 ; // End of hotkeys
             }
 

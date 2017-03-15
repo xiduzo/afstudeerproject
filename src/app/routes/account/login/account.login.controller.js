@@ -92,7 +92,7 @@
                             surname_prefix:    response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
                             surname:           response.sn[0],
                             gender:            response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-                            is_staff:          self.login_type === 'student' ? false : true
+                            is_staff:          response.edupersonprimaryaffiliation[0] === 'student' ? false : true
                         };
 
                         Account.checkForExistingUser(logged_in_user.uid)

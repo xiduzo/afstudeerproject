@@ -10,10 +10,6 @@
         $rootScope,
         $state,
         Global,
-        Guild,
-        World,
-        CMDChart,
-        Spiderchart,
         TrelloApi,
         Notifications,
         localStorageService,
@@ -24,16 +20,13 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Profile');
+        Global.setRouteTitle('Profiel');
 
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.createSpiderChart = createSpiderChart;
-        self.authenticate = authenticate;
-        self.selectGuild = selectGuild;
         self.patchLocalSettings = patchLocalSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,38 +40,13 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.id)
+        TrelloApi.Authenticate()
         .then(function(response) {
-            self.user.guilds = [];
-            _.each(response.guilds, function(guild) {
-                self.user.guilds.push(guild.guild);
+            TrelloApi.Rest('GET', 'members/me')
+            .then(function(response) {
+                self.trello_account = response;
+                self.loading_page = false;
             });
-
-            if(localStorageService.get('trello_token')) {
-                TrelloApi.Authenticate()
-                .then(function(response) {
-                    TrelloApi.Rest('GET', 'members/me')
-                    .then(function(response) {
-                        self.trello_account = response;
-                        self.loading_page = false;
-
-                        setTimeout(function () {
-                            var user = {
-                                techniek: Math.random() * 40 + 25,
-                                interaction: Math.random() * 40 + 25,
-                                visual: Math.random() * 40 + 25
-                            };
-
-                            CMDChart.createChart('cmdChart', user, 'small', true);
-                        }, 100);
-                    });
-                });
-            } else {
-                self.authenticate();
-            }
-
-        }, function(error) {
-            // Error get user guilds
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,34 +57,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function createSpiderChart(average, my_scores) {
-
-        }
-
-        function authenticate() {
-            if(localStorageService.get('trello_token')) {
-                localStorageService.remove('trello_token');
-            }
-
-            TrelloApi.Authenticate()
-            .then(function(){
-                TrelloApi.Rest('GET', 'members/me')
-                .then(function(response) {
-                    self.trello_account = response;
-                    localStorageService.set('trello_user', response);
-                    Notifications.simpleToast('Authentication succeeded');
-                    self.loading_page = false;
-                });
-            }, function(){
-                Notifications.simpleToast('Authentication failed');
-            });
-        }
-
-        function selectGuild(guild) {
-            Global.setSelectedGuild(guild.id);
-            $state.go('base.home.dashboards.student');
-        }
-
         function patchLocalSettings() {
             Global.setLocalSettings(self.local_settings);
             $rootScope.$broadcast('patched-local-settings');

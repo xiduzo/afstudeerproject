@@ -38,7 +38,7 @@
             })
 
             .state('base.guild.rules', {
-                url: '/rules',
+                url: '/feedback',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/student/guild/rules/rules.html',

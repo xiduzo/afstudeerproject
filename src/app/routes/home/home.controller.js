@@ -43,11 +43,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function routeUser(user) {
             if(self.user.is_superuser) {
-                $state.go('base.home.dashboards.lecturer');
+                $state.go('base.home.dashboards.coordinator');
             } else if (self.user.is_staff) {
                 $state.go('base.home.dashboards.lecturer');
             } else {
-                $state.go('base.home.dashboards.lecturer');
+                $state.go('base.home.dashboards.student');
             }
         }
 

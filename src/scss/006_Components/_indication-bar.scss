@@ -4,9 +4,9 @@
   border-radius: 0 0 2px 2px;
 
   &--success {
-    background: #4CAF50;
+    @extend .background--green !optional;
   }
   &--error {
-    background: #F44336;
+    @extend .background--red !optional;
   }
 }

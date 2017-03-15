@@ -15,7 +15,7 @@
                 <h1>
                     {{ toolbarCtrl.route_title }}
                 </h1>
-                <md-menu-bar ng-if="toolbarCtrl.access >= 1 && toolbarCtrl.guilds.length >= 1">
+                <md-menu-bar ng-if="toolbarCtrl.access >= 1 && toolbarCtrl.guilds.length >= 1" layout>
                     <md-icon md-svg-src="guild_dark"></md-icon>
                     <md-menu ng-if="toolbarCtrl.guilds.length >= 2">
                         <!-- https://github.com/angular/material/issues/6802 -->
@@ -37,14 +37,13 @@
                     </md-menu>
                     <section ng-if="toolbarCtrl.guilds.length === 1">
                         <button ng-disabled="true">
-                            <md-icon md-svg-src="guild_dark"></md-icon>
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_guild.name }}
                             </strong>
                         </button>
                     </section>
                 </md-menu-bar>
-                <md-menu-bar ng-if="toolbarCtrl.access >= 2 && toolbarCtrl.worlds.length >= 1">
+                <md-menu-bar ng-if="toolbarCtrl.access >= 2 && toolbarCtrl.worlds.length >= 1" layout>
                     <md-icon md-svg-src="world_dark"></md-icon>
                     <md-menu ng-if="toolbarCtrl.worlds.length >= 2">
                         <!-- https://github.com/angular/material/issues/6802 -->
@@ -66,7 +65,6 @@
                     </md-menu>
                     <section ng-if="toolbarCtrl.worlds.length === 1">
                         <button ng-disabled="true">
-                            <md-icon md-svg-src="world_dark"></md-icon>
                             <strong layout-padding>
                                 {{ toolbarCtrl.selected_world.name }}
                             </strong>
@@ -88,20 +86,16 @@
                     </button>
                     <md-menu-content width="4" class="main__toolbar__menu">
                         <md-menu-item ui-sref="base.account.detail">
-                            <md-button>
-                                <div layout="row">
-                                    <md-icon md-menu-align-target md-svg-icon="person_dark"> </md-icon>
-                                    <p flex>Profile</p>
-                                </div>
+                            <md-button layout>
+                                <md-icon md-menu-align-target md-svg-icon="person_dark" class="icon__helper"> </md-icon>
+                                <p flex>Profiel</p>
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item ng-click="toolbarCtrl.logout()">
-                            <md-button>
-                                <div layout="row">
-                                    <md-icon md-menu-align-target md-svg-icon="settings_dark"> </md-icon>
-                                    <p flex>Logout</p>
-                                </div>
+                            <md-button layout>
+                                <md-icon md-menu-align-target md-svg-icon="settings_dark" class="icon__helper"> </md-icon>
+                                <p flex>Uitloggen</p>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

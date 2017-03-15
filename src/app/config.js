@@ -52,9 +52,6 @@
         $mdThemingProvider
             // Add palettes
             .definePalette('cmd', {
-                // 'contrastDefaultColor': 'light',
-                // 'default': 'FFCC00' // #FFCC00
-                // Im color blind, not that creative with colors
                 '50':   'FFF8E1', // #FFF8E1
                 '100':  'FFECB3', // #FFECB3
                 '200':  'FFE082', // #FFE082
