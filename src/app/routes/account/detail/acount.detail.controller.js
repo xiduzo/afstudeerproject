@@ -7,10 +7,12 @@
 
     /** @ngInject */
     function AccountDetailController(
+        $mdDialog,
         $rootScope,
         $state,
         Global,
         TrelloApi,
+        md5,
         Notifications,
         localStorageService,
         STUDENT_ACCESS_LEVEL
@@ -58,8 +60,39 @@
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function patchLocalSettings() {
-            Global.setLocalSettings(self.local_settings);
-            $rootScope.$broadcast('patched-local-settings');
+            if(!self.local_settings.password_protection) {
+                $mdDialog.show({
+                    controller: 'passwordProtectionController',
+                    controllerAs: 'passwordProtectionCtrl',
+                    templateUrl: 'app/components/password_protection/password_protection.html',
+                    targetEvent: event,
+                    clickOutsideToClose: true,
+                    locals: {
+                        reason: 'Om deze wijziging door te voeren is je wachtwoord vereist.'
+                    }
+                })
+                .then(function(result) {
+                    if(!result) {
+                        self.local_settings.password_protection = true;
+                        return Notifications.simpleToast('Please enter a password');
+                    }
+
+                    if(md5(result) === self.user.password) {
+                        Global.setLocalSettings(self.local_settings);
+                        $rootScope.$broadcast('patched-local-settings');
+                    } else {
+                        self.local_settings.password_protection = true;
+                        Global.setLocalSettings(self.local_settings);
+                    }
+
+                }, function() {
+                    self.local_settings.password_protection = true;
+                    Global.setLocalSettings(self.local_settings);
+                });
+            } else {
+                Global.setLocalSettings(self.local_settings);
+                $rootScope.$broadcast('patched-local-settings');
+            }
         }
 
     }

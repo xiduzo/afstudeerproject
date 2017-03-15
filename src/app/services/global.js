@@ -24,7 +24,8 @@
         self.selected_guild = null;
         self.local_settings = {
             enabled_confirmation: true,
-            enabled_hotkeys: true
+            enabled_hotkeys: true,
+            password_protection: true
         };
 
         self.functions = {
@@ -74,7 +75,6 @@
                     } else {
                         self.access = 1;
                     }
-                    
                     // self.access = 3;
 
                     if(set_user) {
@@ -121,7 +121,7 @@
             setLocalSettings: function(settings) {
                 self.local_settings = settings;
                 localStorageService.set('settings', self.local_settings);
-                Notifications.simpleToast('settings patched');
+                Notifications.simpleToast('Settings patched');
             },
         };
 

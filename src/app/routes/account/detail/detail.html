@@ -81,6 +81,18 @@
                 </md-switch>
               </span>
             </md-list-item>
+            <md-list-item layout>
+              <span flex=60 layout="column">
+                Wachtwoord beveiliging
+                <span class="text--color--grey">
+                  Voorkom dat iedereen bij jou gevoelige informatie kan komen.
+                </span>
+              </span>
+              <span>
+                <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.password_protection" aria-label="confirmation">
+                </md-switch>
+              </span>
+            </md-list-item>
             <!-- <md-list-item layout>
               <strong flex=50> Openbaar profiel </strong>
               <span>
