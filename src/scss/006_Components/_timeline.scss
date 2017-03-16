@@ -4,6 +4,15 @@
   md-list-item {
     .md-subheader {
       border-bottom: 1px solid #FFCC00;
+      &.success {
+        border-bottom: 1px solid $success;
+      }
+      &.warning {
+        border-bottom: 1px solid $warning;
+      }
+      &.error {
+        border-bottom: 1px solid $error;
+      }
     }
     md-list {
       padding: 0px;

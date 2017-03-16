@@ -14,6 +14,7 @@
         World,
         TrelloApi,
         Notifications,
+        localStorageService,
         STUDENT_ACCESS_LEVEL,
         COLORS
     ) {
@@ -38,7 +39,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
         self.selected_guild = Global.getSelectedGuild();
-        self.user.trello = null;
+        self.user.trello = localStorageService.get('trello_user');
         self.guilds = [];
         self.loading_page = true;
 
@@ -67,50 +68,56 @@
             _.each(response.guilds, function(guild) {
                 guild = guild.guild;
 
-                World.getWorld(guild.world.id)
-                .then(function(response) {
-                    guild.world = response;
-                    self.guilds.push(guild);
-                    self.loading_page = false;
+                if(!guild.trello_done_list || !guild.trello_board) {
+                    guild.trello_not_configured = true;
+                } else {
+                    World.getWorld(guild.world.id)
+                    .then(function(response) {
+                        response.end = moment(response.start).add(response.course_duration, 'weeks').add(6, 'days');
+                        guild.world = response;
+                        self.guilds.push(guild);
+                        self.loading_page = false;
 
-                    self.buildGraphData(guild);
+                        self.buildGraphData(guild);
 
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+
+                    TrelloApi.Authenticate()
+                    .then(function() {
+                        TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
+                        .then(function(response) {
+
+                            // We don't care about cards that have been done allready
+                            var cards = _.filter(response, function(card) {
+                                return card.idList !== guild.trello_done_list;
+                            });
+
+                            // Only return cards where you are one of the members
+                            cards = _.filter(cards, function(card) {
+                                return  _.contains(card.idMembers, self.user.trello.id);
+                            });
+
+                            // Add the created_at on the card b/c trello won't give this to us
+                            _.each(cards, function(card) {
+                                card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
+                            });
+
+                            guild.trello_cards = cards;
+
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                }
+
             });
-
-            // _.each(self.guilds, function(guild) {
-            //     self.loading_page = true;
-            //     if(!guild.trello_board || !guild.trello_done_list) {
-            //         return false;
-            //     }
-            //     TrelloApi.Authenticate()
-            //     .then(function() {
-            //         TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
-            //         .then(function(response) {
-            //             var cards = _.filter(response, function(card) {
-            //                 // No user assigned -> card is for everybody
-            //                 if(card.idMembers < 1) {
-            //                     return card;
-            //                 } else if(_.contains(card.idMembers, self.user.trello.id)) {
-            //                     return card;
-            //                 }
-            //             });
-            //
-            //             // Only get the cards which arn't finished yet
-            //             cards = _.filter(cards, function(card) {
-            //                 card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
-            //                 return card.idList !== guild.trello_done_list;
-            //             });
-            //
-            //             guild.todo_list = cards;
-            //             self.loading_page = false;
-            //         });
-            //     });
-            //
-            // });
         })
         .catch(function(error) {
             console.log(error);
@@ -130,9 +137,9 @@
                 line: [],
                 polar: []
             };
+            guild.weeks = [];
 
             guild.members_data = [];
-            guild.weeks = [];
 
             _.each(guild.members, function(member, index) {
                 guild.members_data.push({
@@ -153,10 +160,19 @@
                         week: index,
                         name: 'Week ' + (index+1),
                         start: moment(guild.world.start).add(index, 'weeks'),
-                        end: moment(guild.world.start).add(index, 'weeks').add(6, 'days')
+                        end: moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                        current_week: moment().isBetween(
+                            moment(guild.world.start).add(index, 'weeks'),
+                            moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+                            'day'
+                        ) ||
+                        moment().isSame(moment(guild.world.start).add(index, 'weeks'), 'day') ||
+                        moment().isSame(moment(guild.world.start).add(index, 'weeks').add(6, 'days'), 'day'),
                     });
                 }
             }
+
+            guild.current_week = _.findWhere(guild.weeks, { current_week: true });
 
             _.each(guild.weeks, function(week) {
                 _.each(guild.members_data, function(member) {

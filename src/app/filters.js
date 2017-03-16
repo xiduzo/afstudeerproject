@@ -67,6 +67,20 @@
             };
         })
 
+        .filter('cardsDueThisWeek', function() {
+            return function(cards, week) {
+                return _.filter(cards, function(card) {
+                   if(card.due) {
+                      if(moment(card.due).isBetween(moment(week.start), moment(week.end), 'day') ||
+                          moment(card.due).isSame(moment(week.start), 'day') ||
+                          moment(card.due).isSame(moment(week.end), 'day')
+                      ) {
+                           return card;
+                      }
+                  }
+              });
+            };
+        })
 
 
     ; // End of filters

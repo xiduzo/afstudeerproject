@@ -1,11 +1,11 @@
 .md-button {
     &.success {
-        background: $green_500 !important;
+        background: $success !important;
         color: white !important;
     }
     &[disabled] {
         &.success {
-            background: lighten($green_500, 25) !important;
+            background: lighten($success, 25) !important;
         }
     }
 }

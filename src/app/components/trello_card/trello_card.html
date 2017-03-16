@@ -1,0 +1,36 @@
+<md-card flex layout="column">
+  <section flex layout>
+    <md-content flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            {{ trelloCardCtrl.card.name }}
+          </span>
+          <span class="md-subhead text--color--grey" ng-if="trelloCardCtrl.card.due">
+            Vervalt {{ trelloCardCtrl.card.due | fromNow }}
+          </span>
+          <span class="md-subhead text--color--grey" ng-if="!trelloCardCtrl.card.due">
+            Gemaakt op {{ trelloCardCtrl.card.created_at | momentDate : 'DD/MM/YYYY' }}
+          </span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content ng-if="trelloCardCtrl.card.desc">
+        <span flex ng-bind-html="trelloCardCtrl.card.desc"></span>
+      </md-card-content>
+    </md-content>
+    <section class="background--color--grey--1" layout layout-align="center center">
+      <md-card-actions>
+        <md-button class="md-icon-button" href="{{trelloCardCtrl.card.shortUrl}}" target="_BLANK">
+          <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
+          <md-tooltip md-delay="1500">
+            Bekijk op Trello
+          </md-tooltip>
+        </md-button>
+      </md-card-actions>
+    </section>
+  </section>
+  <div class="indication__bar" ng-if="trelloCardCtrl.card.due" ng-class="{
+    'indication__bar--error' : (trelloCardCtrl.card.due | daysToGo) <= 2,
+    'indication__bar--warning' : (trelloCardCtrl.card.due | daysToGo) <= 4
+  }"></div>
+</md-card>
