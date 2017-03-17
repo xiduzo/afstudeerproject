@@ -15,7 +15,6 @@
             'ngMaterial',
             'ngScrollbars',
             'dndLists',
-            'textAngular',
             'angular-loading-bar',
             'ngOnboarding',
             'cfp.hotkeys',
