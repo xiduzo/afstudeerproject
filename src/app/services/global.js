@@ -79,7 +79,7 @@
                     // self.access = 1;
 
                     if(set_user) {
-                        // $state.go('base.home');
+                        $state.go('base.home');
                         $rootScope.$broadcast('new-user-set');
                     } else {
                       $rootScope.$broadcast('user-logged-out');

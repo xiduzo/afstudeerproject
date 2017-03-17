@@ -22,7 +22,8 @@
     "angular-websocket": "^2.0.0",
     "angular-animate": "^1.6.3",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#^1.7.0",
-    "highcharts": "4.2.7"
+    "highcharts": "4.2.7",
+    "mojs": "^0.288.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.3"

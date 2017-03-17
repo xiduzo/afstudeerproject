@@ -350,6 +350,7 @@
                     },
                 },
                 series: guild.graphs_data.polar,
+                exporting: { enabled: Global.getAccess() > 1 ? true : false, },
                 credits: {
                     href: '',
                     text: moment().format('DD/MM/YY HH:mm'),

@@ -62,23 +62,23 @@
                       </md-card-header>
                       <md-card-content>
                         <section ng-if="week.editable" layout class="rating">
-                          <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0))"
-                          ng-mouseover="new_rating = (rating === 1 ? 0 : 1)" ng-mouseout="new_rating = rating">
+                          <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0), $event)"
+                          ng-mouseover="new_rating = (rating === 1 ? 0 : 1)" ng-mouseleave="new_rating = rating">
                               <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 1"></md-icon>
                               <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 1"></md-icon>
                           </div>
-                          <div ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2)"
-                          ng-mouseover="new_rating = 2" ng-mouseout="new_rating = rating">
+                          <div ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2, $event)"
+                          ng-mouseover="new_rating = 2" ng-mouseleave="new_rating = rating">
                             <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 2"></md-icon>
                             <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 2"></md-icon>
                           </div>
-                          <div ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3)"
-                          ng-mouseover="new_rating = 3" ng-mouseout="new_rating = rating">
+                          <div ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3, $event)"
+                          ng-mouseover="new_rating = 3" ng-mouseleave="new_rating = rating">
                             <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 3"></md-icon>
                             <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 3"></md-icon>
                           </div>
-                          <div ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4)"
-                          ng-mouseover="new_rating = 4" ng-mouseout="new_rating = rating">
+                          <div ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4, $event)"
+                          ng-mouseover="new_rating = 4" ng-mouseleave="new_rating = rating">
                             <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 4"></md-icon>
                             <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 4"></md-icon>
                           </div>
