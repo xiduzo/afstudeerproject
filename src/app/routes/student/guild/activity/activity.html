@@ -1,154 +1,154 @@
 <cmd-loading-page ng-if="guildActivityCtrl.loading_page"></cmd-loading-page>
 
-<cmd-empty-state ng-if="guildActivityCtrl.guilds.length < 1"
-  icon="guild_dark"
-  headline="No group found"
-  title="Wait for a lecturer to add you to a group">
-</cmd-empty-state>
-
-<section layout-fill ng-repeat="guild in guildActivityCtrl.guilds" ng-if="guild.id === guildActivityCtrl.selected_guild">
-  <cmd-empty-state ng-if="guild.no_trello_board"
-  icon="settings_dark"
-  headline="Trello not configured"
-  title="Wait for a lecturer to configure this group correctly.">
+<section ng-if="!guildActivityCtrl.loading_page" layout-fill>
+  <cmd-empty-state ng-if="guildActivityCtrl.guilds.length < 1"
+    icon="guild_dark"
+    headline="No group found"
+    title="Wait for a lecturer to add you to a group">
   </cmd-empty-state>
-  <section ng-if="!guild.no_trello_board" layout layout-fill>
-    <md-content layout="column" layout-padding layout-margin flex=80 layout-fill md-whiteframe=1 id="main__content">
-      <md-list ng-repeat="activity__group in guild.activities" class="timeline">
-        <span style="display: none;">
-          {{ filtered = (activity__group
-            | filter : {
-              type: filters.action_type,
-            } : true
-            | filter: {
-              creator_id: filters.user
-            }
-            | filter: {
-              sentence: filters.free_search
-            }) }}
-          </span>
-        <md-list-item layout layout-align="start start" ng-if="filtered.length > 0">
-          <md-subheader flex=10>
-            <section layout="column" layout-align="center center">
-              <span class="md-display-1">
-                {{ activity__group[0].date | momentDate : 'DD' }}
-              </span>
-              <span class="md-title">
-                {{ activity__group[0].date | momentDate : 'MMM' | uppercase }}
-              </span>
-            </section>
-          </md-subheader>
-          <md-list flex>
-            <md-list-item ng-if="filtered.length <= 0" style="padding: 0;">
-              <md-card flex>
-                <md-card-header>
-                  <md-card-avatar>
-                    <md-icon md-svg-src="warning_light" class="background--color--red icon--size--36"></md-icon>
-                  </md-card-avatar>
-                  <md-card-header-text>
-                    <span class="md-title">
-                      Niks gevonden op {{ activity__group[0].date | momentDate : 'DD MMMM' }}
-                    </span>
-                    <span class="md-subhead">
-                      Wijzig de filters om de activity log te vullen
-                    </span>
-                  </md-card-header-text>
-                </md-card-header>
-              </md-card>
-            </md-list-item>
-            <md-list-item ng-repeat="activity in filtered">
-              <md-card flex layout>
-                <section flex>
+  <section layout-fill ng-repeat="guild in guildActivityCtrl.guilds" ng-if="guild.id === guildActivityCtrl.selected_guild">
+    <cmd-empty-state ng-if="guild.no_trello_board"
+    icon="settings_dark"
+    headline="Trello not configured"
+    title="Wait for a lecturer to configure this group correctly.">
+    </cmd-empty-state>
+    <section ng-if="!guild.no_trello_board" layout layout-fill>
+      <md-content layout="column" layout-padding layout-margin flex=80 layout-fill md-whiteframe=1 id="main__content">
+        <md-list ng-repeat="activity__group in guild.activities" class="timeline">
+          <span style="display: none;">
+            {{ filtered = (activity__group
+              | filter : {
+                type: filters.action_type,
+              } : true
+              | filter: {
+                creator_id: filters.user
+              }
+              | filter: {
+                sentence: filters.free_search
+              }) }}
+            </span>
+          <md-list-item layout layout-align="start start" ng-if="filtered.length > 0">
+            <md-subheader flex=10>
+              <section layout="column" layout-align="center center">
+                <span class="md-display-1">
+                  {{ activity__group[0].date | momentDate : 'DD' }}
+                </span>
+                <span class="md-title">
+                  {{ activity__group[0].date | momentDate : 'MMM' | uppercase }}
+                </span>
+              </section>
+            </md-subheader>
+            <md-list flex>
+              <md-list-item ng-if="filtered.length <= 0" style="padding: 0;">
+                <md-card flex>
                   <md-card-header>
                     <md-card-avatar>
-                      <img ng-if="activity.memberCreator.avatarHash" class="round" gravatar-size=25 gravatar-src-once="activity.memberCreator.avatarHash">
-                      <span layout layout-align="center center"
-                      ng-if="!activity.memberCreator.avatarHash" class="initials initials--big">
-                          {{ activity.memberCreator.initials }}
-                      </span>
+                      <md-icon md-svg-src="warning_light" class="background--color--red icon--size--36"></md-icon>
                     </md-card-avatar>
                     <md-card-header-text>
                       <span class="md-title">
-                        {{ activity.memberCreator.fullName }}
+                        Niks gevonden op {{ activity__group[0].date | momentDate : 'DD MMMM' }}
                       </span>
                       <span class="md-subhead">
-                        {{ activity.date | fromNow }}
+                        Wijzig de filters om de activity log te vullen
                       </span>
                     </md-card-header-text>
                   </md-card-header>
-                  <md-card-content>
-                    <span flex ng-bind-html="activity.sentence"></span>
-                  </md-card-content>
-                </section>
-                <section class="background--color--grey--1" layout layout-align="center center">
-                  <md-card-actions>
-                    <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK">
-                      <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
-                      <md-tooltip md-delay="1500">
-                        Bekijk op Trello
-                      </md-tooltip>
-                    </md-button>
-                  </md-card-actions>
-                </section>
+                </md-card>
+              </md-list-item>
+              <md-list-item ng-repeat="activity in filtered">
+                <md-card flex layout>
+                  <section flex>
+                    <md-card-header>
+                      <md-card-avatar>
+                        <img ng-if="activity.memberCreator.avatarHash" class="round" gravatar-size=25 gravatar-src-once="activity.memberCreator.avatarHash">
+                        <span layout layout-align="center center"
+                        ng-if="!activity.memberCreator.avatarHash" class="initials initials--big">
+                            {{ activity.memberCreator.initials }}
+                        </span>
+                      </md-card-avatar>
+                      <md-card-header-text>
+                        <span class="md-title">
+                          {{ activity.memberCreator.fullName }}
+                        </span>
+                        <span class="md-subhead">
+                          {{ activity.date | fromNow }}
+                        </span>
+                      </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                      <span flex ng-bind-html="activity.sentence"></span>
+                    </md-card-content>
+                  </section>
+                  <section class="background--color--grey--1" layout layout-align="center center">
+                    <md-card-actions>
+                      <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK">
+                        <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
+                        <md-tooltip md-delay="1500">
+                          Bekijk op Trello
+                        </md-tooltip>
+                      </md-button>
+                    </md-card-actions>
+                  </section>
 
-              </md-card>
-            </md-list-item>
-          </md-list>
-        </md-list-item>
-      </md-list>
-    </md-content>
+                </md-card>
+              </md-list-item>
+            </md-list>
+          </md-list-item>
+        </md-list>
+      </md-content>
 
-    <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
-      <section>
-        <div class="md-headline text--color--grey">
-          Filter
-        </div>
-        <md-input-container class="md-block">
-          <label>Type</label>
-          <md-select ng-model="filters.action_type">
-            <md-optgroup label="Type">
-              <md-option ng-value="undefined"> Alle </md-option>
-              <md-option ng-value="action_type.type" ng-repeat="action_type in guildActivityCtrl.action_types" layout layout-align="start center">
-                <md-icon class="icon__helper icon--color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
-                {{ action_type.name }}
-              </md-option>
-            </md-optgroup>
-          </md-select>
-        </md-input-container>
-        <md-input-container class="md-block">
-          <label>Gebruiker</label>
-          <md-select ng-model="filters.user">
-            <md-optgroup label="Gebruiker">
-              <md-option ng-value="undefined"> Ieder </md-option>
-              <md-option ng-repeat="user in guild.board.members" ng-value="user.id" layout>
-                <div layout layout-align="start center">
-                  <img ng-if="user.avatar" class="size--24 icon__helper round" gravatar-size=24 gravatar-src-once="user.avatar">
-                  <span layout layout-align="center center" ng-if="!user.avatar" class="initials icon__helper">
-                    {{ user.initials }}
-                  </span>
-                  <span flex>
-                    {{ user.name }}
-                  </span>
-                </div>
-              </md-option>
-            </md-optgroup>
-          </md-select>
-        </md-input-container>
-        <md-input-container class="md-block">
-            <label>Zoeken</label>
-            <input ng-model="filters.free_search"
-            ng-model-options=" { debounce: 500 }">
-        </md-input-container>
+      <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+        <section>
+          <div class="md-headline text--color--grey">
+            Filter
+          </div>
+          <md-input-container class="md-block">
+            <label>Type</label>
+            <md-select ng-model="filters.action_type">
+              <md-optgroup label="Type">
+                <md-option ng-value="undefined"> Alle </md-option>
+                <md-option ng-value="action_type.type" ng-repeat="action_type in guildActivityCtrl.action_types" layout layout-align="start center">
+                  <md-icon class="icon__helper icon--color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
+                  {{ action_type.name }}
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Gebruiker</label>
+            <md-select ng-model="filters.user">
+              <md-optgroup label="Gebruiker">
+                <md-option ng-value="undefined"> Ieder </md-option>
+                <md-option ng-repeat="user in guild.board.members" ng-value="user.id" layout>
+                  <div layout layout-align="start center">
+                    <img ng-if="user.avatar" class="size--24 icon__helper round" gravatar-size=24 gravatar-src-once="user.avatar">
+                    <span layout layout-align="center center" ng-if="!user.avatar" class="initials icon__helper">
+                      {{ user.initials }}
+                    </span>
+                    <span flex>
+                      {{ user.name }}
+                    </span>
+                  </div>
+                </md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+          <md-input-container class="md-block">
+              <label>Zoeken</label>
+              <input ng-model="filters.free_search" ng-model-options=" { debounce: 500 }">
+          </md-input-container>
+        </section>
+        <section>
+          <md-button class="md-raised success" href="https://trello.com/b/{{guild.trello_board}}" target="_BLANK" layout>
+            <md-icon md-svg-src="external_link_light"></md-icon>
+            <span flex>
+              Goto board
+            </span>
+          </md-button>
+        </section>
       </section>
-      <section>
-        <md-button class="md-raised success" href="https://trello.com/b/{{guild.trello_board}}" target="_BLANK" layout>
-          <md-icon md-svg-src="external_link_light"></md-icon>
-          <span flex>
-            Goto board
-          </span>
-        </md-button>
-      </section>
+
     </section>
-
   </section>
 </section>

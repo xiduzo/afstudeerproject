@@ -77,10 +77,9 @@
                             activities: []
                         };
 
-
                         TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/actions', { limit: 1000 })
                         .then(function(response) {
-
+                            self.loading_page = true;
                             response = _.filter(response, function(activity) {
                                 switch (activity.type) {
                                     case 'createList':

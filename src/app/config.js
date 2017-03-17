@@ -272,6 +272,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         // How many miliseconds before showing the loading bar
         cfpLoadingBarProvider.latencyThreshold = 100;
+        cfpLoadingBarProvider.includeSpinner = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Trello

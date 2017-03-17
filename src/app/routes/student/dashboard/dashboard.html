@@ -1,10 +1,6 @@
 <cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
-<cmd-empty-state ng-if="studentDashboardCtrl.guilds.length < 1"
-  icon="guild_dark"
-  headline="No group found"
-  title="Wait for a lecturer to add you to a group">
-</cmd-empty-state>
-<section ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild" layout-fill>
+
+<section ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page" layout-fill>
   <md-content id="main__content" layout="column" layout-fill layout-padding ng-scrollbars>
     <!-- Top row information -->
     <section layout layout-wrap>
@@ -70,9 +66,14 @@
     </section>
 
     <!-- Graphs -->
-    <section layout style="height: 350px;">
-      <md-card flex=60 id="line__{{guild.id}}"></md-card>
-      <md-card flex=40 id="polar__{{guild.id}}"></md-card>
+    <section layout="column">
+      <h1 class="md-title text--color--grey" style="padding: 0 0 0 8px;">
+        Mijn feedback
+      </h1>
+      <section layout style="height: 350px;">
+        <md-card flex=60 id="line__{{guild.id}}"></md-card>
+        <md-card flex=40 id="polar__{{guild.id}}"></md-card>
+      </section>
     </section>
 
     <!-- My cards -->
