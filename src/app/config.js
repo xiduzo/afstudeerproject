@@ -12,6 +12,7 @@
         $mdThemingProvider,
         $mdIconProvider,
         $urlRouterProvider,
+        $locationProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
         ngOnboardingDefaultsProvider,
@@ -23,9 +24,17 @@
         TRELLO_SECRET
     ) {
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Routing provier
+            Routing provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $urlRouterProvider.otherwise('/');
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Location provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $locationProvider.html5Mode({
+            enabled: true,
+            // requireBase: false
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Log provider
@@ -286,7 +295,7 @@
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Momnent
+            Moment
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         moment.defineLocale('nl', {
             months : 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),

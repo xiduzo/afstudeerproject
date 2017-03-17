@@ -48,7 +48,7 @@
                 <section flex layout layout-wrap>
                   <section flex=100 flex-gt-xs=50 flex-gt-md=25 flex-gt-lg=20 ng-repeat="member in guild.members" ng-if="member.user.id !== guildRulesCtrl.user.id">
                     <md-card layout="column" layout-align="center center"
-                    ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user)">
+                    ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user); new_rating = rating;">
                       <md-card-header>
                         <md-card-avatar>
                           <img class="round size--36" gravatar-size="36" gravatar-src="member.user.email">
@@ -61,22 +61,26 @@
                         </md-card-header-text>
                       </md-card-header>
                       <md-card-content>
-                        <section ng-if="week.editable" layout>
-                          <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0))">
-                              <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="rating >= 1"></md-icon>
-                              <md-icon md-svg-src="star_border_dark" ng-if="rating < 1"></md-icon>
+                        <section ng-if="week.editable" layout class="rating">
+                          <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0))"
+                          ng-mouseover="new_rating = (rating === 1 ? 0 : 1)" ng-mouseout="new_rating = rating">
+                              <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 1"></md-icon>
+                              <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 1"></md-icon>
                           </div>
-                          <div ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2)">
-                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="rating >= 2"></md-icon>
-                            <md-icon md-svg-src="star_border_dark" ng-if="rating < 2"></md-icon>
+                          <div ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2)"
+                          ng-mouseover="new_rating = 2" ng-mouseout="new_rating = rating">
+                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 2"></md-icon>
+                            <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 2"></md-icon>
                           </div>
-                          <div ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3)">
-                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="rating >= 3"></md-icon>
-                            <md-icon md-svg-src="star_border_dark" ng-if="rating < 3"></md-icon>
+                          <div ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3)"
+                          ng-mouseover="new_rating = 3" ng-mouseout="new_rating = rating">
+                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 3"></md-icon>
+                            <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 3"></md-icon>
                           </div>
-                          <div ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4)">
-                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="rating >= 4"></md-icon>
-                            <md-icon md-svg-src="star_border_dark" ng-if="rating < 4"></md-icon>
+                          <div ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4)"
+                          ng-mouseover="new_rating = 4" ng-mouseout="new_rating = rating">
+                            <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 4"></md-icon>
+                            <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 4"></md-icon>
                           </div>
                         </section>
                         <section ng-if="!week.editable" layout>

@@ -8,10 +8,8 @@
 
     /** @ngInject */
     function config(
-        $stateProvider,
-        $locationProvider
+        $stateProvider
     ) {
-
         // add the needed routes to the state provider
         $stateProvider.state('base', {
             url: '',
@@ -24,12 +22,6 @@
                 }
             }
         });
-
-        $locationProvider.html5Mode({
-            enabled: true,
-            // requireBase: false
-        });
-
     }
 
 
