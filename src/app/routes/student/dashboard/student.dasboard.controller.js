@@ -323,12 +323,16 @@
                         'Verantwoording',
                     ],
                     tickmarkPlacement: 'on',
-                    lineWidth: 0,
-                    // gridLineWidth: 0
+                    lineWidth: 0
                 },
                 yAxis: {
-                    gridLineInterpolation: 'polygon',
-                    visible: false
+                    visible: false,
+                    max: _.max([
+                        _.max(guild.graphs_data.polar[0].data, function(point) { return point.y; }),
+                        _.max(guild.graphs_data.polar[1].data, function(point) { return point.y; })
+                    ], function(max) {
+                        return max.y;
+                    }).y
                 },
                 tooltip: {
                     shared: true,
