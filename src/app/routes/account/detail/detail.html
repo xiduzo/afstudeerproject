@@ -56,13 +56,15 @@
             </h2>
             <md-list-item layout>
               <span flex=60 layout="column">
-                Gebruik hotkeys
+                <div>
+                  Gebruik hotkeys
+                  <em class="text--color--grey">
+                    (shift + ?)
+                  </em>
+                </div>
                 <span class="text--color--grey">
                   Gebruik hotkeys voor snelle navigatie door het platform.
                 </span>
-                <md-tooltip>
-                  shift + ?
-                </md-tooltip>
               </span>
               <div>
                   <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_hotkeys" aria-label="hotkeys">

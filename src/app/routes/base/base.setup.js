@@ -8,7 +8,8 @@
 
     /** @ngInject */
     function config(
-        $stateProvider
+        $stateProvider,
+        $locationProvider
     ) {
 
         // add the needed routes to the state provider
@@ -22,6 +23,11 @@
                     controllerAs: 'baseCtrl'
                 }
             }
+        });
+
+        $locationProvider.html5Mode({
+            enabled: true,
+            // requireBase: false
         });
 
     }
