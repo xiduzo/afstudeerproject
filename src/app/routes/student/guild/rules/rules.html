@@ -42,7 +42,7 @@
           <md-list ng-repeat="week in guild.weeks" ng-if="week.index == guild.selected_week.index">
             <md-list-item ng-repeat="rule in guild.rules" flex>
               <section flex layout="column">
-                <div class="md-title">
+                <div class="md-title" layout-padding>
                   De student {{ rule.rule }}
                 </div>
                 <section flex layout layout-wrap>
