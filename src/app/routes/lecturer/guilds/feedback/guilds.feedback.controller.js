@@ -48,6 +48,8 @@
         self.selected_member = null;
         self.loading_page = true;
         self.first_line_graph_load = true;
+        self.selected_type = null;
+        self.selected_rule = null;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -280,7 +282,6 @@
                     ],
                     tickmarkPlacement: 'on',
                     lineWidth: 0,
-                    // gridLineWidth: 0
                 },
                 yAxis: {
                     gridLineInterpolation: 'polygon',
@@ -313,11 +314,12 @@
                 }
             });
 
-            self.first_line_graph_load = false;
             buildPieData();
+            self.first_line_graph_load = false;
         }
 
-        function buildPieData() {
+        function buildPieData(animation) {
+            animation = animation ? true : false;
             var pie_data = _.groupBy(self.guild.rules, function(rule) {
                 return rule.rule_type;
             });
@@ -326,21 +328,59 @@
                     name: 'Type',
                     size: '60%',
                     data: [],
-                    showInLegend: true,
+                    visible: self.selected_rule ? false : true,
+                    events: {
+                        click: function (event) {
+                            if(self.selected_type && self.selected_type === event.point.name) {
+                                self.selected_type = null;
+                            } else {
+                                self.selected_type = event.point.name;
+                            }
+                            return buildPieData(true);
+                        }
+                    },
+                    dataLabels: {
+                        formatter: function () {
+                            return this.y > 10 ? this.point.name : null;
+                        },
+                        color: self.selected_type ? '#ffffff' : '#6a6a6a',
+                        connectorWidth: 0,
+                        distance: self.selected_type ? -75 : 75,
+                        style: {
+                            fontWeight: self.selected_type ? "bold" : "normal",
+                            textOutline: '0px 0px contrast'
+                        }
+                    }
                 },
                 {
                     name: 'Rules',
-                    size: '95%',
-                    innerSize: '65%',
+                    size: self.selected_rule ? '80%' : '95%',
+                    innerSize: self.selected_rule ? '0' : '65%',
                     data: [],
-                    showInLegend: false,
+                    events: {
+                        click: function (event) {
+                            if(self.selected_rule && self.selected_rule === event.point.name) {
+                                self.selected_rule = null;
+                            } else {
+                                self.selected_rule = event.point.name;
+                            }
+                            self.selected_type = null;
+                            return buildPieData(true);
+                        }
+                    },
+                    dataLabels: {
+                        formatter: function () {
+                            return self.selected_rule ? this.point.name : null;
+                        },
+                        color: '#ffffff',
+                        distance: -100,
+                    }
                 },
                 {
                     name: 'Users feedback',
                     size: '100%',
-                    innerSize: '95%',
+                    innerSize: self.selected_rule ? '80%' : '95%',
                     data: [],
-                    showInLegend: false,
                 },
             ];
 
@@ -353,7 +393,7 @@
                         name = 'Houding';
                         break;
                     case 2:
-                        name = 'Functioneren binnen de groep';
+                        name = 'Functioneren binnen<br/>de groep';
                         break;
                     case 3:
                         name = 'Kennisontwikkeling';
@@ -365,7 +405,6 @@
 
                 var pie_piece_points = 0;
                 var color = COLORS[self.members_data.length + parseInt(index)];
-
                 _.each(pie_piece, function(rule, rule_number) {
                     var rule_points = _.reduce(rule.endorsements, function(memo, endorsement) {
                         if(_.findWhere(selected_users, { id: endorsement.user })) {
@@ -376,47 +415,51 @@
                     }, 0);
 
                     pie_piece_points += rule_points;
-                    series[1].data.push({
-                        name: rule.rule,
-                        color: Highcharts.Color(color).setOpacity(1 - 0.15 * rule_number).get(),
-                        y: rule_points
-                    });
 
-                    var endorsement_by_user = _.groupBy(rule.endorsements, function(endorsement) {
-                        if(_.findWhere(selected_users, { id: endorsement.user })) {
-                            return endorsement.user;
-                        }
-                    });
-
-                    // May be interesting ?
-                    _.each(endorsement_by_user, function(endorsements, index) {
-                        var member = _.findWhere(self.members_data, { id: endorsements[0].user });
-                        series[2].data.push({
-                            name: member.name,
-                            color: member.color,
-                            y: _.reduce(endorsements, function(memo, endorsement) {
-                                if(_.findWhere(selected_users, { id: endorsement.user })) {
-                                    return memo + endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
-                                } else {
-                                    return memo;
-                                }
-                            }, 0)
+                    if((self.selected_type === null || self.selected_type === name) && (self.selected_rule === null || self.selected_rule === rule.rule)) {
+                        series[1].data.push({
+                            name: rule.rule,
+                            color: Highcharts.Color(color).setOpacity(1 - 0.125 * rule_number).get(),
+                            y: rule_points
                         });
-                    });
+                        var endorsement_by_user = _.groupBy(rule.endorsements, function(endorsement) {
+                            if(_.findWhere(selected_users, { id: endorsement.user })) {
+                                return endorsement.user;
+                            }
+                        });
+
+                        // May be interesting ?
+                        _.each(endorsement_by_user, function(endorsements, index) {
+                            var member = _.findWhere(self.members_data, { id: endorsements[0].user });
+                            series[2].data.push({
+                                name: member.name,
+                                color: member.color,
+                                y: _.reduce(endorsements, function(memo, endorsement) {
+                                    if(_.findWhere(selected_users, { id: endorsement.user })) {
+                                        return memo + endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                                    } else {
+                                        return memo;
+                                    }
+                                }, 0)
+                            });
+                        });
+                    }
+
                 });
 
-                series[0].data.push({
-                    name: name,
-                    color: color,
-                    y: pie_piece_points
-                });
+                if(self.selected_type === null || self.selected_type === name) {
+                    series[0].data.push({
+                        name: name,
+                        color: color,
+                        y: pie_piece_points
+                    });
+                }
 
             });
-
-            createPieChart(series);
+            createPieChart(series, animation);
         }
 
-        function createPieChart(series) {
+        function createPieChart(series, animation) {
             $('#pie').highcharts({
                 chart: {
                     type: 'pie'
@@ -432,7 +475,7 @@
                 },
                 plotOptions: {
                     series: {
-                        animation: self.first_line_graph_load,
+                        animation: self.first_line_graph_load || animation,
                         dataLabels: {
                             formatter: function () {
                                 return null;
@@ -440,23 +483,18 @@
                         },
                         states: {
                             hover: {
-                                enabled: false
+                                enabled: true
                             }
-                        }
+                        },
                     },
                     pie: {
                         shadow: false,
                         center: ['50%', '50%'],
-                        events: {
-                            legendItemClick: function () {
-                                return false; // <== returning false will cancel the default action
-                            }
-                        },
-                        allowPointSelect: false,
                     },
+                    allowPointSelect: false,
                 },
                 series: series,
-                exporting: false,
+                exporting: { enabled: false },
                 credits: {
                     href: '',
                     text: ''
