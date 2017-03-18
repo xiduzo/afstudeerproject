@@ -16,7 +16,8 @@
         Notifications,
         localStorageService,
         STUDENT_ACCESS_LEVEL,
-        COLORS
+        COLORS,
+        MAX_STAR_RATING
     ) {
 
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
@@ -193,7 +194,7 @@
             _.each(guild.members_data, function(member) {
                 _.each(member.endorsements, function(endorsement) {
                     if(_.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week })) {
-                        _.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week }).y += endorsement.rating * endorsement.rule.points / 4;
+                        _.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week }).y += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
                     }
                 });
 
@@ -205,7 +206,7 @@
                     member.polar_data.push({
                         type: type,
                         y: _.reduce(endorsements, function(memo, endorsement) {
-                            return memo += endorsement.rating * endorsement.rule.points / 4;
+                            return memo += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
                         }, 0)
                     });
                 });

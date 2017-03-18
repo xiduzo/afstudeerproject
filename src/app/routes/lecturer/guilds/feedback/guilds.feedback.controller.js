@@ -13,7 +13,8 @@
         Guild,
         World,
         LECTURER_ACCESS_LEVEL,
-        COLORS
+        COLORS,
+        MAX_STAR_RATING
     ) {
 
         if(Global.getAccess() < LECTURER_ACCESS_LEVEL) {
@@ -29,7 +30,6 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.buildChartData = buildChartData;
-        self.createCharts = createCharts;
         self.selectMember = selectMember;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,7 +42,7 @@
             line: [],
             polar: [],
         };
-        self.guilds = [];
+        self.guild = null;
         self.horizontal_axis = [];
         self.endorsed_rules = [];
         self.selected_member = null;
@@ -54,11 +54,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getGuild($stateParams.guildUuid)
         .then(function(response) {
+            Global.setRouteTitle('Group feedback ' + response.name);
             self.guild = response;
             _.each(response.members, function(member, index) {
                 self.members_data.push({
                     id: member.user.id,
-                    email: member.user.email,
                     name: $filter('fullUserName')(member.user),
                     color: COLORS[index],
                     endorsements: [],
@@ -77,12 +77,7 @@
 
             World.getWorld(response.world.id)
             .then(function(response) {
-                response.course_duration = response.course_duration ? response.course_duration : 48;
-                response.start = response.start ? response.start : response.created_at;
-                self.guild.world_data = {
-                    duration: response.course_duration,
-                    start: response.start
-                };
+                self.guild.world = response;
                 self.buildChartData(self.guild);
             })
             .catch(function(error) {
@@ -91,22 +86,28 @@
 
             self.loading_page = false;
 
-
         })
         .catch(function(error) {
             console.log(error);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function roundToTwo(num) {
+            return parseFloat(num.toFixed(2));
+        }
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function buildChartData(data) {
-            var horizontal_axis = [];
-            var week = 0;
-            for(var i = data.world_data.duration; i > 0; i-=7) {
-                self.graphs_data.line.push(0);
-                horizontal_axis.push(week);
-                week++;
+            for(var index = 0; index <= self.guild.world.course_duration - 1; index++ ) {
+                // Only show weeks that have been in the past
+                if(!moment().isBefore(moment(self.guild.world.start).add(index, 'weeks'), 'day')) {
+                    self.graphs_data.line.push(0);
+                    self.horizontal_axis.push('Week ' + (index+1));
+                }
             }
 
             _.each(data.rules, function(rule) {
@@ -119,7 +120,9 @@
             _.each(self.members_data, function(member, index) {
                 // Order the endorsements
                 member.endorsements = _.groupBy(member.endorsements, function(endorsement) {
-                    return endorsement.week;
+                    if(!moment().isBefore(moment(self.guild.world.start).add(endorsement.week+1, 'weeks'), 'day')) {
+                        return endorsement.week;
+                    }
                 });
 
                 _.each(member.endorsements, function(endorsements, index) {
@@ -142,22 +145,27 @@
                                 });
                             }
 
-                            points += type_group.rule.points * (type_group.rating * 1/3);
+                            points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
 
-                            // Also make sure the endorsement types are safed
+                            // Also make sure the endorsement types are saved
                             // per type on the user for the polar chart
-                            _.findWhere(member.polar_data, { type: type_group.rule.rule_type}).points += points;
+                            _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
                         });
                     });
-                    self.graphs_data.line[index] += points;
                     member.line_data.push(points);
+                });
+            });
+
+            _.each(self.members_data, function(data) {
+                _.each(data.line_data, function(points, index) {
+                    self.graphs_data.line[index] += points;
                 });
             });
 
             // Make sure the average is included in the graph as well
             self.graphs_data.line = [
                 {
-                    name: 'Average',
+                    name: 'Gemiddeld',
                     data: _.map(self.graphs_data.line, function(line_data) {
                         return line_data / self.members_data.length;
                     }),
@@ -167,9 +175,8 @@
 
             self.graphs_data.polar = [
                 {
-                    type: 'spline',
+                    name: 'Gemiddeld',
                     visible: true,
-                    name: 'Average',
                     color: Highcharts.Color('#222222').setOpacity(0.1).get(),
                     data: [0, 0, 0, 0]
                 }
@@ -192,7 +199,6 @@
                 });
 
                 self.graphs_data.polar.push({
-                    type: 'spline',
                     visible: member.selected,
                     name: member.name,
                     data: member.polar_data,
@@ -205,12 +211,7 @@
                 return polar_data / self.members_data.length;
             });
 
-            self.horizontal_axis = _.map(horizontal_axis, function(axis_point) {
-                axis_point = 'Week ' + (axis_point+1);
-                return axis_point;
-            });
-
-            self.createCharts();
+            createCharts();
         }
 
         function createCharts() {
@@ -220,7 +221,7 @@
                     animation: self.first_line_graph_load
                 },
                 title: {
-                    text: 'Feedback points'
+                    text: 'Feedback punten ' + self.guild.name
                 },
                 subtitle: {
                     text: ''
@@ -230,7 +231,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Points'
+                        text: 'Punten'
                     },
                     minorGridLineWidth: 0,
                     gridLineWidth: 1,
@@ -266,9 +267,10 @@
             });
             $('#polar').highcharts({
                 chart: {
-                    polar: true
+                    polar: true,
+                    type: 'spline'
                 },
-                title: { text: 'Feedback focus' },
+                title: { text: 'Feedback focus ' + self.guild.name },
                 xAxis: {
                     categories: [
                         'Houding',
@@ -310,7 +312,156 @@
                     text: moment().format('DD/MM/YY HH:mm'),
                 }
             });
+
             self.first_line_graph_load = false;
+            buildPieData();
+        }
+
+        function buildPieData() {
+            var pie_data = _.groupBy(self.guild.rules, function(rule) {
+                return rule.rule_type;
+            });
+            var series = [
+                {
+                    name: 'Type',
+                    size: '60%',
+                    data: [],
+                    showInLegend: true,
+                },
+                {
+                    name: 'Rules',
+                    size: '95%',
+                    innerSize: '65%',
+                    data: [],
+                    showInLegend: false,
+                },
+                {
+                    name: 'Users feedback',
+                    size: '100%',
+                    innerSize: '95%',
+                    data: [],
+                    showInLegend: false,
+                },
+            ];
+
+            var selected_users = _.filter(self.members_data, { selected: true });
+
+            _.each(pie_data, function(pie_piece, index) {
+                var name = '';
+                switch (pie_piece[0].rule_type) {
+                    case 1:
+                        name = 'Houding';
+                        break;
+                    case 2:
+                        name = 'Functioneren binnen de groep';
+                        break;
+                    case 3:
+                        name = 'Kennisontwikkeling';
+                        break;
+                    case 4:
+                        name = 'Verantwoording';
+                        break;
+                }
+
+                var pie_piece_points = 0;
+                var color = COLORS[self.members_data.length + parseInt(index)];
+
+                _.each(pie_piece, function(rule, rule_number) {
+                    var rule_points = _.reduce(rule.endorsements, function(memo, endorsement) {
+                        if(_.findWhere(selected_users, { id: endorsement.user })) {
+                            return memo + endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                        } else {
+                            return memo;
+                        }
+                    }, 0);
+
+                    pie_piece_points += rule_points;
+                    series[1].data.push({
+                        name: rule.rule,
+                        color: Highcharts.Color(color).setOpacity(1 - 0.15 * rule_number).get(),
+                        y: rule_points
+                    });
+
+                    var endorsement_by_user = _.groupBy(rule.endorsements, function(endorsement) {
+                        if(_.findWhere(selected_users, { id: endorsement.user })) {
+                            return endorsement.user;
+                        }
+                    });
+
+                    // May be interesting ?
+                    _.each(endorsement_by_user, function(endorsements, index) {
+                        var member = _.findWhere(self.members_data, { id: endorsements[0].user });
+                        series[2].data.push({
+                            name: member.name,
+                            color: member.color,
+                            y: _.reduce(endorsements, function(memo, endorsement) {
+                                if(_.findWhere(selected_users, { id: endorsement.user })) {
+                                    return memo + endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                                } else {
+                                    return memo;
+                                }
+                            }, 0)
+                        });
+                    });
+                });
+
+                series[0].data.push({
+                    name: name,
+                    color: color,
+                    y: pie_piece_points
+                });
+
+            });
+
+            createPieChart(series);
+        }
+
+        function createPieChart(series) {
+            $('#pie').highcharts({
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Feedback focus ' + self.guild.name,
+                },
+                subtitle: {
+                    text: 'Breakdown per afspraak'
+                },
+                tooltip: {
+                    pointFormat: 'Punten: <b>{point.y:,.0f}</b>'
+                },
+                plotOptions: {
+                    series: {
+                        animation: self.first_line_graph_load,
+                        dataLabels: {
+                            formatter: function () {
+                                return null;
+                            },
+                        },
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    pie: {
+                        shadow: false,
+                        center: ['50%', '50%'],
+                        events: {
+                            legendItemClick: function () {
+                                return false; // <== returning false will cancel the default action
+                            }
+                        },
+                        allowPointSelect: false,
+                    },
+                },
+                series: series,
+                exporting: false,
+                credits: {
+                    href: '',
+                    text: ''
+                }
+            });
         }
 
         function selectMember(member) {
@@ -325,7 +476,6 @@
                 };
 
                 self.graphs_data.polar[index + 1] = {
-                    type: 'spline',
                     visible: member.selected,
                     name: member.name,
                     data: member.polar_data,
@@ -333,7 +483,7 @@
                 };
             });
 
-            self.createCharts();
+            createCharts();
         }
 
 
