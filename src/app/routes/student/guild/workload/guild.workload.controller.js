@@ -230,8 +230,7 @@
                             });
 
                             guild.current_week = _.findWhere(guild.insight_data.course_weeks, { current_week: true });
-
-                            if(guild.current_week.index > 0) {
+                            if(_.indexOf(guild.insight_data.course_weeks, guild.current_week) > 0) {
                                 guild.previous_week = guild.insight_data.course_weeks[_.indexOf(guild.insight_data.course_weeks, guild.current_week) - 1];
                                 guild.insight_data.workload_percentage = guild.current_week.cards.length * 100 / guild.previous_week.cards.length - 100;
                                 if(isNaN(guild.insight_data.workload_percentage)) {

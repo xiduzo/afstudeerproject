@@ -93,9 +93,10 @@
                                 </md-tooltip>
                               </section>
                             </md-card-content>
-                            <div class="indication__bar indication__bar--success" ng-class="{
-                              'indication__bar--error' : (guild.current_week.end | daysToGo) <= 1,
-                              'indication__bar--warning' : (guild.current_week.end | daysToGo) <= 3,
+                            <div class="indication__bar" ng-class="{
+                              'indication__bar--error' : (guild.current_week.end | daysToGo) <= 1 && guild.current_week.cards_due.length > 0,
+                              'indication__bar--warning' : (guild.current_week.end | daysToGo) <= 3 && guild.current_week.cards_due.length > 0,
+                              'indication__bar--success': guild.current_week.cards_due.length === 0 || (guild.current_week.end | daysToGo) > 3
                             }"></div>
                           </md-card>
                         </section>
