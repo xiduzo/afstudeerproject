@@ -56,7 +56,7 @@
                     Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
-
+                Global.setRouteTitle('Group progress ' + response.name);
                 self.guild = response;
 
                 World.getWorld(response.world.id)
@@ -84,11 +84,11 @@
 
             var weeks = [];
 
-            for(var i = 0; i <= guild.world.course_duration; i+= 7) {
+            for(var index = 0; index <= guild.world.course_duration; index++) {
                 weeks.push({
-                    week: (i / 7) + 1,
-                    start: moment(guild.world.start).add(i, 'days'),
-                    end: moment(guild.world.start).add(i + 6, 'days'),
+                    week: index + 1,
+                    start: moment(guild.world.start).add(index, 'weeks'),
+                    end: moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
                     cards: []
                 });
             }
@@ -151,7 +151,7 @@
 
                                 // Adding the cards to the weeks
                                 _.each(weeks, function(week) {
-                                    if(card.created_at.isBetween(week.start, week.end, 'day') ||
+                                    if(moment(card.created_at).isBetween(week.start, week.end, 'day') ||
                                     card.created_at.isSame(week.start, 'day') ||
                                     card.created_at.isSame(week.end, 'day')) {
                                         week.cards.push(card);
@@ -266,10 +266,10 @@
         function buildGraphs(graph_data) {
             $('#cards_per_week').highcharts({
                 chart: { type: 'column' },
-                title: { text: self.guild.name + ' amount of cards' },
-                subtitle: { text: 'Per user per week' },
+                title: { text: self.guild.name + ' aantal kaarten' },
+                subtitle: { text: 'Per lid per week' },
                 xAxis: { categories: graph_data.bar.categories, crosshair: true },
-                yAxis: { title: { text: 'Cards' } },
+                yAxis: { title: { text: 'Aantal' } },
                 tooltip: {
                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
@@ -294,7 +294,8 @@
             $('#cards_total').highcharts({
                 chart: { type: 'pie' },
                 exporting: { enabled: Global.getAccess() > 1 ? true : false },
-                title: { text: self.guild.name +': total cards per user' },
+                title: { text: self.guild.name +': aantal kaarten' },
+                subtitle: { text: 'Per lid totaal' },
                 tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },
                 plotOptions: {
                     pie: {
