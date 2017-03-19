@@ -341,7 +341,7 @@
                     },
                     dataLabels: {
                         formatter: function () {
-                            return this.y > 10 ? this.point.name : null;
+                            return this.point.name;
                         },
                         color: self.selected_type ? '#ffffff' : '#6a6a6a',
                         connectorWidth: 0,
@@ -388,6 +388,9 @@
 
             _.each(pie_data, function(pie_piece, index) {
                 var name = '';
+                var pie_piece_points = 0;
+                var PIE_COLORS = ['#2196F3', '#E91E63', '#FFEB3B', '#FF9800'];
+
                 switch (pie_piece[0].rule_type) {
                     case 1:
                         name = 'Houding';
@@ -403,8 +406,6 @@
                         break;
                 }
 
-                var pie_piece_points = 0;
-                var color = COLORS[self.members_data.length + parseInt(index)];
                 _.each(pie_piece, function(rule, rule_number) {
                     var rule_points = _.reduce(rule.endorsements, function(memo, endorsement) {
                         if(_.findWhere(selected_users, { id: endorsement.user })) {
@@ -419,7 +420,7 @@
                     if((self.selected_type === null || self.selected_type === name) && (self.selected_rule === null || self.selected_rule === rule.rule)) {
                         series[1].data.push({
                             name: rule.rule,
-                            color: Highcharts.Color(color).setOpacity(1 - 0.125 * rule_number).get(),
+                            color: Highcharts.Color(PIE_COLORS[parseInt(index)-1]).setOpacity(1 - 0.125 * rule_number).get(),
                             y: rule_points
                         });
                         var endorsement_by_user = _.groupBy(rule.endorsements, function(endorsement) {
@@ -450,7 +451,7 @@
                 if(self.selected_type === null || self.selected_type === name) {
                     series[0].data.push({
                         name: name,
-                        color: color,
+                        color: PIE_COLORS[parseInt(index)-1],
                         y: pie_piece_points
                     });
                 }

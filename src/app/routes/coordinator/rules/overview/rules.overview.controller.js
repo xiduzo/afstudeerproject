@@ -28,7 +28,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.addRule = addRule;
         self.deleteRule = deleteRule;
-        self.typeFilter = typeFilter;
         self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,12 +36,6 @@
         self.user = Global.getUser();
         self.access = Global.getAccess();
         self.rules = [];
-        self.type_filters = {
-            attitude: true,
-            functioning: true,
-            knowledge: true,
-            justification: true
-        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Services
@@ -110,6 +103,24 @@
         }
 
         function deleteRule(rule) {
+            if(Global.getLocalSettings().enabled_confirmation) {
+                Notifications.confirmation(
+                    'Are you sure you want to delete this rule?',
+                    'Please consider your answer, this action can not be undone.',
+                    'Delete rule',
+                    event
+                )
+                .then(function() {
+                    removeRuleFromBackend(rule);
+                }, function() {
+                    // No
+                });
+            } else {
+                removeRuleFromBackend(rule);
+            }
+        }
+
+        function removeRuleFromBackend(rule) {
             Rules.deleteRule(rule.id)
             .then(function(response) {
                 self.rules.splice(_.indexOf(self.rules, rule), 1);
@@ -120,21 +131,5 @@
             });
         }
 
-        function typeFilter() {
-            return _.map(self.rules, function(rule) {
-                if(rule.rule_type === 1 && self.type_filters.attitude) {
-                    return rule;
-                }
-                if(rule.rule_type === 2 && self.type_filters.functioning) {
-                    return rule;
-                }
-                if(rule.rule_type === 3 && self.type_filters.knowledge) {
-                    return rule;
-                }
-                if(rule.rule_type === 4 && self.type_filters.justification) {
-                    return rule;
-                }
-            });
-        }
     }
 }());

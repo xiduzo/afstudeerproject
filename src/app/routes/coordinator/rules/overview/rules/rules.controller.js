@@ -26,9 +26,9 @@
         self.title = title;
         self.about = about;
         self.formInput = {
-            rule_type: 1,
+            rule_type: undefined,
             rule: undefined,
-            importance: 50
+            importance: undefined
         };
 
         self.types = [

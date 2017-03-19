@@ -51,7 +51,7 @@
                     Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
-                Global.setRouteTitle('Group settings', response.name);
+                Global.setRouteTitle('Group settings ' + response.name);
                 self.guild = response;
 
                 TrelloApi.Authenticate()

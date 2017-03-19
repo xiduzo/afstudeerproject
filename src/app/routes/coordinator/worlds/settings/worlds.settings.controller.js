@@ -15,6 +15,7 @@
         Global,
         Notifications,
         World,
+        localStorageService,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -45,29 +46,31 @@
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         World.getWorld($stateParams.worldUuid)
-            .then(function(response) {
-                if(response.status === 404) {
-                    Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
-                    $state.go('base.guilds.overview');
-                }
+          .then(function(response) {
+              if(response.status === 404) {
+                  Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
+                  $state.go('base.guilds.overview');
+              }
 
-                response.start = new Date(moment(response.start));
-                self.world = response;
+              Global.setRouteTitle('Class settings ' + response.name);
+              response.start = response.start ? new Date(moment(response.start)) : null;
+              self.world = response;
 
-                if(Global.getLocalSettings().enabled_hotkeys) {
-                    self.addHotkeys();
-                }
-                self.loading_page = false;
+              if(Global.getLocalSettings().enabled_hotkeys) {
+                  self.addHotkeys();
+              }
+              self.loading_page = false;
 
-            }, function() {
-                // Err
-            });
+          }, function() {
+              // Err
+          });
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteWorld(event) {
+          if(Global.getLocalSettings().enabled_confirmation) {
             Notifications.confirmation(
                 'Are you sure you want to delete this class?',
                 'Please consider your answer, this action can not be undone.',
@@ -75,16 +78,23 @@
                 event
             )
             .then(function() {
-                World.deleteWorld(self.world.id)
-                    .then(function(response) {
-                        Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
-                        $state.go('base.worlds.overview');
-                    }, function() {
-                        // Err
-                    });
+                removeWorldFromBackend();
             }, function() {
                 // No
             });
+          } else {
+            removeWorldFromBackend();
+          }
+        }
+
+        function removeWorldFromBackend(world) {
+          World.deleteWorld(self.world.id)
+          .then(function(response) {
+              Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
+              $state.go('base.worlds.overview');
+          }, function() {
+              // Err
+          });
         }
 
         function changeWorldName(event) {

@@ -23,6 +23,7 @@
         }
 
         Global.setRouteTitle('Profiel');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 
@@ -59,8 +60,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function patchLocalSettings() {
-            if(!self.local_settings.password_protection) {
+        function patchLocalSettings(ask_for_password) {
+            if(!self.local_settings.password_protection && ask_for_password) {
                 $mdDialog.show({
                     controller: 'passwordProtectionController',
                     controllerAs: 'passwordProtectionCtrl',
