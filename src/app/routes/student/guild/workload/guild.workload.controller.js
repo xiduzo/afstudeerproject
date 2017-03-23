@@ -61,6 +61,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
+            if(response.guilds.length < 1) {
+              self.loading_page = false;
+              return false;
+            }
             _.each(response.guilds, function(guildObject) {
                 self.loading_page = true;
                 var guild = guildObject.guild;

@@ -82,17 +82,16 @@
                 .then(function(response) {
                     if(response.uid) {
 
-                        // Only work with the information we need
-                        var logged_in_user = {
+                        var logged_in_user  = {
                             uid:               response.uid[0],
-                            hvastudentnumber:  response.hvastudentnumber[0],
+                            hvastudentnumber:  response.hvastudentnumber ? response.hvastudentnumber[0] : null,
                             email:             response.mail[0].toLowerCase(),
                             initials:          response.initials[0],
                             displayname:       response.displayname[0],
                             surname_prefix:    response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
                             surname:           response.sn[0],
                             gender:            response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-                            is_staff:          response.edupersonprimaryaffiliation[0] === 'student' ? false : true
+                            is_staff:          self.login_type === 'student' ? false : true
                         };
 
                         Account.checkForExistingUser(logged_in_user.uid)
@@ -125,9 +124,9 @@
                                     if(response) {
                                         logged_in_user.password = md5(self.login_form.password);
                                         if(!localStorageService.get('trello_user')) {
-                                            self.authenticateTrello(logged_in_user);
+                                            self.authenticateTrello(response);
                                         } else {
-                                            self.setUser(logged_in_user, self.login_form.remember);
+                                            self.setUser(response, self.login_form.remember);
                                         }
                                     }
                                 })
@@ -139,7 +138,7 @@
 
                     } else {
                       if(self.login_type === 'student') {
-                        self.login_type = 'lecturer';
+                        self.login_type = 'medewerker';
                         self.login();
                       } else {
                         Notifications.simpleToast(response.message);

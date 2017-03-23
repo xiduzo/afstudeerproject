@@ -14,7 +14,7 @@
             <span ng-if="accountDetailCtrl.user.is_superuser">Coordinator</span>
             <span ng-if="accountDetailCtrl.user.is_superuser && accountDetailCtrl.user.is_staff"> / </span>
             <span ng-if="accountDetailCtrl.user.is_staff">Docent</span>
-            <span ng-if="!accountDetailCtrl.user.is_superuser || !accountDetailCtrl.user.is_staff">Student</span>
+            <span ng-if="!accountDetailCtrl.user.is_superuser && !accountDetailCtrl.user.is_staff">Student</span>
           </span>
         </md-card-title-text>
       </md-card-title>
@@ -25,7 +25,7 @@
             <h2 class="md-headline text--color--grey">
               Algemene informatie
             </h2>
-            <md-list-item layout>
+            <md-list-item layout ng-if="accountDetailCtrl.user.student_number">
               <span flex=40> Studentnummer </span>
               <span class="text--color--grey">
                 {{ accountDetailCtrl.user.student_number }}

@@ -41,6 +41,7 @@
         self.guild = [];
         self.trello_boards = [];
         self.trello_board_lists = [];
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -60,18 +61,18 @@
                     .then(function(response){
                         self.trello_boards = response;
                     });
+                    if(self.guild.trello_board) {
+                        TrelloApi.Rest('GET', 'boards/' + self.guild.trello_board + '/lists')
+                        .then(function(response) {
+                            self.trello_board_lists = response;
+                            self.loading_page = false;
+                        }, function(error){
+                            console.log(error);
+                        });
+                    }
                 }, function(error){
                     console.log(error);
                 });
-
-                if(self.guild.trello_board) {
-                    TrelloApi.Rest('GET', 'boards/' + self.guild.trello_board + '/lists')
-                    .then(function(response) {
-                        self.trello_board_lists = response;
-                    }, function(error){
-                        console.log(error);
-                    });
-                }
 
             }, function() {
                 // Err

@@ -113,11 +113,11 @@
                     student_number:    user.hvastudentnumber,
                     email:             user.email,
                     initials:          user.initials,
-                    first_name:        user.first_name,
+                    first_name:        user.displayname,
                     surname_prefix:    user.surname_prefix,
                     surname:           user.surname,
                     gender:            user.gender,
-                    is_staff:          user.access
+                    is_staff:          user.is_staff
                 }
             })
             .then(function(response) {
