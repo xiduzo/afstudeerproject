@@ -38,12 +38,13 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.login_form = {
-            username: '',
-            password: '',
+            username: null,
+            password: null,
             remember: false,
         };
 
         self.login_type = 'student';
+        self.error = null;
 
         hotkeys.bindTo($scope)
         .add({
@@ -141,6 +142,7 @@
                         self.login_type = 'medewerker';
                         self.login();
                       } else {
+                        self.error = response.message;
                         Notifications.simpleToast(response.message);
                       }
                     }

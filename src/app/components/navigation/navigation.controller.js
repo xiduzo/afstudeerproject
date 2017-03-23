@@ -39,12 +39,12 @@
                 subgroup: 'coordinator',
                 access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
-                    // {
-                    //     name: 'Dashboard',
-                    //     icon: 'dashboard_dark',
-                    //     link_to: 'base.home.dashboards.coordinator',
-                    //     access_levels: [COORDINATOR_ACCESS_LEVEL],
-                    // },
+                    {
+                        name: 'Dashboard',
+                        icon: 'dashboard_dark',
+                        link_to: 'base.home.dashboards.coordinator',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
                     {
                         name: 'Classes',
                         icon: 'world_dark',
@@ -80,47 +80,31 @@
             },
             {
                 subgroup: 'student',
-                access_levels: [COORDINATOR_ACCESS_LEVEL, STUDENT_ACCESS_LEVEL],
+                access_levels: [STUDENT_ACCESS_LEVEL],
                 items: [
                     {
                         name: 'Dashboard',
                         icon: 'dashboard_dark',
                         link_to: 'base.home.dashboards.student',
-                        access_levels: [
-                            COORDINATOR_ACCESS_LEVEL,
-                            LECTURER_ACCESS_LEVEL,
-                            STUDENT_ACCESS_LEVEL
-                        ],
+                        access_levels: [STUDENT_ACCESS_LEVEL],
                     },
                     {
                         name: 'Workload',
                         icon: 'pie_dark',
                         link_to: 'base.guild.workload',
-                        access_levels: [
-                            COORDINATOR_ACCESS_LEVEL,
-                            LECTURER_ACCESS_LEVEL,
-                            STUDENT_ACCESS_LEVEL
-                        ],
+                        access_levels: [STUDENT_ACCESS_LEVEL],
                     },
                     {
                         name: 'Feedback',
                         icon: 'feedback_dark',
                         link_to: 'base.guild.rules',
-                        access_levels: [
-                            COORDINATOR_ACCESS_LEVEL,
-                            LECTURER_ACCESS_LEVEL,
-                            STUDENT_ACCESS_LEVEL
-                        ],
+                        access_levels: [STUDENT_ACCESS_LEVEL],
                     },
                     {
                         name: 'Activity log',
                         icon: 'list_dark',
                         link_to: 'base.guild.activity',
-                        access_levels: [
-                            COORDINATOR_ACCESS_LEVEL,
-                            LECTURER_ACCESS_LEVEL,
-                            STUDENT_ACCESS_LEVEL
-                        ],
+                        access_levels: [STUDENT_ACCESS_LEVEL],
                     },
                 ],
             },

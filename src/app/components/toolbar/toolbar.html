@@ -90,10 +90,24 @@
             </section>
         </section>
         <section layout layout-align="start center">
-            <md-menu-bar layout layout-align="start center">
-                <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
+            <md-menu-bar style="padding: 0;">
                 <md-menu>
-                    <md-button ng-click="$mdMenu.open()">
+                    <md-button ng-click="$mdMenu.open()" style="margin: 6px 0; padding: 0;">
+                        <img class="round" gravatar-size=36 gravatar-src-once="toolbarCtrl.user.email">
+                    </md-button>
+                    <md-menu-content class="main__toolbar__menu">
+                        <md-menu-item>
+                            <md-button layout href="https://nl.gravatar.com/" target="_BLANK">
+                                <md-icon md-menu-align-target md-svg-icon="refresh_dark" class="icon__helper"></md-icon>
+                                <p flex>Wijzig je afbeelding!</p>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+            <md-menu-bar layout layout-align="start center" style="padding: 0 20px 0 0;">
+                <md-menu>
+                    <md-button ng-click="$mdMenu.open()" style="margin: 6px 0; padding: 0;">
                         <strong layout-padding>
                             {{ toolbarCtrl.user | fullUserName }}
                         </strong>

@@ -8,6 +8,10 @@
             </section>
 
             <!-- User login -->
+            <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;">
+              {{ accountLoginCtrl.error }}
+            </section>
+
             <md-input-container>
                 <label>HvA-ID</label>
                 <input type="text" ng-model="accountLoginCtrl.login_form.username">
