@@ -74,9 +74,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
-            if(Global.getLocalSettings().password_protection && !self.active_password_promp) {
-              self.password_protection = true;
-              self.showPasswordPrompt();
+            if(_.findWhere(self.guilds, { id: self.selected_guild })) {
+                if(Global.getLocalSettings().password_protection && !self.active_password_promp && _.findWhere(self.guilds, { id: self.selected_guild }).rules.length >= 8) {
+                    self.password_protection = true;
+                    self.showPasswordPrompt();
+                }
             }
         });
 
@@ -119,7 +121,7 @@
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
                     } else {
-                        if(Global.getLocalSettings().password_protection && !self.active_password_promp) {
+                        if(Global.getLocalSettings().password_protection && !self.active_password_promp && guild.id === self.selected_guild) {
                           self.password_protection = true;
                           self.showPasswordPrompt();
                         }

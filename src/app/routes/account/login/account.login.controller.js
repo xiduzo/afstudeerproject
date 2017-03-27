@@ -70,6 +70,7 @@
                 });
             })
             .catch(function() {
+                self.error = 'Verifieer een trello account om door te kunnen gaan.';
                 Notifications.simpleToast('Authentication failed');
             });
         }

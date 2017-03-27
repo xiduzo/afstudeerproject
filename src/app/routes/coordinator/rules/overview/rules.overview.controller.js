@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cmd.base')
+        .module('cmd.home')
         .controller('RulesOverviewController', RulesOverviewController);
 
     /** @ngInject */

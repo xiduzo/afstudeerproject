@@ -31,7 +31,7 @@
         self.functions = {
             setUser: function(user) {
                 self.user = user;
-                self.functions.getAccessLevel(user, true);
+                self.functions.getAccessLevel(user);
             },
             getUser: function() {
                 return self.user;
@@ -45,7 +45,6 @@
             },
             notAllowed: function() {
                 Notifications.simpleToast('You are not allowed to view this page');
-                $state.go('base.home');
             },
             noConnection: function() {
                 Notifications.simpleToast('There seems to be a problem establishing a database connection');
@@ -70,20 +69,16 @@
 
                     if(user.is_superuser) {
                         self.access = 3;
+                        $state.go('base.home.dashboards.coordinator');
                     } else if(user.is_staff) {
                         self.access = 2;
+                        $state.go('base.home.dashboards.lecturer');
                     } else {
                         self.access = 1;
+                        $state.go('base.home.dashboards.student');
                     }
 
-                    // self.access = 1;
-
-                    if(set_user) {
-                        $state.go('base.home');
-                        $rootScope.$broadcast('new-user-set');
-                    } else {
-                      $rootScope.$broadcast('user-logged-out');
-                    }
+                    $rootScope.$broadcast('new-user-set');
 
                 });
             },
@@ -128,12 +123,10 @@
 
         $rootScope.$on('new-user-login', function(event, user) {
             self.functions.setUser(user);
-            self.functions.getAccessLevel(user, true);
         });
 
         if(localStorageService.get('user')) {
-            self.user = localStorageService.get('user');
-            self.functions.getAccessLevel(self.user, true);
+            self.functions.setUser(localStorageService.get('user'));
         }
 
         if(localStorageService.get('settings')) {

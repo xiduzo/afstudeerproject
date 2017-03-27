@@ -14,7 +14,6 @@
                 url: '/',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/home/home.html',
                         controller: 'HomeController',
                         controllerAs: 'homeCtrl'
                     }

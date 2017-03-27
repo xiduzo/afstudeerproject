@@ -8,8 +8,11 @@
             </section>
 
             <!-- User login -->
-            <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;">
-              {{ accountLoginCtrl.error }}
+            <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;" layout>
+              <md-icon md-svg-src="warning_dark" class="icon--color--red icon__helper" layout></md-icon>
+              <span flex>
+                {{ accountLoginCtrl.error }}
+              </span>
             </section>
 
             <md-input-container>

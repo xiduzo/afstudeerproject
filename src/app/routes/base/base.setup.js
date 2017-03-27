@@ -44,7 +44,7 @@
         // Set the global information on the rootScope
         $rootScope.Global = Global;
 
-        $rootScope.$on('$stateChangeError', function () { // eslint ignore:line
+        $rootScope.$on('$stateChangeError', function () {
             $log.error('Error while changing state', arguments);
         });
 
@@ -52,6 +52,7 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
+          console.log(toState);
             if($rootScope.Global.getAccess() < 1) {
               $state.go('base.account.login');
             }
