@@ -29,9 +29,9 @@
             Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('new-user-set', function() {
-            console.log(true);
+            self.user = Global.getUser();
             if(self.user.uid) {
-                self.routeUser(self.user);
+                // self.routeUser(self.user);
             }
         });
 
@@ -43,13 +43,13 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function routeUser(user) {
-          // if(user.is_superuser) {
-          //   $state.go('base.home.dashboards.coordinator');
-          // } else if(user.is_staff) {
-          //   $state.go('base.home.dashboards.lecturer');
-          // } else {
-          //   $state.go('base.home.dashboards.student');
-          // }
+        //   if(user.is_superuser) {
+        //     $state.go('base.home.dashboards.coordinator');
+        //   } else if(user.is_staff) {
+        //     $state.go('base.home.dashboards.lecturer');
+        //   } else {
+        //     $state.go('base.home.dashboards.student');
+        //   }
         }
 
     }

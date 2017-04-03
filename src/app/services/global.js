@@ -22,6 +22,7 @@
         self.active_page = '';
         self.selected_world = null;
         self.selected_guild = null;
+        self.toState = null;
         self.local_settings = {
             enabled_confirmation: true,
             enabled_hotkeys: true,
@@ -58,6 +59,9 @@
             getAcitvePage: function() {
                 return self.page;
             },
+            setToState: function(state) {
+                self.toState = state.name === "base.account.login" ? self.toState : state;
+            },
             getAccessLevel: function(user, set_user) {
                 Account.getAccessLevel(user.uid)
                 .then(function(response) {
@@ -76,6 +80,11 @@
                     } else {
                         self.access = 1;
                         $state.go('base.home.dashboards.student');
+                    }
+
+                    if(self.toState) {
+                        $state.go(self.toState.name);
+                        self.toState = null;
                     }
 
                     $rootScope.$broadcast('new-user-set');

@@ -49,7 +49,7 @@
           .then(function(response) {
               if(response.status === 404) {
                   Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
-                  $state.go('base.guilds.overview');
+                  $state.go('base.worlds.overview');
               }
 
               Global.setRouteTitle('Class settings ' + response.name);

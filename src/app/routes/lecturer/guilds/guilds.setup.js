@@ -27,7 +27,7 @@
             })
 
             .state('base.guilds.settings', {
-                url: '/:guildUuid/settings',
+                url: '/settings/:guildUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/settings/settings.html',
@@ -38,7 +38,7 @@
             })
 
             .state('base.guilds.progress', {
-                url: '/:guildUuid/progress',
+                url: '/progress/:guildUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/progress/progress.html',
@@ -49,7 +49,7 @@
             })
 
             .state('base.guilds.feedback', {
-                url: '/:guildUuid/feedback',
+                url: '/feedback/:guildUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/feedback/feedback.html',
