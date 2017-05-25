@@ -36,10 +36,13 @@
             Options
         </div>
         <md-input-container class="md-block">
-            <label>Search lecturer</label>
+            <label>Search lecturer by name</label>
             <input ng-model="search.$">
         </md-input-container>
 
+        <div class="md-subhead text--color--grey" style="margin-bottom: 0.5em;">
+          Search lecturer by access
+        </div>
         <md-radio-group ng-init="search.is_superuser = ''" ng-model="search.is_superuser" class="md-primary">
           <md-radio-button value="" selected>All</md-radio-button>
           <md-radio-button value="true"> Is coordinator </md-radio-button>

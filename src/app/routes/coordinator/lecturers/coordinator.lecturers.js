@@ -10,6 +10,7 @@
     $filter,
     Global,
     Account,
+    Notifications,
     LECTURER_ACCESS_LEVEL
   ) {
 
@@ -55,7 +56,7 @@
       function patchAccessLevel(user) {
         Account.patchUser(user).
         then(function(response) {
-          console.log(response);
+          Notifications.simpleToast(user.filter_name + ' is ' + (response.is_superuser ? 'a' : 'no') + ' coordinator ' + (response.is_superuser ? 'now' : ' anymore'));
         })
         .catch(function(error) {
           console.log(error);

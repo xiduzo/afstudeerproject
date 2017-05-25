@@ -168,10 +168,10 @@
                 }
             })
             .then(function(response) {
-                console.log(response);
+                return response.data;
             })
             .catch(function(error) {
-                console.log(error);
+                return error;
             });
         }
 
