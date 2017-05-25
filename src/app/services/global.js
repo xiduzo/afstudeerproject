@@ -82,12 +82,17 @@
                         $state.go('base.home.dashboards.student');
                     }
 
-                    if(self.toState) {
+                    localStorageService.set('access', self.access);
+
+                    setTimeout(function () {
+                      if(self.toState) {
                         $state.go(self.toState.name);
                         self.toState = null;
-                    }
-
-                    $rootScope.$broadcast('new-user-set');
+                      } else {
+                        $state.go('base.home');
+                      }
+                      $rootScope.$broadcast('new-user-set');
+                    }, 100);
 
                 });
             },
@@ -136,6 +141,10 @@
 
         if(localStorageService.get('user')) {
             self.functions.setUser(localStorageService.get('user'));
+        }
+
+        if(localStorageService.get('access')) {
+            self.access = localStorageService.get('access');
         }
 
         if(localStorageService.get('settings')) {

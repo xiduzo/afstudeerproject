@@ -47,28 +47,6 @@
                                                 <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
                                             </md-button>
                                             <md-menu-content width="4" >
-                                                <md-menu-item aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
-                                                    <md-button>
-                                                        <div layout="row">
-                                                            <md-icon
-                                                                md-menu-align-target
-                                                                md-svg-icon="timeline_dark">
-                                                            </md-icon>
-                                                            <p flex>Progress</p>
-                                                        </div>
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-item aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
-                                                    <md-button>
-                                                        <div layout="row">
-                                                            <md-icon
-                                                                md-menu-align-target
-                                                                md-svg-icon="feedback_dark">
-                                                            </md-icon>
-                                                            <p flex>Feedback</p>
-                                                        </div>
-                                                    </md-button>
-                                                </md-menu-item>
                                                 <md-menu-item aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.id})">
                                                     <md-button>
                                                         <div layout="row">
@@ -120,6 +98,23 @@
                                             </md-list-item>
                                         </md-list>
                                     </md-card-content>
+                                    <md-divider></md-divider>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                      <md-button layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
+                                        <md-icon
+                                          class="icon__helper"
+                                          md-svg-icon="timeline_dark">
+                                        </md-icon>
+                                        Progress
+                                      </md-button>
+                                      <md-button layout aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
+                                        <md-icon
+                                          class="icon__helper"
+                                          md-svg-icon="feedback_dark">
+                                        </md-icon>
+                                        Feedback
+                                      </md-button>
+                                    </md-card-actions>
                                 </md-card>
 
                             </div> <!-- End of guilds -->

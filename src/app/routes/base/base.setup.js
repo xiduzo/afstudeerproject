@@ -37,7 +37,7 @@
         $stateParams,
         Global
     ) {
-
+        var initialState = null;
         // Using underscore in html, how awsome
         $rootScope._ = _;
 
@@ -52,10 +52,12 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
-          console.log(toState);
+            if(!initialState) {
+              initialState = toState;
+              Global.setToState(toState);
+            }
             if($rootScope.Global.getAccess() < 1) {
                 $state.go('base.account.login');
-                Global.setToState(toState);
             }
             $rootScope.$previousState = !fromState.name ? {name: 'base.home', isRoot: true} : fromState;
         });

@@ -52,12 +52,11 @@
 
             guild = _.findWhere(self.guilds, {id: self.selected_guild});
 
-            if(guild) {
+            if(guild !== undefined && !guild.trello_not_configured) {
                 setTimeout(function () {
                     self.createChart(guild);
                 }, 100);
             }
-
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,6 +73,7 @@
 
                 if(!guild.trello_done_list || !guild.trello_board) {
                     guild.trello_not_configured = true;
+                    self.guilds.push(guild);
                 } else {
                     World.getWorld(guild.world.id)
                     .then(function(response) {
@@ -126,9 +126,7 @@
         .catch(function(error) {
             console.log(error);
         });
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-             Extra logic
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

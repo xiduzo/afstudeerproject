@@ -6,7 +6,6 @@
         headline="No group found."
         title="Wait for a lecturer to add you to a group.">
     </cmd-empty-state>
-
     <section layout-fill ng-repeat="guild in guildWorkloadCtrl.guilds" ng-if="guild.id === guildWorkloadCtrl.selected_guild">
         <cmd-empty-state ng-if="guild.no_trello_settings"
             icon="settings_dark"
@@ -38,18 +37,18 @@
                                   </md-tooltip>
                                 </section>
                                 <section flex=50 layout="column" layout-align="center center" ng-if="guild.previous_week">
-                                  <span class="md-display-2">
-                                    <md-icon class="icon--size--48" md-svg-src={{guild.insight_data.workload_percentage_icon}} ng-class="{
-                                      'icon--color--red': guild.insight_data.workload_percentage <= -5,
-                                      'icon--color--green': guild.insight_data.workload_percentage >= 5
-                                      }">
-                                    </md-icon>
-                                  </span>
+                                  <div class="md-display-2" layout ng-class="{
+                                    'text--color--red': guild.insight_data.workload_percentage <= -5,
+                                    'text--color--green': guild.insight_data.workload_percentage >= 5
+                                  }">
+                                    <span ng-if="guild.insight_data.workload_percentage > 0">+</span>
+                                    {{ guild.insight_data.workload_percentage | number : 1 }}%
+                                  </div>
                                   <span layout>
-                                    {{ guild.insight_data.workload_percentage | number : 0 }}%
+                                    T.o.v. Vorrige week
                                   </span>
                                   <md-tooltip>
-                                      T.o.v.: {{ guild.previous_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.previous_week.end  | momentDate : 'DD/MM/YYYY' }}
+                                      Periode: {{ guild.previous_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.previous_week.end  | momentDate : 'DD/MM/YYYY' }}
                                   </md-tooltip>
                                 </section>
                                 <section flex=50 layout="column" layout-align="center center" ng-if="!guild.previous_week">

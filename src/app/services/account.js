@@ -30,6 +30,7 @@
         service.createUser = createUser;
         service.getLecturers = getLecturers;
         service.getStudents = getStudents;
+        service.patchUser = patchUser;
 
         return service;
 
@@ -110,14 +111,15 @@
                 method: "POST",
                 data: {
                     uid:               user.uid,
-                    student_number:    user.hvastudentnumber,
+                    student_number:    user.student_number,
                     email:             user.email,
                     initials:          user.initials,
-                    first_name:        user.displayname,
+                    first_name:        user.first_name,
                     surname_prefix:    user.surname_prefix,
                     surname:           user.surname,
                     gender:            user.gender,
-                    is_staff:          user.is_staff
+                    is_staff:          user.is_staff,
+                    is_superuser:      user.is_superuser
                 }
             })
             .then(function(response) {
@@ -154,6 +156,22 @@
                 return response.data;
             }, function(error) {
                 return error;
+            });
+        }
+
+        function patchUser(user) {
+            return $http({
+                url: REST_API_URL + 'user/users/' + user.id + '/',
+                method: "PATCH",
+                data: {
+                    is_superuser: user.is_superuser
+                }
+            })
+            .then(function(response) {
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
             });
         }
 

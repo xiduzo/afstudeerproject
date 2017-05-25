@@ -13,7 +13,8 @@
         Global,
         Account,
         World,
-        Guild
+        Guild,
+        localStorageService
     ) {
 
         var self = this;
@@ -71,6 +72,17 @@
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function getWorldsAndGuilds() {
+            // First access the users local storage to get the worlds
+            if(localStorageService.get('worlds')) {
+                self.worlds = [];
+                _.each(localStorageService.get('worlds'), function(world) {
+                    self.worlds.push({id: world.id, name: world.name});
+                });
+                if(self.worlds.length >= 1) {
+                    self.selected_world = _.first(self.worlds);
+                }
+                Global.setSelectedWorld(self.selected_world.id);
+            }
             World.getWorldsOfGamemaster(self.user.id)
             .then(function(response) {
                 self.worlds = [];
@@ -83,11 +95,25 @@
                     self.selected_world = _.first(self.worlds);
                 }
                 Global.setSelectedWorld(self.selected_world.id);
+
+                localStorageService.set('worlds', self.worlds);
             })
             .catch(function() {
 
             });
 
+            // First access the users local storage to get the guilds
+            if(localStorageService.get('guilds')) {
+                self.guilds = [];
+                _.each(localStorageService.get('guilds'), function(guild) {
+                    self.guilds.push({id: guild.id, name: guild.name});
+                });
+
+                if(self.guilds.length >= 1) {
+                    self.selected_guild = _.first(self.guilds);
+                }
+                Global.setSelectedGuild(self.selected_guild.id);
+            }
             Guild.getUserGuilds(self.user.id)
             .then(function(response) {
                 self.guilds = [];
@@ -100,6 +126,8 @@
                     self.selected_guild = _.first(self.guilds);
                 }
                 Global.setSelectedGuild(self.selected_guild.id);
+
+                localStorageService.set('guilds', self.guilds);
             })
             .catch(function() {
 

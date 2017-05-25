@@ -59,6 +59,7 @@
             // Coordinator
             'cmd.worlds',
             'cmd.rules',
+            'cmd.lecturers',
 
             // Research
             'cmd.research',

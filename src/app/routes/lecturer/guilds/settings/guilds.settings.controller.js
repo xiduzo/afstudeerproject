@@ -69,6 +69,8 @@
                         }, function(error){
                             console.log(error);
                         });
+                    } else {
+                      self.loading_page = false;
                     }
                 }, function(error){
                     console.log(error);

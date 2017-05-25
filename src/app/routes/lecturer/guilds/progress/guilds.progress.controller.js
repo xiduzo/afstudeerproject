@@ -114,7 +114,7 @@
                 .then(function(response) {
                     self.board.name = response.name;
 
-                    TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members')
+                    TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members/normal')
                     .then(function(response) {
                         _.each(response, function(user, index) {
                             self.board.members.push({
@@ -138,6 +138,7 @@
                                     _.each(card.idMembers, function(member_id) {
                                         graph_data.total_cards++;
                                         var member = _.findWhere(self.board.members, {id: member_id});
+                                        if(!member) { return false; }
                                         member.cards.push(card);
                                         card.members.push(member);
                                     });

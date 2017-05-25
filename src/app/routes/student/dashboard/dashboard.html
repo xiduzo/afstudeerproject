@@ -7,6 +7,11 @@
 </cmd-empty-state>
 
 <section ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page" layout-fill>
+  <cmd-empty-state ng-if="guild.trello_not_configured"
+    icon="settings_dark"
+    headline="Trello not configured"
+    title="Wait for a lecturer to configure this group correctly.">
+  </cmd-empty-state>
   <md-content id="main__content" layout="column" layout-fill layout-padding ng-scrollbars>
     <!-- Top row information -->
     <section layout layout-wrap>

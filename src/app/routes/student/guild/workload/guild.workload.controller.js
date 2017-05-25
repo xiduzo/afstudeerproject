@@ -112,7 +112,7 @@
                 TrelloApi.Rest('GET', 'boards/' + guild.trello_board)
                 .then(function(response) {
 
-                    TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members')
+                    TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members/normal')
                     .then(function(response) {
 
                         guild.board = {
@@ -222,6 +222,7 @@
                                 if(card.idMembers.length >= 1) {
                                     _.each(card.idMembers, function(member_id) {
                                         var member = _.findWhere(guild.board.members, {id: member_id});
+                                        if(!member) { return false; }
                                         member.cards.push(card);
                                         card.members.push(member);
                                     });

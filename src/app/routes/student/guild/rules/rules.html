@@ -61,7 +61,7 @@
                         </md-card-header-text>
                       </md-card-header>
                       <md-card-content>
-                        <section ng-if="week.editable" layout class="rating">
+                        <section layout class="rating">
                           <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0), $event)"
                           ng-mouseover="new_rating = (rating === 1 ? 0 : 1)" ng-mouseleave="new_rating = rating">
                               <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 1"></md-icon>
@@ -83,7 +83,7 @@
                             <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 4"></md-icon>
                           </div>
                         </section>
-                        <section ng-if="!week.editable" layout>
+                        <!-- <section ng-if="!week.editable" layout>
                           <div ng-repeat="star in [1,2,3,4]">
                             <md-icon md-svg-src="star_dark" ng-class="{
                               'icon--color--grey': rating < star,
@@ -93,7 +93,7 @@
                           <md-tooltip>
                             Je kunt deze week niet meer bewerken
                           </md-tooltip>
-                        </section>
+                        </section> -->
                       </md-card-content>
                     </md-card>
                   </section>

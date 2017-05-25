@@ -57,6 +57,12 @@
                         link_to: 'base.rules.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
+                    {
+                        name: 'Lecturers',
+                        icon: 'person_dark',
+                        link_to: 'base.lecturers',
+                        access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    },
                 ],
             },
             {
