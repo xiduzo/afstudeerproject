@@ -34,15 +34,15 @@
       </span>
       <md-list>
         <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.members_data" ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
-        <span style="width: 24px; height: 24px; border-radius: 50%;"
+        <span layout layout-align="center center" style="min-width: 30px; max-width:30px; min-height: 30px; max-height: 30px; border-radius: 50%;"
           ng-style="{
           'background': member.color
         }" class="icon__helper">
+        <md-icon ng-if="member.selected" md-svg-src="done_dark" class="icon--color--white" style=""></md-icon>
         </span>
         <span flex>
           {{ member.name }}
         </span>
-        <md-icon ng-if="member.selected" md-svg-src="done_dark" class="icon--color--green"></md-icon>
         </md-list-item>
       </md-list>
     </section>

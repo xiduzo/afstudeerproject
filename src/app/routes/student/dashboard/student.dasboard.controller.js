@@ -32,6 +32,7 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.gotoCard = gotoCard;
+        self.gotoBoard = gotoBoard;
         self.buildGraphData = buildGraphData;
         self.createChart = createChart;
 
@@ -132,6 +133,10 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function gotoCard(card) {
             window.open(card.shortUrl);
+        }
+
+        function gotoBoard(board) {
+          window.open('http://trello.com/b/' + board);
         }
 
         function buildGraphData(guild) {

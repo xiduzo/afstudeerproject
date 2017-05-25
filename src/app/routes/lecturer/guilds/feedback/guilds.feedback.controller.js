@@ -115,7 +115,9 @@
             _.each(data.rules, function(rule) {
                 // Order the endorsements per user
                 _.each(rule.endorsements, function(endorsement) {
-                    _.findWhere(self.members_data, { id: endorsement.user}).endorsements.push(endorsement);
+                  var user = _.findWhere(self.members_data, { id: endorsement.user});
+                  if(!user) { return false }
+                    user.endorsements.push(endorsement);
                 });
             });
 
