@@ -52,9 +52,10 @@
         $rootScope.$stateParams = $stateParams;
 
         $rootScope.$on('$stateChangeSuccess', function ($event, toState, toParams, fromState) {
+            // Keep track of the state of the user after a refresh
             if(!initialState) {
               initialState = toState;
-              Global.setToState(toState);
+              Global.setToState(toState, toParams);
             }
             if($rootScope.Global.getAccess() < 1) {
                 $state.go('base.account.login');

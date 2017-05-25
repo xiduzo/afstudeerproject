@@ -80,24 +80,22 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function moveGamemaster(event, world, gamemaster) {
-            if(world.id === gamemaster.worldId) { return; }
+            if(world.id === gamemaster.worldId) { return false; }
 
             if((_.where(world.gamemasters, { id: gamemaster.id })).length >=2) {
                 // Remove duplicate gamemasters in world
                 World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
+                Notifications.simpleToast(gamemaster.first_name + ' was allready a lecturer of ' + world.name);
             } else {
-                World.patchGamemasterWorld(gamemaster.id, gamemaster.woldId, world)
+                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
+                World.addGamemasterToWorld(gamemaster.url, world.url)
                 .then(function(response) {
-                    if(response.status >= 400) {
-                        Global.statusCode(response);
-                        return;
-                    }
-
+                    if(response.status >= 400) { return Global.statusCode(response); }
                     gamemaster.worldId = world.id;
-                    Notifications.simpleToast(gamemaster.first_name + ' moved to ' + world.name);
+                    Notifications.simpleToast(gamemaster.first_name + ' added to ' + world.name);
                 }, function() {
-                    // Err patching gamemasters world
+                    // Err adding gamemaster to world
                 });
             }
         }
@@ -177,7 +175,8 @@
         }
 
         function removeGamemaster(gamemaster, world) {
-            World.removeGamemasterFromWorld(gamemaster.uid, world.uuid)
+          console.log(gamemaster, world);
+            World.removeGamemasterFromWorld(gamemaster.id, world.id)
             .then(function(response) {
                 Notifications.simpleToast(gamemaster.first_name + ' got removed from ' + world.name);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);

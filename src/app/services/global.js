@@ -23,6 +23,7 @@
         self.selected_world = null;
         self.selected_guild = null;
         self.toState = null;
+        self.toStateParams = null;
         self.local_settings = {
             enabled_confirmation: true,
             enabled_hotkeys: true,
@@ -59,8 +60,9 @@
             getAcitvePage: function() {
                 return self.page;
             },
-            setToState: function(state) {
+            setToState: function(state, params) {
                 self.toState = state.name === "base.account.login" ? self.toState : state;
+                self.toStateParams = state.name === "base.account.login" ? self.toStateParams : params;
             },
             getAccessLevel: function(user, set_user) {
                 Account.getAccessLevel(user.uid)
@@ -86,7 +88,11 @@
 
                     setTimeout(function () {
                       if(self.toState) {
-                        $state.go(self.toState.name);
+                          if(self.toStateParams) {
+                              $state.go(self.toState.name, self.toStateParams);
+                          } else {
+                              $state.go(self.toState.name);
+                          }
                         self.toState = null;
                       } else {
                         $state.go('base.home');
