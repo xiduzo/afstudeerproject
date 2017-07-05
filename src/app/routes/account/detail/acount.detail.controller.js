@@ -16,7 +16,6 @@
         Account,
         Notifications,
         localStorageService,
-        MOCK_DATA,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -57,16 +56,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        // _.each(MOCK_DATA, function(data, index) {
-        //     Account.createUser(data)
-        //     .then(function(response) {
-        //         console.log('user created');
-        //     })
-        //     .catch(function(error) {
-        //         console.log('something went wrong');
-        //     });
-        // });
-
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations

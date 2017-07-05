@@ -1,0 +1,46 @@
+<cmd-loading-page ng-if="studentsCtrl.loading_page"></cmd-loading-page>
+<section layout flex ng-if="!studentsCtrl.loading_page">
+  <md-content flex=80 layout-fill layout-padding ng-scrollbars md-whiteframe=1 id="main__content">
+    <md-card flex>
+      <md-toolbar>
+        <div class="md-toolbar-tools" flex>
+          <span flex=100>
+            Student
+          </span>
+        </div>
+      </md-toolbar>
+      <md-card-content>
+        <md-list>
+          <md-list-item ng-repeat="student in studentsCtrl.students | filter : search | orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="student.uid !== studentsCtrl.user.uid">
+            <span flex=10>
+              <img class="round" gravatar-size="50" gravatar-src="student.email">
+            </span>
+            <span flex="90">
+              {{ student.filter_name }}
+            </span>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </md-content>
+  <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
+    <section>
+        <div class="md-title text--color--grey">
+            Options
+        </div>
+        <md-input-container class="md-block">
+            <label>Search student by name</label>
+            <input ng-model="search.$">
+        </md-input-container>
+    </section>
+    <section layout="column">
+        <md-button layout flex class="success md-raised" ng-click="studentsCtrl.addStudents()">
+            <md-icon md-svg-src="add_light">
+            </md-icon>
+            <span flex>
+                New student(s)
+            </span>
+        </md-button>
+    </section>
+  </section>
+</section>

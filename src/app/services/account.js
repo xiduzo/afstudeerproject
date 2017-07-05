@@ -86,7 +86,7 @@
             if(remember) {
                 localStorageService.set('user', user);
             }
-            // Get the access level from the DB just to be sure no one will give himself access
+            // Get the access level from the DB just to be sure no one will give themselfs access
             $rootScope.$broadcast('new-user-login', user);
         }
 

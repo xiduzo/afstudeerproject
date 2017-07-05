@@ -60,6 +60,7 @@
             'cmd.worlds',
             'cmd.rules',
             'cmd.lecturers',
+            'cmd.students',
 
             // Research
             'cmd.research',
