@@ -43,7 +43,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function routeUser(user) {
           if(user.is_superuser) {
-            $state.go('base.home.dashboards.coordinator');
+            $state.go('base.worlds.overview');
           } else if(user.is_staff) {
             $state.go('base.home.dashboards.lecturer');
           } else {

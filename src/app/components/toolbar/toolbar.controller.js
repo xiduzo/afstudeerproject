@@ -41,9 +41,6 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        if(self.user.id) {
-            self.getWorldsAndGuilds();
-        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Broadcasts
@@ -102,18 +99,7 @@
 
             });
 
-            // First access the users local storage to get the guilds
-            if(localStorageService.get('guilds')) {
-                self.guilds = [];
-                _.each(localStorageService.get('guilds'), function(guild) {
-                    self.guilds.push({id: guild.id, name: guild.name});
-                });
-
-                if(self.guilds.length >= 1) {
-                    self.selected_guild = _.first(self.guilds);
-                }
-                Global.setSelectedGuild(self.selected_guild.id);
-            }
+            // Next lets get some guilds from the database
             Guild.getUserGuilds(self.user.id)
             .then(function(response) {
                 self.guilds = [];
@@ -126,8 +112,6 @@
                     self.selected_guild = _.first(self.guilds);
                 }
                 Global.setSelectedGuild(self.selected_guild.id);
-
-                localStorageService.set('guilds', self.guilds);
             })
             .catch(function() {
 

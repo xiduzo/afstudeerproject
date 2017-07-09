@@ -14,7 +14,7 @@
   </cmd-empty-state>
   <md-content id="main__content" layout="column" layout-fill layout-padding ng-scrollbars>
     <!-- Top row information -->
-    <section layout layout-wrap>
+    <section layout layout-wrap ng-if="!guild.ended">
       <section flex=25 layout>
         <md-card flex layout="column" layout-align="space-between">
           <md-card-content flex layout="column" layout-align="center center">
@@ -41,7 +41,7 @@
                 onvoltooide kaart<span ng-if="guild.trello_cards.length >= 2 || guild.trello_cards.length === 0">en</span>
               </span>
             </section>
-            <section flex=50 layout="column" layout-align="center center">
+            <section flex=50 layout="column" layout-align="center center" ng-if="guild.current_week">
               <span class="md-display-2">
                 {{ (guild.trello_cards | cardsDueThisWeek : guild.current_week).length }}
               </span>
@@ -53,7 +53,7 @@
               </md-tooltip>
             </section>
           </md-card-content>
-          <div class="indication__bar indication__bar--success" ng-class="{
+          <div ng-if="guild.current_week" class="indication__bar indication__bar--success" ng-class="{
             'indication__bar--error' : (guild.trello_cards | cardsDueThisWeek : guild.current_week).length * 100 / guild.trello_cards.length >= 60,
             'indication__bar--warning' : (guild.trello_cards | cardsDueThisWeek : guild.current_week).length * 100 / guild.trello_cards.length >= 33
           }"></div>
@@ -71,6 +71,33 @@
           <div class="indication__bar indication__bar--success" ng-class="{
             'indication__bar--error' : (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) <= 15,
             'indication__bar--warning' : (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) <= 35
+          }"></div>
+        </md-card>
+      </section>
+    </section>
+
+    <section layout layout-wrap ng-if="guild.ended">
+      <section flex=100 layout>
+        <md-card flex layout="column" layout-align="space-between">
+          <md-card-content layout flex>
+            <section flex=50 layout="column" layout-align="center center">
+              <span class="md-display-2">
+                {{ guild.trello_cards.length }}
+              </span>
+              <span layout>
+                onvoltooide kaart<span ng-if="guild.trello_cards.length >= 2 || guild.trello_cards.length === 0">en</span>
+              </span>
+            </section>
+            <section flex=50 layout="column" layout-align="center center">
+              <span class="md-display-2">
+              </span>
+              <span layout>
+              </span>
+            </section>
+          </md-card-content>
+          <div class="indication__bar indication__bar--success" ng-class="{
+            'indication__bar--error' : guild.trello_cards.length >= 10,
+            'indication__bar--warning' : guild.trello_cards.length >= 5
           }"></div>
         </md-card>
       </section>

@@ -39,12 +39,13 @@
                 subgroup: 'coordinator',
                 access_levels: [COORDINATOR_ACCESS_LEVEL],
                 items: [
-                    {
-                        name: 'Dashboard',
-                        icon: 'dashboard_dark',
-                        link_to: 'base.home.dashboards.coordinator',
-                        access_levels: [COORDINATOR_ACCESS_LEVEL],
-                    },
+                    // didnt delete route for when we think of something interesting to put there
+                    // {
+                    //     name: 'Dashboard',
+                    //     icon: 'dashboard_dark',
+                    //     link_to: 'base.home.dashboards.coordinator',
+                    //     access_levels: [COORDINATOR_ACCESS_LEVEL],
+                    // },
                     {
                         name: 'Classes',
                         icon: 'world_dark',

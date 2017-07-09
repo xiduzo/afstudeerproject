@@ -41,7 +41,7 @@
                                     'text--color--red': guild.insight_data.workload_percentage <= -5,
                                     'text--color--green': guild.insight_data.workload_percentage >= 5
                                   }">
-                                    <span ng-if="guild.insight_data.workload_percentage > 0">+</span>
+                                    <span ng-if="guild.insight_data.workload_percentage > -0.0001">+</span>
                                     {{ guild.insight_data.workload_percentage | number : 1 }}%
                                   </div>
                                   <span layout>
@@ -89,6 +89,9 @@
                                 </span>
                                 <md-tooltip md-delay="1500">
                                   {{ guild.current_week.end | hoursToGo }} uur om precies te zijn
+                                </md-tooltip>
+                                <md-tooltip md-delay="10000">
+                                  Nog maar {{ guild.current_week.end | secondsToGo }} seconde!
                                 </md-tooltip>
                               </section>
                             </md-card-content>

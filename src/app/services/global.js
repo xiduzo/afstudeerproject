@@ -75,7 +75,7 @@
 
                     if(user.is_superuser) {
                         self.access = 3;
-                        $state.go('base.home.dashboards.coordinator');
+                        $state.go('base.worlds.overview');
                     } else if(user.is_staff) {
                         self.access = 2;
                         $state.go('base.home.dashboards.lecturer');

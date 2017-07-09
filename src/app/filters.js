@@ -67,8 +67,17 @@
             };
         })
 
+        .filter('secondsToGo', function() {
+            return function(date) {
+              var end = moment(date);
+              var today = moment();
+              return Math.round(moment.duration(end - today).asSeconds() + 60 * 60 * 24); // Be sure to calculate the last day
+            };
+        })
+
         .filter('cardsDueThisWeek', function() {
             return function(cards, week) {
+            //   console.log(cards, week);
                 return _.filter(cards, function(card) {
                    if(card.due) {
                       if(moment(card.due).isBetween(moment(week.start), moment(week.end), 'day') ||

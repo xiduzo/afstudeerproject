@@ -1,3 +1,7 @@
+// TODO
+// 2 tabs indentation everywhere, i'm sloppy... sue me
+// xxx - Xiduzo
+
 (function () {
     'use strict';
 
@@ -35,6 +39,7 @@
         self.gotoBoard = gotoBoard;
         self.buildGraphData = buildGraphData;
         self.createChart = createChart;
+        self.getGuildData = getGuildData;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -49,84 +54,16 @@
              Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('guild-changed', function(event, guild) {
-            self.selected_guild = guild;
+          self.selected_guild = guild;
 
-            guild = _.findWhere(self.guilds, {id: self.selected_guild});
-
-            if(guild !== undefined && !guild.trello_not_configured) {
-                setTimeout(function () {
-                    self.createChart(guild);
-                }, 100);
-            }
+          if(guild !== undefined) {
+            self.getGuildData(guild);
+          }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
              Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.id)
-        .then(function(response) {
-            if(response.guilds.length < 1) {
-              self.loading_page = false;
-              return false;
-            }
-            _.each(response.guilds, function(guild) {
-                guild = guild.guild;
-
-                if(!guild.trello_done_list || !guild.trello_board) {
-                    guild.trello_not_configured = true;
-                    self.guilds.push(guild);
-                } else {
-                    World.getWorld(guild.world.id)
-                    .then(function(response) {
-                        response.end = moment(response.start).add(response.course_duration, 'weeks').add(6, 'days');
-                        guild.world = response;
-                        self.guilds.push(guild);
-                        self.loading_page = false;
-
-                        self.buildGraphData(guild);
-
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-
-                    TrelloApi.Authenticate()
-                    .then(function() {
-                        TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
-                        .then(function(response) {
-
-                            // We don't care about cards that have been done allready
-                            var cards = _.filter(response, function(card) {
-                                return card.idList !== guild.trello_done_list;
-                            });
-
-                            // Only return cards where you are one of the members
-                            cards = _.filter(cards, function(card) {
-                                return  _.contains(card.idMembers, self.user.trello.id);
-                            });
-
-                            // Add the created_at on the card b/c trello won't give this to us
-                            _.each(cards, function(card) {
-                                card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
-                            });
-
-                            guild.trello_cards = cards;
-
-                        })
-                        .catch(function(error) {
-                            console.log(error);
-                        });
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                }
-
-            });
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
@@ -137,6 +74,82 @@
 
         function gotoBoard(board) {
           window.open('http://trello.com/b/' + board);
+        }
+
+        function getGuildData(guild) {
+          self.loading_page = true;
+          if(_.findWhere(self.guilds, {id: guild})) {
+            // TODO
+            // Show this guild without building the data again
+            setTimeout(function () {
+              self.buildGraphData(_.findWhere(self.guilds, {id: guild}));
+            }, 100);
+            self.loading_page = false;
+            return false;
+          }
+
+          Guild.getGuild(guild)
+          .then(function(response) {
+            guild = response;
+            if(!guild.trello_done_list || !guild.trello_board) {
+              guild.trello_not_configured = true;
+              self.loading_page = false;
+              self.guilds.push(guild);
+            } else {
+              World.getWorld(guild.world.id)
+              .then(function(response) {
+                response.end = moment(response.start).add(response.course_duration, 'weeks').add(6, 'days');
+                guild.world = response;
+                if(moment().isAfter(moment(guild.world.start).add(guild.world.course_duration,'weeks').add(6, 'days'), 'day')) {
+                  guild.ended = true;
+                }
+                self.guilds.push(guild);
+                self.loading_page = false;
+
+                setTimeout(function () {
+                  self.buildGraphData(guild);
+                }, 100);
+
+              })
+              .catch(function(error) {
+                  console.log(error);
+              });
+
+              TrelloApi.Authenticate()
+              .then(function() {
+                TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
+                .then(function(response) {
+
+                  // We don't care about cards that have been done allready
+                  var cards = _.filter(response, function(card) {
+                    return card.idList !== guild.trello_done_list;
+                  });
+
+                  // Only return cards where you are one of the members
+                  cards = _.filter(cards, function(card) {
+                    return  _.contains(card.idMembers, self.user.trello.id);
+                  });
+
+                  // Add the created_at on the card b/c trello won't give this to us
+                  _.each(cards, function(card) {
+                    card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
+                  });
+
+                  guild.trello_cards = cards;
+
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+              })
+              .catch(function(error) {
+                  console.log(error);
+              });
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          })
         }
 
         function buildGraphData(guild) {
@@ -180,6 +193,7 @@
             }
 
             guild.current_week = _.findWhere(guild.weeks, { current_week: true });
+            console.log(guild.ended, guild.current_week);
 
             _.each(guild.weeks, function(week) {
                 _.each(guild.members_data, function(member) {
