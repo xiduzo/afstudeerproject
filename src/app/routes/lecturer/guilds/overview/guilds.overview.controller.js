@@ -106,7 +106,6 @@
             }
         }
 
-
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
                         .title('Add a new group to ' + world.name)
