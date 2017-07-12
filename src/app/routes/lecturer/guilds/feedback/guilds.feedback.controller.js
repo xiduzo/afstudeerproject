@@ -40,6 +40,7 @@
         self.members_data = [];
         self.graphs_data = {
             line: [],
+            line_total: [],
             polar: [],
         };
         self.guild = null;
@@ -65,11 +66,12 @@
                     color: COLORS[index],
                     endorsements: [],
                     line_data: [],
+                    line_data_total: [],
                     polar_data: [
-                        { type: 1, points: 0 },
-                        { type: 2, points: 0 },
-                        { type: 3, points: 0 },
-                        { type: 4, points: 0 },
+                        { type: 1, points: 0, total_points: 0 },
+                        { type: 2, points: 0, total_points: 0 },
+                        { type: 3, points: 0, total_points: 0 },
+                        { type: 4, points: 0, total_points: 0 },
                     ],
                     selected: true,
                 });
@@ -129,6 +131,8 @@
                     }
                 });
 
+                var total_points = 0;
+
                 _.each(member.endorsements, function(endorsements, index) {
                     // Group the endorsements per week
                     endorsements = _.groupBy(endorsements, function(endorsement) {
@@ -150,19 +154,26 @@
                             }
 
                             points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                            total_points += type_group.rule.points;
 
                             // Also make sure the endorsement types are saved
                             // per type on the user for the polar chart
+                            // and the total points which could be gathered
                             _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                            _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).total_points += type_group.rule.points;
                         });
                     });
                     member.line_data.push(points);
+                    member.line_data_total.push(total_points);
                 });
             });
 
             _.each(self.members_data, function(data) {
                 _.each(data.line_data, function(points, index) {
                     self.graphs_data.line[index] += points;
+                });
+                _.each(data.line_data_total, function(points, index) {
+                    self.graphs_data.line_total[index] += points;
                 });
             });
 
@@ -191,15 +202,25 @@
                     visible: member.selected,
                     name: member.name,
                     data: member.line_data,
-                    color: member.color
+                    color: member.color,
+                    yAxis: 0
+                });
+
+                self.graphs_data.line.push({
+                    visible: member.selected,
+                    name: member.name,
+                    data: member.line_data_total,
+                    color: Highcharts.Color(member.color).setOpacity(0.1).get(),
+                    yAxis: 1,
+                    dashStyle: 'shortdot',
                 });
 
                 member.polar_data =_.map(member.polar_data, function(data) {
-                    return data.points;
+                    return (data.points * 100 / data.total_points) || 0;
                 });
 
                 _.each(member.polar_data, function(data, index) {
-                    self.graphs_data.polar[0].data[index] += data;
+                    self.graphs_data.polar[0].data[index] += data || 0;
                 });
 
                 self.graphs_data.polar.push({
@@ -210,6 +231,8 @@
                 });
 
             });
+
+            console.log(self.graphs_data.line);
 
             self.graphs_data.polar[0].data = _.map(self.graphs_data.polar[0].data, function(polar_data) {
                 return polar_data / self.members_data.length;
@@ -233,14 +256,22 @@
                 xAxis: {
                     categories: self.horizontal_axis
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: 'Punten'
                     },
                     minorGridLineWidth: 0,
                     gridLineWidth: 1,
                     alternateGridColor: null,
-                },
+                },{
+                    title: {
+                        text: 'Totaal aantal punten'
+                    },
+                    minorGridLineWidth: 0,
+                    gridLineWidth: 1,
+                    alternateGridColor: null,
+                    opposite: true
+                }],
                 tooltip: {
                     shared: true,
                     pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
@@ -291,7 +322,7 @@
                 },
                 tooltip: {
                     shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br/>'
                 },
                 plotOptions: {
                     series: {
