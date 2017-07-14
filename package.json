@@ -1,5 +1,6 @@
 {
   "name": "CMD Athena",
+  "description": "A tool to create more insights in your students",
   "version": "0.9.0",
   "private": true,
   "dependencies": {
