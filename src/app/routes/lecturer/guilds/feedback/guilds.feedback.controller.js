@@ -154,7 +154,7 @@
                             }
 
                             points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
-                            total_points += type_group.rule.points;
+                            total_points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
 
                             // Also make sure the endorsement types are saved
                             // per type on the user for the polar chart
@@ -163,28 +163,54 @@
                             _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).total_points += type_group.rule.points;
                         });
                     });
-                    member.line_data.push(points);
+                    member.line_data.push({
+                        y: points,
+                        total: total_points,
+                    });
                     member.line_data_total.push(total_points);
                 });
             });
 
             _.each(self.members_data, function(data) {
                 _.each(data.line_data, function(points, index) {
-                    self.graphs_data.line[index] += points;
+                    if(points.y) {
+                        self.graphs_data.line[index] += points.y;
+                    }
                 });
                 _.each(data.line_data_total, function(points, index) {
-                    self.graphs_data.line_total[index] += points;
+                    if(points) {
+                        console.log(points);
+                        self.graphs_data.line_total[index] += points;
+                    }
                 });
             });
+
+            console.log(self.graphs_data.line_total);
 
             // Make sure the average is included in the graph as well
             self.graphs_data.line = [
                 {
                     name: 'Gemiddeld',
-                    data: _.map(self.graphs_data.line, function(line_data) {
-                        return line_data / self.members_data.length;
+                    data: _.map(self.graphs_data.line, function(line_data, index) {
+                        return {
+                            y: line_data / self.members_data.length,
+                            total: self.graphs_data.line_total[index] / self.members_data.length
+                        };
                     }),
                     color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+                    yAxis: 0
+                },
+                {
+                    name: 'Gemiddeld totaal',
+                    data: _.map(self.graphs_data.line_total, function(line_data, index) {
+                        // console.log(line_data, self.members_data.length);
+                        // return line_data / self.members_data.length;
+                    }),
+                    color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+                    yAxis: 1,
+                    dashStyle: 'shortdot',
+                    enableMouseTracking: false,
+                    showInLegend: false
                 }
             ];
 
@@ -210,9 +236,11 @@
                     visible: member.selected,
                     name: member.name,
                     data: member.line_data_total,
-                    color: Highcharts.Color(member.color).setOpacity(0.1).get(),
+                    color: Highcharts.Color(member.color).setOpacity(0.33).get(),
                     yAxis: 1,
                     dashStyle: 'shortdot',
+                    enableMouseTracking: false,
+                    showInLegend: false
                 });
 
                 member.polar_data =_.map(member.polar_data, function(data) {
@@ -231,8 +259,6 @@
                 });
 
             });
-
-            console.log(self.graphs_data.line);
 
             self.graphs_data.polar[0].data = _.map(self.graphs_data.polar[0].data, function(polar_data) {
                 return polar_data / self.members_data.length;
@@ -274,7 +300,7 @@
                 }],
                 tooltip: {
                     shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> (totaal {point.total:,.0f}) <br/>'
                 },
                 plotOptions: {
                     spline: {
@@ -540,11 +566,22 @@
             member.selected = !member.selected;
 
             _.each(self.members_data, function(member, index) {
-                self.graphs_data.line[index + 1] = {
+                self.graphs_data.line[index + 2] = {
                     visible: member.selected,
                     name: member.name,
                     data: member.line_data,
-                    color: member.color
+                    color: member.color,
+                    yAxis: 0
+                };
+                self.graphs_data.line[index + 2 + self.members_data.length] = {
+                    visible: member.selected,
+                    name: member.name,
+                    data: member.line_data_total,
+                    color: Highcharts.Color(member.color).setOpacity(0.33).get(),
+                    yAxis: 1,
+                    dashStyle: 'shortdot',
+                    enableMouseTracking: false,
+                    showInLegend: false
                 };
 
                 self.graphs_data.polar[index + 1] = {
