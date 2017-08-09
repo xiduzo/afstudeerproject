@@ -288,13 +288,17 @@
                     },
                 },
                 series: graph_data.bar.series,
-                exporting: { enabled: Global.getAccess() > 1 ? true : false },
+                exporting: {
+                  filename: "Aantal kaarten per lid per week_" + self.guild.name + "_" + moment().format()
+                },
                 credits: { text: moment().format("DD/MM/YY HH:mm"), href: '' }
             });
 
             $('#cards_total').highcharts({
                 chart: { type: 'pie' },
-                exporting: { enabled: Global.getAccess() > 1 ? true : false },
+                exporting: {
+                  filename: "Aantal kaarten per lid totaal_" + self.guild.name + "_" + moment().format()
+                },
                 title: { text: self.guild.name +': aantal kaarten' },
                 subtitle: { text: 'Per lid totaal' },
                 tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },

@@ -321,6 +321,9 @@
                     },
                 },
                 series: self.graphs_data.line,
+                exporting: {
+                  filename: "Feedback punten_" +self.guild.name + "_" + moment().format()
+                },
                 credits: {
                     href: '',
                     text: moment().format('DD/MM/YY HH:mm'),
@@ -367,6 +370,9 @@
                     },
                 },
                 series: self.graphs_data.polar,
+                exporting: {
+                  filename: "Feedback focus_" + self.guild.name + "_" + moment().format()
+                },
                 credits: {
                     href: '',
                     text: moment().format('DD/MM/YY HH:mm'),
@@ -554,7 +560,10 @@
                     allowPointSelect: false,
                 },
                 series: series,
-                exporting: { enabled: false },
+                exporting: {
+                  enabled: false,
+                  filename: self.guild.name + "_" + moment()
+                },
                 credits: {
                     href: '',
                     text: ''
