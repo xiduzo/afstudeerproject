@@ -72,14 +72,23 @@
             });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function roundToTwo(num) {
+            return parseFloat(num.toFixed(2));
+        }
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function prepareGraphData(guild) {
             if(!guild.trello_board || !guild.trello_done_list) {
-                return Notifications.simpleToast('Please make sure the group has an trello board and done list set.');
+              guild.no_trello_settings = true;
+              return Notifications.simpleToast('Please make sure the group has an trello board and done list set.');
             }
             if(!guild.world.start || !guild.world.course_duration) {
-                return Notifications('Please make sure the class start and the course duration are set.');
+              guild.no_world_settings = true;
+              return Notifications('Please make sure the class start and the course duration are set.');
             }
 
             var weeks = [];
@@ -103,10 +112,33 @@
                         series: []
                     },
                     pie: {
-                        series: [{
-                            name: 'cards',
-                            data: []
-                        }]
+                        series: [
+                            {
+                                type: 'pie',
+                                name: 'Totaal',
+                                size: '93%',
+                                data: [],
+                                dataLabels: {
+                                    formatter: function () {
+                                        return this.y > 10 ? this.point.name : null;
+                                    },
+                                    color: '#ffffff',
+                                    distance: -50
+                                }
+                            },
+                            {
+                                type: 'pie',
+                                name: 'Aantal',
+                                data: [],
+                                size: '100%',
+                                innerSize: '95%',
+                                dataLabels: {
+                                    formatter: function () {
+                                        return null;
+                                    }
+                                }
+                            }
+                        ]
                     }
                 };
 
@@ -200,54 +232,44 @@
                                 graph_data.pie.series[0].data.push({
                                     name: member.name,
                                     color: member.color,
-                                    y: member.cards.length * 100 / graph_data.total_cards,
+                                    y: roundToTwo(member.cards.length * 100 / graph_data.total_cards),
                                     cards: member.cards.length
                                 });
-                                member.labels = [];
+
+                                graph_data.pie.series[1].data.push({
+                                    name: 'Voltooide kaarten',
+                                    color: Highcharts.Color(member.color).setOpacity(0.75).get(),
+                                    y: roundToTwo(_.filter(member.cards,function(card) { return card.done;}).length * 100 / graph_data.total_cards),
+                                    cards: _.filter(member.cards,function(card) { return card.done;}).length
+                                });
+
+                                graph_data.pie.series[1].data.push({
+                                    name: 'Onvoltooide kaarten',
+                                    color: Highcharts.Color(member.color).setOpacity(0.25).get(),
+                                    y: roundToTwo(_.filter(member.cards,function(card) { return !card.done;}).length * 100 / graph_data.total_cards),
+                                    cards: _.filter(member.cards,function(card) { return !card.done;}).length
+                                });
+
+                                member.focus = [];
 
                                 _.each(member.cards, function(card) {
-                                    if(card.done) {
-                                        _.each(card.labels, function(label) {
-                                            switch (label.color) {
-                                                case 'green':
-                                                    label.color = '#61BD4F';
-                                                    break;
-                                                case 'yellow':
-                                                    label.color = '#F2D600';
-                                                    break;
-                                                case 'orange':
-                                                    label.color = '#FFAB4A';
-                                                    break;
-                                                case 'red':
-                                                    label.color = '#EB5A46';
-                                                    break;
-                                                case 'purple':
-                                                    label.color = '#C377E0';
-                                                    break;
-                                                case 'blue':
-                                                    label.color = '#0079BF';
-                                                    break;
-                                                case 'sky':
-                                                    label.color = '#00C2E0';
-                                                    break;
-                                                case 'pink':
-                                                    label.color = '#FF80CE';
-                                                    break;
-                                                case 'black':
-                                                    label.color = '#4d4d4d';
-                                                    break;
-                                            }
-                                            if(_.findWhere(member.labels, { color: label.color})) {
-                                                _.findWhere(member.labels, { color: label.color}).amount_used++;
-                                            } else {
-                                                member.labels.push({
-                                                    color: label.color,
-                                                    amount_used: 1,
-                                                    name: label.name
-                                                });
-                                            }
-                                        });
-                                    }
+                                    _.each(card.labels, function(label) {
+                                        member.focus.push(label);
+                                    });
+                                });
+
+                                member.total_focus = 0;
+                                member.focus = _.groupBy(member.focus, function(focus) {
+                                    return focus.color;
+                                });
+
+                                member.focus = _.map(member.focus, function(focus) {
+                                    member.total_focus += focus.length;
+                                    return {
+                                        times: focus.length,
+                                        color: focus[0].color,
+                                        name: focus[0].name
+                                    };
                                 });
                             });
 
@@ -304,13 +326,9 @@
                 tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },
                 plotOptions: {
                     pie: {
-                        // Maybe for future use
-                        // allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            format: '<b>{point.name}</b>: {point.y:.1f} %'
-                        }
-                    },
+                        shadow: false,
+                        center: ['50%', '50%']
+                    }
                 },
                 series: graph_data.pie.series,
                 credits: { text: moment().format("DD/MM/YY HH:mm"), href: '' }
