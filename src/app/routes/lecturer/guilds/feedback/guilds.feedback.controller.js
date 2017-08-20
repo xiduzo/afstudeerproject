@@ -322,7 +322,7 @@
                 },
                 series: self.graphs_data.line,
                 exporting: {
-                  filename: "Feedback punten_" +self.guild.name + "_" + moment().format()
+                  filename: self.guild.name + "_" + moment("DD/MM")
                 },
                 credits: {
                     href: '',
@@ -371,7 +371,7 @@
                 },
                 series: self.graphs_data.polar,
                 exporting: {
-                  filename: "Feedback focus_" + self.guild.name + "_" + moment().format()
+                  filename: self.guild.name + "_" + moment()
                 },
                 credits: {
                     href: '',
