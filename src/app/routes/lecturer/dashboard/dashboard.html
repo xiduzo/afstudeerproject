@@ -35,7 +35,7 @@
                           </md-progress-linear>
                         </div>
                         <div flex=20 layout layout-align="center">
-                          {{ (member.endorsed_complete * (guild.rules.length * (guild.members.length - 1)) / 100) || 0 }} / {{ guild.rules.length * (guild.members.length - 1) }}
+                          {{ (member.endorsed_complete * (guild.rules.length * (guild.members.length - 1)) / 100) || 0 | number : 0 }} / {{ guild.rules.length * (guild.members.length - 1) }}
                         </div>
                       </md-list-item>
                     </md-list>
@@ -64,7 +64,7 @@
                             ({{ card.due | fromNow }})
                           </p>
                         </div>
-                        <md-button layout class="md-icon-button">
+                        <md-button layout class="md-icon-button" aria-label="{{ card.name }}">
                           <md-icon md-svg-src="external_link_dark" class="icon--color--grey">
                           </md-icon>
                         </md-button>
