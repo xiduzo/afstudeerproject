@@ -8,8 +8,8 @@
 
 .bullet__points {
     .point {
-        width: 45px;
-        height: 45px;
+        width: 35px;
+        height: 35px;
         position: fixed;
         z-index: 999999;
         border-radius: 50%;
@@ -17,26 +17,26 @@
 
         &--1 {
             display: none;
-            left: 440px;
-            top: 270px;
+            left: 680px;
+            top: 180px;
             background: #F44336;
         }
         &--2 {
             display: none;
-            left: 1830px;
-            top: 160px;
+            left: 690px;
+            top: 260px;
             background: #8BC34A;
         }
         &--3 {
             display: none;
-            left: 830px;
-            top: 650px;
+            left: 1790px;
+            top: 890px;
             background: #03A9F4;
         }
         &--4 {
             display: none;
             left: 1830px;
-            top: 160px;
+            top: 140px;
             background: #FFEB3B;
         }
         &--5 {
