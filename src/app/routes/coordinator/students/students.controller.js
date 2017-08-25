@@ -81,7 +81,7 @@
           _.each(students, function(student) {
             Account.createUser(student)
             .then(function(response) {
-              Notifications.simpleToast("Student " + student.uid + " added.");
+              Notifications.simpleToast("Student " + student.first_name + " added.");
               response.filter_name = $filter('fullUserName')(response);
               self.students.push(response)
             })

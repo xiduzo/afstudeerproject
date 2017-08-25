@@ -16,7 +16,6 @@
             'ngScrollbars',
             'dndLists',
             'angular-loading-bar',
-            'ngOnboarding',
             'cfp.hotkeys',
             'angular-md5',
             'trello',

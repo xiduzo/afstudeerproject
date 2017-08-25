@@ -16,7 +16,7 @@
       </md-toolbar>
       <md-card-content>
         <md-list>
-          <md-list-item ng-repeat="lecturer in coordinatorDashboardCtrl.lecturers| orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.uid !== coordinatorDashboardCtrl.user.uid">
+          <md-list-item ng-repeat="lecturer in coordinatorDashboardCtrl.lecturers| orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.email !== coordinatorDashboardCtrl.user.email">
             <span flex=10>
               <img class="round" gravatar-size="50" gravatar-src="lecturer.email">
             </span>

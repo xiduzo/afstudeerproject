@@ -15,7 +15,6 @@
         $locationProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
-        ngOnboardingDefaultsProvider,
         ScrollBarsProvider,
         cfpLoadingBarProvider,
         TrelloApiProvider,
@@ -267,14 +266,6 @@
             // blank:     a transparent PNG image (border added to HTML below for demonstration purposes)
             "default": "retro"
         };
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Onboarding
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        ngOnboardingDefaultsProvider.set({
-            closeButtonText: '',
-            overlayOpacity: 0.8,
-        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Loading bar provier

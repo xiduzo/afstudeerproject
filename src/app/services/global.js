@@ -65,7 +65,7 @@
                 self.toStateParams = state.name === "base.account.login" ? self.toStateParams : params;
             },
             getAccessLevel: function(user, set_user) {
-                Account.getAccessLevel(user.uid)
+                Account.getAccessLevel(user.email)
                 .then(function(response) {
                     if(response.status === -1) {
                         return self.functions.noConnection();

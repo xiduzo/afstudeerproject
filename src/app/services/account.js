@@ -67,12 +67,12 @@
             $state.go('base.account.login');
         }
 
-        function checkForExistingUser(uid) {
+        function checkForExistingUser(email) {
             return $http({
                 url: REST_API_URL + 'user/users/',
                 method: "GET",
                 params: {
-                    uid: uid
+                    email: email
                 }
             })
             .then(function(response) {
@@ -90,12 +90,12 @@
             $rootScope.$broadcast('new-user-login', user);
         }
 
-        function getAccessLevel(uid) {
+        function getAccessLevel(email) {
             return $http({
                 url: REST_API_URL + 'user/users/',
                 method: "GET",
                 params: {
-                    uid: uid
+                    email: email
                 }
             })
             .then(function(response) {
@@ -110,7 +110,6 @@
                 url: REST_API_URL + 'user/users/',
                 method: "POST",
                 data: {
-                    uid:               user.uid,
                     student_number:    user.student_number,
                     email:             user.email,
                     initials:          user.initials,

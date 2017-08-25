@@ -23,24 +23,6 @@
         self.user = $rootScope.Global.getUser();
         self.access = $rootScope.Global.getAccess();
 
-        if(false) {
-            webgazer.setGazeListener(function(data, elapsedTime) {
-                if (data === null) { return; }
-
-                $('#webgazer__point').css({
-                    top: data.y,
-                    left: data.x,
-                    display: 'block',
-                    position: 'absolute',
-                    width: '30px',
-                    height: '30px',
-                    background: 'red',
-                    zIndex: 999,
-                    borderRadius: '50%'
-                });
-            }).begin();
-        }
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

@@ -1,102 +1,88 @@
-<section flex layout="column">
+<cmd-loading-page ng-if="lecturerDashboardCtrl.loading_page"></cmd-loading-page>
 
-  <cmd-loading-page ng-if="lecturerDashboardCtrl.loading_page"></cmd-loading-page>
+<section layout flex ng-if="!studentsCtrl.loading_page">
+  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+    <section layout layout-wrap>
+      <section flex layout="column" layout-fill ng-repeat="world in lecturerDashboardCtrl.worlds" ng-if="world.id === lecturerDashboardCtrl.selected_world">
+        <cmd-empty-state ng-if="world.not_configured"
+        icon="world_dark"
+        headline="Not configured."
+        title="Class isn't configured correctly yet.">
+        </cmd-empty-state>
+        <div flex ng-if="!world.not_configured" layout-margin>
+          <div layout="row" layout-wrap>
+            <div flex=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
+              <md-card>
+                <md-toolbar>
+                  <md-card-title class="md-toolbar-tools">
+                    <md-card-title-text>
+                      {{ guild.name }}
+                    </md-card-title-text>
+                  </md-card-title>
+                </md-toolbar>
+                <md-tabs md-dynamic-height md-border-bottom>
+                  <md-tab label="feedback">
+                    <md-content>
+                      <md-list>
+                        <md-list-item ng-repeat="member in guild.members | orderBy: 'endorsed_complete'" layout>
+                          <div flex=50>
+                            {{ member.user | fullUserName }}
+                          </div>
+                          <div flex=30>
+                            <md-progress-linear md-mode="determinate" value="{{member.endorsed_complete | number : 1}}">
+                            </md-progress-linear>
+                          </div>
+                          <div flex=20 layout layout-align="center">
+                            {{ (member.endorsed_complete * (guild.rules.length * (guild.members.length - 1)) / 100) || 0 | number : 0 }} / {{ guild.rules.length * (guild.members.length - 1) }}
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </md-content>
+                    <md-divider></md-divider>
+                    <md-card-actions layout layout-align="end center">
+                      <md-button layout aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="feedback_dark"></md-icon>
+                        Bekijk feedback
+                      </md-button>
+                    </md-card-actions>
+                  </md-tab>
 
-  <section layout-fill ng-if="!lecturerDashboardCtrl.loading_page">
-    <section flex layout="column" layout-fill
-    ng-repeat="world in lecturerDashboardCtrl.worlds"
-    ng-if="world.id === lecturerDashboardCtrl.selected_world">
-      <cmd-empty-state ng-if="world.not_configured"
-      icon="world_dark"
-      headline="Not configured."
-      title="Class isn't configured correctly yet.">
-      </cmd-empty-state>
-      <div ng-scrollbars flex ng-if="!world.not_configured" layout-margin>
-        <div layout="row" layout-wrap>
-          <div flex=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
-            <md-card>
-              <md-toolbar>
-                <md-card-title class="md-toolbar-tools">
-                  <md-card-title-text>
-                    {{ guild.name }}
-                  </md-card-title-text>
-                </md-card-title>
-              </md-toolbar>
-              <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="feedback">
-                  <md-content>
-                    <md-list>
-                      <md-list-item ng-repeat="member in guild.members | orderBy: 'endorsed_complete'" layout>
-                        <div flex=50>
-                          {{ member.user | fullUserName }}
-                        </div>
-                        <div flex=30>
-                          <md-progress-linear md-mode="determinate" value="{{member.endorsed_complete | number : 1}}">
-                          </md-progress-linear>
-                        </div>
-                        <div flex=20 layout layout-align="center">
-                          {{ (member.endorsed_complete * (guild.rules.length * (guild.members.length - 1)) / 100) || 0 | number : 0 }} / {{ guild.rules.length * (guild.members.length - 1) }}
-                        </div>
-                      </md-list-item>
-                    </md-list>
-                  </md-content>
-                  <md-divider></md-divider>
-                  <md-card-actions layout layout-align="end center">
-                    <md-button layout aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
-                      <md-icon class="icon__helper" md-svg-icon="feedback_dark"></md-icon>
-                      Bekijk feedback
-                    </md-button>
-                  </md-card-actions>
-                </md-tab>
-
-                <md-tab label="overdue cards ({{ guild.cards_overdue.length }})">
-                  <md-content>
-                    <md-list>
-                      <md-list-item class="md-3-line" layout ng-repeat="card in guild.cards_overdue | orderBy: 'due'" ng-click="lecturerDashboardCtrl.gotoCard(card)">
-                        <div class="md-list-item-text" layout="column" flex>
-                          <h3>
-                            {{ card.name }}
-                          </h3>
-                          <h4>
-                            {{ card.due | momentDate : "dddd d MMMM @H:mm"}}
-                          </h4>
-                          <p>
-                            ({{ card.due | fromNow }})
-                          </p>
-                        </div>
-                        <md-button layout class="md-icon-button" aria-label="{{ card.name }}">
-                          <md-icon md-svg-src="external_link_dark" class="icon--color--grey">
-                          </md-icon>
-                        </md-button>
-                      </md-list-item>
-                    </md-list>
-                  </md-content>
-                  <md-divider></md-divider>
-                  <md-card-actions layout layout-align="end center">
-                    <md-button layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
-                      <md-icon class="icon__helper" md-svg-icon="timeline_dark"></md-icon>
-                      Bekijk progress
-                    </md-button>
-                  </md-card-actions>
-                </md-tab>
-              </md-tabs>
-            </md-card>
+                  <md-tab label="overdue cards ({{ guild.cards_overdue.length }})">
+                    <md-content>
+                      <md-list>
+                        <md-list-item class="md-3-line" layout ng-repeat="card in guild.cards_overdue | orderBy: 'due'" ng-click="lecturerDashboardCtrl.gotoCard(card)">
+                          <div class="md-list-item-text" layout="column" flex>
+                            <h3>
+                              {{ card.name }}
+                            </h3>
+                            <h4>
+                              {{ card.due | momentDate : "dddd d MMMM @H:mm"}}
+                            </h4>
+                            <p>
+                              ({{ card.due | fromNow }})
+                            </p>
+                          </div>
+                          <md-button layout class="md-icon-button" aria-label="{{ card.name }}">
+                            <md-icon md-svg-src="external_link_dark" class="icon--color--grey">
+                            </md-icon>
+                          </md-button>
+                        </md-list-item>
+                      </md-list>
+                    </md-content>
+                    <md-divider></md-divider>
+                    <md-card-actions layout layout-align="end center">
+                      <md-button layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="timeline_dark"></md-icon>
+                        Bekijk progress
+                      </md-button>
+                    </md-card-actions>
+                  </md-tab>
+                </md-tabs>
+              </md-card>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </section>
-    <!-- <div flex layout style="background: blue;">
-      <div ng-scrollbars flex>
-        <div layout="row" layout-wrap>
-          <md-list>
-            <md-list-item ng-repeat="x in [1,2,3,4,5,6,7,8,9,0,11,22,33,44,55,66,77,88,99,12,23,34,45,56,67,78,89,90]" layout-padding layout-margin>
-              {{ x }}
-            </md-list-item>
-          </md-list>
-        </div>
-      </div>
-    </div> -->
-
-  </section>
-
+  </md-content>
 </section>
