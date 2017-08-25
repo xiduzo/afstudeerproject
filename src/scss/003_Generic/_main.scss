@@ -1,3 +1,6 @@
+$mainBackground: #F9F9F9;
+$sidebarBackground: #EEEEEE;
+
 #main__content {
     background: $mainBackground;
 }
@@ -17,44 +20,44 @@
 
         &--1 {
             display: none;
-            left: 680px;
-            top: 180px;
+            left: 760px;
+            top: 420px;
             background: #F44336;
         }
         &--2 {
             display: none;
-            left: 690px;
-            top: 260px;
+            left: 1260px;
+            top: 240px;
             background: #8BC34A;
         }
         &--3 {
             display: none;
-            left: 1790px;
-            top: 890px;
+            left: 1090px;
+            top: 610px;
             background: #03A9F4;
         }
         &--4 {
             display: none;
-            left: 1830px;
-            top: 140px;
+            left: 1590px;
+            top: 920px;
             background: #FFEB3B;
         }
         &--5 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 890px;
+            top: 530px;
             background: #9C27B0;
         }
         &--6 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 1490px;
+            top: 560px;
             background: #795548;
         }
         &--7 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 590px;
+            top: 720px;
             background: #009688;
         }
         &--8 {

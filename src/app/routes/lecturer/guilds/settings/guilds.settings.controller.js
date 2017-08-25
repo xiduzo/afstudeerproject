@@ -67,6 +67,9 @@
                             self.trello_board_lists = response;
                             self.loading_page = false;
                         }, function(error){
+                            // Make sure to delete this setting in the backend
+                            // bacause the bord has been deleted
+                            self.loading_page = false;
                             console.log(error);
                         });
                     } else {
