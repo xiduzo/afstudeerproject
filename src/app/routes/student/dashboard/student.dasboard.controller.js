@@ -55,6 +55,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('guild-changed', function(event, guild) {
           self.selected_guild = guild;
+          console.log(self.guilds);
 
           if(guild !== undefined) {
             self.getGuildData(guild);

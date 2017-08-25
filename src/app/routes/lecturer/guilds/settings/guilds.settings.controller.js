@@ -23,7 +23,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Group settings');
+        Global.setRouteTitle('Team settings');
         Global.setRouteBackRoute('base.guilds.overview');
 
         var self = this;
@@ -49,10 +49,10 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(response.status === 404) {
-                    Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
+                    Notifications.simpleToast('Team ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
-                Global.setRouteTitle('Group settings ' + response.name);
+                Global.setRouteTitle('Team settings ' + response.name);
                 self.guild = response;
 
                 TrelloApi.Authenticate()
@@ -89,14 +89,14 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteGuild(event) {
             Notifications.confirmation(
-                'Are you sure you want to delete this group?',
+                'Are you sure you want to delete this team?',
                 'Please consider your answer, this action can not be undone.',
-                'Delete group',
+                'Delete team',
                 event
             ).then(function() {
                 Guild.deleteGuild(self.guild.id)
                 .then(function(response) {
-                    Notifications.simpleToast('Group ' + self.guild.name + ' has been deleted');
+                    Notifications.simpleToast('Team ' + self.guild.name + ' has been deleted');
                     $state.go('base.guilds.overview');
                 }, function() {
                     // Err deleting guild
@@ -108,20 +108,20 @@
 
         function changeGuildName(event) {
             Notifications.prompt(
-                'Change the group name of "' +self.guild.name+ '"',
-                'How would you like to name this group?',
-                'Group name',
+                'Change the team name of "' +self.guild.name+ '"',
+                'How would you like to name this team?',
+                'Team name',
                 event
             )
             .then(function(result) {
                 // Checks for thw world name
                 if(!result) {
-                    return Notifications.simpleToast('Please enter a group name');
+                    return Notifications.simpleToast('Please enter a team name');
                 }
 
                 Guild.patchGuildName(result, self.guild.id)
                 .then(function(response) {
-                    Notifications.simpleToast('Group name change to ' + result);
+                    Notifications.simpleToast('Team name change to ' + result);
                     self.guild.name = result;
                 }, function() {
                     // Err patch guild name
@@ -143,7 +143,7 @@
 
             Guild.patchGuildSettings(self.guild)
             .then(function(response) {
-                Notifications.simpleToast('Group settings saved.');
+                Notifications.simpleToast('Team settings saved.');
             })
             .catch(function(error) {
                 console.log(error);

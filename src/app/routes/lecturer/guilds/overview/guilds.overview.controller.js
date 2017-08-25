@@ -25,7 +25,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Groups overview');
+        Global.setRouteTitle('Teams overview');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -108,13 +108,13 @@
 
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
-                        .title('Add a new group to ' + world.name)
-                        .textContent('How would you like to name the new group?')
+                        .title('Add a new team to ' + world.name)
+                        .textContent('How would you like to name the new team?')
                         .clickOutsideToClose(true)
-                        .placeholder('New group name')
-                        .ariaLabel('New group name')
+                        .placeholder('New team name')
+                        .ariaLabel('New team name')
                         .targetEvent(event)
-                        .ok('Create new group')
+                        .ok('Create new team')
                         .cancel('Cancel');
 
             $mdDialog.show(dialog)
@@ -123,7 +123,7 @@
 
                     // Checks for the guild name
                     if(!result) {
-                        Notifications.simpleToast('Please enter a group name');
+                        Notifications.simpleToast('Please enter a team name');
                         return;
                     }
 
@@ -131,7 +131,7 @@
                         .then(function(response) {
                             response.members = [];
                             world.guilds.unshift(response);
-                            Notifications.simpleToast('Group ' + response.name + ' created');
+                            Notifications.simpleToast('Team ' + response.name + ' created');
                         }, function() {
 
                         });
@@ -209,7 +209,7 @@
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
-                description: 'Create new group',
+                description: 'Create new team',
                 callback: function(event) {
                     self.newGuildDialog(event, world);
                 }

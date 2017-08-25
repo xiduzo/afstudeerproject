@@ -21,7 +21,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Group feedback');
+        Global.setRouteTitle('Team feedback');
         Global.setRouteBackRoute('base.guilds.overview');
 
         var self = this;
@@ -57,7 +57,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getGuild($stateParams.guildUuid)
         .then(function(response) {
-            Global.setRouteTitle('Group feedback ' + response.name);
+            Global.setRouteTitle('Team feedback ' + response.name);
             self.guild = response;
             _.each(response.members, function(member, index) {
                 self.members_data.push({

@@ -2,15 +2,15 @@
 
 <cmd-empty-state ng-if="!studentDashboardCtrl.loading_page && studentDashboardCtrl.guilds.length < 1"
   icon="guild_dark"
-  headline="No group found"
-  title="Wait for a lecturer to add you to a group">
+  headline="No team found"
+  title="Wait for a lecturer to add you to a team">
 </cmd-empty-state>
 
 <section ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page" layout-fill>
   <cmd-empty-state ng-if="guild.trello_not_configured"
     icon="settings_dark"
     headline="Trello not configured"
-    title="Wait for a lecturer to configure this group correctly.">
+    title="Wait for a lecturer to configure this team correctly.">
   </cmd-empty-state>
   <md-content id="main__content" layout="column" layout-fill layout-padding ng-scrollbars>
     <!-- Top row information -->

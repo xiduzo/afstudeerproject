@@ -3,14 +3,14 @@
 <section ng-if="!guildActivityCtrl.loading_page" layout-fill>
   <cmd-empty-state ng-if="guildActivityCtrl.guilds.length < 1"
     icon="guild_dark"
-    headline="No group found"
-    title="Wait for a lecturer to add you to a group">
+    headline="No team found"
+    title="Wait for a lecturer to add you to a team">
   </cmd-empty-state>
   <section layout-fill ng-repeat="guild in guildActivityCtrl.guilds" ng-if="guild.id === guildActivityCtrl.selected_guild">
     <cmd-empty-state ng-if="guild.no_trello_board"
     icon="settings_dark"
     headline="Trello not configured"
-    title="Wait for a lecturer to configure this group correctly.">
+    title="Wait for a lecturer to configure this team correctly.">
     </cmd-empty-state>
     <section ng-if="!guild.no_trello_board" layout layout-fill>
       <md-content layout="column" layout-padding layout-margin flex=80 layout-fill md-whiteframe=1 id="main__content">

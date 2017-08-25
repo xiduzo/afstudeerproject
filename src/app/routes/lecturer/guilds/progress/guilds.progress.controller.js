@@ -23,7 +23,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Group progress');
+        Global.setRouteTitle('Team progress');
         Global.setRouteBackRoute('base.guilds.overview');
 
         var self = this;
@@ -53,10 +53,10 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(!response) {
-                    Notifications.simpleToast('Group ' + $stateParams.guildUuid + ' does not exist');
+                    Notifications.simpleToast('Team ' + $stateParams.guildUuid + ' does not exist');
                     $state.go('base.guilds.overview');
                 }
-                Global.setRouteTitle('Group progress ' + response.name);
+                Global.setRouteTitle('Team progress ' + response.name);
                 self.guild = response;
 
                 World.getWorld(response.world.id)
@@ -84,7 +84,7 @@
         function prepareGraphData(guild) {
             if(!guild.trello_board || !guild.trello_done_list) {
               guild.no_trello_settings = true;
-              return Notifications.simpleToast('Please make sure the group has an trello board and done list set.');
+              return Notifications.simpleToast('Please make sure the team has an trello board and done list set.');
             }
             if(!guild.world.start || !guild.world.course_duration) {
               guild.no_world_settings = true;
@@ -165,7 +165,7 @@
                                 card.done = card.idList === guild.trello_done_list ? true : false;
                                 card.members = [];
 
-                                // Adding the cards to the members of the group
+                                // Adding the cards to the members of the team
                                 if(card.idMembers.length >= 1) {
                                     _.each(card.idMembers, function(member_id) {
                                         graph_data.total_cards++;

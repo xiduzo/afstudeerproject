@@ -5,7 +5,7 @@
 
         .constant('DEBUG_ENABLED', true)
 
-        .constant('LDAP_LOGIN_API', 'https://oege.ie.hva.nl/~boera006/ldap/index.php')
+        .constant('LDAP_LOGIN_API', 'https://oege.ie.hva.nl/~vddxx/ldapper/index.php')
         // .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
         .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
 

@@ -17,7 +17,7 @@
                 <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
                     <md-icon md-svg-icon="guild_light"></md-icon>
                     <md-tooltip md-direction="left">
-                        Create new group
+                        Create new team
                     </md-tooltip>
                 </md-button>
             </section>
@@ -26,8 +26,8 @@
                     <cmd-empty-state ng-if="world.guilds.length < 1"
                     icon="guild_dark"
                     tooltip="Nope, the one in the corner"
-                    headline="No groups found."
-                    title="Add a new group by clicking on the shield.">
+                    headline="No teams found."
+                    title="Add a new team by clicking on the shield.">
                     </cmd-empty-state>
                     <div ng-scrollbars flex>
                         <div layout="row" layout-wrap>
@@ -77,7 +77,7 @@
                                             dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
                                             <md-list-item ng-if="guild.members.length < 1"
                                                  class="text--color--grey" layout layout-align="center center">
-                                                No students in this group yet.
+                                                No students in this team yet.
                                             </md-list-item>
                                             <md-list-item ng-repeat="player in guild.members"
                                                 ng-if="guild.members.length >= 1"
@@ -90,7 +90,7 @@
                                                 </span>
                                                 <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
                                                     <md-tooltip md-direction="bottom" md-delay="1000">
-                                                        Remove student from group
+                                                        Remove student from team
                                                     </md-tooltip>
                                                 </md-icon>
                                             </md-list-item>

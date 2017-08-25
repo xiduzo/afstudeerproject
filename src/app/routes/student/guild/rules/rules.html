@@ -3,8 +3,8 @@
 <section ng-if="!guildRulesCtrl.loading_page" layout-fill>
   <cmd-empty-state ng-if="guildRulesCtrl.guilds.length < 1"
     icon="guild_dark"
-    headline="No group found"
-    title="Wait for a lecturer to add you to a group">
+    headline="No team found"
+    title="Wait for a lecturer to add you to a team">
   </cmd-empty-state>
   <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
 
