@@ -1,4 +1,4 @@
-// TODO
+  // TODO
 // 2 tabs indentation everywhere, i'm sloppy... sue me
 // xxx - Xiduzo
 
@@ -64,6 +64,13 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
              Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        if(self.selected_guild !== undefined) {
+          self.getGuildData(self.selected_guild);
+        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
@@ -193,7 +200,6 @@
             }
 
             guild.current_week = _.findWhere(guild.weeks, { current_week: true });
-            console.log(guild.ended, guild.current_week);
 
             _.each(guild.weeks, function(week) {
                 _.each(guild.members_data, function(member) {

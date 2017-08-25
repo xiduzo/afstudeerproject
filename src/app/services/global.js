@@ -27,7 +27,7 @@
         self.local_settings = {
             enabled_confirmation: true,
             enabled_hotkeys: true,
-            password_protection: true
+            password_protection: false
         };
 
         self.functions = {

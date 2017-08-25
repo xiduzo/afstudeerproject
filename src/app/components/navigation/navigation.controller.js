@@ -83,7 +83,7 @@
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Groups',
+                        name: 'Teams',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],

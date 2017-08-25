@@ -40,7 +40,7 @@
         self.login_form = {
             username: null,
             password: null,
-            remember: false,
+            remember: true,
         };
 
         self.login_type = 'student';
