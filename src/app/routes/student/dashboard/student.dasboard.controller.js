@@ -48,7 +48,7 @@
         self.selected_guild = Global.getSelectedGuild();
         self.user.trello = localStorageService.get('trello_user');
         self.guilds = [];
-        self.loading_page = true;
+        self.loading_page = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
              Broadcasts
