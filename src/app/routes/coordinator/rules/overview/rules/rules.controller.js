@@ -9,7 +9,8 @@
     function addRuleController(
         $mdDialog,
         title,
-        about
+        about,
+        formInput
     ) {
 
         var self = this;
@@ -25,11 +26,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.title = title;
         self.about = about;
-        self.formInput = {
-            rule_type: undefined,
-            rule: undefined,
-            importance: undefined
-        };
+        self.formInput = formInput;
 
         self.types = [
             { type: 1, name: 'Houding', icon: 'work_dark', },

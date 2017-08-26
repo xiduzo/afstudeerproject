@@ -13,7 +13,7 @@
             | filter: {
                 rule: filters.free_search
             }
-            )">
+            ) | orderBy : ['rule_type', 'rule']">
                 <md-card layout-align="space-between">
                     <md-card-content layout="column" layout-align="space-between center">
                         <md-icon class="icon--size--36"
@@ -42,7 +42,7 @@
                         </section>
                     </md-card-content>
                     <md-card-actions layout="row" layout-align="center center">
-                        <md-button>
+                        <md-button ng-click="rulesOverviewCtrl.patchRule(rule)">
                             <strong>
                                 Edit
                             </strong>
