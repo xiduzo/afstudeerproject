@@ -2,7 +2,7 @@
 
 <section layout flex ng-if="!studentsCtrl.loading_page">
   <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
-    <section layout layout-wrap>
+    <section layout layout-wrap layout-fill>
       <section flex layout="column" layout-fill ng-repeat="world in lecturerDashboardCtrl.worlds" ng-if="world.id === lecturerDashboardCtrl.selected_world">
         <cmd-empty-state ng-if="world.not_configured"
         icon="world_dark"
@@ -10,8 +10,13 @@
         title="Class isn't configured correctly yet.">
         </cmd-empty-state>
         <div flex ng-if="!world.not_configured" layout-margin>
+          <cmd-empty-state ng-if="world.guilds.length < 1"
+          icon="guild_dark"
+          headline="No teams found."
+          title="Add a new team by clicking on the shield.">
+          </cmd-empty-state>
           <div layout="row" layout-wrap>
-            <div flex=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
+            <div  flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
               <md-card>
                 <md-toolbar>
                   <md-card-title class="md-toolbar-tools">
@@ -47,9 +52,15 @@
                     </md-card-actions>
                   </md-tab>
 
-                  <md-tab label="overdue cards ({{ guild.cards_overdue.length }})">
+                  <md-tab label="overdue cards ({{ guild.cards_overdue.length || 0 }})">
                     <md-content>
-                      <md-list>
+                      <md-list md-virtual-repeat-container style="height:208px">
+                        <md-list-item ng-if="guild.trello_not_configured" class="text--color--grey">
+                          Trello not configured
+                        </md-list-item>
+                        <md-list-item ng-if="!guild.trello_not_configured && guild.cards_overdue.length === 0" class="text--color--grey">
+                          No overdue cards
+                        </md-list-item>
                         <md-list-item class="md-3-line" layout ng-repeat="card in guild.cards_overdue | orderBy: 'due'" ng-click="lecturerDashboardCtrl.gotoCard(card)">
                           <div class="md-list-item-text" layout="column" flex>
                             <h3>
@@ -71,9 +82,13 @@
                     </md-content>
                     <md-divider></md-divider>
                     <md-card-actions layout layout-align="end center">
-                      <md-button layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
+                      <md-button ng-if="!guild.trello_not_configured" layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
                         <md-icon class="icon__helper" md-svg-icon="timeline_dark"></md-icon>
                         Bekijk progress
+                      </md-button>
+                      <md-button ng-if="guild.trello_not_configured" layout aria-label="Settings of {{ guild.name }}" ui-sref="base.guilds.settings({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="settings_dark"></md-icon>
+                        Team settings
                       </md-button>
                     </md-card-actions>
                   </md-tab>

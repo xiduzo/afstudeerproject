@@ -64,7 +64,7 @@
     function gotoCard(card) {
         window.open(card.shortUrl);
     }
-    
+
     function getWorld(world) {
       self.loading_page = true;
       World.getWorld(world)
@@ -99,24 +99,28 @@
 
           // Cards due
           if(!guild.trello_board || !guild.trello_done_list) {
-              guild.not_configured = true;
+              guild.trello_not_configured = true;
               return false;
           }
 
           guild.cards_overdue = [];
 
-          TrelloApi.Authenticate()
-          .then(function() {
+          if(!guild.trello_not_configured) {
+            TrelloApi.Authenticate()
+            .then(function() {
 
-            TrelloApi.Rest('GET', 'boards/' + guild.trello_board)
-            .then(function(response) {
-              TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards' )
+              TrelloApi.Rest('GET', 'boards/' + guild.trello_board)
               .then(function(response) {
-                console.log(response);
-                _.each(response, function(card) {
-                  if(card.due && moment(card.due).isBefore(moment())) {
-                    guild.cards_overdue.push(card);
-                  }
+                TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards' )
+                .then(function(response) {
+                  _.each(response, function(card) {
+                    if(card.due && moment(card.due).isBefore(moment())) {
+                      guild.cards_overdue.push(card);
+                    }
+                  });
+                })
+                .catch(function(error) {
+                  console.log(error);
                 });
               })
               .catch(function(error) {
@@ -126,10 +130,7 @@
             .catch(function(error) {
               console.log(error);
             });
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+          }
         });
       })
       .catch(function(error) {

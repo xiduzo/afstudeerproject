@@ -122,36 +122,38 @@
                   console.log(error);
               });
 
-              TrelloApi.Authenticate()
-              .then(function() {
-                TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
-                .then(function(response) {
+              if(!guild.trello_not_configured) {
+                TrelloApi.Authenticate()
+                .then(function() {
+                  TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
+                  .then(function(response) {
 
-                  // We don't care about cards that have been done allready
-                  var cards = _.filter(response, function(card) {
-                    return card.idList !== guild.trello_done_list;
+                    // We don't care about cards that have been done allready
+                    var cards = _.filter(response, function(card) {
+                      return card.idList !== guild.trello_done_list;
+                    });
+
+                    // Only return cards where you are one of the members
+                    cards = _.filter(cards, function(card) {
+                      return  _.contains(card.idMembers, self.user.trello.id);
+                    });
+
+                    // Add the created_at on the card b/c trello won't give this to us
+                    _.each(cards, function(card) {
+                      card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
+                    });
+
+                    guild.trello_cards = cards;
+
+                  })
+                  .catch(function(error) {
+                    console.log(error);
                   });
-
-                  // Only return cards where you are one of the members
-                  cards = _.filter(cards, function(card) {
-                    return  _.contains(card.idMembers, self.user.trello.id);
-                  });
-
-                  // Add the created_at on the card b/c trello won't give this to us
-                  _.each(cards, function(card) {
-                    card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
-                  });
-
-                  guild.trello_cards = cards;
-
                 })
                 .catch(function(error) {
-                    console.log(error);
-                });
-              })
-              .catch(function(error) {
                   console.log(error);
-              });
+                });
+              }
             }
           })
           .catch(function(error) {

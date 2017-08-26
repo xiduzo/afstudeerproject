@@ -21,6 +21,8 @@
                 headline: '@headline',
                 title: '@title',
                 subtitle: '@subtitle',
+                action: '&action',
+                hasAction: '=hasAction'
             }
         };
 

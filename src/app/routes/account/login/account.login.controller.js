@@ -66,7 +66,7 @@
                 .then(function(response) {
                     localStorageService.set('trello_user', response);
                     Notifications.simpleToast('Authentication succeeded');
-                    self.setUser(user);
+                    self.setUser(user, self.login_form.remember);
                 });
             })
             .catch(function() {
@@ -97,7 +97,7 @@
                             is_superuser:      false,
                         };
 
-                        Account.checkForExistingUser(logged_in_user.uid)
+                        Account.checkForExistingUser(logged_in_user.email)
                         .then(function(response) {
                             if(response.status === -1) {
                                 return Global.noConnection();

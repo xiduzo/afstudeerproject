@@ -4,7 +4,7 @@
   <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
       <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1" icon="world_dark" headline="No classes found." title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
       </cmd-empty-state>
-      <section layout layout-wrap ng-if="guildsOverviewCtrl.worlds.length > 0">
+      <section layout layout-fill layout-wrap ng-if="guildsOverviewCtrl.worlds.length > 0">
         <section flex layout="column" layout-fill ng-repeat="world in guildsOverviewCtrl.worlds" ng-if="world.id === guildsOverviewCtrl.selected_world">
           <section layout="row" layout-align="start stretch">
               <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
@@ -18,7 +18,8 @@
               <section flex layout="row" layout-margin>
                   <cmd-empty-state ng-if="world.guilds.length < 1"
                   icon="guild_dark"
-                  tooltip="Nope, the one in the corner"
+                  action="guildsOverviewCtrl.newGuildDialog($event, world)"
+                  has-action="true"
                   headline="No teams found."
                   title="Add a new team by clicking on the shield.">
                   </cmd-empty-state>
