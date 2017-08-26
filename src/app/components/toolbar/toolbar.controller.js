@@ -14,7 +14,10 @@
         Account,
         World,
         Guild,
-        localStorageService
+        localStorageService,
+        STUDENT_ACCESS_LEVEL,
+        LECTURER_ACCESS_LEVEL,
+        COORDINATOR_ACCESS_LEVEL
     ) {
 
         var self = this;
@@ -22,7 +25,8 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.getWorldsAndGuilds = getWorldsAndGuilds;
+        self.getWorlds = getWorlds;
+        self.getGuilds = getGuilds;
         self.toggleNavigation = toggleNavigation;
         self.changeState = changeState;
         self.changeWorld = changeWorld;
@@ -48,7 +52,14 @@
         $scope.$on('new-user-set', function() {
             self.user = Global.getUser();
             self.access = Global.getAccess();
-            self.getWorldsAndGuilds();
+
+            if(self.access === STUDENT_ACCESS_LEVEL) {
+                self.getGuilds();
+            }
+
+            if(self.access === LECTURER_ACCESS_LEVEL || self.access === COORDINATOR_ACCESS_LEVEL) {
+                self.getWorlds();
+            }
         });
 
         $scope.$on('user-logged-out', function() {
@@ -68,7 +79,7 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function getWorldsAndGuilds() {
+        function getWorlds() {
             // First access the users local storage to get the worlds
             if(localStorageService.get('worlds')) {
                 self.worlds = [];
@@ -80,6 +91,7 @@
                 }
                 Global.setSelectedWorld(self.selected_world.id);
             }
+            // Next lets get some worlds from the database
             World.getWorldsOfGamemaster(self.user.id)
             .then(function(response) {
                 self.worlds = [];
@@ -95,10 +107,23 @@
 
                 localStorageService.set('worlds', self.worlds);
             })
-            .catch(function() {
-
+            .catch(function(error) {
+                console.log(error);
             });
+        }
 
+        function getGuilds() {
+            // First access the users local storage to get the guilds
+            if(localStorageService.get('guilds')) {
+                self.worlds = [];
+                _.each(localStorageService.get('guilds'), function(guild) {
+                    self.guilds.push({id: guild.id, name: guild.name});
+                });
+                if(self.guilds.length >= 1) {
+                    self.selected_guild = _.first(self.guilds);
+                }
+                Global.setSelectedGuild(self.selected_guild.id);
+            }
             // Next lets get some guilds from the database
             Guild.getUserGuilds(self.user.id)
             .then(function(response) {
@@ -112,9 +137,11 @@
                     self.selected_guild = _.first(self.guilds);
                 }
                 Global.setSelectedGuild(self.selected_guild.id);
-            })
-            .catch(function() {
 
+                localStorageService.set('guilds', self.guilds);
+            })
+            .catch(function(error) {
+                console.log(error);
             });
         }
 

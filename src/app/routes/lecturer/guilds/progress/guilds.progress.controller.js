@@ -24,7 +24,7 @@
         }
 
         Global.setRouteTitle('Team progress');
-        Global.setRouteBackRoute('base.guilds.overview');
+        Global.setRouteBackRoute('base.home.dashboards.lecturer');
 
         var self = this;
 

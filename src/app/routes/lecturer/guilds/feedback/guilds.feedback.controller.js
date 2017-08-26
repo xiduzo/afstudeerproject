@@ -22,7 +22,7 @@
         }
 
         Global.setRouteTitle('Team feedback');
-        Global.setRouteBackRoute('base.guilds.overview');
+        Global.setRouteBackRoute('base.home.dashboards.lecturer');
 
         var self = this;
 

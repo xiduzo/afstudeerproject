@@ -58,7 +58,7 @@
                 TrelloApi.Authenticate()
                 .then(function(response) {
                     TrelloApi.Rest('GET', 'members/' + TRELLO_USER_ID + '/boards')
-                    .then(function(response){
+                    .then(function(response) {
                         self.trello_boards = response;
                     });
                     if(self.guild.trello_board) {
@@ -67,10 +67,18 @@
                             self.trello_board_lists = response;
                             self.loading_page = false;
                         }, function(error){
+                            self.loading_page = false;
+                            self.guild.trello_board = null;
+                            self.guild.trello_board_lists = null;
+                            Guild.patchGuildSettings(self.guild)
+                            .then(function(response) {
+                                Notifications.simpleToast('Trello board doesn\'t exist anymore, updated guild.');
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            });
                             // Make sure to delete this setting in the backend
                             // bacause the bord has been deleted
-                            self.loading_page = false;
-                            console.log(error);
                         });
                     } else {
                       self.loading_page = false;

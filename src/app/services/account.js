@@ -58,6 +58,7 @@
         function logout() {
             $rootScope.Global.clearUser();
             localStorageService.remove('user');
+            localStorageService.remove('access');
             $rootScope.$broadcast('user-logged-out');
 
             // Close the sidenav for the login page
