@@ -65,7 +65,7 @@
               self.loading_page = false;
               return false;
             }
-            
+
             _.each(response.guilds, function(guildObject) {
                 var guild = guildObject.guild;
                 self.loading_page = true;

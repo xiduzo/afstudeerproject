@@ -82,7 +82,7 @@
                   </section>
                   <section class="background--color--grey--1" layout layout-align="center center">
                     <md-card-actions>
-                      <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK">
+                      <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK" ng-if="activity.link">
                         <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
                         <md-tooltip md-delay="1500">
                           Bekijk op Trello
@@ -90,7 +90,6 @@
                       </md-button>
                     </md-card-actions>
                   </section>
-
                 </md-card>
               </md-list-item>
             </md-list>

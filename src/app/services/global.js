@@ -103,15 +103,19 @@
                 });
             },
             setSelectedGuild: function(guild) {
-                self.selected_guild = guild;
-                $rootScope.$broadcast('guild-changed', guild);
+              if(guild !== self.selected_guild) {
+                  self.selected_guild = guild;
+                  $rootScope.$broadcast('guild-changed', guild);
+              }
             },
             getSelectedGuild: function() {
                 return self.selected_guild;
             },
             setSelectedWorld: function(world) {
-                self.selected_world = world;
-                $rootScope.$broadcast('world-changed', world);
+              if(world !== self.selected_world) {
+                  self.selected_world = world;
+                  $rootScope.$broadcast('world-changed', world);
+              }
             },
             getSelectedWorld: function() {
                 return self.selected_world;

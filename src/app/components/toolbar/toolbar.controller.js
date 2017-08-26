@@ -115,7 +115,7 @@
         function getGuilds() {
             // First access the users local storage to get the guilds
             if(localStorageService.get('guilds')) {
-                self.worlds = [];
+                self.guilds = [];
                 _.each(localStorageService.get('guilds'), function(guild) {
                     self.guilds.push({id: guild.id, name: guild.name});
                 });

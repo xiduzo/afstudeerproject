@@ -231,9 +231,11 @@
                 _.map(member.endorsements, function(endorsements, type) {
                     member.polar_data.push({
                         type: type,
-                        y: _.reduce(endorsements, function(memo, endorsement) {
-                            return memo += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
-                        }, 0)
+                        points: _.reduce(endorsements, function(memo, endorsement) {
+                            memo.gained += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                            memo.total += endorsement.rule.points;
+                            return memo;
+                        }, {gained: 0, total: 0})
                     });
                 });
 
@@ -242,10 +244,10 @@
             // Build the average data
             var average_line_data = [];
             var average_polar_data = [
-                { type: 1, y: 0 },
-                { type: 2, y: 0 },
-                { type: 3, y: 0 },
-                { type: 4, y: 0 },
+                { type: 1, points: 0, total: 0, y: 0 },
+                { type: 2, points: 0, total: 0, y: 0 },
+                { type: 3, points: 0, total: 0, y: 0 },
+                { type: 4, points: 0, total: 0, y: 0 },
             ];
 
             _.each(guild.weeks, function(week) {
@@ -260,7 +262,8 @@
                     _.findWhere(average_line_data, { week: data.week }).y += data.y;
                 });
                 _.each(member.polar_data, function(data) {
-                    _.findWhere(average_polar_data, { type: Number(data.type)}).y += data.y;
+                    _.findWhere(average_polar_data, { type: Number(data.type)}).points += data.points.gained;
+                    _.findWhere(average_polar_data, { type: Number(data.type)}).total += data.points.total;
                 });
             });
 
@@ -269,7 +272,7 @@
             });
 
             _.each(average_polar_data, function(type) {
-                type.y = type.y / _.size(guild.members_data);
+                type.y = type.points * 100 / type.total;
             });
 
             guild.graphs_data.line.push({
@@ -363,7 +366,7 @@
                 },
                 tooltip: {
                     shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
+                    pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br/>'
                 },
                 plotOptions: {
                     series: {

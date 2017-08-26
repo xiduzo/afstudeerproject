@@ -110,13 +110,13 @@
                             <span flex=5>
                                 <!-- Color -->
                             </span>
-                            <span flex=25>
+                            <span flex=20>
                                 Groepslid
                             </span>
-                            <span flex=60>
+                            <span flex=70>
                                 Focus
                             </span>
-                            <span flex=10>
+                            <span flex=5>
                                 <!-- Actions -->
                             </span>
                         </div>
@@ -126,21 +126,22 @@
                             <span flex=5 layout layout-align="center center">
                                 <div style="width: 25px; height: 25px;" ng-style="{ 'background': member.color }"></div>
                             </span>
-                            <span flex=25>
+                            <span flex=20>
                                 {{ member.name }}
                             </span>
-                            <span flex=60 layout class="focuses">
+                            <span flex=70 layout class="focuses">
                               <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
-                                {{ focus.name || focus.color }} ({{ focus.times }})
+                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 25">
+                                    {{ focus.name || focus.color }}
+                                </span>
+                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 25">(</span>{{ focus.times }}<span ng-if="(focus.times * 100 / member.total_focus | roundUp5) > 15">)</span>
                                 <md-tooltip md-delay="500">
-                                  {{ focus.times }} kaart<span ng-if="focus.times >= 2">en</span>
-                                  <strong>
-                                    ({{ focus.times * 100 / member.total_focus | number : 0 }}%)
-                                  </strong>
+                                  <strong ng-if="(focus.times * 100 / member.total_focus | roundUp5) < 25">{{ focus.name || focus.color }}</strong>
+                                  {{ focus.times * 100 / member.total_focus | number : 0 }}%
                                 </md-tooltip>
                               </div>
                             </span>
-                            <span flex=10 layout layout-align="end">
+                            <span flex=5 layout layout-align="end">
                                 <md-button class="md-icon-button" aria-label="View statistics of {{member.name}}" ng-click="guildWorkloadCtrl.showMemberWorkload(member, guild.board.members, guild)">
                                     <md-icon md-svg-src="timeline_dark"></md-icon>
                                 </md-button>
