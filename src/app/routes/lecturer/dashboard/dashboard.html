@@ -13,7 +13,7 @@
           <cmd-empty-state ng-if="world.guilds.length < 1"
           icon="guild_dark"
           headline="No teams found."
-          title="Add a new team by clicking on the shield.">
+          title="Add a new team on the teams settings page.">
           </cmd-empty-state>
           <div layout="row" layout-wrap>
             <div  flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">

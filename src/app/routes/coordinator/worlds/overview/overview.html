@@ -13,7 +13,9 @@
     <cmd-empty-state ng-if="worldsOverviewCtrl.worlds.length < 1"
       icon="world_dark"
       headline="No classes found."
-      title="Add a new class by clicking on the icon in the corner.">
+      action="worldsOverviewCtrl.newWorldDialog($event)"
+      has-action="true"
+      title="Add a new class by clicking on the world.">
     </cmd-empty-state>
 
     <section ng-if="worldsOverviewCtrl.worlds.length >= 1" layout layout-fill>
