@@ -11,6 +11,7 @@
         Global,
         Rules,
         Notifications,
+        toastr,
         LECTURER_ACCESS_LEVEL
     ) {
 
@@ -18,7 +19,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Rules');
+        Global.setRouteTitle('Afspraken');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -75,7 +76,7 @@
                     !response.rule ||
                     !response.rule_type ||
                     !response.importance) {
-                    return Notifications.simpleToast('Fill in all the fields to add an rule');
+                    return toastr.warning('Vul alle velden in om een afspraak toe te voegen');
                 }
 
                 if(response.importance >= 95) {
@@ -95,7 +96,7 @@
                 // Add rule to the system
                 Rules.addRule(response)
                 .then(function(response) {
-                    Notifications.simpleToast('Rule \''+response.rule+'\' added');
+                    toastr.success('Afspraak \''+response.rule+'\' toegevoegd');
                     self.rules.push(response);
                 })
                 .catch(function(error) {
@@ -109,9 +110,9 @@
         function deleteRule(rule) {
             if(Global.getLocalSettings().enabled_confirmation) {
                 Notifications.confirmation(
-                    'Are you sure you want to delete this rule?',
-                    'Please consider your answer, this action can not be undone.',
-                    'Delete rule',
+                    'Weet je zeker dat je deze afspraak wilt verwijderen?',
+                    'Deze actie kan niet meer ongedaan worden.',
+                    'Verwijder afspraak',
                     event
                 )
                 .then(function() {
@@ -128,7 +129,7 @@
             Rules.deleteRule(rule.id)
             .then(function(response) {
                 self.rules.splice(_.indexOf(self.rules, rule), 1);
-                Notifications.simpleToast('Rule got removed');
+                toastr.success('Afspraak verwijderd');
             })
             .catch(function(error) {
                 console.log(error);
@@ -157,8 +158,8 @@
               targetEvent: event,
               clickOutsideToClose: true,
               locals: {
-                  title: 'Edit rule',
-                  about: 'edit rule',
+                  title: 'Wijzig afspraak',
+                  about: 'wijzig afspraak',
                   formInput: {
                       rule_type: rule.rule_type,
                       rule: rule.rule,
@@ -171,7 +172,7 @@
                   !response.rule ||
                   !response.rule_type ||
                   !response.importance) {
-                  return Notifications.simpleToast('Fill in all the fields to add an rule');
+                  return toastr.warning('Vul alle velden in om een afspraak toe te voegen');
               }
 
               if(response.importance >= 95) {
@@ -194,7 +195,7 @@
               // Add rule to the system
               Rules.patchRule(rule)
               .then(function(response) {
-                  Notifications.simpleToast('Rule \''+response.rule+'\' updated');
+                  toastr.success('Afspraak \''+response.rule+'\' gewijzigd');
               })
               .catch(function(error) {
                   console.log(error);

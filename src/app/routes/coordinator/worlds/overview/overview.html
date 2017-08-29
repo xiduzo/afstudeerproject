@@ -6,16 +6,16 @@
     <md-button class="md-fab icon__fab" ng-click="worldsOverviewCtrl.newWorldDialog($event)">
       <md-icon md-svg-icon="world_light"></md-icon>
       <md-tooltip md-direction="left">
-        Create new class
+        Maak nieuwe klas
       </md-tooltip>
     </md-button>
 
     <cmd-empty-state ng-if="worldsOverviewCtrl.worlds.length < 1"
       icon="world_dark"
-      headline="No classes found."
+      headline="Geen klassen gevonden"
       action="worldsOverviewCtrl.newWorldDialog($event)"
       has-action="true"
-      title="Add a new class by clicking on the world.">
+      title="Voeg een nieuwe klas toe door op de wereldbol te klikken">
     </cmd-empty-state>
 
     <section ng-if="worldsOverviewCtrl.worlds.length >= 1" layout layout-fill>
@@ -41,7 +41,7 @@
                                             md-menu-align-target
                                             md-svg-icon="settings_dark">
                                         </md-icon>
-                                        <p flex> Settings </p>
+                                        <p flex> Instellingen </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -52,7 +52,7 @@
                                             md-menu-align-target
                                             md-svg-icon="add_dark">
                                         </md-icon>
-                                        <p flex> Add lecturer </p>
+                                        <p flex> Docent toevoegen </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -63,7 +63,7 @@
                 <md-card-content>
                     <section ng-if="world.gamemasters.length < 1">
                         <span class="text--color--grey" layout layout-align="center">
-                            No lecturers in this class yet.
+                            Er zitten (nog) geen docenten in deze klas
                         </span>
                     </section>
                     <md-list ng-if="world.gamemasters.length >= 1"
@@ -79,7 +79,7 @@
                             </span>
                             <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
                                 <md-tooltip md-direction="bottom">
-                                    Remove lecturer from {{ world.name }}
+                                    Verwijder docent van {{ world.name }}
                                 </md-tooltip>
                             </md-icon>
                         </md-list-item>

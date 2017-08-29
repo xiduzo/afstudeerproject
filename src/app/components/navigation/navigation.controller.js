@@ -47,25 +47,25 @@
                     //     access_levels: [COORDINATOR_ACCESS_LEVEL],
                     // },
                     {
-                        name: 'Classes',
+                        name: 'Klassen',
                         icon: 'world_dark',
                         link_to: 'base.worlds.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Rules',
+                        name: 'Afspraken',
                         icon: 'rules_dark',
                         link_to: 'base.rules.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Lecturers',
+                        name: 'Docenten',
                         icon: 'person_dark',
                         link_to: 'base.lecturers',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Students',
+                        name: 'Studenten',
                         icon: 'person_dark',
                         link_to: 'base.students',
                         access_levels: [COORDINATOR_ACCESS_LEVEL],
@@ -83,7 +83,7 @@
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Team settings',
+                        name: 'Team',
                         icon: 'guild_dark',
                         link_to: 'base.guilds.overview',
                         access_levels: [COORDINATOR_ACCESS_LEVEL, LECTURER_ACCESS_LEVEL],

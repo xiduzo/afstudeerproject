@@ -37,7 +37,7 @@
             })
 
             .state('base.home.dashboards.lecturer', {
-                url: '/lecturer',
+                url: '/docent',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/dashboard/dashboard.html',

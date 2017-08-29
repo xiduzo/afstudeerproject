@@ -11,7 +11,7 @@
         $stateProvider
 
             .state('base.students', {
-                url: '/students',
+                url: '/studenten',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/students/students.html',

@@ -6,6 +6,7 @@ $sidebarBackground: #EEEEEE;
 }
 
 #sidebar__content {
+  overflow-y: scroll;
   background: $sidebarBackground;
 }
 

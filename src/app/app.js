@@ -9,6 +9,7 @@
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'ngCookies',
             'ngSanitize',
+            'ngAnimate',
             'ui.router',
             'ui.gravatar',
             'LocalStorageModule',
@@ -19,7 +20,7 @@
             'cfp.hotkeys',
             'angular-md5',
             'trello',
-            // 'angular-websocket',
+            'toastr',
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

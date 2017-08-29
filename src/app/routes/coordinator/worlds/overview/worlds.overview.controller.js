@@ -16,6 +16,7 @@
         Global,
         Notifications,
         World,
+        toastr,
         COORDINATOR_ACCESS_LEVEL
     ) {
 
@@ -23,7 +24,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Classes overview');
+        Global.setRouteTitle('Klassen overzicht');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -86,14 +87,14 @@
                 // Remove duplicate gamemasters in world
                 World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
-                Notifications.simpleToast(gamemaster.first_name + ' was allready a lecturer of ' + world.name);
+                toastr.info(gamemaster.first_name + ' was al een docent ' + world.name);
             } else {
                 World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 World.addGamemasterToWorld(gamemaster.url, world.url)
                 .then(function(response) {
                     if(response.status >= 400) { return Global.statusCode(response); }
                     gamemaster.worldId = world.id;
-                    Notifications.simpleToast(gamemaster.first_name + ' added to ' + world.name);
+                    toastr.success(gamemaster.first_name + ' toegevoegd aan ' + world.name);
                 }, function() {
                     // Err adding gamemaster to world
                 });
@@ -102,21 +103,21 @@
 
         function newWorldDialog(event) {
             Notifications.prompt(
-                'Add a new class',
-                'How would you like to name the class?',
-                'New class name',
+                'Nieuwe klas toevoegen',
+                'Wat word de naam van deze klas?',
+                'Naam nieuwe klas',
                 event
             )
             .then(function(result) {
                 // Checks for the world name
                 if(!result) {
-                    return Notifications.simpleToast('Please enter a name');
+                    return toastr.warning('Vul een naam in.');
                 }
 
                 World.addWorld(result)
                 .then(function(response) {
                     self.worlds.unshift(response);
-                    Notifications.simpleToast('Class ' + response.name + ' created');
+                    toastr.success('Klas ' + response.name + ' aangemaakt');
                 }, function() {
                     // Err creating world
                 });
@@ -142,9 +143,9 @@
                     targetEvent: event,
                     clickOutsideToClose: true,
                     locals: {
-                        title: 'Add lecturers to ' + world.name,
-                        subtitle: 'Please select the lecturers.',
-                        about: 'lecturers',
+                        title: 'Voeg docent toe aan ' + world.name,
+                        subtitle: 'Selecteer docenten.',
+                        about: 'docenten',
                         players: response,
                         guildUuid: world.uuid
                     }
@@ -161,7 +162,7 @@
                             }
                             user.worldId = world.id;
                             world.gamemasters.push(user);
-                            Notifications.simpleToast(user.first_name + ' added to ' + world.name);
+                            toastr.success(user.first_name + ' toegevoegd aan ' + world.name);
                         }, function() {
                             // Err adding gamemaster to world
                         });
@@ -178,7 +179,7 @@
           console.log(gamemaster, world);
             World.removeGamemasterFromWorld(gamemaster.id, world.id)
             .then(function(response) {
-                Notifications.simpleToast(gamemaster.first_name + ' got removed from ' + world.name);
+                toastr.success(gamemaster.first_name + ' is verwijderd van ' + world.name);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
             }, function() {
                 // Err remove gamemaster from world
@@ -189,7 +190,7 @@
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
-                description: 'Add new world',
+                description: 'Nieuwe klas',
                 callback: function(event) {
                     event.preventDefault();
                     self.newWorldDialog(event);

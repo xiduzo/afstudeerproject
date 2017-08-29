@@ -15,6 +15,7 @@
         Global,
         Notifications,
         World,
+        toastr,
         localStorageService,
         COORDINATOR_ACCESS_LEVEL
     ) {
@@ -23,7 +24,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Class settings');
+        Global.setRouteTitle('Klas instellingen');
         Global.setRouteBackRoute('base.worlds.overview');
 
         var self = this;
@@ -48,11 +49,11 @@
         World.getWorld($stateParams.worldUuid)
           .then(function(response) {
               if(response.status === 404) {
-                  Notifications.simpleToast('Class ' + $stateParams.worldUuid + ' does not exist');
+                  toastr.error('Klass ' + $stateParams.worldUuid + ' bestaad niet');
                   $state.go('base.worlds.overview');
               }
 
-              Global.setRouteTitle('Class settings ' + response.name);
+              Global.setRouteTitle('Klas instellingen ' + response.name);
               response.start = response.start ? new Date(moment(response.start)) : null;
               self.world = response;
 
@@ -72,9 +73,9 @@
         function deleteWorld(event) {
           if(Global.getLocalSettings().enabled_confirmation) {
             Notifications.confirmation(
-                'Are you sure you want to delete this class?',
-                'Please consider your answer, this action can not be undone.',
-                'Delete class',
+                'Weet je zeker dat je deze klas wilt verwijderen?',
+                'Deze actie kan niet meer ongedaan worden.',
+                'verwijder klas',
                 event
             )
             .then(function() {
@@ -90,7 +91,7 @@
         function removeWorldFromBackend(world) {
           World.deleteWorld(self.world.id)
           .then(function(response) {
-              Notifications.simpleToast('Class ' + self.world.name + ' has been deleted');
+              toastr.success('klas ' + self.world.name + ' is verwijderd');
               $state.go('base.worlds.overview');
           }, function() {
               // Err
@@ -99,20 +100,20 @@
 
         function changeWorldName(event) {
             Notifications.prompt(
-                'Change the class name of \'' +self.world.name+ '\'',
-                'How would you like to name this class?',
-                'Class name',
+                'Verander de klas naam van \'' +self.world.name+ '\'',
+                'Wat wordt de nieuwe naam van deze klas?',
+                'Klas naam',
                 event
             )
             .then(function(result) {
                 if(!result) {
-                    return Notifications.simpleToast('Please enter a name');
+                    return toastr.warning('Please enter a name');
                 }
 
                 World.changeWorldName(result, self.world.id)
                 .then(function(response) {
                     self.world.name = result;
-                    Notifications.simpleToast('Name change to ' + result);
+                    toastr.success('Naam gewijzigd naar ' + result);
                 }, function() {
                     // Err
                 });
@@ -126,23 +127,15 @@
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
-                description: 'Change class name',
+                description: 'Verander klas naam',
                 callback: function(event) {
                     event.preventDefault();
                     self.changeWorldName();
                 }
             })
             .add({
-                combo: 'shift+r',
-                description: 'Add rule',
-                callback: function(event) {
-                    event.preventDefault();
-                    self.addRule();
-                }
-            })
-            .add({
                 combo: 'shift+d',
-                description: 'Delete ' + self.world.name,
+                description: 'Verwijder ' + self.world.name,
                 callback: function(event) {
                     event.preventDefault();
                     self.deleteWorld();
@@ -155,7 +148,7 @@
         function patchWorldSettings() {
             World.patchWorldSettings(self.world)
             .then(function(response) {
-                Notifications.simpleToast('Class settings updated');
+                toastr.success('Class settings updated');
             })
             .catch(function(error) {
                 console.log(error);

@@ -11,12 +11,12 @@
         $stateProvider
 
             .state('base.rules', {
-                url: '/rules',
+                url: '/afspraken',
                 abstract: true
             })
 
             .state('base.rules.overview', {
-                url: '/overview',
+                url: '/overzicht',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/rules/overview/overview.html',

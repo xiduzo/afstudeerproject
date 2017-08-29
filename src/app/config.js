@@ -18,6 +18,7 @@
         ScrollBarsProvider,
         cfpLoadingBarProvider,
         TrelloApiProvider,
+        toastrConfig,
         DEBUG_ENABLED,
         TRELLO_KEY,
         TRELLO_SECRET
@@ -283,6 +284,22 @@
             expiration: "never",
             scope: {read: true, write: false, account: true},
             name: 'CMD Athena'
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Toastr
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        angular.extend(toastrConfig, {
+            autoDismiss: false,
+            containerId: 'toast-container',
+            maxOpened: 0,
+            extendedTimeOut: 3000,
+            newestOnTop: true,
+            progressBar: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: false,
+            preventOpenDuplicates: false,
+            target: 'body'
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -12,6 +12,7 @@
     Global,
     Account,
     Notifications,
+    toastr,
     LECTURER_ACCESS_LEVEL
   ) {
 
@@ -19,7 +20,7 @@
         return Global.notAllowed();
       }
 
-      Global.setRouteTitle('Students');
+      Global.setRouteTitle('Studenten');
       Global.setRouteBackRoute(null);
 
       var self = this;
@@ -64,16 +65,16 @@
         })
         .then(function(response) {
           if(!response) {
-            return Notifications.simpleToast("Empty field");
+            return toastr.warning("Empty field");
           }
           if(response.charAt(0) != '[' || response.charAt(response.length -1) != ']') {
-            return Notifications.simpleToast("Make sure to provide a valid array.");
+            return toastr.warning("Make sure to provide a valid array.");
           }
 
           try {
             JSON.parse(response)
           } catch(e) {
-            return Notifications.simpleToast("I'm just a stupid machine, please provide me with valid JSON.");
+            return toastr.console.warn();("I'm just a stupid machine, please provide me with valid JSON.");
           }
 
           var students = JSON.parse(response);
@@ -81,7 +82,7 @@
           _.each(students, function(student) {
             Account.createUser(student)
             .then(function(response) {
-              Notifications.simpleToast("Student " + student.first_name + " added.");
+              toastr.success("Student " + student.first_name + " toegevoegd.");
               response.filter_name = $filter('fullUserName')(response);
               self.students.push(response)
             })

@@ -20,7 +20,7 @@
                     md-search-text-change="aasCtrl.filterUsers(aasCtrl.search_text)"
                     md-selected-item-change="aasCtrl.selectPlayer(player)"
                     md-items="player in aasCtrl.filter_users | orderBy:['displayname', 'surname']"
-                    placeholder="Search {{ aasCtrl.about }}"
+                    placeholder="Zoek {{ aasCtrl.about }}"
                     md-menu-class="aas__autocomplete">
                     <md-item-template class="item--metadata"
                         <span class="item--metastat">
@@ -31,14 +31,14 @@
                         </span>
                     </md-item-template>
                     <md-not-found>
-                        "{{ aasCtrl.search_text }}" not found.
+                        "{{ aasCtrl.search_text }}" niet gevonden.
                     </md-not-found>
 
                 </md-autocomplete>
 
                 <md-list ng-if="aasCtrl.selected_users.length > 0" layout-margin>
                     <h3 class="md-subhead">
-                        Selected {{ aasCtrl.about }}
+                        Geselecteerde {{ aasCtrl.about }}
                     </h3>
                     <md-list-item ng-repeat="player in aasCtrl.selected_users">
                         <div flex="20" layout-align="center center">
@@ -50,7 +50,7 @@
                         <md-button class="md-icon-button" ng-click="aasCtrl.removeSelectedPlayer(player)">
                             <md-icon md-svg-icon="close_dark"></md-icon>
                             <md-tooltip md-direction="top">
-                                Deselect {{ aasCtrl.about }}
+                                De-selecteer {{ aasCtrl.about }}
                             </md-tooltip>
                         </md-button>
                     </md-list-item>
@@ -67,7 +67,6 @@
                     <md-checkbox
                         ng-model="player.selected"
                         aria-label="player.displayname">
-
                     </md-checkbox>
                 </md-list-item>
             </md-list>
@@ -76,14 +75,14 @@
     </md-dialog-content>
 
     <md-dialog-actions>
-        <button class="md-primary md-button" type="button" aria-label="Cancel"
+        <md-button type="button" aria-label="Cancel"
             ng-click="aasCtrl.close()" md-ink-ripple>
-            Cancel
-        </button>
-            <button class="md-primary md-button" type="button" aria-label="{{ aasCtrl.about }}"
-                ng-click="aasCtrl.returnPlayers()" md-ink-ripple>
-                Add {{ aasCtrl.about }}
-        </button>
+            <strong class="text--color--red">Sluit</strong>
+        </md-button>
+        <md-button type="button" aria-label="{{ aasCtrl.about }}"
+            ng-click="aasCtrl.returnPlayers()" md-ink-ripple>
+            <strong class="text--color--green">{{ aasCtrl.about }} toevoegen</strong>
+        </md-button>
     </md-dialog-actions>
 
 </md-dialog>

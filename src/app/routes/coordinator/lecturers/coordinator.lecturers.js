@@ -10,7 +10,7 @@
     $filter,
     Global,
     Account,
-    Notifications,
+    toastr,
     LECTURER_ACCESS_LEVEL
   ) {
 
@@ -18,7 +18,7 @@
         return Global.notAllowed();
       }
 
-      Global.setRouteTitle('Lecturers');
+      Global.setRouteTitle('Docenten');
       Global.setRouteBackRoute(null);
 
       var self = this;
@@ -56,7 +56,7 @@
       function patchAccessLevel(user) {
         Account.patchUser(user).
         then(function(response) {
-          Notifications.simpleToast(user.filter_name + ' is ' + (response.is_superuser ? 'a' : 'no') + ' coordinator ' + (response.is_superuser ? 'now' : ' anymore'));
+          toastr.success(user.filter_name + ' is ' + (response.is_superuser ? 'een' : 'geen') + ' coordinator ' + (response.is_superuser ? 'nu' : ' meer'));
         })
         .catch(function(error) {
           console.log(error);

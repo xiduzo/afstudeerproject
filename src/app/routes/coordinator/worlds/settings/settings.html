@@ -5,20 +5,20 @@
     <md-card>
       <md-card-content>
         <h1 class="md-title text--color--grey">
-          Settings
+          Instellingen
         </h1>
         <section layout layout-padding>
-          <span flex=50 flex-gt-sm=30>Starting date of this class</span>
-          <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-open-on-focus md-placeholder="Pick a date"></md-datepicker>
+          <span flex=50 flex-gt-sm=30>Start datum</span>
+          <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-open-on-focus md-placeholder="Datum"></md-datepicker>
         </section>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>
-            Duration of this class
+            Duur
           </span>
           <md-input-container>
-            <label>Duration</label>
+            <label>Duur</label>
             <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
-            <div class="hint text--color--grey">In weeks</div>
+            <div class="hint text--color--grey">In weken</div>
           </md-input-container>
         </section>
       </md-card-content>
@@ -53,14 +53,14 @@
         <md-icon md-svg-src="pencil_light">
         </md-icon>
         <span flex>
-          Edit name
+          Wijzig naam
         </span>
       </md-button>
       <md-button layout class="md-warn md-raised" ng-click="worldsSettingsCtrl.deleteWorld($event)">
         <md-icon md-svg-src="delete_light">
         </md-icon>
         <span flex>
-          Delete class
+          Verwijder klas
         </span>
       </md-button>
     </section>
