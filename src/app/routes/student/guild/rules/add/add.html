@@ -12,10 +12,15 @@
 
     <form layout="column">
 
-      <md-input-container flex>
-        <label>De student</label>
-        <input md-autofocus ng-model="addGuildRuleCtrl.formInput.rule" />
-      </md-input-container>
+      <section layout layout-align="start center">
+        <span layout-padding>
+          De student:
+        </span>
+        <md-input-container flex>
+          <label>afspraak</label>
+          <input md-autofocus ng-model="addGuildRuleCtrl.formInput.rule" />
+        </md-input-container>
+      </section>
 
       <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
         <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center" ng-click="addGuildRuleCtrl.formInput.type = type.type">

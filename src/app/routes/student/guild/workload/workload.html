@@ -74,7 +74,7 @@
                                   {{ guild.current_week.cards_due.length }}
                                 </span>
                                 <span layout>
-                                  deadline<span ng-if="guild.current_week.cards_due.length >= 2 || guild.current_week.cards_due.length === 0">s&nbsp;</span> te gaan
+                                  deadline<span ng-if="guild.current_week.cards_due.length >= 2 || guild.current_week.cards_due.length === 0">s&nbsp;</span> te gaan deze week
                                 </span>
                                 <md-tooltip>
                                   Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end  | momentDate : 'DD/MM/YYYY' }}
@@ -91,7 +91,7 @@
                                   {{ guild.current_week.end | hoursToGo }} uur om precies te zijn
                                 </md-tooltip>
                                 <md-tooltip md-delay="10000">
-                                  Nog maar {{ guild.current_week.end | secondsToGo }} seconde!
+                                  Nog maar {{ guild.current_week.end | secondsToGo }} seconden!
                                 </md-tooltip>
                               </section>
                             </md-card-content>
@@ -130,20 +130,24 @@
                                 {{ member.name }}
                             </span>
                             <span flex=70 layout class="focuses">
-                              <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
-                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
-                                    {{ focus.name || focus.color }}
+                              <span ng-repeat="focus in member.focus | orderBy : '-color'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
+                                <span class="md-caption" ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
+                                    {{ (focus.name || focus.color) | limitTo : (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100 }}<span ng-if="(focus.name || focus.color).length > (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100">...</span>
                                 </span>
-                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">(</span>{{ focus.times }}<span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">)</span>
                                 <md-tooltip md-delay="500">
-                                  <strong ng-if="(focus.times * 100 / member.total_focus | roundUp5) < 20">{{ focus.name || focus.color }}</strong>
-                                  {{ focus.times * 100 / member.total_focus | number : 0 }}%
+                                  {{ focus.name || focus.color }}
+                                  <strong>
+                                      {{ focus.times * 100 / member.total_focus | number : 0 }}%
+                                  </strong>
                                 </md-tooltip>
-                              </div>
+                              </span>
                             </span>
                             <span flex=5 layout layout-align="end">
                                 <md-button class="md-icon-button" aria-label="View statistics of {{member.name}}" ng-click="guildWorkloadCtrl.showMemberWorkload(member, guild.board.members, guild)">
                                     <md-icon md-svg-src="timeline_dark"></md-icon>
+                                    <md-tooltip>
+                                        Bekijk voltooide kaarten van {{ member.name }}
+                                    </md-tooltip>
                                 </md-button>
                             </span>
                         </md-list-item>

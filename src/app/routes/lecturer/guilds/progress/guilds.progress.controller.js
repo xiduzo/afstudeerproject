@@ -176,13 +176,14 @@
                             member.cards.push(card);
                             card.members.push(member);
                           });
-                        } else {
-                          _.each(self.board.members, function(member) {
-                            graph_data.total_cards++;
-                            member.cards.push(card);
-                            card.members.push(member);
-                          });
                         }
+                        // else {
+                        //   _.each(self.board.members, function(member) {
+                        //     graph_data.total_cards++;
+                        //     member.cards.push(card);
+                        //     card.members.push(member);
+                        //   });
+                        // }
 
                         // Adding the cards to the weeks
                         _.each(weeks, function(week) {

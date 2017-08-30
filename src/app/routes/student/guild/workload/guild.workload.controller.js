@@ -228,12 +228,13 @@
                           member.cards.push(card);
                           card.members.push(member);
                         });
-                      } else {
-                        _.each(guild.board.members, function(member) {
-                          member.cards.push(card);
-                          card.members.push(member);
-                        });
                       }
+                      // else {
+                      //   _.each(guild.board.members, function(member) {
+                      //     member.cards.push(card);
+                      //     card.members.push(member);
+                      //   });
+                      // }
                     });
 
                     guild.current_week = _.findWhere(guild.insight_data.course_weeks, { current_week: true });

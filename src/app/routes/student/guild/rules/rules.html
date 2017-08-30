@@ -3,8 +3,8 @@
 <section ng-if="!guildRulesCtrl.loading_page" layout-fill>
   <cmd-empty-state ng-if="guildRulesCtrl.guilds.length < 1"
     icon="guild_dark"
-    headline="No team found"
-    title="Wait for a lecturer to add you to a team">
+    headline="Geen team gevonden"
+    title="Wacht tot een docent je aan een team toevoegd">
   </cmd-empty-state>
   <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
     <section ng-if="guild.rules.length >= 8" layout layout-fill>
@@ -45,7 +45,7 @@
                           </md-card-header-text>
                         </md-card-header>
                         <md-card-content>
-                          <section layout class="rating">
+                          <section layout class="rating" ng-if="week.editable">
                             <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0), $event)"
                             ng-mouseover="new_rating = (rating === 1 ? 0 : 1)" ng-mouseleave="new_rating = rating">
                                 <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 1"></md-icon>
@@ -66,6 +66,17 @@
                               <md-icon md-svg-src="star_dark" class="icon--color--lightGreen" ng-if="new_rating >= 4"></md-icon>
                               <md-icon md-svg-src="star_border_dark" ng-if="new_rating < 4"></md-icon>
                             </div>
+                          </section>
+                          <section ng-if="!week.editable" layout>
+                            <div ng-repeat="star in [1,2,3,4]">
+                              <md-icon md-svg-src="star_dark" ng-class="{
+                                'icon--color--grey': rating < star,
+                                'icon--color--lightGreen': rating >= star
+                              }"></md-icon>
+                            </div>
+                            <md-tooltip>
+                              Je kunt deze week niet meer bewerken
+                            </md-tooltip>
                           </section>
                         </md-card-content>
                       </md-card>
@@ -261,7 +272,7 @@
             <md-button ng-disabled="guild.own_rule" class="md-raised success md-block" layout-fill layout ng-click="guildRulesCtrl.addRule($event, guild)">
                 <md-icon md-svg-src="rules_light" ng-class="{'icon--color--grey' : guild.own_rule}"></md-icon>
                 <span flex>
-                  Add rule
+                  Afspraak toevoegen
                 </span>
             </md-button>
             <md-tooltip md-direction="top" ng-if="guild.own_rule">

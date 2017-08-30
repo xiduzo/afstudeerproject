@@ -2,12 +2,14 @@
   .focus {
     display: inline-block;
     padding: 4px 8px;
-    border-radius: 4px;
     font-weight: bold;
     text-align: center;
 
-    &:not(:first-of-type) {
-      margin: 0 4px;
+    &:first-of-type {
+      border-radius: 4px 0 0 4px;
+    }
+    &:last-of-type {
+      border-radius: 0 4px 4px 0;
     }
 
     @each $name, $color in $colors {

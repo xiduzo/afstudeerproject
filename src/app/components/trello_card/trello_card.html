@@ -10,7 +10,7 @@
             Vervalt {{ trelloCardCtrl.card.due | fromNow }}
           </span>
           <span class="md-subhead text--color--grey" ng-if="!trelloCardCtrl.card.due">
-            Gemaakt op {{ trelloCardCtrl.card.created_at | momentDate : 'DD/MM/YYYY' }}
+            Gemaakt op {{ trelloCardCtrl.card.created_at | momentDate : 'DD/MM/YYYY @ HH:mm' }}
           </span>
         </md-card-title-text>
       </md-card-title>
