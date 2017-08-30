@@ -132,7 +132,7 @@
             })
             .then(function(response) {
                 $http({
-                    url: REST_API_URL + 'world/userInWorld/' + response.data[0].id,
+                    url: REST_API_URL + 'world/userInWorld/' + response.data[0].id + '/',
                     method: "DELETE"
                 })
                 .then(function(response) {
