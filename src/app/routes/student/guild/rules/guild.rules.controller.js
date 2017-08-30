@@ -48,7 +48,6 @@
         self.guilds = [];
         self.loading_page = true;
         self.active_password_promp = false;
-        self.password_protection = false;
         self.showBurst = showBurst;
 
         var burst = new mojs.Burst({
@@ -74,12 +73,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('guild-changed', function(event, guild) {
             self.selected_guild = guild;
-            if(_.findWhere(self.guilds, { id: self.selected_guild })) {
-                if(Global.getLocalSettings().password_protection && !self.active_password_promp && _.findWhere(self.guilds, { id: self.selected_guild }).rules.length >= 8) {
-                    self.password_protection = true;
-                    self.showPasswordPrompt();
-                }
-            }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,11 +113,6 @@
                         };
                         guild.selected_rules = [];
                         guild.minimun_rules_selected = false;
-                    } else {
-                        if(Global.getLocalSettings().password_protection && !self.active_password_promp && guild.id === self.selected_guild) {
-                          self.password_protection = true;
-                          self.showPasswordPrompt();
-                        }
                     }
 
                     guild.weeks = [];
@@ -306,39 +294,6 @@
             });
 
             return endorsement ? endorsement.rating : null;
-        }
-
-        function showPasswordPrompt() {
-            self.active_password_promp = true;
-            $mdDialog.show({
-                controller: 'passwordProtectionController',
-                controllerAs: 'passwordProtectionCtrl',
-                templateUrl: 'app/components/password_protection/password_protection.html',
-                targetEvent: event,
-                clickOutsideToClose: true,
-                locals: {
-                    reason: 'Deze pagina bevat gevoelige informatie en is daarom beveiligd met een wachtwoord.'
-                }
-            })
-            .then(function(result) {
-                self.active_password_promp = false;
-                if(!result) {
-                    self.need_password = true;
-                    return Notifications.simpleToast('Please enter a password');
-                }
-
-                if(md5(result) === self.user.password) {
-                    self.password_protection = false;
-                } else {
-                    self.need_password = true;
-                    Notifications.simpleToast('Incorrect password');
-                }
-
-            }, function() {
-                // Cancel dialog
-                self.active_password_promp = false;
-                self.need_password = true;
-            });
         }
 
         function setRating(week, rule, user, rating, event) {

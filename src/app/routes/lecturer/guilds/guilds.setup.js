@@ -11,12 +11,12 @@
         $stateProvider
 
             .state('base.guilds', {
-                url: '/groups',
+                url: '/team',
                 abstract: true
             })
 
             .state('base.guilds.overview', {
-                url: '/overview',
+                url: '/overzicht',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/overview/overview.html',
@@ -27,7 +27,7 @@
             })
 
             .state('base.guilds.settings', {
-                url: '/settings/:guildUuid',
+                url: '/instellingen/:guildUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/settings/settings.html',
@@ -38,7 +38,7 @@
             })
 
             .state('base.guilds.progress', {
-                url: '/progress/:guildUuid',
+                url: '/progressie/:guildUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/guilds/progress/progress.html',

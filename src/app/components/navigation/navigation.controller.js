@@ -113,12 +113,13 @@
                         link_to: 'base.guild.rules',
                         access_levels: [STUDENT_ACCESS_LEVEL],
                     },
-                    {
-                        name: 'Activity log',
-                        icon: 'list_dark',
-                        link_to: 'base.guild.activity',
-                        access_levels: [STUDENT_ACCESS_LEVEL],
-                    },
+                    // Turn this on to vieuw the activity log page as students
+                    // {
+                    //     name: 'Activity log',
+                    //     icon: 'list_dark',
+                    //     link_to: 'base.guild.activity',
+                    //     access_levels: [STUDENT_ACCESS_LEVEL],
+                    // },
                 ],
             },
         ];

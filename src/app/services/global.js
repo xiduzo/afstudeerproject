@@ -26,8 +26,7 @@
         self.toStateParams = null;
         self.local_settings = {
             enabled_confirmation: true,
-            enabled_hotkeys: true,
-            password_protection: false
+            enabled_hotkeys: true
         };
 
         self.functions = {

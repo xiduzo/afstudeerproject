@@ -17,6 +17,7 @@
         Guild,
         Global,
         Notifications,
+        toastr,
         World,
         LECTURER_ACCESS_LEVEL
     ) {
@@ -99,7 +100,7 @@
                 Guild.patchPlayersGuild(player.user.id, player.user.guildId, guild)
                 .then(function(response) {
                     player.user.guildId = guild.id;
-                    Notifications.simpleToast(player.user.first_name + ' moved to ' + guild.name);
+                    toastr.success(player.user.first_name + ' verplaatst naar ' + guild.name);
                 }, function() {
                     // Err
                 });
@@ -108,14 +109,14 @@
 
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
-                        .title('Add a new team to ' + world.name)
-                        .textContent('How would you like to name the new team?')
+                        .title('Voeg een nieuw team toe aan ' + world.name)
+                        .textContent('Wat word de naam van dit team?')
                         .clickOutsideToClose(true)
-                        .placeholder('New team name')
-                        .ariaLabel('New team name')
+                        .placeholder('Team naam')
+                        .ariaLabel('Team naam')
                         .targetEvent(event)
-                        .ok('Create new team')
-                        .cancel('Cancel');
+                        .ok('Maak nieuw team')
+                        .cancel('Sluit');
 
             $mdDialog.show(dialog)
                 .then(function(result) {
@@ -123,7 +124,7 @@
 
                     // Checks for the guild name
                     if(!result) {
-                        Notifications.simpleToast('Please enter a team name');
+                        toastr.warning('Vul een team naam in');
                         return;
                     }
 
@@ -131,7 +132,7 @@
                         .then(function(response) {
                             response.members = [];
                             world.guilds.unshift(response);
-                            Notifications.simpleToast('Team ' + response.name + ' created');
+                            toastr.success('Team ' + response.name + ' aangemaakt');
                         }, function() {
 
                         });
@@ -159,9 +160,9 @@
                         targetEvent: event,
                         clickOutsideToClose: true,
                         locals: {
-                            title: 'Add students to ' + guild.name,
-                            subtitle: 'Please select the students you would like to add.',
-                            about: 'students',
+                            title: 'Voeg studenten toe aan ' + guild.name,
+                            subtitle: 'Selecteer studenten om toe te voegen',
+                            about: 'studenten',
                             players: response
                         }
                     })
@@ -176,12 +177,12 @@
                                 .then(function(response) {
                                     user.guildId = guild.id;
                                     guild.members.push({user: user});
+                                    toastr.success(user.first_name + ' toegevoegd aan ' + guild.name);
                                 }, function() {
                                     // Err
                                 });
                         });
 
-                        Notifications.simpleToast(response.length + ' member(s) added to ' + guild.name);
 
                     }, function() {
                         // Err
@@ -195,7 +196,7 @@
         function removeGuildMember(player, guild) {
             Guild.removeUserFromGuild(player.user.id, guild.id)
             .then(function(response) {
-                Notifications.simpleToast(player.user.first_name + ' got removed from ' + guild.name);
+                toastr.success(player.user.first_name + ' is verwijdert uit ' + guild.name);
                 guild.members.splice(guild.members.indexOf(player), 1);
             }, function() {
                 // Err
@@ -209,7 +210,7 @@
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
-                description: 'Create new team',
+                description: 'Maak nieuw team',
                 callback: function(event) {
                     self.newGuildDialog(event, world);
                 }

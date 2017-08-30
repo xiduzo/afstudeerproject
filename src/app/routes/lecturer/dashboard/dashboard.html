@@ -6,14 +6,14 @@
       <section flex layout="column" layout-fill ng-repeat="world in lecturerDashboardCtrl.worlds" ng-if="world.id === lecturerDashboardCtrl.selected_world">
         <cmd-empty-state ng-if="world.not_configured"
         icon="world_dark"
-        headline="Not configured."
-        title="Class isn't configured correctly yet.">
+        headline="Niet ingesteld"
+        title="Klas is niet goed ingesteld">
         </cmd-empty-state>
         <div flex ng-if="!world.not_configured" layout-margin>
           <cmd-empty-state ng-if="world.guilds.length < 1"
           icon="guild_dark"
-          headline="No teams found."
-          title="Add a new team on the teams settings page.">
+          headline="Geen klassen gevonden"
+          title="Voeg een nieuwe klas toe in de instellingen pagina">
           </cmd-empty-state>
           <div layout="row" layout-wrap>
             <div  flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
@@ -52,14 +52,14 @@
                     </md-card-actions>
                   </md-tab>
 
-                  <md-tab label="overdue cards ({{ guild.cards_overdue.length || 0 }})">
+                  <md-tab label="achterstallige kaarten ({{ guild.cards_overdue.length || 0 }})">
                     <md-content>
                       <md-list md-virtual-repeat-container style="height:208px">
                         <md-list-item ng-if="guild.trello_not_configured" class="text--color--grey">
-                          Trello not configured
+                          Trello is niet ingesteld
                         </md-list-item>
                         <md-list-item ng-if="!guild.trello_not_configured && guild.cards_overdue.length === 0" class="text--color--grey">
-                          No overdue cards
+                          Geen achterstallige kaarten
                         </md-list-item>
                         <md-list-item class="md-3-line" layout ng-repeat="card in guild.cards_overdue | orderBy: 'due'" ng-click="lecturerDashboardCtrl.gotoCard(card)">
                           <div class="md-list-item-text" layout="column" flex>
@@ -84,11 +84,11 @@
                     <md-card-actions layout layout-align="end center">
                       <md-button ng-if="!guild.trello_not_configured" layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
                         <md-icon class="icon__helper" md-svg-icon="timeline_dark"></md-icon>
-                        Bekijk progress
+                        Bekijk progressie
                       </md-button>
                       <md-button ng-if="guild.trello_not_configured" layout aria-label="Settings of {{ guild.name }}" ui-sref="base.guilds.settings({guildUuid: guild.id})">
                         <md-icon class="icon__helper" md-svg-icon="settings_dark"></md-icon>
-                        Team settings
+                        Team instellingen
                       </md-button>
                     </md-card-actions>
                   </md-tab>

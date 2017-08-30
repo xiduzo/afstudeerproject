@@ -19,6 +19,7 @@
             'angular-loading-bar',
             'cfp.hotkeys',
             'angular-md5',
+            'base64',
             'trello',
             'toastr',
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

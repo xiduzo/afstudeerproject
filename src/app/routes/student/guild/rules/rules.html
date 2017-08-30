@@ -7,24 +7,7 @@
     title="Wait for a lecturer to add you to a team">
   </cmd-empty-state>
   <section layout-fill ng-repeat="guild in guildRulesCtrl.guilds" ng-if="guild.id === guildRulesCtrl.selected_guild">
-
-    <section layout-fill ng-if="guild.rules.length >= 8 && guildRulesCtrl.password_protection && guildRulesCtrl.need_password" layout="column">
-      <section flex=70>
-        <cmd-empty-state
-        icon="key_dark"
-        headline="Not vissible"
-        title="This page contains some sensitive information"
-        subtitle="Enter your password to see this information">
-      </cmd-empty-state>
-      </section>
-      <section flex=30 layout layout-align="center start">
-        <md-button class="md-raised success" ng-click="guildRulesCtrl.showPasswordPrompt()">
-          Vul wachtwoord in
-        </md-button>
-      </section>
-    </section>
-
-    <section ng-if="guild.rules.length >= 8 && !guildRulesCtrl.password_protection" layout layout-fill>
+    <section ng-if="guild.rules.length >= 8" layout layout-fill>
       <md-content flex=80 layout-fill layout-padding md-whiteframe=1 id="main__content">
         <section layout layout-wrap>
           <md-card flex>

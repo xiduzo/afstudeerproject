@@ -46,6 +46,9 @@
                         username: username,
                         password: password,
                         context: context
+                    },
+                    headers: {
+                        'Authorization': undefined
                     }
                 })
                 .then(function(response) {

@@ -7,6 +7,8 @@
 
     /** @ngInject */
     function config(
+        $httpProvider,
+        $base64,
         $compileProvider,
         $logProvider,
         $mdThemingProvider,
@@ -23,6 +25,12 @@
         TRELLO_KEY,
         TRELLO_SECRET
     ) {
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Credentials
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode('bigd' + ':' + 'aapnootbier');
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -295,7 +303,7 @@
             maxOpened: 0,
             extendedTimeOut: 3000,
             newestOnTop: true,
-            progressBar: true,
+            progressBar: false,
             positionClass: 'toast-bottom-right',
             preventDuplicates: false,
             preventOpenDuplicates: false,

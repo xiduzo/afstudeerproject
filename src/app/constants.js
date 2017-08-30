@@ -6,8 +6,8 @@
         .constant('DEBUG_ENABLED', true)
 
         .constant('LDAP_LOGIN_API', 'https://oege.ie.hva.nl/~vddxx/ldapper/index.php')
-        // .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
-        .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
+        .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
+        // .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
 
         .constant('TRELLO_KEY', '85ea9af753540fb15c161d5eedd67a49')
         .constant('TRELLO_SECRET', '92b46d2d43997521d21894e6f88b843ddae5d903163d813356cfa7b376a85e2b')

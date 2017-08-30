@@ -2,7 +2,10 @@
 
 <section layout flex ng-if="!guildsOverviewCtrl.loading_page">
   <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
-      <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1" icon="world_dark" headline="No classes found." title="Wait for a co&ouml;rdiantor to add you as a class lecturer.">
+      <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1"
+      icon="world_dark"
+      headline="Geen klas gevonden"
+      title="Wacht tot een co&ouml;rdiantor je toevoegd aan een klas">
       </cmd-empty-state>
       <section layout layout-fill layout-wrap ng-if="guildsOverviewCtrl.worlds.length > 0">
         <section flex layout="column" layout-fill ng-repeat="world in guildsOverviewCtrl.worlds" ng-if="world.id === guildsOverviewCtrl.selected_world">
@@ -10,7 +13,7 @@
               <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
                   <md-icon md-svg-icon="guild_light"></md-icon>
                   <md-tooltip md-direction="left">
-                      Create new team
+                      Maak nieuw team
                   </md-tooltip>
               </md-button>
           </section>
@@ -20,8 +23,8 @@
                   icon="guild_dark"
                   action="guildsOverviewCtrl.newGuildDialog($event, world)"
                   has-action="true"
-                  headline="No teams found."
-                  title="Add a new team by clicking on the shield.">
+                  headline="Geen teams gevonden"
+                  title="Voeg een nieuw team toe door op het schild te klikken">
                   </cmd-empty-state>
                   <div flex>
                       <div layout="row" layout-wrap>
@@ -46,7 +49,7 @@
                                                               md-menu-align-target
                                                               md-svg-icon="settings_dark">
                                                           </md-icon>
-                                                          <p flex>Settings</p>
+                                                          <p flex>Instellingen</p>
                                                       </div>
                                                   </md-button>
                                               </md-menu-item>
@@ -57,7 +60,7 @@
                                                               md-menu-align-target
                                                               md-svg-icon="add_dark">
                                                           </md-icon>
-                                                          <p flex>Add student</p>
+                                                          <p flex>Studenten toevoegen</p>
                                                       </div>
                                                   </md-button>
                                               </md-menu-item>
@@ -71,7 +74,7 @@
                                           dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
                                           <md-list-item ng-if="guild.members.length < 1"
                                                class="text--color--grey" layout layout-align="center center">
-                                              No students in this team yet.
+                                              Er zitten (nog) geen studenten in dit team
                                           </md-list-item>
                                           <md-list-item ng-repeat="player in guild.members"
                                               ng-if="guild.members.length >= 1"
@@ -84,7 +87,7 @@
                                               </span>
                                               <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
                                                   <md-tooltip md-direction="bottom" md-delay="1000">
-                                                      Remove student from team
+                                                      Verwijder student uit team
                                                   </md-tooltip>
                                               </md-icon>
                                           </md-list-item>

@@ -13,6 +13,7 @@
         Guild,
         Global,
         Notifications,
+        toastr,
         World,
         TrelloApi,
         LECTURER_ACCESS_LEVEL,
@@ -23,7 +24,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Team progress');
+        Global.setRouteTitle('Team progressie');
         Global.setRouteBackRoute('base.home.dashboards.lecturer');
 
         var self = this;
@@ -53,10 +54,10 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(!response) {
-                    Notifications.simpleToast('Team ' + $stateParams.guildUuid + ' does not exist');
+                    toastr.error('Team ' + $stateParams.guildUuid + ' bestaad niet');
                     $state.go('base.guilds.overview');
                 }
-                Global.setRouteTitle('Team progress ' + response.name);
+                Global.setRouteTitle('Team progressie ' + response.name);
                 self.guild = response;
 
                 World.getWorld(response.world.id)
@@ -84,11 +85,11 @@
         function prepareGraphData(guild) {
             if(!guild.trello_board || !guild.trello_done_list) {
               guild.no_trello_settings = true;
-              return Notifications.simpleToast('Please make sure the team has an trello board and done list set.');
+              return toastr.warning('Zorg eerst dat trello goed gekoppelt is voor dit team');
             }
             if(!guild.world.start || !guild.world.course_duration) {
               guild.no_world_settings = true;
-              return Notifications('Please make sure the class start and the course duration are set.');
+              return toastr.warning('Zorg ervoor dat de klas van dit team een startdatum en duur heeft ingesteld');
             }
 
             var weeks = [];

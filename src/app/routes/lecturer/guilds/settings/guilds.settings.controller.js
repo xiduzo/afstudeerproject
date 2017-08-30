@@ -13,6 +13,7 @@
         $stateParams,
         Global,
         Notifications,
+        toastr,
         Guild,
         TrelloApi,
         LECTURER_ACCESS_LEVEL,
@@ -23,7 +24,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Team settings');
+        Global.setRouteTitle('Team instellingen');
         Global.setRouteBackRoute('base.guilds.overview');
 
         var self = this;
@@ -49,10 +50,10 @@
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
                 if(response.status === 404) {
-                    Notifications.simpleToast('Team ' + $stateParams.guildUuid + ' does not exist');
+                    toastr.error('Team ' + $stateParams.guildUuid + ' bestaad niet');
                     $state.go('base.guilds.overview');
                 }
-                Global.setRouteTitle('Team settings ' + response.name);
+                Global.setRouteTitle('Team instellingen ' + response.name);
                 self.guild = response;
 
                 TrelloApi.Authenticate()
@@ -72,7 +73,7 @@
                             self.guild.trello_board_lists = null;
                             Guild.patchGuildSettings(self.guild)
                             .then(function(response) {
-                                Notifications.simpleToast('Trello board doesn\'t exist anymore, updated guild.');
+                                toastr.info('Trello bord bestaad niet meer, team is geupdate');
                             })
                             .catch(function(error) {
                                 console.log(error);
@@ -97,14 +98,14 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function deleteGuild(event) {
             Notifications.confirmation(
-                'Are you sure you want to delete this team?',
-                'Please consider your answer, this action can not be undone.',
-                'Delete team',
+                'Weet je zeker dat je dit team wilt verwijderen?',
+                'Deze actie kan niet meer ongedaan worden.',
+                'Verwijder team',
                 event
             ).then(function() {
                 Guild.deleteGuild(self.guild.id)
                 .then(function(response) {
-                    Notifications.simpleToast('Team ' + self.guild.name + ' has been deleted');
+                    toastr.success('Team ' + self.guild.name + ' is verwijdert');
                     $state.go('base.guilds.overview');
                 }, function() {
                     // Err deleting guild
@@ -116,20 +117,20 @@
 
         function changeGuildName(event) {
             Notifications.prompt(
-                'Change the team name of "' +self.guild.name+ '"',
-                'How would you like to name this team?',
-                'Team name',
+                'Wijzig teamnaam van "' +self.guild.name+ '"',
+                'Wat word de nieuwe naam van dit team?',
+                'Team naam',
                 event
             )
             .then(function(result) {
                 // Checks for thw world name
                 if(!result) {
-                    return Notifications.simpleToast('Please enter a team name');
+                    return toastr.warning('Vul een teamnaam in');
                 }
 
                 Guild.patchGuildName(result, self.guild.id)
                 .then(function(response) {
-                    Notifications.simpleToast('Team name change to ' + result);
+                    toastr.success('Team naam gewijzigd naar ' + result);
                     self.guild.name = result;
                 }, function() {
                     // Err patch guild name
@@ -151,7 +152,7 @@
 
             Guild.patchGuildSettings(self.guild)
             .then(function(response) {
-                Notifications.simpleToast('Team settings saved.');
+                toastr.success('Team instellingen opgeslagen');
             })
             .catch(function(error) {
                 console.log(error);
