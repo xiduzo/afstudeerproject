@@ -17,7 +17,7 @@
           <md-list>
             <md-list-item ng-repeat="lecturer in lecturersCtrl.lecturers | filter : search | orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.email !== lecturersCtrl.user.email">
               <span flex=10>
-                <img ng-if="lecturer.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{lecturer.avatar_hash}}/50.png">
+                <img ng-if="lecturer.avatar_hash" class="round" src="https://trello-avatars.s3.amazonaws.com/{{lecturer.avatar_hash}}/50.png">
                 <img ng-if="!lecturer.avatar_hash" class="round" gravatar-size="50" gravatar-src="lecturer.email">
               </span>
               <span flex="70">

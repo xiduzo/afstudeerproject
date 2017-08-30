@@ -73,7 +73,7 @@
                             dnd-draggable="gamemaster"
                             dnd-moved="world.gamemasters.splice($index, 1)"
                             dnd-effect-allowed="move">
-                            <img ng-if="gamemaster.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
+                            <img ng-if="gamemaster.avatar_hash" class="round" src="https://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
                             <img ng-if="!gamemaster.avatar_hash" class="round" gravatar-size="30" gravatar-src="gamemaster.email">
                             <span flex layout-padding>
                                 {{ gamemaster | fullUserName }}
