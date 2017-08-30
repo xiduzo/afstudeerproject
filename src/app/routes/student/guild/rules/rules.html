@@ -17,9 +17,10 @@
                   {{ guild.selected_week.name }}
                 </strong>
                 <span class="md-subhead">
-                  {{ guild.selected_week.start | momentDate : 'DD/MM/YYYY' }}
+                  Deadline {{ guild.selected_week.end | momentDate : 'DD/MM/YYYY HH:mm' }}
+                  <!-- {{ guild.selected_week.start | momentDate : 'DD/MM/YYYY' }}
                   -
-                  {{ guild.selected_week.end | momentDate : 'DD/MM/YYYY' }}
+                  {{ guild.selected_week.end | momentDate : 'DD/MM/YYYY' }} -->
                 </span>
               </div>
             </md-toolbar>

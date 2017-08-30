@@ -46,7 +46,7 @@
                 {{ (guild.trello_cards | cardsDueThisWeek : guild.current_week).length }}
               </span>
               <span layout>
-                kaart<span ng-if="(guild.trello_cards | cardsDueThisWeek : guild.current_week).length >= 2 || (guild.trello_cards | cardsDueThisWeek : guild.current_week).length === 0">en&nbsp;</span> met deadline
+                kaart<span ng-if="(guild.trello_cards | cardsDueThisWeek : guild.current_week).length >= 2 || (guild.trello_cards | cardsDueThisWeek : guild.current_week).length === 0">en&nbsp;</span> met deadline deze week
               </span>
               <md-tooltip>
                 Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end | momentDate : 'DD/MM/YYYY' }}

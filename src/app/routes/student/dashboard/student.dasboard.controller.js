@@ -268,6 +268,7 @@
                 _.each(member.polar_data, function(data) {
                     _.findWhere(average_polar_data, { type: Number(data.type)}).points += data.points.gained;
                     _.findWhere(average_polar_data, { type: Number(data.type)}).total += data.points.total;
+                    data.y = data.points.gained * 100 / data.points.total;
                 });
             });
 
