@@ -33,6 +33,7 @@
         self.changeGuild = changeGuild;
         self.logout = logout;
 
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -42,6 +43,10 @@
         self.back_route = null;
         self.back_route_params = null;
 
+        self.trello_user = localStorageService.get('trello_user');
+        self.user.email = self.trello_user.email;
+
+        console.log(localStorageService.get('trello_user'));
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

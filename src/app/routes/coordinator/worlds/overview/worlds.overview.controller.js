@@ -87,7 +87,7 @@
                 // Remove duplicate gamemasters in world
                 World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
-                toastr.info(gamemaster.first_name + ' was al een docent ' + world.name);
+                toastr.info(gamemaster.first_name + ' was al een docent van ' + world.name);
             } else {
                 World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
                 World.addGamemasterToWorld(gamemaster.url, world.url)

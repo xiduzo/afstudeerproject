@@ -87,13 +87,15 @@
                 }
             })
             .then(function(response) {
-              console.log(response);
-                $http({
-                    url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id,
-                    method: "DELETE"
-                })
-                .then(function(response) { console.log(true, response); return response;
-                }, function(error) { return error; });
+              $http({
+                  url: response.data[0].url,
+                  method: "DELETE"
+              })
+              .then(function(response) {
+                  return response;
+              }, function(error) {
+                  return error;
+              });
             }, function(error) { return error; });
         }
 
