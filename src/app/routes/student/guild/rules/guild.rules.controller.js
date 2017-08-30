@@ -16,6 +16,7 @@
         World,
         Rules,
         Notifications,
+        toastr,
         md5,
         STUDENT_ACCESS_LEVEL
     ) {
@@ -37,7 +38,6 @@
         self.addRule = addRule;
         self.addRulesToGuild = addRulesToGuild;
         self.checkRuleEndorsementStatus = checkRuleEndorsementStatus;
-        self.showPasswordPrompt = showPasswordPrompt;
         self.setRating = setRating;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -218,7 +218,7 @@
                 if(!response.type ||
                 !response.importance ||
                 !response.rule) {
-                    return Notifications.simpleToast('Please fill in all the fields');
+                    return toastr.warning('Vul alle velden in');
                 }
 
                 if(response.importance >= 95) {
@@ -315,7 +315,7 @@
             if(endorsement) {
                 Guild.patchEndorsement(endorsement.id, rating)
                 .then(function(response) {
-                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule + ' with ' + rating + ' star(s)');
+                    toastr.success('Je feedback is opgeslagen');
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -324,7 +324,7 @@
                 Guild.addEndorsement(rule.id, user.id, self.user.id, week, rating)
                 .then(function(response) {
                     rule.endorsements.push(response);
-                    Notifications.simpleToast('Endorsed: ' + $filter('fullUserName')(user) + ' ' + rule.rule + ' with ' + rating + ' star(s)');
+                    toastr.success('Je feedback is opgeslagen');
                 })
                 .catch(function(error) {
                     console.log(error);

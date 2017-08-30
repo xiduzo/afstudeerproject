@@ -11,12 +11,12 @@
         $stateProvider
 
             .state('base.guild', {
-                url: '/group',
+                url: '/team',
                 abstract: true
             })
 
             .state('base.guild.workload', {
-                url: '/workload',
+                url: '/werkverdeling',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/student/guild/workload/workload.html',

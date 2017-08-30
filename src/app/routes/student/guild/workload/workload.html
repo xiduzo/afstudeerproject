@@ -3,14 +3,14 @@
 <section layout-fill ng-if="!guildWorkloadCtrl.loading_page">
     <cmd-empty-state ng-if="guildWorkloadCtrl.guilds.length < 1"
         icon="guild_dark"
-        headline="No team found."
-        title="Wait for a lecturer to add you to a team.">
+        headline="Geen team gevonden"
+        title="Wacht totdat een docent je toe heeft gevoegd aan een team">
     </cmd-empty-state>
     <section layout-fill ng-repeat="guild in guildWorkloadCtrl.guilds" ng-if="guild.id === guildWorkloadCtrl.selected_guild">
         <cmd-empty-state ng-if="guild.no_trello_settings"
             icon="settings_dark"
-            headline="Trello not configured"
-            title="Wait for a lecturer to configure this team correctly.">
+            headline="Trello niet goed ingsteld"
+            title="Wacht totdat een docent trello goed heeft ingesteld voor dit team">
         </cmd-empty-state>
         <cmd-empty-state ng-if="guild.no_world_settings"
             icon="settings_dark"
@@ -131,12 +131,12 @@
                             </span>
                             <span flex=70 layout class="focuses">
                               <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
-                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 25">
+                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
                                     {{ focus.name || focus.color }}
                                 </span>
-                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 25">(</span>{{ focus.times }}<span ng-if="(focus.times * 100 / member.total_focus | roundUp5) > 15">)</span>
+                                <span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">(</span>{{ focus.times }}<span ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">)</span>
                                 <md-tooltip md-delay="500">
-                                  <strong ng-if="(focus.times * 100 / member.total_focus | roundUp5) < 25">{{ focus.name || focus.color }}</strong>
+                                  <strong ng-if="(focus.times * 100 / member.total_focus | roundUp5) < 20">{{ focus.name || focus.color }}</strong>
                                   {{ focus.times * 100 / member.total_focus | number : 0 }}%
                                 </md-tooltip>
                               </div>
@@ -178,7 +178,7 @@
                     <md-button class="md-raised success" href="https://trello.com/b/{{guild.trello_board}}" target="_BLANK" layout>
                         <md-icon md-svg-src="external_link_light"></md-icon>
                         <span flex>
-                            Goto board
+                            Naar trello
                         </span>
                     </md-button>
                 </section>

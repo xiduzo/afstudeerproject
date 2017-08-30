@@ -25,7 +25,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Workload');
+        Global.setRouteTitle('Werkverdeling');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -312,7 +312,7 @@
                     type: 'pie'
                 },
                 title: {
-                    text: 'Workload ' + guild.name,
+                    text: 'Werkverdeling ' + guild.name,
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.cards}</b>'

@@ -102,7 +102,7 @@
                         access_levels: [STUDENT_ACCESS_LEVEL],
                     },
                     {
-                        name: 'Workload',
+                        name: 'Werkverdeling',
                         icon: 'pie_dark',
                         link_to: 'base.guild.workload',
                         access_levels: [STUDENT_ACCESS_LEVEL],

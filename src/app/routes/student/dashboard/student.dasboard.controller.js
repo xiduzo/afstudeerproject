@@ -215,7 +215,9 @@
             _.each(guild.rules, function(rule) {
                 // Order the endorsements per user
                 _.each(rule.endorsements, function(endorsement) {
+                  if(_.findWhere(guild.members_data, {id: endorsement.user})) {
                     _.findWhere(guild.members_data, {id: endorsement.user}).endorsements.push(endorsement);
+                  }
                 });
             });
 

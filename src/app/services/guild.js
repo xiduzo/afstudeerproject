@@ -79,7 +79,7 @@
 
         function removeUserFromGuild(user, guild) {
             return $http({
-                url: REST_API_URL + 'guild/userInGuild',
+                url: REST_API_URL + 'guild/userInGuild/',
                 method: "GET",
                 params: {
                     user: user,
@@ -88,7 +88,7 @@
             })
             .then(function(response) {
               $http({
-                  url: response.data[0].url,
+                  url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id + '/',
                   method: "DELETE"
               })
               .then(function(response) {
