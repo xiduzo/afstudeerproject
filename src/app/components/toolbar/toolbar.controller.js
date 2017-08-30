@@ -44,7 +44,6 @@
         self.back_route = null;
         self.back_route_params = null;
 
-        console.log(localStorageService.get('trello_user'));
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
