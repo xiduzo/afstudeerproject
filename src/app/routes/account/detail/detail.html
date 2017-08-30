@@ -4,7 +4,8 @@
     <md-card>
       <md-card-title>
         <md-card-avatar class="icon__helper" layout="column" layout-align="center center">
-            <img class="round" gravatar-size="75" gravatar-src="accountDetailCtrl.user.email">
+            <img ng-if="accountDetailCtrl.user.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{accountDetailCtrl.user.avatar_hash}}/50.png">
+            <img ng-if="!accountDetailCtrl.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="accountDetailCtrl.user.email">
         </md-card-avatar>
         <md-card-title-text>
           <h1 class="md-headline" style="margin: 0;">

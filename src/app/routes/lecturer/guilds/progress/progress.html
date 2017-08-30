@@ -43,13 +43,15 @@
                 </span>
                 <span flex=70 layout class="focuses">
                   <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
-                     {{ focus.name || focus.color }} ({{focus.times }})
-                     <md-tooltip md-delay="500">
-                       {{ focus.times }} kaart<span ng-if="focus.times >= 2">en</span>
-                       <strong>
-                         ({{ focus.times * 100 / member.total_focus | number : 0 }}%)
-                       </strong>
-                     </md-tooltip>
+                    <span class="md-caption" ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
+                        {{ (focus.name || focus.color) | limitTo : (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100 }}<span ng-if="(focus.name || focus.color).length > (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100">...</span>
+                    </span>
+                    <md-tooltip md-delay="500">
+                      {{ focus.name || focus.color }}
+                      <strong>
+                          {{ focus.times * 100 / member.total_focus | number : 0 }}%
+                      </strong>
+                    </md-tooltip>
                    </div>
                 </span>
               </md-list-item>

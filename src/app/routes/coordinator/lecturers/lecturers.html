@@ -17,7 +17,8 @@
           <md-list>
             <md-list-item ng-repeat="lecturer in lecturersCtrl.lecturers | filter : search | orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.email !== lecturersCtrl.user.email">
               <span flex=10>
-                <img class="round" gravatar-size="50" gravatar-src="lecturer.email">
+                <img ng-if="lecturer.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{lecturer.avatar_hash}}/50.png">
+                <img ng-if="!lecturer.avatar_hash" class="round" gravatar-size="50" gravatar-src="lecturer.email">
               </span>
               <span flex="70">
                 {{ lecturer.filter_name }}
@@ -41,9 +42,8 @@
             <label>Zoek op naam</label>
             <input ng-model="search.$">
         </md-input-container>
-
         <div class="md-subhead text--color--grey" style="margin-bottom: 0.5em;">
-          Zoek op functie 
+          Zoek op functie
         </div>
         <md-radio-group ng-init="search.is_superuser = ''" ng-model="search.is_superuser" class="md-primary">
           <md-radio-button value="" selected>All</md-radio-button>

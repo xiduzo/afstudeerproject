@@ -14,7 +14,7 @@
         Global,
         TrelloApi,
         md5,
-        Notifications,
+        toastr,
         localStorageService
     ) {
 
@@ -32,7 +32,6 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.login = login;
         self.authenticateTrello = authenticateTrello;
-        self.setUser = setUser;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -65,28 +64,29 @@
                 TrelloApi.Rest('GET', 'members/me')
                 .then(function(response) {
                     localStorageService.set('trello_user', response);
-                    Notifications.simpleToast('Authentication succeeded');
-                    self.setUser(user, self.login_form.remember);
+                    toastr.success('Authentication succeeded');
+
+                    // Update the avatar hash
+                    if(response.uploadedAvatarHash) {
+                        user.avatar_hash = localStorageService.get('trello_user').uploadedAvatarHash;
+                        Account.patchAvatarHash(user);
+                    }
+                    Account.setUser(user, self.login_form.remember);
                 });
             })
             .catch(function() {
                 self.error = 'Verifieer een trello account om door te kunnen gaan.';
-                Notifications.simpleToast('Authentication failed');
+                toastr.error('Authentication failed');
             });
-        }
-
-        function setUser(user) {
-            Account.setUser(user, self.login_form.remember);
         }
 
         function login() {
             Account.login(self.login_form.username, self.login_form.password, self.login_type)
                 .then(function(response) {
                     if(response.uid) {
-
                         var logged_in_user  = {
                             uid:               response.uid[0],
-                            student_number:    response.hvastudentnumber ? response.hvastudentnumber[0] : null,
+                            student_number:    response.hvastudentnumber ? response.hvastudentnumber[0] : response.employeenumber[0],
                             email:             response.mail[0].toLowerCase(),
                             initials:          response.initials[0],
                             first_name:        response.displayname[0],
@@ -97,18 +97,14 @@
                             is_superuser:      false,
                         };
 
-                        Account.checkForExistingUser(logged_in_user.email)
+                        Account.checkForExistingUser(logged_in_user.student_number)
                         .then(function(response) {
                             if(response.status === -1) {
                                 return Global.noConnection();
                             }
                             if(response.length) {
                                 response[0].password = md5(self.login_form.password);
-                                if(!localStorageService.get('trello_user')) {
-                                    self.authenticateTrello(response[0]);
-                                } else {
-                                    self.setUser(response[0], self.login_form.remember);
-                                }
+                                self.authenticateTrello(response[0]);
                             } else {
                                 // TODO
                                 // When the user is logging in for the first times
@@ -126,11 +122,7 @@
                                     }
                                     if(response) {
                                         logged_in_user.password = md5(self.login_form.password);
-                                        if(!localStorageService.get('trello_user')) {
-                                            self.authenticateTrello(response);
-                                        } else {
-                                            self.setUser(response, self.login_form.remember);
-                                        }
+                                        self.authenticateTrello(response);
                                     }
                                 })
                                 .catch(function() {
@@ -149,7 +141,7 @@
                           return Global.noConnection();
                         }
                         self.error = response.message;
-                        Notifications.simpleToast(response.message);
+                        toastr.error(response.message);
                       }
                     }
                 });

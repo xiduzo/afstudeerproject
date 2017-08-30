@@ -34,6 +34,7 @@
         self.logout = logout;
 
 
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -42,6 +43,8 @@
         self.route_title = '';
         self.back_route = null;
         self.back_route_params = null;
+
+        console.log(localStorageService.get('trello_user'));
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic

@@ -22,9 +22,10 @@
                     md-items="player in aasCtrl.filter_users | orderBy:['displayname', 'surname']"
                     placeholder="Zoek {{ aasCtrl.about }}"
                     md-menu-class="aas__autocomplete">
-                    <md-item-template class="item--metadata"
+                    <md-item-template class="item--metadata">
                         <span class="item--metastat">
-                            <img class="round size--24" gravatar-size="24" gravatar-src="player.email">
+                          <img ng-if="player.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{player.avatar_hash}}/30.png">
+                          <img ng-if="!player.avatar_hash" class="round size--30" gravatar-size="30" gravatar-src="player.email">
                         </span>
                         <span class="item--metastat" md-highlight-text="aasCtrl.search_text" md-highlight-flags="^i">
                             {{ player.filter_name }}

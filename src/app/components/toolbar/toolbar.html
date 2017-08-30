@@ -90,25 +90,14 @@
             </section>
         </section>
         <section layout layout-align="start center">
-            <md-menu-bar style="padding: 0;">
+            <md-menu-bar layout layout-align="start center">
                 <md-menu>
-                    <md-button layout layout-align="center center" ng-click="$mdMenu.open()" style="margin: 6px 0; padding: 0;" aria-label="user image">
-                        <img class="round" gravatar-size=32 gravatar-src-once="toolbarCtrl.user.email">
-                    </md-button>
-                    <md-menu-content class="main__toolbar__menu">
-                        <md-menu-item>
-                            <md-button layout href="https://nl.gravatar.com/site/login" target="_BLANK" aria-label="set gravatar">
-                                <md-icon md-menu-align-target md-svg-icon="refresh_dark" class="icon__helper"></md-icon>
-                                <p flex>Wijzig je afbeelding!</p>
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-            </md-menu-bar>
-            <md-menu-bar layout layout-align="start center" style="padding: 0 20px 0 0;">
-                <md-menu>
-                    <md-button ng-click="$mdMenu.open()" style="margin: 6px 0; padding: 0;">
-                        <strong layout-padding>
+                    <md-button layout ng-click="$mdMenu.open()">
+                        <div layout style="padding-right: 8px;">
+                            <img ng-if="toolbarCtrl.user.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{toolbarCtrl.user.avatar_hash}}/30.png">
+                            <img ng-if="!toolbarCtrl.user.avatar_hash" class="round size--30" gravatar-size="30" gravatar-src="user.email">
+                        </div>
+                        <strong>
                             {{ toolbarCtrl.user | fullUserName }}
                         </strong>
                         <md-icon md-svg-src="expand_more_dark"></md-icon>

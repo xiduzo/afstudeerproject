@@ -32,7 +32,8 @@
       <section layout layout-wrap>
           <span flex=100 flex-gt-md=50 layout="column" layout-align="start center" layout-padding
               ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
-              <img class="round" gravatar-size="60" gravatar-src-once="gamemaster.email">
+              <img ng-if="gamemaster.avatar_hash" class="round" src="http://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/50.png">
+              <img ng-if="!gamemaster.avatar_hash" class="round" gravatar-size="50" gravatar-src="gamemaster.email">
               <span style="text-align: center;">
                 {{ gamemaster | fullUserName }}
               </span>

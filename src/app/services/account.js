@@ -31,6 +31,7 @@
         service.getLecturers = getLecturers;
         service.getStudents = getStudents;
         service.patchUser = patchUser;
+        service.patchAvatarHash = patchAvatarHash;
 
         return service;
 
@@ -71,12 +72,12 @@
             $state.go('base.account.login');
         }
 
-        function checkForExistingUser(email) {
+        function checkForExistingUser(student_number) {
             return $http({
                 url: REST_API_URL + 'user/users/',
                 method: "GET",
                 params: {
-                    email: email
+                    student_number: student_number
                 }
             })
             .then(function(response) {
@@ -87,6 +88,9 @@
         }
 
         function setUser(user, remember) {
+            if(localStorageService.get('trello_user').uploadedAvatarHash) {
+                user.avatar = localStorageService.get('trello_user').uploadedAvatarHash;
+            }
             if(remember) {
                 localStorageService.set('user', user);
             }
@@ -168,6 +172,22 @@
                 method: "PATCH",
                 data: {
                     is_superuser: user.is_superuser
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            })
+            .catch(function(error) {
+                return error;
+            });
+        }
+
+        function patchAvatarHash(user) {
+            return $http({
+                url: REST_API_URL + 'user/users/' + user.id + '/',
+                method: "PATCH",
+                data: {
+                    avatar_hash: user.avatar_hash
                 }
             })
             .then(function(response) {
