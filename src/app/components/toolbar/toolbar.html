@@ -17,7 +17,7 @@
                 </h1>
                 <md-menu-bar ng-if="toolbarCtrl.access === 1" layout>
                     <md-icon md-svg-src="guild_dark" ng-class="{
-                        'icon--color--grey': toolbarCtrl.guilds.length === 0
+                        'icon__color--grey': toolbarCtrl.guilds.length === 0
                     }"></md-icon>
                     <md-menu ng-if="toolbarCtrl.guilds.length >= 2">
                         <md-button ng-click="$mdMenu.open()">
@@ -53,7 +53,7 @@
                 </md-menu-bar>
                 <md-menu-bar ng-if="toolbarCtrl.access >= 2" layout>
                     <md-icon md-svg-src="world_dark" ng-class="{
-                        'icon--color--grey': toolbarCtrl.worlds.length === 0
+                        'icon__color--grey': toolbarCtrl.worlds.length === 0
                     }"></md-icon>
                     <md-menu ng-if="toolbarCtrl.worlds.length >= 2">
                         <md-button ng-click="$mdMenu.open()">

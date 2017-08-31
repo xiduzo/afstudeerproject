@@ -167,6 +167,7 @@
             rule.selected = false;
             self.toggleRule(rule, guild);
             rule = null;
+            toastr.success('Afspraak verwijdert');
         }
 
         function toggleRule(rule, guild) {
@@ -216,27 +217,12 @@
             })
             .then(function(response) {
                 if(!response.type ||
-                !response.importance ||
                 !response.rule) {
                     return toastr.warning('Vul alle velden in');
                 }
 
-                if(response.importance >= 95) {
-                    response.points = 13;
-                } else if (response.importance > 70) {
-                    response.points = 8;
-                } else if (response.importance > 40) {
-                    response.points = 5;
-                } else if (response.importance > 20) {
-                    response.points = 3;
-                } else if (response.importance > 10) {
-                    response.points = 2;
-                } else {
-                    response.points = 1;
-                }
-
                 var tempObj = {
-                    points: response.points,
+                    points: 14,
                     rule: response.rule,
                     rule_type: response.type,
                     selected: true,
@@ -244,6 +230,8 @@
                 };
                 guild.own_rule = (tempObj);
                 self.toggleRule(tempObj, guild);
+
+                toastr.success('Afspraak toegevoegd');
             }, function() {
                 // Err dialog
             });
@@ -315,6 +303,8 @@
             if(endorsement) {
                 Guild.patchEndorsement(endorsement.id, rating)
                 .then(function(response) {
+                    // Update the rating in the memory
+                    endorsement.rating = response.rating;
                     toastr.success('Je feedback is opgeslagen');
                 })
                 .catch(function(error) {
@@ -323,6 +313,12 @@
             } else {
                 Guild.addEndorsement(rule.id, user.id, self.user.id, week, rating)
                 .then(function(response) {
+                    // Yeah this is fucked up, bc of the ng-init for rating check
+                    // but the deadline is near and i dont have a faster sollution for not
+                    // #sorrynotsorry
+                    response.rule = {
+                        id: response.rule
+                    }
                     rule.endorsements.push(response);
                     toastr.success('Je feedback is opgeslagen');
                 })

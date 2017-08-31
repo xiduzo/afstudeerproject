@@ -43,7 +43,7 @@
                 <md-card flex>
                   <md-card-header>
                     <md-card-avatar>
-                      <md-icon md-svg-src="warning_light" class="background--color--red icon--size--36"></md-icon>
+                      <md-icon md-svg-src="warning_light" class="background--color--red icon__size--36"></md-icon>
                     </md-card-avatar>
                     <md-card-header-text>
                       <span class="md-title">
@@ -83,7 +83,7 @@
                   <section class="background--color--grey--1" layout layout-align="center center">
                     <md-card-actions>
                       <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK" ng-if="activity.link">
-                        <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
+                        <md-icon md-svg-src="external_link_dark" class="icon__color--grey"></md-icon>
                         <md-tooltip md-delay="1500">
                           Bekijk op Trello
                         </md-tooltip>
@@ -108,7 +108,7 @@
               <md-optgroup label="Type">
                 <md-option ng-value="undefined"> Alle </md-option>
                 <md-option ng-value="action_type.type" ng-repeat="action_type in guildActivityCtrl.action_types" layout layout-align="start center">
-                  <md-icon class="icon__helper icon--color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
+                  <md-icon class="icon__helper icon__color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
                   {{ action_type.name }}
                 </md-option>
               </md-optgroup>

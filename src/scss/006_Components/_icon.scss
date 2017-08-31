@@ -1,5 +1,5 @@
 .icon {
-    &--size {
+    &__size {
         @each $size in $sizes {
             &--#{$size} {
                 width: $size + px;
@@ -7,7 +7,7 @@
             }
         }
     }
-    &--color {
+    &__color {
         @each $name, $color in $colors {
             &--#{$name} {
                 svg {

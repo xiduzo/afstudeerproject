@@ -3,13 +3,13 @@
         <md-card-content layout="column">
 
             <section layout="column" layout-align="center center">
-                <md-icon layout-padding class="icon--size--96" md-svg-src="cmd_unicorn"></md-icon>
+                <md-icon layout-padding class="icon__size--96" md-svg-src="cmd_unicorn"></md-icon>
                 <h1 class="md-headline">Enter Athena</h1>
             </section>
 
             <!-- User login -->
             <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;" layout>
-              <md-icon md-svg-src="warning_dark" class="icon--color--red icon__helper" layout></md-icon>
+              <md-icon md-svg-src="warning_dark" class="icon__color--red icon__helper" layout></md-icon>
               <span flex>
                 {{ accountLoginCtrl.error }}
               </span>

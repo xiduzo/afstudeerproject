@@ -1,10 +1,10 @@
 <section layout-fill layout="column" layout-align="center center">
     <span ng-if="emptyStateCtrl.icon">
         <md-button ng-if="emptyStateCtrl.hasAction">
-            <md-icon class="icon--size--192 icon--color--grey md-icon-button" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
+            <md-icon class="icon__size--192 icon__color--grey md-icon-button" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
             </md-icon>
         </md-button>
-        <md-icon ng-if="!emptyStateCtrl.hasAction" class="icon--size--192 icon--color--grey" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
+        <md-icon ng-if="!emptyStateCtrl.hasAction" class="icon__size--192 icon__color--grey" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
         </md-icon>
     </span>
     <span class="md-headline">
