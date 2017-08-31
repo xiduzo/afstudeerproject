@@ -17,19 +17,20 @@
         $locationProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
-        ScrollBarsProvider,
         cfpLoadingBarProvider,
         TrelloApiProvider,
         toastrConfig,
         DEBUG_ENABLED,
         TRELLO_KEY,
-        TRELLO_SECRET
+        TRELLO_SECRET,
+        CREDENTIAL_USER,
+        CREDENTIAL_PASS
     ) {
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Credentials
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode('bigd' + ':' + 'aapnootbier');
+        $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode(CREDENTIAL_USER + ':' + CREDENTIAL_PASS);
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provider
@@ -243,20 +244,6 @@
             .icon('cmd_unicorn', './assets/icons/cmd/unicorn.svg', 48)
             .icon('cmd_book', './assets/icons/cmd/book.svg', 48)
         ; // End icon provier
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Fancy scrollbars \o.0/
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        ScrollBarsProvider.defaults = {
-            scrollButtons: {
-                scrollAmount: 'auto',
-                enable: false,
-            },
-            scrollInertia: 75,
-            axis: 'y', // 'y' || 'x' || 'yx'
-            theme: 'minimal-dark',
-            autoHideScrollbar: true,
-        };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Gravatar

@@ -18,10 +18,13 @@
           <md-content flex=80 layout-fill layout-padding md-whiteframe=1 id="main__content">
             <section>
               <md-card>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">Samenwerkingscontract</span>
+                  </md-card-title-text>
+                  <md-card-title-media>
+                </md-card-title>
                 <md-card-content>
-                  <h1 class="md-headline">
-                    Samenwerkingscontract
-                  </h1>
                   <p>
                     Om de samenwerking zo eerlijk mogenlijk te laten verlopen
                     vragen wij elke project team afspraken op te stellen.
@@ -109,28 +112,28 @@
                     Checklist
                 </span>
                 <md-list>
-                    <md-list-item layout>
+                    <md-list-item layout style="padding: 0;">
                       <span flex>
                         Houding ({{guild.requirements.attitude.selected}})
                       </span>
                       <md-icon ng-if="!guild.requirements.attitude.check" md-svg-src="close_dark" class="icon__color--red"></md-icon>
                       <md-icon ng-if="guild.requirements.attitude.check" md-svg-src="done_dark" class="icon__color--green"></md-icon>
                     </md-list-item>
-                    <md-list-item layout>
+                    <md-list-item layout style="padding: 0;">
                       <span flex>
                         Functioneren binnen het team ({{guild.requirements.functioning.selected}})
                       </span>
                       <md-icon ng-if="!guild.requirements.functioning.check" md-svg-src="close_dark" class="icon__color--red"></md-icon>
                       <md-icon ng-if="guild.requirements.functioning.check" md-svg-src="done_dark" class="icon__color--green"></md-icon>
                     </md-list-item>
-                    <md-list-item layout>
+                    <md-list-item layout style="padding: 0;">
                       <span flex>
                         Kennisontwikkeling ({{guild.requirements.knowledge.selected}})
                       </span>
                       <md-icon ng-if="!guild.requirements.knowledge.check" md-svg-src="close_dark" class="icon__color--red"></md-icon>
                       <md-icon ng-if="guild.requirements.knowledge.check" md-svg-src="done_dark" class="icon__color--green"></md-icon>
                     </md-list-item>
-                    <md-list-item layout>
+                    <md-list-item layout style="padding: 0;">
                       <span flex>
                         Verantwoording ({{guild.requirements.justification.selected}})
                       </span>

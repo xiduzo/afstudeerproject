@@ -110,7 +110,7 @@
             })
             .then(function(response) {
                 return $http({
-                    url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id,
+                    url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id + '/',
                     method: "PATCH",
                     data: {
                         guild: newGuild.url

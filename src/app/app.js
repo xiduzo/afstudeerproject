@@ -14,7 +14,6 @@
             'ui.gravatar',
             'LocalStorageModule',
             'ngMaterial',
-            'ngScrollbars',
             'dndLists',
             'angular-loading-bar',
             'cfp.hotkeys',

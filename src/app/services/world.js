@@ -157,7 +157,7 @@
             })
             .then(function(response) {
                 return $http({
-                    url: response.data[0].url,
+                    url: REST_API_URL + 'world/userInWorld/' + response.data[0].id + '/',
                     method: "PATCH",
                     data: {
                         world: newWorld.url

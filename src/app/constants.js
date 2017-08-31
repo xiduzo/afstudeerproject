@@ -9,6 +9,9 @@
         // .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
         .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
 
+        .constant('CREDENTIAL_USER', 'bigd')
+        .constant('CREDENTIAL_PASS', 'aapnootbier')
+
         .constant('TRELLO_KEY', '85ea9af753540fb15c161d5eedd67a49')
         .constant('TRELLO_SECRET', '92b46d2d43997521d21894e6f88b843ddae5d903163d813356cfa7b376a85e2b')
         .constant('TRELLO_USER_ID', '5810c2cf05262a2228ff17ae')
