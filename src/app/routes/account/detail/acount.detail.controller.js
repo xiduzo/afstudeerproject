@@ -7,15 +7,10 @@
 
     /** @ngInject */
     function AccountDetailController(
-        $mdDialog,
         $rootScope,
-        $state,
         Global,
         TrelloApi,
-        md5,
         Account,
-        Notifications,
-        localStorageService,
         STUDENT_ACCESS_LEVEL
     ) {
 

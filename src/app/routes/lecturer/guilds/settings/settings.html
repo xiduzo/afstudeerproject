@@ -1,12 +1,14 @@
 <cmd-loading-page ng-if="guildSettingsCtrl.loading_page"></cmd-loading-page>
 
 <section layout-fill layout ng-if="!guildSettingsCtrl.loading_page">
-  <md-content layout="column" layout-padding flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
+  <md-content layout="column" layout-padding flex=80 layout-fill md-whiteframe=1 id="main__content">
     <md-card>
+      <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Instellingen</span>
+          </md-card-title-text>
+        </md-card-title>
       <md-card-content>
-        <h1 class="md-title text--color--grey">
-          Instellingen
-        </h1>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>Trello bord</span>
           <md-input-container class="md-block">

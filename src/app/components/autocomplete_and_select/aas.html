@@ -25,7 +25,7 @@
                     <md-item-template class="item--metadata">
                         <span class="item--metastat">
                           <img ng-if="player.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{player.avatar_hash}}/30.png">
-                          <img ng-if="!player.avatar_hash" class="round size--30" gravatar-size="30" gravatar-src="player.email">
+                          <img ng-if="!player.avatar_hash" class="round" gravatar-size="30" gravatar-src="player.email">
                         </span>
                         <span class="item--metastat" md-highlight-text="aasCtrl.search_text" md-highlight-flags="^i">
                             {{ player.filter_name }}
@@ -43,7 +43,8 @@
                     </h3>
                     <md-list-item ng-repeat="player in aasCtrl.selected_users">
                         <div flex="20" layout-align="center center">
-                            <img class="round" gravatar-size="50" gravatar-src="player.email">
+                            <img ng-if="player.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{player.avatar_hash}}/50.png">
+                            <img ng-if="!player.avatar_hash" class="round" gravatar-size="50" gravatar-src="player.email">
                         </div>
                         <p flex>
                             {{ player.filter_name }}
@@ -57,10 +58,11 @@
                     </md-list-item>
                 </md-list>
             </md-content>
-            <md-list ng-scrollbars style="max-height: 50vh;">
+            <md-list style="max-height: 50vh;">
                 <md-list-item ng-repeat="player in aasCtrl.users_without_world">
                     <div flex="20" layout-align="center center">
-                        <img class="round" gravatar-size="50" gravatar-src="player.email">
+                        <img ng-if="player.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{player.avatar_hash}}/50.png">
+                        <img ng-if="!player.avatar_hash" class="round" gravatar-size="50" gravatar-src="player.email">
                     </div>
                     <p flex>
                         {{ player | fullUserName }}

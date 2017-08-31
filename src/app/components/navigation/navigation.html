@@ -17,7 +17,7 @@
         </md-toolbar>
     </section>
 
-    <md-content flex ng-scrollbars>
+    <md-content flex>
         <section ng-repeat="group in navigationCtrl.main_navigation"
             ng-if="_.contains(group.access_levels, navigationCtrl.access)">
             <md-list>

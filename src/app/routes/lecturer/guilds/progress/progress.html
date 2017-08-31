@@ -1,63 +1,55 @@
 <cmd-loading-page ng-if="guildDetailProgressCtrl.loading_page"></cmd-loading-page>
 
-<section layout-fill ng-if="!guildDetailProgressCtrl.loading_page">
-    <cmd-empty-state ng-if="guildDetailProgressCtrl.guild.no_trello_settings"
-    icon="settings_dark"
-    headline="Trello not configured"
-    title="Wait for a lecturer to configure this team correctly.">
-    </cmd-empty-state>
-    <cmd-empty-state ng-if="guildDetailProgressCtrl.guild.no_world_settings"
-    icon="settings_dark"
-    headline="Class not configured"
-    title="Wait for a coordinator to configure this class correctly.">
-    </cmd-empty-state>
+<section layout flex ng-if="!guildDetailProgressCtrl.loading_page">
+  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+      <section layout layout-wrap layout-fill>
+        <div layout="column" flex layout-margin>
+          <section layout style="min-height: 460px;">
+              <md-card flex=60 id="cards_per_week" md-whiteframe=1></md-card>
+              <md-card flex=40 id="cards_total" md-whiteframe=1></md-card>
+          </section>
+          <section>
+            <md-card>
+              <md-toolbar>
+                <div class="md-toolbar-tools" flex layout>
+                  <span flex=5>
+                  <!-- Color -->
+                  </span>
+                  <span flex=25>
+                    Groepslid
+                  </span>
+                  <span flex=70>
+                    Focus
+                  </span>
+                </div>
+              </md-toolbar>
+              <md-list>
+                <md-list-item ng-repeat="member in guildDetailProgressCtrl.board.members" flex layout style="padding: 0 16px;">
+                  <span flex=5 layout layout-align="center center">
+                    <div style="width: 25px; height: 25px;" ng-style="{ 'background': member.color }"></div>
+                  </span>
+                  <span flex=25>
+                    {{ member.name }}
+                  </span>
+                  <span flex=70 layout class="focuses">
+                    <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
+                      <span class="md-caption" ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
+                          {{ (focus.name || focus.color) | limitTo : (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100 }}<span ng-if="(focus.name || focus.color).length > (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100">...</span>
+                      </span>
+                      <md-tooltip md-delay="500">
+                        {{ focus.name || focus.color }}
+                        <strong>
+                            {{ focus.times * 100 / member.total_focus | number : 0 }}%
+                        </strong>
+                      </md-tooltip>
+                     </div>
+                  </span>
+                </md-list-item>
+              </md-list>
+            </md-card>
+          </section>
 
-    <section ng-if="!guildDetailProgressCtrl.guild.no_trello_settings && !guildDetailProgressCtrl.guild.no_world_settings" layout layout-fill>
-      <md-content layout="column" layout-padding flex=100 layout-fill ng-scrollbars md-whiteframe=1 id="main__content">
-        <section layout layout-margin>
-            <section flex=60 id="cards_per_week" md-whiteframe=1></section>
-            <section flex=40 id="cards_total" md-whiteframe=1></section>
-        </section>
-        <section>
-          <md-card>
-            <md-toolbar>
-              <div class="md-toolbar-tools" flex layout>
-                <span flex=5>
-                <!-- Color -->
-                </span>
-                <span flex=25>
-                  Groepslid
-                </span>
-                <span flex=70>
-                  Focus
-                </span>
-              </div>
-            </md-toolbar>
-            <md-list>
-              <md-list-item ng-repeat="member in guildDetailProgressCtrl.board.members | orderBy: ['-completed_cards', '-cards.length']" flex layout style="padding: 0 16px;">
-                <span flex=5 layout layout-align="center center">
-                  <div style="width: 25px; height: 25px;" ng-style="{ 'background': member.color }"></div>
-                </span>
-                <span flex=25>
-                  {{ member.name }}
-                </span>
-                <span flex=70 layout class="focuses">
-                  <div ng-repeat="focus in member.focus | orderBy : '-times'" class="focus focus--{{focus.color}} flex-{{ focus.times * 100 / member.total_focus | roundUp5 }}">
-                    <span class="md-caption" ng-if="(focus.times * 100 / member.total_focus | roundUp5) >= 20">
-                        {{ (focus.name || focus.color) | limitTo : (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100 }}<span ng-if="(focus.name || focus.color).length > (focus.times * 100 / member.total_focus | roundUp5) * 55 / 100">...</span>
-                    </span>
-                    <md-tooltip md-delay="500">
-                      {{ focus.name || focus.color }}
-                      <strong>
-                          {{ focus.times * 100 / member.total_focus | number : 0 }}%
-                      </strong>
-                    </md-tooltip>
-                   </div>
-                </span>
-              </md-list-item>
-            </md-list>
-          </md-card>
-        </section>
-      </md-content>
-    </section>
+        </div>
+      </section>
+  </md-content>
 </section>

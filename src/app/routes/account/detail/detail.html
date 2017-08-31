@@ -1,99 +1,104 @@
 <cmd-loading-page ng-if="accountDetailCtrl.loading_page"></cmd-loading-page>
-<section ng-if="!accountDetailCtrl.loading_page" layout-fill>
-  <md-content layout-fill layout-padding ng-scrollbars id="main__content">
-    <md-card>
-      <md-card-title>
-        <md-card-avatar class="icon__helper" layout="column" layout-align="center center">
-            <img ng-if="accountDetailCtrl.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{accountDetailCtrl.user.avatar_hash}}/50.png">
-            <img ng-if="!accountDetailCtrl.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="accountDetailCtrl.user.email">
-        </md-card-avatar>
-        <md-card-title-text>
-          <h1 class="md-headline" style="margin: 0;">
-            {{ accountDetailCtrl.user | fullUserName }}
-          </h1>
-          <span class="md-subhead">
-            <span ng-if="accountDetailCtrl.user.is_superuser">Coordinator</span>
-            <span ng-if="accountDetailCtrl.user.is_superuser && accountDetailCtrl.user.is_staff"> / </span>
-            <span ng-if="accountDetailCtrl.user.is_staff">Docent</span>
-            <span ng-if="!accountDetailCtrl.user.is_superuser && !accountDetailCtrl.user.is_staff">Student</span>
-          </span>
-        </md-card-title-text>
-      </md-card-title>
-      <md-divider></md-divider>
-      <md-card-content>
-        <section layout layout-wrap>
-          <md-list flex=50>
-            <h2 class="md-headline text--color--grey">
-              Algemene informatie
-            </h2>
-            <md-list-item layout ng-if="accountDetailCtrl.user.student_number">
-              <span flex=40> Studentnummer </span>
-              <span class="text--color--grey">
-                {{ accountDetailCtrl.user.student_number }}
+
+<section layout flex ng-if="!accountDetailCtrl.loading_page">
+  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+    <section layout layout-wrap layout-fill>
+      <div flex layout-margin>
+        <md-card flex>
+          <md-card-title>
+            <md-card-avatar class="icon__helper" layout="column" layout-align="center center">
+                <img ng-if="accountDetailCtrl.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{accountDetailCtrl.user.avatar_hash}}/50.png">
+                <img ng-if="!accountDetailCtrl.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="accountDetailCtrl.user.email">
+            </md-card-avatar>
+            <md-card-title-text>
+              <h1 class="md-headline" style="margin: 0;">
+                {{ accountDetailCtrl.user | fullUserName }}
+              </h1>
+              <span class="md-subhead">
+                <span ng-if="accountDetailCtrl.user.is_superuser">Coordinator</span>
+                <span ng-if="accountDetailCtrl.user.is_superuser && accountDetailCtrl.user.is_staff"> / </span>
+                <span ng-if="accountDetailCtrl.user.is_staff">Docent</span>
+                <span ng-if="!accountDetailCtrl.user.is_superuser && !accountDetailCtrl.user.is_staff">Student</span>
               </span>
-            </md-list-item>
-            <md-list-item layout>
-              <span flex=40> Email </span>
-              <span class="text--color--grey">
-                 {{ accountDetailCtrl.user.email }}
-              </span>
-            </md-list-item>
-            <md-list-item layout>
-              <span flex=40> Athena lid sinds </span>
-              <span class="text--color--grey">
-                 {{ accountDetailCtrl.user.created_at | momentDate : 'DD MMMM YYYY' }}
-              </span>
-            </md-list-item>
-          </md-list>
-          <md-list flex=50>
-            <h2 class="md-headline text--color--grey">
-              Instellingen
-            </h2>
-            <md-list-item layout>
-              <span flex=60 layout="column">
-                <div>
-                  Gebruik hotkeys
-                  <em class="text--color--grey">
-                    (shift + ?)
-                  </em>
-                </div>
-                <span class="text--color--grey">
-                  Gebruik hotkeys voor snelle navigatie door het platform.
-                </span>
-              </span>
-              <div>
-                  <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_hotkeys" aria-label="hotkeys">
-                  </md-switch>
-              </div>
-            </md-list-item>
-            <md-list-item layout>
-              <span flex=60 layout="column">
-                Vraag om bevestiging
-                <span class="text--color--grey">
-                  Gebruik deze optie om te voorkomen dat je perongeluk essenti&euml;le data verwijderd.
-                </span>
-              </span>
-              <span>
-                <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_confirmation" aria-label="confirmation">
-                </md-switch>
-              </span>
-            </md-list-item>
-          </md-list>
-          <md-list flex=50>
-            <h2 class="md-headline text--color--grey">
-              Trello
-            </h2>
-            <md-list-item layout>
-              <span flex=40> Trello gebruiker </span>
-              <span>
-                <a href="http://www.trello.com/{{ accountDetailCtrl.trello_account.username }}" target="_BLANK">
-                    @{{ accountDetailCtrl.trello_account.username }}
-                </a>
-              </span>
-            </md-list-item>
-          </md-list>
-        </section>
-      </md-card-content>
-    </md-card>
+            </md-card-title-text>
+          </md-card-title>
+          <md-divider></md-divider>
+          <md-card-content>
+            <section layout layout-wrap>
+              <md-list flex=100 flex-gt-sm="50">
+                <h2 class="md-headline text--color--grey">
+                  Algemene informatie
+                </h2>
+                <md-list-item layout ng-if="accountDetailCtrl.user.student_number">
+                  <span flex=40> Studentnummer </span>
+                  <span class="text--color--grey">
+                    {{ accountDetailCtrl.user.student_number }}
+                  </span>
+                </md-list-item>
+                <md-list-item layout>
+                  <span flex=40> Email </span>
+                  <span class="text--color--grey">
+                     {{ accountDetailCtrl.user.email }}
+                  </span>
+                </md-list-item>
+                <md-list-item layout>
+                  <span flex=40> Athena lid sinds </span>
+                  <span class="text--color--grey">
+                     {{ accountDetailCtrl.user.created_at | momentDate : 'DD MMMM YYYY' }}
+                  </span>
+                </md-list-item>
+              </md-list>
+              <md-list flex=100 flex-gt-sm="50">
+                <h2 class="md-headline text--color--grey">
+                  Instellingen
+                </h2>
+                <md-list-item layout>
+                  <span flex=60 layout="column">
+                    <div>
+                      Gebruik hotkeys
+                      <em class="text--color--grey">
+                        (shift + ?)
+                      </em>
+                    </div>
+                    <span class="text--color--grey">
+                      Gebruik hotkeys voor snelle navigatie door het platform.
+                    </span>
+                  </span>
+                  <div>
+                      <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_hotkeys" aria-label="hotkeys">
+                      </md-switch>
+                  </div>
+                </md-list-item>
+                <md-list-item layout>
+                  <span flex=60 layout="column">
+                    Vraag om bevestiging
+                    <span class="text--color--grey">
+                      Gebruik deze optie om te voorkomen dat je perongeluk essenti&euml;le data verwijderd.
+                    </span>
+                  </span>
+                  <span>
+                    <md-switch class="md-primary" ng-change="accountDetailCtrl.patchLocalSettings()" ng-model="accountDetailCtrl.local_settings.enabled_confirmation" aria-label="confirmation">
+                    </md-switch>
+                  </span>
+                </md-list-item>
+              </md-list>
+              <md-list flex=50>
+                <h2 class="md-headline text--color--grey">
+                  Trello
+                </h2>
+                <md-list-item layout>
+                  <span flex=40> Trello gebruiker </span>
+                  <span>
+                    <a href="http://www.trello.com/{{ accountDetailCtrl.trello_account.username }}" target="_BLANK">
+                        @{{ accountDetailCtrl.trello_account.username }}
+                    </a>
+                  </span>
+                </md-list-item>
+              </md-list>
+            </section>
+          </md-card-content>
+        </md-card>
+      </div>
+    </section>
   </md-content>
 </section>

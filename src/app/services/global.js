@@ -12,7 +12,8 @@
         $rootScope,
         localStorageService,
         Account,
-        Notifications
+        Notifications,
+        toastr
     ) {
 
         var self = this;
@@ -45,10 +46,10 @@
                 return Number(self.access);
             },
             notAllowed: function() {
-                Notifications.simpleToast('You are not allowed to view this page');
+                toastr.warning('Je bent niet gemachtigd deze pagina te bekijken');
             },
             noConnection: function() {
-                Notifications.simpleToast('There seems to be a problem establishing a database connection');
+                toastr.error('Er lijkt iets mis te gaan met de database connectie');
             },
             statusCode: function(response) {
                 Notifications.simpleToast(response.status+': '+response.statusText);
@@ -140,7 +141,7 @@
             setLocalSettings: function(settings) {
                 self.local_settings = settings;
                 localStorageService.set('settings', self.local_settings);
-                Notifications.simpleToast('Settings patched');
+                toastr.success('Instelling opgeslagen');
             },
         };
 
