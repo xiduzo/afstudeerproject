@@ -295,8 +295,8 @@
             // Adding in some fun for the users
             if(Math.round(Math.random() * 4) === 1) {
                 self.showBurst({
-                  x: event.originalEvent.pageX - event.originalEvent.offsetX + 12,
-                  y: event.originalEvent.pageY - event.originalEvent.offsetY + 12
+                  x: event.originalEvent.pageX - event.originalEvent.offsetX,
+                  y: event.originalEvent.pageY - event.originalEvent.offsetY
                 });
             }
 
@@ -314,12 +314,14 @@
                 Guild.addEndorsement(rule.id, user.id, self.user.id, week, rating)
                 .then(function(response) {
                     // Yeah this is fucked up, bc of the ng-init for rating check
-                    // but the deadline is near and i dont have a faster sollution for not
+                    // but the deadline is near and i dont have a faster sollution
                     // #sorrynotsorry
-                    response.rule = {
-                        id: response.rule
+                    response.rule_id = response.rule;
+                    if(!rule.endorsements) {
+                        rule.endorsements = [response];
+                    } else {
+                        rule.endorsements.push(response);
                     }
-                    rule.endorsements.push(response);
                     toastr.success('Je feedback is opgeslagen');
                 })
                 .catch(function(error) {

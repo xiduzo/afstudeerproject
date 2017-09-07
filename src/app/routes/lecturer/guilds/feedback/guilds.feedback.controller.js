@@ -179,13 +179,10 @@
                 });
                 _.each(data.line_data_total, function(points, index) {
                     if(points) {
-                        console.log(points);
                         self.graphs_data.line_total[index] += points;
                     }
                 });
             });
-
-            console.log(self.graphs_data.line_total);
 
             // Make sure the average is included in the graph as well
             self.graphs_data.line = [

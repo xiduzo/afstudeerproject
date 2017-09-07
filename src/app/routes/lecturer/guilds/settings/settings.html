@@ -2,44 +2,84 @@
 
 <section layout-fill layout ng-if="!guildSettingsCtrl.loading_page">
   <md-content layout="column" layout-padding flex=80 layout-fill md-whiteframe=1 id="main__content">
-    <md-card>
-      <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Instellingen</span>
-          </md-card-title-text>
-        </md-card-title>
-      <md-card-content>
-        <section layout layout-padding>
-          <span flex=50 flex-gt-sm=30>Trello bord</span>
-          <md-input-container class="md-block">
-            <label>
-              Trello bord
-            </label>
-            <md-select ng-model="guildSettingsCtrl.guild.trello_board" ng-change="guildSettingsCtrl.patchSettings()">
-              <md-option ng-value="board.id" ng-repeat="board in guildSettingsCtrl.trello_boards">
-                {{ board.name }}
-              </md-option>
-            </md-select>
-          </md-input-container>
-        </section>
-        <section layout layout-padding>
-          <span flex=50 flex-gt-sm=30>Done lijst</span>
-          <md-input-container class="md-block">
-            <label>
-              Done lijst
-            </label>
-            <md-select ng-model="guildSettingsCtrl.guild.trello_done_list" ng-change="guildSettingsCtrl.patchSettings()">
-              <md-option ng-value="list.id" ng-repeat="list in guildSettingsCtrl.trello_board_lists">
-                {{ list.name }}
-              </md-option>
-            </md-select>
-            <div class="hint text--color--grey">
-              Welke lijst is de 'done' lijst
+    <section>
+      <md-card>
+        <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">Instellingen</span>
+            </md-card-title-text>
+          </md-card-title>
+        <md-card-content>
+          <section layout layout-padding>
+            <span flex=50 flex-gt-sm=30>Trello bord</span>
+            <md-input-container class="md-block">
+              <label>
+                Trello bord
+              </label>
+              <md-select ng-model="guildSettingsCtrl.guild.trello_board" ng-change="guildSettingsCtrl.patchSettings()">
+                <md-option ng-value="board.id" ng-repeat="board in guildSettingsCtrl.trello_boards">
+                  {{ board.name }}
+                </md-option>
+              </md-select>
+            </md-input-container>
+          </section>
+          <section layout layout-padding>
+            <span flex=50 flex-gt-sm=30>Done lijst</span>
+            <md-input-container class="md-block">
+              <label>
+                Done lijst
+              </label>
+              <md-select ng-model="guildSettingsCtrl.guild.trello_done_list" ng-change="guildSettingsCtrl.patchSettings()">
+                <md-option ng-value="list.id" ng-repeat="list in guildSettingsCtrl.trello_board_lists">
+                  {{ list.name }}
+                </md-option>
+              </md-select>
+              <div class="hint text--color--grey">
+                Welke lijst is de 'done' lijst
+              </div>
+            </md-input-container>
+          </section>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <div flex>
+              Regel
             </div>
-          </md-input-container>
-        </section>
-      </md-card-content>
-    </md-card>
+            <div>
+              Punten
+            </div>
+          </div>
+        </md-toolbar>
+        <md-list>
+          <md-list-item ng-repeat="rule in guildSettingsCtrl.guild.rules | orderBy : rule.rule_type">
+            <span flex>
+              <md-icon class="icon__size--24"
+              md-svg-icon="work_dark"
+              ng-if="rule.rule_type === 1">
+              </md-icon>
+              <md-icon class="icon__size--24"
+              md-svg-icon="group_work_dark"
+              ng-if="rule.rule_type === 2">
+              </md-icon>
+              <md-icon class="icon__size--24"
+              md-svg-icon="lightbulb_dark"
+              ng-if="rule.rule_type === 3">
+              </md-icon>
+              <md-icon class="icon__size--24"
+              md-svg-icon="description_dark"
+              ng-if="rule.rule_type === 4">
+              </md-icon>
+              De student {{ rule.rule }}
+            </span>
+            <span>
+              {{ rule.points }}
+            </span>
+          </md-list-item>
+        </md-list>
+      </md-card>
+    </section>
   </md-content>
   <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
     <section>
@@ -50,7 +90,7 @@
           <span flex=100 flex-gt-md=50 layout="column" layout-align="start center" layout-padding
               ng-repeat="member in guildSettingsCtrl.guild.members">
               <img ng-if="member.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/50.png">
-              <img ng-if="!member.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="player.user.email">
+              <img ng-if="!member.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="member.user.email">
               <span style="text-align: center;">
                 {{ member.user | fullUserName }}
               </span>
