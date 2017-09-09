@@ -114,7 +114,7 @@
                 TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards' )
                 .then(function(response) {
                   _.each(response, function(card) {
-                    if(card.due && moment(card.due).isBefore(moment())) {
+                    if(card.due && moment(card.due).isBefore(moment()) && card.idList != guild.trello_done_list) {
                       guild.cards_overdue.push(card);
                     }
                   });
