@@ -43,6 +43,10 @@
         .then(function(response) {
             TrelloApi.Rest('GET', 'members/me')
             .then(function(response) {
+                if(response.uploadedAvatarHash) {
+                    self.user.avatar_hash = response.uploadedAvatarHash;
+                    Account.patchAvatarHash(self.user);
+                }
                 self.trello_account = response;
                 self.loading_page = false;
             });
