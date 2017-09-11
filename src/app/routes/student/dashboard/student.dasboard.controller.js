@@ -221,10 +221,29 @@
                 });
             });
 
+            var all_endorsements = [];
+
+            _.each(guild.members_data, function(member) {
+              _.each(member.endorsements, function(endorsement) {
+                endorsement.rule_id = endorsement.rule.id;
+                all_endorsements.push(endorsement);
+              });
+            });
+
+            console.log(all_endorsements);
+
             _.each(guild.members_data, function(member) {
                 _.each(member.endorsements, function(endorsement) {
-                    if(_.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week })) {
-                        _.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week }).y += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                    // Only add points when you have given feedback
+                    if(_.findWhere(all_endorsements, {
+                        week: endorsement.week,
+                        user: endorsement.endorsed_by,
+                        endorsed_by: endorsement.user,
+                        rule_id: endorsement.rule_id
+                    })) {
+                        if(_.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week })) {
+                            _.findWhere(_.findWhere(guild.members_data, {id: endorsement.user}).line_data, { week: endorsement.week }).y += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                        }
                     }
                 });
 
@@ -236,7 +255,15 @@
                     member.polar_data.push({
                         type: type,
                         points: _.reduce(endorsements, function(memo, endorsement) {
-                            memo.gained += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                            // Only add points when you have given points
+                            if(_.findWhere(all_endorsements, {
+                                week: endorsement.week,
+                                user: endorsement.endorsed_by,
+                                endorsed_by: endorsement.user,
+                                rule_id: endorsement.rule_id
+                            })) {
+                                memo.gained += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
+                            }
                             memo.total += endorsement.rule.points;
                             return memo;
                         }, {gained: 0, total: 0})

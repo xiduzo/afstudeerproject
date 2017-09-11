@@ -123,6 +123,15 @@
                 });
             });
 
+            var all_endorsements = [];
+
+            _.each(self.members_data, function(member) {
+              _.each(member.endorsements, function(endorsement) {
+                endorsement.rule_id = endorsement.rule.id;
+                all_endorsements.push(endorsement);
+              });
+            });
+
             _.each(self.members_data, function(member, index) {
                 // Order the endorsements
                 member.endorsements = _.groupBy(member.endorsements, function(endorsement) {
@@ -153,13 +162,20 @@
                                 });
                             }
 
-                            points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
-                            total_points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                            // Check if the user has given feedback of his own before receiving points
+                            if(_.findWhere(all_endorsements, {
+                                week: type_group.week,
+                                user: type_group.endorsed_by,
+                                endorsed_by: type_group.user,
+                                rule_id: type_group.rule_id
+                            })) {
+                              // Should receive points
+                              points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                              total_points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                              _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                            }
 
-                            // Also make sure the endorsement types are saved
-                            // per type on the user for the polar chart
-                            // and the total points which could be gathered
-                            _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).points += type_group.rating * type_group.rule.points / MAX_STAR_RATING;
+                            // For calculating the % of points gained on maximal points able to gain
                             _.findWhere(member.polar_data, { type: type_group.rule.rule_type }).total_points += type_group.rule.points;
                         });
                     });

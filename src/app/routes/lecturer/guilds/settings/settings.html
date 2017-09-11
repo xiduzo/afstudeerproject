@@ -55,19 +55,19 @@
         <md-list>
           <md-list-item ng-repeat="rule in guildSettingsCtrl.guild.rules | orderBy : rule.rule_type">
             <span flex>
-              <md-icon class="icon__size--24"
+              <md-icon class="icon__size--24 icon__helper"
               md-svg-icon="work_dark"
               ng-if="rule.rule_type === 1">
               </md-icon>
-              <md-icon class="icon__size--24"
+              <md-icon class="icon__size--24 icon__helper"
               md-svg-icon="group_work_dark"
               ng-if="rule.rule_type === 2">
               </md-icon>
-              <md-icon class="icon__size--24"
+              <md-icon class="icon__size--24 icon__helper"
               md-svg-icon="lightbulb_dark"
               ng-if="rule.rule_type === 3">
               </md-icon>
-              <md-icon class="icon__size--24"
+              <md-icon class="icon__size--24 icon__helper"
               md-svg-icon="description_dark"
               ng-if="rule.rule_type === 4">
               </md-icon>
