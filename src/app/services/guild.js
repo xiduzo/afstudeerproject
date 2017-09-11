@@ -27,6 +27,7 @@
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
         service.addGuildRule = addGuildRule;
+        service.removeGuildRule = removeGuildRule;
         service.addEndorsement = addEndorsement;
         service.removeEndorsement = removeEndorsement;
         service.patchEndorsement = patchEndorsement;
@@ -164,6 +165,15 @@
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
+        }
+
+        function removeGuildRule(rule) {
+          return $http({
+            url: REST_API_URL + 'guild/guildRules/' + rule.id + '/',
+            method: "DELETE"
+          })
+          .then(function(response) { return response.data;
+          }, function(error) { return error; });
         }
 
         function addEndorsement(rule, user, endorsed_by, week, rating) {

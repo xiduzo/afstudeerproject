@@ -35,6 +35,7 @@
         self.deleteGuild = deleteGuild;
         self.changeGuildName = changeGuildName;
         self.patchSettings = patchSettings;
+        self.deleteRule = deleteRule;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -55,7 +56,6 @@
                 }
                 Global.setRouteTitle('Team instellingen ' + response.name);
                 self.guild = response;
-                console.log(response);
 
                 TrelloApi.Authenticate()
                 .then(function(response) {
@@ -158,6 +158,35 @@
             .catch(function(error) {
                 console.log(error);
             });
+        }
+
+        function deleteRule(rule) {
+          if(Global.getLocalSettings().enabled_confirmation) {
+            Notifications.confirmation(
+                'Weet je zeker dat je deze regel wilt verwijderen?',
+                'Deze actie kan niet meer ongedaan worden.',
+                'verwijder regel',
+                event
+            )
+            .then(function() {
+                removeGuildRule(rule);
+            }, function() {
+                // No
+            });
+          } else {
+            removeGuildRule(rule);
+          }
+        }
+
+        function removeGuildRule(rule) {
+          Guild.removeGuildRule(rule)
+          .then(function(response) {
+            self.guild.rules.splice(self.guild.rules.indexOf(_.findWhere(self.guild.rules, { id: rule.id})), 1);
+            toastr.success("Regel is verwijdert");
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
         }
 
 

@@ -48,7 +48,7 @@
               Regel
             </div>
             <div>
-              Punten
+              Verwijder
             </div>
           </div>
         </md-toolbar>
@@ -73,9 +73,10 @@
               </md-icon>
               De student {{ rule.rule }}
             </span>
-            <span>
-              {{ rule.points }}
-            </span>
+            <md-button aria-label="Remove rule" class="md-icon-button" ng-click="guildSettingsCtrl.deleteRule(rule)">
+              <md-icon md-svg-icon="delete_dark">
+              </md-icon>
+            </md-button>
           </md-list-item>
         </md-list>
       </md-card>
