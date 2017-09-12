@@ -264,6 +264,7 @@
                             })) {
                                 memo.gained += endorsement.rating * endorsement.rule.points / MAX_STAR_RATING;
                             }
+                            // Allways add total points for spider chart
                             memo.total += endorsement.rule.points;
                             return memo;
                         }, {gained: 0, total: 0})
