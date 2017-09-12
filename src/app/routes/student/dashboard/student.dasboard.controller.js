@@ -230,8 +230,6 @@
               });
             });
 
-            console.log(all_endorsements);
-
             _.each(guild.members_data, function(member) {
                 _.each(member.endorsements, function(endorsement) {
                     // Only add points when you have given feedback
