@@ -226,7 +226,18 @@
             _.each(guild.members_data, function(member) {
               _.each(member.endorsements, function(endorsement) {
                 endorsement.rule_id = endorsement.rule.id;
-                all_endorsements.push(endorsement);
+                // Check if we allready have this one
+                if(_.findWhere(all_endorsements, {
+                    week: endorsement.week,
+                    user: endorsement.user,
+                    endorsed_by: endorsement.endorsed_by,
+                    rule_id: endorsement.rule_id
+                })) {
+                    // Remove rule endorsement
+                    Guild.removeEndorsement(endorsement.id);
+                } else {
+                    all_endorsements.push(endorsement);
+                }
               });
             });
 
