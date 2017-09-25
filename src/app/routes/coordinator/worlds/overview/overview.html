@@ -21,7 +21,7 @@
     <section ng-if="worldsOverviewCtrl.worlds.length >= 1" layout layout-fill>
       <md-content layout-padding flex layout-fill id="main__content">
         <section layout layout-wrap>
-          <div flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'created_at'">
+          <div flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'name'">
             <md-card>
                 <md-toolbar layout-align="end center" layout>
                     <md-card-title class="md-toolbar-tools">

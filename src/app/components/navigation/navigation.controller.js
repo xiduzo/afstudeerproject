@@ -186,88 +186,88 @@
         }
 
         function addHotkeys() {
-            if(self.user.is_superuser) {
-                hotkeys.bindTo($scope)
-                .add({
-                    combo: 'c',
-                    description: 'Goto classes',
-                    callback: function() {
-                        self.changeState('base.worlds.overview');
-                    }
-                })
-                .add({
-                    combo: 'r',
-                    description: 'Goto rules',
-                    callback: function() {
-                        self.changeState('base.rules.overview');
-                    }
-                })
-                ; // End of hotkeys
-            }
-
-            if(self.user.is_staff) {
-                hotkeys.bindTo($scope)
-                .add({
-                    combo: 'g',
-                    description: 'Goto groups',
-                    callback: function() {
-                        self.changeState('base.guilds.overview');
-                    }
-                })
-                .add({
-                    combo: 'd',
-                    description: 'Goto dashboard',
-                    callback: function() {
-                        self.changeState('base.home.dashboards.lecturer');
-                    }
-                })
-                ; // End of hotkeys
-            }
-
-            if(!self.user.is_superuser && !self.user.is_staff) {
-                hotkeys.bindTo($scope)
-                .add({
-                  combo: 'd',
-                  description: 'Goto dashboard',
-                  callback: function() {
-                    self.changeState('base.home.dashboards.student');
-                  }
-                })
-                .add({
-                    combo: 'w',
-                    description: 'Goto workload',
-                    callback: function() {
-                        self.changeState('base.guild.workload');
-                    }
-                })
-                .add({
-                    combo: 'f',
-                    description: 'Goto feedback',
-                    callback: function() {
-                        self.changeState('base.guild.rules');
-                    }
-                })
-                .add({
-                    combo: 'a',
-                    description: 'Goto activity log',
-                    callback: function() {
-                        self.changeState('base.guild.activity');
-                    }
-                })
-
-                ; // End of hotkeys
-            }
+            // if(self.user.is_superuser) {
+            //     hotkeys.bindTo($scope)
+            //     .add({
+            //         combo: 'c',
+            //         description: 'Goto classes',
+            //         callback: function() {
+            //             self.changeState('base.worlds.overview');
+            //         }
+            //     })
+            //     .add({
+            //         combo: 'r',
+            //         description: 'Goto rules',
+            //         callback: function() {
+            //             self.changeState('base.rules.overview');
+            //         }
+            //     })
+            //     ; // End of hotkeys
+            // }
+            //
+            // if(self.user.is_staff) {
+            //     hotkeys.bindTo($scope)
+            //     .add({
+            //         combo: 'g',
+            //         description: 'Goto groups',
+            //         callback: function() {
+            //             self.changeState('base.guilds.overview');
+            //         }
+            //     })
+            //     .add({
+            //         combo: 'd',
+            //         description: 'Goto dashboard',
+            //         callback: function() {
+            //             self.changeState('base.home.dashboards.lecturer');
+            //         }
+            //     })
+            //     ; // End of hotkeys
+            // }
+            //
+            // if(!self.user.is_superuser && !self.user.is_staff) {
+            //     hotkeys.bindTo($scope)
+            //     .add({
+            //       combo: 'd',
+            //       description: 'Goto dashboard',
+            //       callback: function() {
+            //         self.changeState('base.home.dashboards.student');
+            //       }
+            //     })
+            //     .add({
+            //         combo: 'w',
+            //         description: 'Goto workload',
+            //         callback: function() {
+            //             self.changeState('base.guild.workload');
+            //         }
+            //     })
+            //     .add({
+            //         combo: 'f',
+            //         description: 'Goto feedback',
+            //         callback: function() {
+            //             self.changeState('base.guild.rules');
+            //         }
+            //     })
+            //     .add({
+            //         combo: 'a',
+            //         description: 'Goto activity log',
+            //         callback: function() {
+            //             self.changeState('base.guild.activity');
+            //         }
+            //     })
+            //
+            //     ; // End of hotkeys
+            // }
 
             // Every one can see this one
-            hotkeys.bindTo($scope)
-            .add({
-                combo: 'p',
-                description: 'Goto profile',
-                callback: function() {
-                    self.changeState('base.account.detail');
-                }
-            })
-            ; // End of hotkeys
+            // hotkeys.bindTo($scope)
+            // .add({
+            //     combo: 'p',
+            //     description: 'Goto profile',
+            //     callback: function() {
+            //         self.changeState('base.account.detail');
+            //     }
+            // })
+            // ; // End of hotkeys
         }
 
         function removeHotkeys() {

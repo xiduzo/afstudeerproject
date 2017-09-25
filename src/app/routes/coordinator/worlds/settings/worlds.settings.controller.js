@@ -7,64 +7,74 @@
 
     /** @ngInject */
     function WorldsSettingsController(
-        $mdDialog,
-        $state,
-        $stateParams,
-        $scope,
-        hotkeys,
-        Global,
-        Notifications,
-        World,
-        toastr,
-        localStorageService,
-        COORDINATOR_ACCESS_LEVEL
+      $mdDialog,
+      $state,
+      $stateParams,
+      $scope,
+      hotkeys,
+      Global,
+      Notifications,
+      World,
+      toastr,
+      localStorageService,
+      COORDINATOR_ACCESS_LEVEL,
+      HTTP_STATUS
     ) {
 
         if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
-            return Global.notAllowed();
+          return Global.notAllowed();
         }
 
         Global.setRouteTitle('Klas instellingen');
         Global.setRouteBackRoute('base.worlds.overview');
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.deleteWorld = deleteWorld;
-        self.changeWorldName = changeWorldName;
-        self.addHotkeys = addHotkeys;
-        self.patchWorldSettings = patchWorldSettings;
+        vm.deleteWorld = deleteWorld;
+        vm.changeWorldName = changeWorldName;
+        vm.addHotkeys = addHotkeys;
+        vm.patchWorldSettings = patchWorldSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.world = [];
-        self.loading_page = true;
+        vm.world = [];
+        vm.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorld($stateParams.worldUuid)
-          .then(function(response) {
-              if(response.status === 404) {
-                  toastr.error('Klass ' + $stateParams.worldUuid + ' bestaad niet');
-                  $state.go('base.worlds.overview');
-              }
+        World.V2getWorld($stateParams.worldUuid)
+        .then(function(response) {
+          if(response.status === HTTP_STATUS.NOT_FOUND) {
+            toastr.error('Klass ' + $stateParams.worldUuid + ' bestaad niet');
+            return $state.go('base.worlds.overview');
+          }
 
-              Global.setRouteTitle('Klas instellingen ' + response.name);
-              response.start = response.start ? new Date(moment(response.start)) : null;
-              self.world = response;
+          Global.setRouteTitle('Klas instellingen ' + response.name);
 
-              if(Global.getLocalSettings().enabled_hotkeys) {
-                  self.addHotkeys();
-              }
-              self.loading_page = false;
+          vm.loading_page = false;
 
-          }, function() {
-              // Err
+          response.start = response.start ? new Date(moment(response.start)) : null;
+          response.gamemasters = _.map(response.gamemasters, function(gamemaster) {
+            gamemaster = gamemaster.user;
+            gamemaster.world_id = response.id;
+            return gamemaster;
           });
+
+          vm.world = response;
+
+          if(Global.getLocalSettings().enabled_hotkeys) {
+            vm.addHotkeys();
+          }
+
+        })
+        .catch(function(error) {
+          toastr.error(error);
+        });
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,34 +99,37 @@
         }
 
         function removeWorldFromBackend(world) {
-          World.deleteWorld(self.world.id)
+          World.V2deleteWorld(vm.world.id)
           .then(function(response) {
-              toastr.success('klas ' + self.world.name + ' is verwijderd');
+              toastr.success('klas ' + vm.world.name + ' is verwijderd');
               $state.go('base.worlds.overview');
-          }, function() {
-              // Err
+          })
+          .catch(function(error) {
+            toastr.error(error);
           });
         }
 
         function changeWorldName(event) {
             Notifications.prompt(
-                'Verander de klas naam van \'' +self.world.name+ '\'',
+                'Verander de klas naam van \'' +vm.world.name+ '\'',
                 'Wat wordt de nieuwe naam van deze klas?',
                 'Klas naam',
                 event
             )
             .then(function(result) {
-                if(!result) {
-                    return toastr.warning('Please enter a name');
-                }
+              if(!result) {
+                return toastr.warning('Please enter a name');
+              }
+              vm.world.name = result;
 
-                World.changeWorldName(result, self.world.id)
-                .then(function(response) {
-                    self.world.name = result;
-                    toastr.success('Naam gewijzigd naar ' + result);
-                }, function() {
-                    // Err
-                });
+              World.V2patchWorld(vm.world)
+              .then(function(response) {
+                toastr.success('Naam gewijzigd naar: ' + result);
+                Global.setRouteTitle('Klas instellingen ' + result);
+              })
+              .catch(function(error) {
+                toastr.error(error);
+              });
 
             }, function() {
                 // Cancel
@@ -124,35 +137,35 @@
         }
 
         function addHotkeys() {
-            hotkeys.bindTo($scope)
-            .add({
-                combo: 'shift+c',
-                description: 'Verander klas naam',
-                callback: function(event) {
-                    event.preventDefault();
-                    self.changeWorldName();
-                }
-            })
-            .add({
-                combo: 'shift+d',
-                description: 'Verwijder ' + self.world.name,
-                callback: function(event) {
-                    event.preventDefault();
-                    self.deleteWorld();
-                }
-            })
+          hotkeys.bindTo($scope)
+          .add({
+            combo: 'shift+c',
+            description: 'Verander klas naam',
+            callback: function(event) {
+              event.preventDefault();
+              vm.changeWorldName();
+            }
+          })
+          .add({
+            combo: 'shift+d',
+            description: 'Verwijder ' + vm.world.name,
+            callback: function(event) {
+              event.preventDefault();
+              vm.deleteWorld();
+            }
+          })
 
-            ; // End of hotkeys
+          ; // End of hotkeys
         }
 
         function patchWorldSettings() {
-            World.patchWorldSettings(self.world)
-            .then(function(response) {
-                toastr.success('Class settings updated');
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+          World.V2patchWorld(vm.world)
+          .then(function(response) {
+            toastr.success('Klas instellingen bijgewerkt');
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
         }
 
     }

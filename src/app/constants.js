@@ -6,8 +6,8 @@
         .constant('DEBUG_ENABLED', true)
 
         .constant('LDAP_LOGIN_API', 'https://oege.ie.hva.nl/~vddxx/ldapper/index.php')
-        // .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
-        .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
+        .constant('REST_API_URL', 'http://127.0.0.1:8000/api/')
+        // .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
 
         .constant('CREDENTIAL_USER', 'bigd')
         .constant('CREDENTIAL_PASS', 'aapnootbier')
@@ -21,6 +21,20 @@
         .constant('COORDINATOR_ACCESS_LEVEL', 3)
 
         .constant('MAX_STAR_RATING', 4)
+
+        .constant('HTTP_STATUS', {
+            SUCCESS: 200,
+            CREATED: 201,
+            ACCEPTED: 202,
+            BAD_REQUEST: 400,
+            UNAUTHORIZED: 401,
+            FORBIDDEN: 403,
+            NOT_FOUND: 404,
+            INTERNAL_SERVER_ERROR: 500,
+            BAD_GATEWAY: 502,
+            SERICE_UNAVIALABLE: 503,
+            GATEWAY_TIMEOUT: 504
+        })
 
         .constant('COLORS', [
             // CMD colors first

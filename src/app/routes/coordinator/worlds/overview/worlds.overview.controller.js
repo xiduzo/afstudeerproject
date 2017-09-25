@@ -17,7 +17,8 @@
         Notifications,
         World,
         toastr,
-        COORDINATOR_ACCESS_LEVEL
+        COORDINATOR_ACCESS_LEVEL,
+        HTTP_STATUS
     ) {
 
         if(Global.getAccess() < COORDINATOR_ACCESS_LEVEL) {
@@ -27,103 +28,105 @@
         Global.setRouteTitle('Klassen overzicht');
         Global.setRouteBackRoute(null);
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.moveGamemaster = moveGamemaster;
-        self.newWorldDialog = newWorldDialog;
-        self.addGamemaster = addGamemaster;
-        self.removeGamemaster = removeGamemaster;
-        self.addHotkeys = addHotkeys;
+        vm.moveGamemaster = moveGamemaster;
+        vm.newWorldDialog = newWorldDialog;
+        vm.addGamemaster = addGamemaster;
+        vm.removeGamemaster = removeGamemaster;
+        vm.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.worlds = [];
-        self.loading_page = true;
+        vm.worlds = [];
+        vm.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorlds()
+        World.V2getWorlds()
         .then(function(response) {
-
-            if(response.status === -1) {
-                Global.noConnection();
-                return;
-            }
-
-            _.each(response, function(world) {
-                // Add the world to the gamemaster
-                _.each(world.gamemasters, function(gamemaster) {
-                    gamemaster.worldId = world.id;
-                });
-                self.worlds.push(world);
+          vm.loading_page = false;
+          if(response.status === HTTP_STATUS.SUCCESS) {
+            _.each(response.data, function(world, index) {
+              world.gamemasters = _.map(world.gamemasters, function(gamemaster) {
+                gamemaster = gamemaster.user;
+                gamemaster.world_id = world.id;
+                return gamemaster;
+              });
+              vm.worlds.push(world);
             });
-
-            if(Global.getLocalSettings().enabled_hotkeys) {
-                self.addHotkeys();
-            }
-
-            self.loading_page = false;
-        }, function() {
-            // Err getting worlds
+          }
+        })
+        .catch(function(error) {
+          toastr.error(error);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        if(Global.getLocalSettings().enabled_hotkeys) {
+          vm.addHotkeys();
+        }
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function moveGamemaster(event, world, gamemaster) {
-            if(world.id === gamemaster.worldId) { return false; }
+            if(world.id === gamemaster.world_id) { return false; }
 
             if((_.where(world.gamemasters, { id: gamemaster.id })).length >=2) {
                 // Remove duplicate gamemasters in world
-                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
+                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.world_id);
                 world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
                 toastr.info(gamemaster.first_name + ' was al een docent van ' + world.name);
             } else {
-                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.worldId);
+                World.removeGamemasterFromWorld(gamemaster.id, gamemaster.world_id);
                 World.addGamemasterToWorld(gamemaster.url, world.url)
                 .then(function(response) {
                     if(response.status >= 400) { return Global.statusCode(response); }
-                    gamemaster.worldId = world.id;
+                    gamemaster.world_id = world.id;
                     toastr.success(gamemaster.first_name + ' toegevoegd aan ' + world.name);
-                }, function() {
-                    // Err adding gamemaster to world
+                })
+                .catch(function(error) {
+                  toastr.error(error);
                 });
             }
         }
 
         function newWorldDialog(event) {
-            Notifications.prompt(
-                'Nieuwe klas toevoegen',
-                'Wat word de naam van deze klas?',
-                'Naam nieuwe klas',
-                event
-            )
-            .then(function(result) {
-                // Checks for the world name
-                if(!result) {
-                    return toastr.warning('Vul een naam in.');
-                }
+          Notifications.prompt(
+            'Nieuwe klas toevoegen',
+            'Wat word de naam van deze klas?',
+            'Naam nieuwe klas',
+            event
+          )
+          .then(function(result) {
+            // Checks for a world name
+            if(!result) {
+              return toastr.warning('Vul een naam in.');
+            }
 
-                World.addWorld(result)
-                .then(function(response) {
-                    self.worlds.unshift(response);
-                    toastr.success('Klas ' + response.name + ' aangemaakt');
-                }, function() {
-                    // Err creating world
-                });
-            }, function() {
-                // Cancel dialog
+            World.V2addWorld(result)
+            .then(function(response) {
+              if(response.status === HTTP_STATUS.CREATED) {
+                vm.worlds.unshift(response.data);
+                toastr.success('Klas ' + response.data.name + ' aangemaakt');
+              } else {
+                toastr.warning('Something went wrong, try again later');
+              }
+            })
+            .catch(function(error) {
+              toastr.error(error);
             });
+          }, function() {
+            // Cancel dialog
+          });
         }
 
         function addGamemaster(event, world) {
@@ -157,10 +160,9 @@
                         World.addGamemasterToWorld(user.url, world.url)
                         .then(function(response) {
                             if(response.status >= 400) {
-                                Global.statusCode(response);
-                                return;
+                                return Global.statusCode(response);
                             }
-                            user.worldId = world.id;
+                            user.world_id = world.id;
                             world.gamemasters.push(user);
                             toastr.success(user.first_name + ' toegevoegd aan ' + world.name);
                         }, function() {
@@ -176,14 +178,14 @@
         }
 
         function removeGamemaster(gamemaster, world) {
-          console.log(gamemaster, world);
-            World.removeGamemasterFromWorld(gamemaster.id, world.id)
-            .then(function(response) {
-                toastr.success(gamemaster.first_name + ' is verwijderd van ' + world.name);
-                world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
-            }, function() {
-                // Err remove gamemaster from world
-            });
+          World.removeGamemasterFromWorld(gamemaster.id, world.id)
+          .then(function(response) {
+              toastr.success(gamemaster.first_name + ' is verwijderd van ' + world.name);
+              world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
         }
 
         function addHotkeys() {
@@ -193,7 +195,7 @@
                 description: 'Nieuwe klas',
                 callback: function(event) {
                     event.preventDefault();
-                    self.newWorldDialog(event);
+                    vm.newWorldDialog(event);
                 }
             });
 
