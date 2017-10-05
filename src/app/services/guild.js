@@ -10,6 +10,7 @@
         $http,
         $q,
         Account,
+        toastr,
         REST_API_URL
     ) {
 
@@ -18,6 +19,10 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        service.V2getGuildRules = V2getGuildRules;
+
+        // Legacy
         service.getGuild = getGuild;
         service.addGuild = addGuild;
         service.addUserToGuild = addUserToGuild;
@@ -33,16 +38,28 @@
         service.patchEndorsement = patchEndorsement;
         service.patchGuildSettings = patchGuildSettings;
 
+        return service;
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-        return service;
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        function V2getGuildRules(guild) {
+          return $http({
+            url: REST_API_URL + 'guild/rules/',
+            method: "GET",
+            params: {
+                guild: guild
+            }
+          })
+          .then(function(response) { return response; })
+          .catch(function(error) { toastr.error(error); });
+        }
+
+        // Legacy
         function getGuild(guild) {
             return $http({
                 url: REST_API_URL + 'guild/guilds/'+guild+'/',

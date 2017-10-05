@@ -29,61 +29,76 @@
         Global.setRouteTitle('Teams overview');
         Global.setRouteBackRoute(null);
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.movePlayer = movePlayer;
-        self.newGuildDialog = newGuildDialog;
-        self.addGuildMember = addGuildMember;
-        self.removeGuildMember = removeGuildMember;
-        self.addHotkeys = addHotkeys;
+        vm.movePlayer = movePlayer;
+        vm.newGuildDialog = newGuildDialog;
+        vm.addGuildMember = addGuildMember;
+        vm.removeGuildMember = removeGuildMember;
+        vm.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.worlds = [];
-        self.loading_page = true;
-        self.selected_world = Global.getSelectedWorld();
+        vm.worlds = [];
+        vm.loading_page = true;
+        vm.selected_world = Global.getSelectedWorld();
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('world-changed', function(event, world) {
+          vm.selected_world = world;
+          if(!_.findWhere(vm.worlds, { id: world})) {
+            getWorld();
+          }
+
+          if(Global.getLocalSettings().enabled_hotkeys) {
+              vm.addHotkeys();
+          }
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorldsOfGamemaster(Global.getUser().id)
-        .then(function(response) {
-            if(response.status >= 400) {
-                return Global.statusCode(response);
-            }
+        function getWorld() {
+          World.V2getWorld(vm.selected_world)
+          .then(function(response) {
 
-            _.each(response.worlds, function(world) {
-                // Adding the world to the frontend
-                _.each(world.world.guilds, function(guild) {
-                    _.each(guild.members, function(member) {
-                        // Adding guild id for moving players around
-                        member.user.guildId = guild.id;
-                    });
+            vm.loading_page = false;
+
+            var world = response.data;
+
+            _.each(response.data.guilds, function(guild) {
+              guild.members = [];
+              Guild.getGuild(guild.id)
+              .then(function(response) {
+                _.each(response.members, function(member) {
+                  member.user_id = member.user.id;
+                  guild.members.push(member);
                 });
-                self.worlds.push(world.world);
+              });
             });
 
             if(Global.getLocalSettings().enabled_hotkeys) {
-                self.addHotkeys();
+              vm.addHotkeys();
             }
-            self.loading_page = false;
-        }, function() {
-            // Err
-        });
 
+            vm.worlds.push(world);
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
+        }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Broadcasts
+            Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $rootScope.$on('world-changed', function(event, world) {
-            self.selected_world = world;
-            if(Global.getLocalSettings().enabled_hotkeys) {
-                self.addHotkeys();
-            }
-        });
+        if(vm.selected_world) {
+          getWorld();
+        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
@@ -204,15 +219,15 @@
         }
 
         function addHotkeys() {
-            if(!self.selected_world) { return; }
+            if(!vm.selected_world) { return; }
 
-            var world = _.findWhere(self.worlds, {id: self.selected_world});
+            var world = _.findWhere(vm.worlds, {id: vm.selected_world});
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
                 description: 'Maak nieuw team',
                 callback: function(event) {
-                    self.newGuildDialog(event, world);
+                    vm.newGuildDialog(event, world);
                 }
             });
         }

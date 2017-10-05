@@ -16,6 +16,7 @@
         toastr,
         Guild,
         TrelloApi,
+        localStorageService,
         LECTURER_ACCESS_LEVEL,
         TRELLO_USER_ID
     ) {
@@ -56,6 +57,7 @@
                 }
                 Global.setRouteTitle('Team instellingen ' + response.name);
                 self.guild = response;
+                getGuildRules(self.guild);
 
                 TrelloApi.Authenticate()
                 .then(function(response) {
@@ -68,10 +70,12 @@
                         .then(function(response) {
                             self.trello_board_lists = response;
                             self.loading_page = false;
-                        }, function(error){
+                        }, function(error) {
                             self.loading_page = false;
                             self.guild.trello_board = null;
                             self.guild.trello_board_lists = null;
+                            // Make sure to delete this setting in the backend
+                            // bacause the bord has been deleted
                             Guild.patchGuildSettings(self.guild)
                             .then(function(response) {
                                 toastr.info('Trello bord bestaad niet meer, team is geupdate');
@@ -79,8 +83,6 @@
                             .catch(function(error) {
                                 console.log(error);
                             });
-                            // Make sure to delete this setting in the backend
-                            // bacause the bord has been deleted
                         });
                     } else {
                       self.loading_page = false;
@@ -97,6 +99,39 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function getGuildRules(guild) {
+          var local_guilds = localStorageService.get('guilds') || [];
+
+          if(_.findWhere(local_guilds, {guild: guild.id}) && moment(_.findWhere(local_guilds, {guild: guild.id}).datetime).isAfter(moment().subtract(1, 'minutes'))) {
+            guild.rules = _.findWhere(local_guilds, {guild: guild.id}).rules;
+          } else {
+            Guild.V2getGuildRules(guild.id)
+            .then(function(response) {
+              local_guilds = localStorageService.get('guilds') || [];
+              var local_guild = _.findWhere(local_guilds, {guild: guild.id});
+              var tempObj = {
+                guild: guild.id,
+                datetime: moment(),
+                rules: response.data
+              };
+
+              // Check if we need to update the local storage
+              if(local_guild) {
+                local_guilds[_.indexOf(local_guilds, local_guild)] = tempObj;
+              } else {
+                local_guilds.push(tempObj);
+              }
+
+              localStorageService.set('guilds', local_guilds);
+
+              guild.rules = response.data;
+            })
+            .catch(function(error) {
+              toastr.error(error);
+            });
+          }
+        }
+
         function deleteGuild(event) {
             Notifications.confirmation(
                 'Weet je zeker dat je dit team wilt verwijderen?',

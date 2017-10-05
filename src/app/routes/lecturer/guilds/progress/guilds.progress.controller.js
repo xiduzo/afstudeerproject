@@ -17,7 +17,8 @@
         World,
         TrelloApi,
         LECTURER_ACCESS_LEVEL,
-        COLORS
+        COLORS,
+        HTTP_STATUS
     ) {
 
         if(Global.getAccess() < LECTURER_ACCESS_LEVEL) {
@@ -27,22 +28,17 @@
         Global.setRouteTitle('Team progressie');
         Global.setRouteBackRoute('base.home.dashboards.lecturer');
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.prepareGraphData = prepareGraphData;
-        self.buildGraphs = buildGraphs;
-        self.total_completed_objectives = 0;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.guild = [];
-        self.members_data = [];
-        self.loading_page = true;
-        self.board = {
+        vm.loading_page = true;
+        vm.board = {
             name: null,
             members: [],
             cards: []
@@ -53,20 +49,15 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getGuild($stateParams.guildUuid)
             .then(function(response) {
-                if(!response) {
+                if(response.status === HTTP_STATUS.NOT_FOUND) {
                     toastr.error('Team ' + $stateParams.guildUuid + ' bestaad niet');
-                    $state.go('base.guilds.overview');
+                    return $state.go('base.home.dashboards.lecturer');
                 }
-                Global.setRouteTitle('Team progressie ' + response.name);
-                self.guild = response;
 
-                World.getWorld(response.world.id)
-                .then(function(response) {
-                    self.guild.world = response;
-                    self.prepareGraphData(self.guild);
-                }, function(error) {
-                    // Err get world
-                });
+                Global.setRouteTitle('Team progressie ' + response.name);
+                vm.loading_page = false;
+
+                prepareGraphData(response);
 
             }, function() {
                 // Err get guild
@@ -109,14 +100,10 @@
 
                 var graph_data = {
                   total_cards: 0,
-                  bar: {
-                    categories: [],
-                    series: []
-                  },
+                  bar: { categories: [], series: [] },
                   pie: {
                     series: [
-                      {
-                        type: 'pie',
+                      { type: 'pie',
                         name: 'Totaal',
                         size: '93%',
                         data: [],
@@ -144,14 +131,10 @@
                   }
                 };
 
-                TrelloApi.Rest('GET', 'boards/' + guild.trello_board)
-                .then(function(response) {
-                  self.board.name = response.name;
-
                   TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members/normal')
                   .then(function(response) {
                     _.each(response, function(user, index) {
-                      self.board.members.push({
+                      vm.board.members.push({
                         name: user.fullName,
                         color: COLORS[index],
                         id: user.id,
@@ -171,19 +154,12 @@
                         if(card.idMembers.length >= 1) {
                           _.each(card.idMembers, function(member_id) {
                             graph_data.total_cards++;
-                            var member = _.findWhere(self.board.members, {id: member_id});
+                            var member = _.findWhere(vm.board.members, {id: member_id});
                             if(!member) { return false; }
                             member.cards.push(card);
                             card.members.push(member);
                           });
                         }
-                        // else {
-                        //   _.each(self.board.members, function(member) {
-                        //     graph_data.total_cards++;
-                        //     member.cards.push(card);
-                        //     card.members.push(member);
-                        //   });
-                        // }
 
                         // Adding the cards to the weeks
                         _.each(weeks, function(week) {
@@ -194,10 +170,10 @@
                           }
                         });
 
-                        self.board.cards.push(card);
+                        vm.board.cards.push(card);
                       });
 
-                      _.each(self.board.members, function(member) {
+                      _.each(vm.board.members, function(member) {
                         member.completed_cards = 0;
                         _.each(member.cards, function(card) {
                           if(card.done) {
@@ -206,7 +182,7 @@
                         });
                       });
 
-                      _.each(self.board.members, function(member) {
+                      _.each(vm.board.members, function(member) {
                         graph_data.bar.series.push({
                           id: member.id,
                           color: member.color,
@@ -231,7 +207,7 @@
                       });
 
                       // Building the pie chart
-                      _.each(self.board.members, function(member) {
+                      _.each(vm.board.members, function(member) {
                         graph_data.pie.series[0].data.push({
                           name: member.name,
                           color: member.color,
@@ -276,24 +252,19 @@
                         });
                       });
 
-                      self.loading_page = false;
-
-                      setTimeout(function () {
-                        self.buildGraphs(graph_data);
-                      }, 100);
+                      buildGraphs(graph_data, guild);
                     });
                   });
-                });
               }, function(error){
                 console.log(error);
               });
             }
         }
 
-        function buildGraphs(graph_data) {
+        function buildGraphs(graph_data, guild) {
             $('#cards_per_week').highcharts({
                 chart: { type: 'column' },
-                title: { text: self.guild.name + ' aantal kaarten' },
+                title: { text: guild.name + ' aantal kaarten' },
                 subtitle: { text: 'Per lid per week' },
                 xAxis: { categories: graph_data.bar.categories, crosshair: true },
                 yAxis: { title: { text: 'Aantal' } },
@@ -308,14 +279,12 @@
                 plotOptions: {
                     column: { pointPadding: 0, borderWidth: 0 },
                     series: {
-                        events: {
-                            legendItemClick: function () { return false; }
-                        }
+                        events: { legendItemClick: function () { return false; } }
                     },
                 },
                 series: graph_data.bar.series,
                 exporting: {
-                  filename: "Aantal kaarten per lid per week_" + self.guild.name + "_" + moment().format()
+                  filename: "Aantal kaarten per lid per week_" + guild.name + "_" + moment().format()
                 },
                 credits: { text: moment().format("DD/MM/YY HH:mm"), href: '' }
             });
@@ -323,17 +292,12 @@
             $('#cards_total').highcharts({
                 chart: { type: 'pie' },
                 exporting: {
-                  filename: "Aantal kaarten per lid totaal_" + self.guild.name + "_" + moment().format()
+                  filename: "Aantal kaarten per lid totaal_" + guild.name + "_" + moment().format()
                 },
-                title: { text: self.guild.name +': aantal kaarten' },
+                title: { text: guild.name +': aantal kaarten' },
                 subtitle: { text: 'Per lid totaal' },
                 tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },
-                plotOptions: {
-                    pie: {
-                        shadow: false,
-                        center: ['50%', '50%']
-                    }
-                },
+                plotOptions: { pie: { shadow: false, center: ['50%', '50%'] } },
                 series: graph_data.pie.series,
                 credits: { text: moment().format("DD/MM/YY HH:mm"), href: '' }
             });

@@ -20,29 +20,29 @@
         COORDINATOR_ACCESS_LEVEL
     ) {
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.getWorlds = getWorlds;
-        self.getGuilds = getGuilds;
-        self.toggleNavigation = toggleNavigation;
-        self.changeState = changeState;
-        self.changeWorld = changeWorld;
-        self.changeGuild = changeGuild;
-        self.logout = logout;
+        vm.getWorlds = getWorlds;
+        vm.getGuilds = getGuilds;
+        vm.toggleNavigation = toggleNavigation;
+        vm.changeState = changeState;
+        vm.changeWorld = changeWorld;
+        vm.changeGuild = changeGuild;
+        vm.logout = logout;
 
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = Global.getUser();
-        self.access = Global.getAccess();
-        self.route_title = '';
-        self.back_route = null;
-        self.back_route_params = null;
+        vm.user = Global.getUser();
+        vm.access = Global.getAccess();
+        vm.route_title = '';
+        vm.back_route = null;
+        vm.back_route_params = null;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,95 +53,81 @@
 		      Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $scope.$on('new-user-set', function() {
-            self.user = Global.getUser();
-            self.access = Global.getAccess();
+            vm.user = Global.getUser();
+            vm.access = Global.getAccess();
 
-            if(self.access === STUDENT_ACCESS_LEVEL) {
-                self.getGuilds();
+            if(vm.access === STUDENT_ACCESS_LEVEL) {
+                vm.getGuilds();
             }
 
-            if(self.access === LECTURER_ACCESS_LEVEL || self.access === COORDINATOR_ACCESS_LEVEL) {
-                self.getWorlds();
+            if(vm.access === LECTURER_ACCESS_LEVEL || vm.access === COORDINATOR_ACCESS_LEVEL) {
+                vm.getWorlds();
             }
         });
 
         $scope.$on('user-logged-out', function() {
-            self.user = Global.getUser();
-            self.access = Global.getAccess();
+            vm.user = Global.getUser();
+            vm.access = Global.getAccess();
         });
 
         $scope.$on('route-title', function(event, title) {
-            self.route_title = title;
+            vm.route_title = title;
         });
 
         $scope.$on('back-route', function(event, route, params) {
-            self.back_route = route;
-            self.back_route_params = params;
+            vm.back_route = route;
+            vm.back_route_params = params;
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function getWorlds() {
-            // First access the users local storage to get the worlds
-            if(localStorageService.get('worlds')) {
-                self.worlds = [];
-                _.each(localStorageService.get('worlds'), function(world) {
-                    self.worlds.push({id: world.id, name: world.name});
-                });
-                if(self.worlds.length >= 1) {
-                    self.selected_world = _.first(self.worlds);
-                }
-                Global.setSelectedWorld(self.selected_world.id);
-            }
-            // Next lets get some worlds from the database
-            World.getWorldsOfGamemaster(self.user.id)
-            .then(function(response) {
-                self.worlds = [];
-                self.selected_world = null;
-                _.each(response.worlds, function(world) {
-                    self.worlds.push({id: world.world.id, name: world.world.name});
-                });
-
-                if(self.worlds.length >= 1) {
-                    self.selected_world = _.first(self.worlds);
-                }
-                Global.setSelectedWorld(self.selected_world.id);
-
-                localStorageService.set('worlds', self.worlds);
-            })
-            .catch(function(error) {
-                console.log(error);
+          Account.getWorlds(vm.user.id)
+          .then(function(response) {
+            vm.worlds = _.map(response.data, function(world) {
+                return world.world;
             });
+
+            if(vm.worlds.length >= 1) {
+                vm.selected_world = _.first(vm.worlds);
+            }
+
+            Global.setSelectedWorld(vm.selected_world.id);
+
+          })
+          .catch(function(errror) {
+            toastr.error(error);
+          });
         }
 
         function getGuilds() {
             // First access the users local storage to get the guilds
             if(localStorageService.get('guilds')) {
-                self.guilds = [];
+                vm.guilds = [];
                 _.each(localStorageService.get('guilds'), function(guild) {
-                    self.guilds.push({id: guild.id, name: guild.name});
+                    vm.guilds.push({id: guild.id, name: guild.name});
                 });
-                if(self.guilds.length >= 1) {
-                    self.selected_guild = _.first(self.guilds);
+                if(vm.guilds.length >= 1) {
+                    vm.selected_guild = _.first(vm.guilds);
                 }
-                Global.setSelectedGuild(self.selected_guild.id);
+                Global.setSelectedGuild(vm.selected_guild.id);
             }
             // Next lets get some guilds from the database
-            Guild.getUserGuilds(self.user.id)
+            Guild.getUserGuilds(vm.user.id)
             .then(function(response) {
-                self.guilds = [];
-                self.selected_guild = null;
+                vm.guilds = [];
+                vm.selected_guild = null;
                 _.each(response.guilds, function(guild) {
-                    self.guilds.push({id: guild.guild.id, name: guild.guild.name});
+                    vm.guilds.push({id: guild.guild.id, name: guild.guild.name});
                 });
 
-                if(self.guilds.length >= 1) {
-                    self.selected_guild = _.first(self.guilds);
+                if(vm.guilds.length >= 1) {
+                    vm.selected_guild = _.first(vm.guilds);
                 }
-                Global.setSelectedGuild(self.selected_guild.id);
+                Global.setSelectedGuild(vm.selected_guild.id);
 
-                localStorageService.set('guilds', self.guilds);
+                localStorageService.set('guilds', vm.guilds);
             })
             .catch(function(error) {
                 console.log(error);
@@ -154,22 +140,22 @@
         }
 
         function changeState() {
-            $state.go(self.back_route, self.back_route_params);
+            $state.go(vm.back_route, vm.back_route_params);
         }
 
         function changeWorld(world) {
-            self.selected_world = world;
+            vm.selected_world = world;
             Global.setSelectedWorld(world.id);
         }
 
         function changeGuild(guild) {
-            self.selected_guild = guild;
+            vm.selected_guild = guild;
             Global.setSelectedGuild(guild.id);
         }
 
         function logout() {
           // Close the navigation
-          self.toggleNavigation();
+          vm.toggleNavigation();
 
           // Logout the user
           Account.logout();

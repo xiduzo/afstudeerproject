@@ -87,16 +87,15 @@
       <div class="md-headline text--color--grey">
         Team leden
       </div>
-      <section layout layout-wrap>
-          <span flex=100 flex-gt-md=50 layout="column" layout-align="start center" layout-padding
-              ng-repeat="member in guildSettingsCtrl.guild.members">
-              <img ng-if="member.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/50.png">
-              <img ng-if="!member.user.avatar_hash" class="round" gravatar-size="50" gravatar-src="member.user.email">
-              <span style="text-align: center;">
-                {{ member.user | fullUserName }}
-              </span>
-          </span>
-      </section>
+      <md-list>
+        <md-list-item ng-repeat="member in guildSettingsCtrl.guild.members">
+          <img ng-if="member.user.avatar_hash" class="md-avatar round" ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/30.png">
+          <img ng-if="!member.user.avatar_hash" class="md-avatar round" gravatar-size="30" gravatar-src="member.user.email">
+          <p>
+            {{ member.user | fullUserName }}
+          </p>
+        </md-list-item>
+      </md-list>
     </section>
     <section layout="column">
       <md-button layout class="success md-raised" ng-click="guildSettingsCtrl.changeGuildName($event)">

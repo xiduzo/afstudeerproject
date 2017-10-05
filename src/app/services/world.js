@@ -49,7 +49,7 @@
                 method: "GET"
             })
             .then(function(response) {
-                return response.data;
+                return response;
             }, function(error) {
                 return error;
             });
@@ -92,9 +92,6 @@
           .then(function(response) { return response; })
           .catch(function(error) { toastr.error(error); });
         }
-
-
-
 
 
         // V1

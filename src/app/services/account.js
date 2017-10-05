@@ -13,6 +13,7 @@
         $rootScope,
         $state,
         localStorageService,
+        toastr,
         LDAP_LOGIN_API,
         REST_API_URL
     ) {
@@ -33,12 +34,31 @@
         service.patchUser = patchUser;
         service.patchAvatarHash = patchAvatarHash;
 
+        // V2
+        service.getWorlds = getWorlds;
+
         return service;
 
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        function getWorlds(id) {
+          return $http({
+            url: REST_API_URL + 'user/worlds/',
+            method: "GET",
+            params: {
+              user: id
+            }
+          })
+          .then(function(response) { return response; })
+          .catch(function(error) { toastr.error(error); });
+        }
+
+
+
+
         function login(username, password, context) {
             return $http({
                     url: LDAP_LOGIN_API,
