@@ -71,9 +71,11 @@
                             self.trello_board_lists = response;
                             self.loading_page = false;
                         }, function(error) {
+                            // TODO
+                            // Dont delete this on a 404
                             self.loading_page = false;
                             self.guild.trello_board = null;
-                            self.guild.trello_board_lists = null;
+                            self.guild.trello_done_lists = null;
                             // Make sure to delete this setting in the backend
                             // bacause the bord has been deleted
                             Guild.patchGuildSettings(self.guild)

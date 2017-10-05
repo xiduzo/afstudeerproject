@@ -326,6 +326,10 @@
           createLineChart(data, guild);
           createPolarChart(data, guild);
           buildPieData(data, guild);
+
+          data.first_line_graph_load = false;
+          vm.data = data;
+          vm.guild = guild;
         }
 
         function createLineChart(data, guild) {
@@ -356,9 +360,9 @@
             xAxis: {
               categories: ['Houding', 'Functioneren binnen de groep', 'Kennisontwikkeling', 'Verantwoording'],
               tickmarkPlacement: 'on',
-              lineWidth: 0,
+              lineWidth: 0
             },
-            yAxis: { gridLineInterpolation: 'polygon', visible: false },
+            yAxis: { gridLineInterpolation: 'polygon', visible: false},
             tooltip: { shared: true, pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br>' },
             plotOptions: {
               series: { animation: data.first_line_graph_load, events: { legendItemClick: function() { return false; } } },
@@ -377,15 +381,15 @@
           var series = [
             {
               name: 'Type',
-              size: '70%',
+              size: '85%',
               data: [],
               dataLabels: { formatter: function () { return null; }, },
               showInLegend: true
             },
             {
               name: 'Rules',
-              size: '95%',
-              innerSize: '75%',
+              size: '100%',
+              innerSize: '85%',
               data: [],
               dataLabels: { formatter: function () { return null; }, }
             }
@@ -482,15 +486,15 @@
         function selectMember(member) {
             member.selected = !member.selected;
 
-            _.each(vm.members_data, function(member, index) {
-                vm.graphs_data.line[index + 2] = {
+            _.each(vm.data.members_data, function(member, index) {
+                vm.data.graphs_data.line[index + 2] = {
                     visible: member.selected,
                     name: member.name,
                     data: member.line_data,
                     color: member.color,
                     yAxis: 0
                 };
-                vm.graphs_data.line[index + 2 + vm.members_data.length] = {
+                vm.data.graphs_data.line[index + 2 + vm.data.members_data.length] = {
                     visible: member.selected,
                     name: member.name,
                     data: member.line_data_total,
@@ -501,7 +505,7 @@
                     showInLegend: false
                 };
 
-                vm.graphs_data.polar[index + 1] = {
+                vm.data.graphs_data.polar[index + 1] = {
                     visible: member.selected,
                     name: member.name,
                     data: member.polar_data,
@@ -509,7 +513,9 @@
                 };
             });
 
-            createCharts();
+            createLineChart(vm.data, vm.guild);
+            createPolarChart(vm.data, vm.guild);
+            buildPieData(vm.data, vm.guild);
         }
 
 
