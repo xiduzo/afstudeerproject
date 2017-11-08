@@ -267,7 +267,7 @@
             Loading bar provier
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         // How many miliseconds before showing the loading bar
-        cfpLoadingBarProvider.latencyThreshold = 100;
+        cfpLoadingBarProvider.latencyThreshold = 50;
         cfpLoadingBarProvider.includeSpinner = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

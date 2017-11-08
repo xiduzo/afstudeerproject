@@ -7,7 +7,7 @@
         title="Wacht totdat een docent je toe heeft gevoegd aan een team">
     </cmd-empty-state>
     <section layout-fill ng-repeat="guild in guildWorkloadCtrl.guilds" ng-if="guild.id === guildWorkloadCtrl.selected_guild">
-        <cmd-empty-state ng-if="guild.no_trello_settings"
+        <cmd-empty-state ng-if="guild.trello_not_configured"
             icon="settings_dark"
             headline="Trello niet ingesteld"
             title="Wacht totdat een docent trello insteld voor dit team">
@@ -17,22 +17,28 @@
             headline="Klas niet ingesteld"
             title="Wacht tot een coordinator deze klas goed insteld">
         </cmd-empty-state>
-        <div layout layout-fill flex ng-if="!guild.no_trello_settings && !guild.no_world_settings">
+        <div layout layout-fill flex ng-if="!guild.trello_not_configured && !guild.no_world_settings">
             <md-content layout="column" layout-padding flex=80 layout-fill md-whiteframe=1 id="main__content">
                 <section layout layout-wrap layout-fill>
                     <div layout="column" flex>
                         <section layout style="min-height: 390px;">
-                            <md-card flex=50 id="chart__{{guild.id}}"></md-card>
+                            <md-card flex=50 id="chart__{{guild.id}}">
+                                <cmd-empty-state
+                                    icon="build_dark"
+                                    headline="Building graph"
+                                    title="Be patient peasant">
+                                </cmd-empty-state>
+                            </md-card>
                             <section layout="column" flex=50>
                                 <section flex layout>
                                     <md-card flex layout="column" layout-align="space-between">
                                       <md-card-content layout flex>
                                         <section flex=50 layout="column" layout-align="center center">
                                           <span class="md-display-2">
-                                            {{ guild.current_week.cards.length }}
+                                            {{ guild.current_week.cards.length || 0 }}
                                           </span>
                                           <span layout>
-                                            kaart<span ng-if="guild.current_week.cards.length >= 2 || guild.current_week.cards.length === 0">en&nbsp;</span> voltooid
+                                            kaart<span ng-if="!guild.current_week.length || (guild.current_week.cards.length >= 2 || guild.current_week.cards.length === 0)">en&nbsp;</span> voltooid
                                           </span>
                                           <md-tooltip>
                                             Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end  | momentDate : 'DD/MM/YYYY' }}
@@ -73,7 +79,7 @@
                                     <md-card-content layout flex>
                                       <section flex=50 layout="column" layout-align="center center">
                                         <span class="md-display-2">
-                                          {{ guild.current_week.cards_due.length }}
+                                          {{ guild.current_week.cards_due.length || 0 }}
                                         </span>
                                         <span layout>
                                           deadline<span ng-if="guild.current_week.cards_due.length >= 2 || guild.current_week.cards_due.length === 0">s&nbsp;</span> te gaan deze week

@@ -32,6 +32,7 @@
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
+        console.log(self.user);
         self.trello_account = null;
         self.loading_page = true;
         self.local_settings = Global.getLocalSettings();
