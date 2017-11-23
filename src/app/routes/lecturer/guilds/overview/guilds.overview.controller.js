@@ -78,6 +78,7 @@
               .then(function(response) {
                 _.each(response.members, function(member) {
                   member.user_id = member.user.id;
+                  member.guild_id = guild.id;
                   guild.members.push(member);
                 });
               });
@@ -104,17 +105,18 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function movePlayer(event, guild, player) {
-            if(guild.id === player.user.guildId) {
+            if(guild.id === player.guild_id) {
                 return;
             }
+
             if((_.where(guild.members, { id: player.user.id })).length >=2) {
-                // Remove duplicate members in world
-                Guild.removeUserFromGuild(player.user.id, player.user.guilId);
+                // // Remove duplicate members in world
+                Guild.removeUserFromGuild(player.user.id, player.guild_id);
                 guild.members.splice(guild.members.indexOf(player), 1);
             } else {
-                Guild.patchPlayersGuild(player.user.id, player.user.guildId, guild)
+                Guild.patchPlayersGuild(player.user.id, player.guild_id, guild)
                 .then(function(response) {
-                    player.user.guildId = guild.id;
+                    player.guild_id = guild.id;
                     toastr.success(player.user.first_name + ' verplaatst naar ' + guild.name);
                 }, function() {
                     // Err

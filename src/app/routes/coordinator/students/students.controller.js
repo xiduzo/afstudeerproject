@@ -74,7 +74,7 @@
           try {
             JSON.parse(response)
           } catch(e) {
-            return toastr.console.warn();("I'm just a stupid machine, please provide me with valid JSON.");
+            return toastr.warning("I'm just a stupid machine, please provide me with valid JSON.");
           }
 
           var students = JSON.parse(response);

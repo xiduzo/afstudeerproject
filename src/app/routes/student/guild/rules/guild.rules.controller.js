@@ -153,7 +153,7 @@
             for(var i = 0; i <= guild.world.course_duration; i++) {
               guild.weeks.push({
                 index: i,
-                name: (i+1),
+                name: 'Week ' + (i+1),
                 start: moment(guild.world.start).add(i, 'weeks'),
                 end: moment(guild.world.start).add(i, 'weeks').add(6, 'days').subtract(1, 'minutes'),
                 editable: moment().isBetween(
@@ -169,6 +169,9 @@
 
             // Get the current week
             guild.selected_week = _.findWhere(guild.weeks, {editable: true});
+            if(!guild.selected_week) {
+                guild.selected_week = _.last(guild.weeks);
+            }
             vm.guilds.push(guild);
 
           })

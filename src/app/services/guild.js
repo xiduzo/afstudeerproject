@@ -118,6 +118,7 @@
         }
 
         function patchPlayersGuild(user, oldGuild, newGuild) {
+            console.log(oldGuild);
             return $http({
                 url: REST_API_URL + 'guild/userInGuild/',
                 method: "GET",

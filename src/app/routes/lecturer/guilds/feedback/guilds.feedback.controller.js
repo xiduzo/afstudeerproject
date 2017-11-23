@@ -121,8 +121,6 @@
               }
             }),
             first_line_graph_load: true,
-            selected_type: null,
-            selected_rule: null,
             horizontal_axis: [],
             endorsed_rules: []
           };
@@ -133,6 +131,13 @@
               data.graphs_data.line.push(0);
               data.graphs_data.line_total.push(0);
               data.horizontal_axis.push('Week ' + (index+1));
+
+              // Add basis statistics for the users per week
+              // Add basis statistics for the users per week
+              _.each(data.members_data, function(member) {
+                member.line_data.push({y: 0, total: 0});
+                member.line_data_total.push(0);
+              });
             }
           }
 
@@ -178,7 +183,9 @@
             });
 
             var total_points = 0; // Set the total points on 0 for every user
+            var week = 0;
 
+            // console.log(member.endorsements);
             _.each(member.endorsements, function(endorsements) {
               // Group the endorsements by type
               endorsements = _.groupBy(endorsements, function(endorsement) {
@@ -193,6 +200,7 @@
                   var endorsed_rule = _.findWhere(data.endorsed_rules, { id: endorsement.rule });
                   var endorsement_points = endorsement.rating * endorsement.rule_points / MAX_STAR_RATING;
                   // build up the endorsement rules circles
+                  // TODO: fix all the missing endorsements
                   if(endorsed_rule) {
                     endorsed_rule.total_points += endorsement.rule_points;
                     endorsed_rule.points += endorsement.rating * endorsement.rule_points / MAX_STAR_RATING;
@@ -218,12 +226,15 @@
 
                 });
               });
-              member.line_data.push({
+
+              member.line_data[week] = {
                   y: points,
                   total: total_points,
-              });
-              member.line_data_total.push(total_points);
+              };
 
+              member.line_data_total[week] = total_points;
+
+              week++;
             });
 
           });
@@ -243,7 +254,6 @@
           });
 
           // Make the average line
-          // console.log(data.graphs_data.line_total);
           data.graphs_data.line = [
             {
               name: 'Gemiddeld',

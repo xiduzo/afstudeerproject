@@ -54,6 +54,8 @@
             return $state.go('base.worlds.overview');
           }
 
+          response = response.data;
+
           Global.setRouteTitle('Klas instellingen ' + response.name);
 
           vm.loading_page = false;
