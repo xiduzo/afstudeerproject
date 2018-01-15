@@ -210,6 +210,13 @@
                 member.line_data.push({y: 0, total: 0});
               });
             }
+
+            if(moment().isBetween(moment(guild.world.start).add(index, 'weeks'),moment(guild.world.start).add(index, 'weeks').add(6, 'days'),'day')) {
+              guild.current_week = {
+                start: moment(guild.world.start).add(index, 'weeks'),
+                end: moment(guild.world.start).add(index, 'weeks').add(6, 'days')
+              };
+            }
           }
 
           setTimeout(function () {
@@ -252,8 +259,9 @@
             });
 
             var total_points = 0; // Set the total points on 0 for every user
+            var week = 0;
 
-            _.each(member.endorsements, function(endorsements, week) {
+            _.each(member.endorsements, function(endorsements) {
               // Group the endorsements by type
               endorsements = _.groupBy(endorsements, function(endorsement) {
                 return endorsement.rule_type;
@@ -269,18 +277,17 @@
                   // Check if the user has given feedback before receiving points
                   var given_endorsement = _.findWhere(all_endorsements, { week: endorsement.week, user: endorsement.endorsed_by, endorsed_by: endorsement.user, rule: endorsement.rule });
                   if(given_endorsement) {
-                    // TODO: only give points when you gave points
+                    points += endorsement_points;
+                    total_points += endorsement_points;
+                    _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += endorsement_points;
                   }
-                  points += endorsement_points;
-                  total_points += endorsement_points;
-                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += endorsement_points;
 
                   // For calculating the % of points gained on maximal points able to gain
                   _.findWhere(member.polar_data, { type: endorsement.rule_type }).total_points += endorsement.rule_points;
 
                 });
               });
-              member.line_data[week-1] = {
+              member.line_data[week] = {
                   y: points,
                   total: total_points,
               };
@@ -288,6 +295,8 @@
               _.each(member.polar_data, function(type) {
                 type.y = type.points * 100 / type.total_points;
               });
+
+              week++;
 
             });
 
@@ -302,6 +311,9 @@
             _.each(members_data.line_data, function(points, index) {
               if(points.y) { data.graphs_data.line[index] += points.y; }
             });
+            _.each(members_data.line_data_total, function(points, index) {
+              data.graphs_data.line_total[index] += points;
+            });
           });
 
           // Make the average line
@@ -314,6 +326,19 @@
               color: Highcharts.Color('#222222').setOpacity(0.1).get(),
               yAxis: 0
             },
+            {
+                name: 'Gemiddeld totaal',
+                // TODO
+                // Cummulative total
+                data: _.map(data.graphs_data.line_total, function(line_data, index) {
+                  return line_data / data.members_data.length;
+                }),
+                color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+                yAxis: 1,
+                dashStyle: 'shortdot',
+                enableMouseTracking: false,
+                showInLegend: false
+            }
           ];
 
           // Prepare the polar data
@@ -336,6 +361,18 @@
               color: member_data.color,
               yAxis: 0,
               showInLegend: member_data.showInLegend
+            });
+
+            // Total points
+            data.graphs_data.line.push({
+              visible: member_data.selected,
+              name: member_data.name,
+              data: member_data.line_data_total,
+              color: Highcharts.Color(member_data.color).setOpacity(0.33).get(),
+              yAxis: 1,
+              dashStyle: 'shortdot',
+              enableMouseTracking: false,
+              showInLegend: false,
             });
 
             _.each(member_data.polar_data, function(polar_data, index) {
@@ -375,7 +412,7 @@
               { title: { text: 'Punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null },
               { title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
             ],
-            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}</strong><br>'},
+            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}</strong> (totaal {point.total:,.0f}) <br>'},
             plotOptions: {
               spline: { lineWidth: 4, marker: { enabled: true, symbol: 'circle' }},
               series: { animation: data.first_line_graph_load, events: { legendItemClick:function() { return false }} },
