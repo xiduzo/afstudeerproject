@@ -49,8 +49,8 @@
         vm.loading_page = true;
 
         var burst = new mojs.Burst({
-          left: 0, top: 0,
-          radius:   { 6: 24 - 3 },
+          left: 36/2, top: 36/2,
+          radius:   { 6: 36 - 3 },
           angle:    90,
           children: {
             shape:        'circle',
