@@ -310,9 +310,20 @@
           _.each(data.members_data, function(members_data) {
             _.each(members_data.line_data, function(points, index) {
               if(points.y) { data.graphs_data.line[index] += points.y; }
+              if(points.total === 0 && index > 0) { points.total = members_data.line_data[index-1].total; }
             });
+
+            _.each(members_data.line_data_total, function(points, index) {
+              if(points === 0 && index > 0) {
+                members_data.line_data_total[index] = members_data.line_data_total[index-1];
+              }
+            });
+
             _.each(members_data.line_data_total, function(points, index) {
               data.graphs_data.line_total[index] += points;
+              if(data.graphs_data.line_total[index] === 0 && index > 0) {
+                data.graphs_data.line_total[index] = data.graphs_data.line_total[index-1];
+              }
             });
           });
 
