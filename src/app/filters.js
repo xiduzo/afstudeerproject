@@ -77,7 +77,6 @@
 
         .filter('cardsDueThisWeek', function() {
             return function(cards, week) {
-            //   console.log(cards, week);
                 return _.filter(cards, function(card) {
                    if(card.due) {
                       if(moment(card.due).isBetween(moment(week.start), moment(week.end), 'day') ||
