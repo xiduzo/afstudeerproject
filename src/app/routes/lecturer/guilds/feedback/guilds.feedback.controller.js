@@ -220,8 +220,8 @@
                     total_points += endorsement_points;
                     _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += endorsement_points;
                   }
-                  //
-                  // // For calculating the % of points gained on maximal points able to gain
+
+                  // For calculating the % of points gained on maximal points able to gain
                   _.findWhere(member.polar_data, { type: endorsement.rule_type }).total_points += endorsement.rule_points;
 
                 });
