@@ -55,7 +55,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment().startOf('day');
-              return Math.round(moment.duration(end - today).asDays() + 1); // Be sure to calculate the last day
+              return Math.round(moment.duration(end - today).asDays());
             };
         })
 
@@ -63,7 +63,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment();
-              return Math.round(moment.duration(end - today).asHours() + 24); // Be sure to calculate the last day
+              return Math.round(moment.duration(end - today).asHours());
             };
         })
 
@@ -71,7 +71,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment();
-              return Math.round(moment.duration(end - today).asSeconds() + 60 * 60 * 24); // Be sure to calculate the last day
+              return Math.round(moment.duration(end - today).asSeconds());
             };
         })
 

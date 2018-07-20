@@ -22,9 +22,13 @@
               <md-card flex layout="column" layout-align="space-between">
                 <md-card-content flex layout="column" layout-align="center center">
                   <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.current_week.end | hoursToGo) * 100 / (7*24) }}"></md-progress-circular>
-                  <span>
+                  <span ng-if="(guild.current_week.end | daysToGo) > 2">
                     {{ guild.current_week.end | daysToGo }}
-                    dag<span ng-if="(guild.current_week.end | daysToGo) != 1">en</span> om feedback te geven of te wijzigen
+                    dagen om feedback te geven of te wijzigen
+                  </span>
+                  <span ng-if="(guild.current_week.end | daysToGo) <= 2">
+                    {{ guild.current_week.end | hoursToGo }}
+                    uur om feedback te geven of te wijzigen
                   </span>
                 </md-card-content>
                 <div class="indication__bar indication__bar--success" ng-class="{
