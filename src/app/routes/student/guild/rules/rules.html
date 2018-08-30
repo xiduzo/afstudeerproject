@@ -221,7 +221,7 @@
                             </md-card-header>
                             <md-card-content>
                               <section layout class="rating" ng-if="week.editable">
-                                <div ng-click="rating = (rating === 1 ? 0 : 1); guildRulesCtrl.setRating(week.index, rule, member.user, (rating === 1 ? 1 : 0), guild, $event)">
+                                <div ng-click="rating = 1; guildRulesCtrl.setRating(week.index, rule, member.user, 1, guild, $event)">
                                     <md-icon md-svg-src="star_dark" class="icon__size--36 icon__color--lightGreen" ng-if="rating >= 1"></md-icon>
                                     <md-icon md-svg-src="star_border_dark" class="icon__size--36" ng-if="rating < 1"></md-icon>
                                 </div>

@@ -1,8 +1,7 @@
 {
   "name": "athena",
-  "description": "a powerfull tool that helps students and lecturers to get more insights in group dynamics.",
-  "version": "0.9.0",
   "description": "",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "test": "gulp test"

@@ -29,9 +29,9 @@
   },
   "resolutions": {
     "jquery": ">=1.2.2",
-    "angular": "^1.2.9",
+    "angular": "@1.6.6",
     "angular-cookies": "^1.6.3",
-    "angular-sanitize": "^1.6.3",
+    "angular-sanitize": "@1.6.6",
     "angular-aria": "^1.6.3",
     "angular-ui-router": "^0.4.2",
     "moment": "^2.17.1",

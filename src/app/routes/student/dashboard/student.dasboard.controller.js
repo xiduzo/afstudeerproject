@@ -185,10 +185,10 @@
                 endorsements: [],
                 line_data: [],
                 polar_data: [
-                  { type: 1, points: 0, total_points: 0, y: 0 },
-                  { type: 2, points: 0, total_points: 0, y: 0 },
-                  { type: 3, points: 0, total_points: 0, y: 0 },
-                  { type: 4, points: 0, total_points: 0, y: 0 },
+                  { type: 1, points: 0, max: 0, y: 0 },
+                  { type: 2, points: 0, max: 0, y: 0 },
+                  { type: 3, points: 0, max: 0, y: 0 },
+                  { type: 4, points: 0, max: 0, y: 0 },
                 ],
                 selected: member.user.id == vm.user.id ? true : false,
                 showInLegend: member.user.id == vm.user.id ? true : false
@@ -202,12 +202,13 @@
           for(var index = 0; index <= guild.world.course_duration - 1; index++) {
             // Only show weeks that have been in the past
             if(!moment().isBefore(moment(guild.world.start).add(index, 'weeks'), 'day')) {
-              data.graphs_data.line.push(0);
+              var lineObject = {y: 0, total: 0, max: 0, points: 0};
+              data.graphs_data.line.push(lineObject);
               data.horizontal_axis.push('Week ' + (index+1));
 
               // Add basis statistics for the users per week
               _.each(data.members_data, function(member) {
-                member.line_data.push({y: 0, total: 0});
+                member.line_data.push(lineObject);
               });
             }
 
@@ -258,46 +259,49 @@
               }
             });
 
-            var total_points = 0; // Set the total points on 0 for every user
-            var week = 0;
+            var week = 0; // somehow the second argument isnt indexing, quickfix
 
             _.each(member.endorsements, function(endorsements) {
+
+              var weekly_points_earned = 0;
+              var weekly_max_points = 0;
+
               // Group the endorsements by type
               endorsements = _.groupBy(endorsements, function(endorsement) {
                 return endorsement.rule_type;
               });
 
-              var points = 0; // Set the local points to 0 to calculate % later on
+              _.each(endorsements, function(endorsement_type) {
 
-              _.each(endorsements, function(endorsement_type, index) {
                 _.each(endorsement_type, function(endorsement) {
 
-                  var endorsement_points = endorsement.rating * endorsement.rule_points / MAX_STAR_RATING;
+                  var points_earned = endorsement.rating * endorsement.rule_points / MAX_STAR_RATING;
 
-                  // Check if the user has given feedback before receiving points
-                  var given_endorsement = _.findWhere(all_endorsements, { week: endorsement.week, user: endorsement.endorsed_by, endorsed_by: endorsement.user, rule: endorsement.rule });
-                  if(given_endorsement) {
-                    points += endorsement_points;
-                    total_points += endorsement_points;
-                    _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += endorsement_points;
-                  }
+                  // TODO only give points to users whom have filled in the form
+                  var given_endorsement = _.findWhere(all_endorsements, {
+                    week: endorsement.week,
+                    user: endorsement.endorsed_by,
+                    endorsed_by: endorsement.user,
+                    rule: endorsement.rule
+                  });
+                  
+                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += points_earned;
+                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).max += endorsement.rule_points;
 
-                  // For calculating the % of points gained on maximal points able to gain
-                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).total_points += endorsement.rule_points;
+                  weekly_points_earned += points_earned;
+                  weekly_max_points += endorsement.rule_points;
 
                 });
               });
-              member.line_data[week] = {
-                  y: points,
-                  total: total_points,
-              };
 
-              _.each(member.polar_data, function(type) {
-                type.y = type.points * 100 / type.total_points;
-              });
+              member.line_data[week] = {
+                y: weekly_points_earned * 100 / weekly_max_points,
+                total: 0,
+                max: weekly_max_points,
+                points: weekly_points_earned
+              }
 
               week++;
-
             });
 
           });
@@ -306,51 +310,6 @@
         }
 
         function reformatData(data, guild) {
-
-          _.each(data.members_data, function(members_data) {
-            _.each(members_data.line_data, function(points, index) {
-              if(points.y) { data.graphs_data.line[index] += points.y; }
-              if(points.total === 0 && index > 0) { points.total = members_data.line_data[index-1].total; }
-            });
-
-            _.each(members_data.line_data_total, function(points, index) {
-              if(points === 0 && index > 0) {
-                members_data.line_data_total[index] = members_data.line_data_total[index-1];
-              }
-            });
-
-            _.each(members_data.line_data_total, function(points, index) {
-              data.graphs_data.line_total[index] += points;
-              if(data.graphs_data.line_total[index] === 0 && index > 0) {
-                data.graphs_data.line_total[index] = data.graphs_data.line_total[index-1];
-              }
-            });
-          });
-
-          // Make the average line
-          data.graphs_data.line = [
-            {
-              name: 'Gemiddeld',
-              data: _.map(data.graphs_data.line, function(line_data, index) {
-                return { y: line_data / data.members_data.length};
-              }),
-              color: Highcharts.Color('#222222').setOpacity(0.1).get(),
-              yAxis: 0
-            },
-            {
-                name: 'Gemiddeld totaal',
-                // TODO
-                // Cummulative total
-                data: _.map(data.graphs_data.line_total, function(line_data, index) {
-                  return line_data / data.members_data.length;
-                }),
-                color: Highcharts.Color('#222222').setOpacity(0.1).get(),
-                yAxis: 1,
-                dashStyle: 'shortdot',
-                enableMouseTracking: false,
-                showInLegend: false
-            }
-          ];
 
           // Prepare the polar data
           data.graphs_data.polar = [
@@ -362,48 +321,68 @@
             }
           ];
 
-          // Fill in all the data
-          _.each(data.members_data, function(member_data, index) {
-            // Weekly points
+          // Prepare the line data
+          data.graphs_data.line = [
+            {
+              name: 'Gemiddeld',
+              data: _.map(data.members_data[0].line_data, function(line_data) {
+                return {y: 0, total: 0, max: 0, points: 0};
+              }),
+              color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+              yAxis: 0
+            }
+          ];
+
+          _.each(data.members_data, function(member_data) {
+            // POLAR CHART
+            // Add the score in percentage per type
+            _.each(member_data.polar_data, function(polar_data, endorsement_type) {
+              if(polar_data.points) {
+                polar_data.y = polar_data.points * 100 / polar_data.max;
+                data.graphs_data.polar[0].data[endorsement_type].y += polar_data.y;
+              }
+            });
+
+            // Push to the polar data
+            data.graphs_data.polar.push({
+              visible: member_data.selected,
+              name: member_data.name,
+              data: member_data.polar_data,
+              color: member_data.color,
+              showInLegend: member_data.showInLegend
+            });
+
+            // LINE CHART
+            _.each(member_data.line_data, function(line_data, week) {
+              //TODO keep track of total points (Add values to previous week)
+              if(line_data.points) {
+                line_data.y = line_data.points * 100 / line_data.max;
+
+                data.graphs_data.line[0].data[week].y += line_data.y;
+              }
+            });
+
             data.graphs_data.line.push({
               visible: member_data.selected,
               name: member_data.name,
               data: member_data.line_data,
               color: member_data.color,
-              yAxis: 0,
               showInLegend: member_data.showInLegend
-            });
+            })
 
-            // Total points
-            data.graphs_data.line.push({
-              visible: member_data.selected,
-              name: member_data.name,
-              data: member_data.line_data_total,
-              color: Highcharts.Color(member_data.color).setOpacity(0.33).get(),
-              yAxis: 1,
-              dashStyle: 'shortdot',
-              enableMouseTracking: false,
-              showInLegend: false,
-            });
-
-            _.each(member_data.polar_data, function(polar_data, index) {
-                data.graphs_data.polar[0].data[index].y += polar_data.y || 0;
-             });
-
-             data.graphs_data.polar.push({
-               visible: member_data.selected,
-               name: member_data.name,
-               data: member_data.polar_data,
-               color: member_data.color,
-               showInLegend: member_data.showInLegend
-             });
           });
 
-          // Update the average %
+          // Update the average score for the polar chart
           data.graphs_data.polar[0].data = _.map(data.graphs_data.polar[0].data, function(polar_data) {
             return {y: polar_data.y / data.members_data.length};
           });
 
+          // update the average score for the line chart
+          data.graphs_data.line[0].data = _.map(data.graphs_data.line[0].data, function(line_data) {
+            return {
+              y: line_data.y / data.members_data.length
+            }
+          })
 
           createLineChart(data, guild);
           createPolarChart(data, guild);
@@ -416,14 +395,14 @@
         function createLineChart(data, guild) {
           $('#line__'+guild.id).highcharts({
             chart: { type: 'spline', animation: data.first_line_graph_load },
-            title: { text: 'Feedback punten ' + guild.name },
+            title: { text: 'Feedback ' + guild.name },
             // subtitle: { text}
             xAxis: { categories: data.horizontal_axis },
             yAxis: [
-              { title: { text: 'Punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null },
-              { title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
+              { title: { text: 'Punten percentage'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, min:0, max: 100 },
+              //{ title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
             ],
-            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}</strong> (totaal {point.total:,.0f}) <br>'},
+            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong> <br>'},
             plotOptions: {
               spline: { lineWidth: 4, marker: { enabled: true, symbol: 'circle' }},
               series: { animation: data.first_line_graph_load, events: { legendItemClick:function() { return false }} },
@@ -441,9 +420,9 @@
             xAxis: {
               categories: ['Houding', 'Functioneren binnen de groep', 'Kennisontwikkeling', 'Verantwoording'],
               tickmarkPlacement: 'on',
-              lineWidth: 0
+              lineWidth: 0,
             },
-            yAxis: { gridLineInterpolation: 'polygon', visible: false},
+            yAxis: { gridLineInterpolation: 'polygon', visible: false, min: 0, max: 100},
             tooltip: { shared: true, pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br>' },
             plotOptions: {
               series: { animation: data.first_line_graph_load, events: { legendItemClick: function() { return false; } } },
