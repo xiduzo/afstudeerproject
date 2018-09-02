@@ -284,7 +284,7 @@
                     endorsed_by: endorsement.user,
                     rule: endorsement.rule
                   });
-                  
+
                   _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += points_earned;
                   _.findWhere(member.polar_data, { type: endorsement.rule_type }).max += endorsement.rule_points;
 
@@ -294,9 +294,10 @@
                 });
               });
 
+
               member.line_data[week] = {
-                y: weekly_points_earned * 100 / weekly_max_points,
-                total: 0,
+                y: weekly_points_earned * 100 / weekly_max_points, // percentage
+                total: weekly_points_earned * 100 / weekly_max_points,
                 max: weekly_max_points,
                 points: weekly_points_earned
               }
@@ -354,12 +355,11 @@
 
             // LINE CHART
             _.each(member_data.line_data, function(line_data, week) {
-              //TODO keep track of total points (Add values to previous week)
-              if(line_data.points) {
-                line_data.y = line_data.points * 100 / line_data.max;
+              // Add the score of the previous week
+              if(week > 0) line_data.total += member_data.line_data[week - 1].total;
 
-                data.graphs_data.line[0].data[week].y += line_data.y;
-              }
+              // for the average chart
+              data.graphs_data.line[0].data[week].y += line_data.y;
             });
 
             data.graphs_data.line.push({
@@ -402,7 +402,7 @@
               { title: { text: 'Punten percentage'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, min:0, max: 100 },
               //{ title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
             ],
-            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong> <br>'},
+            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>'},
             plotOptions: {
               spline: { lineWidth: 4, marker: { enabled: true, symbol: 'circle' }},
               series: { animation: data.first_line_graph_load, events: { legendItemClick:function() { return false }} },
