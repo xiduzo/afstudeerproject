@@ -4,9 +4,12 @@
   border-radius: 0 0 2px 2px;
 
   &--success {
-    background: #4CAF50;
+    background: $success;
+  }
+  &--warning {
+    background: $warning;
   }
   &--error {
-    background: #F44336;
+    background: $error;
   }
 }

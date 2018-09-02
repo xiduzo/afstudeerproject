@@ -13,6 +13,7 @@
         $rootScope,
         $state,
         localStorageService,
+        toastr,
         LDAP_LOGIN_API,
         REST_API_URL
     ) {
@@ -30,6 +31,11 @@
         service.createUser = createUser;
         service.getLecturers = getLecturers;
         service.getStudents = getStudents;
+        service.patchUser = patchUser;
+        service.patchAvatarHash = patchAvatarHash;
+
+        // V2
+        service.getWorlds = getWorlds;
 
         return service;
 
@@ -37,6 +43,22 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        function getWorlds(id) {
+          return $http({
+            url: REST_API_URL + 'user/worlds/',
+            method: "GET",
+            params: {
+              user: id
+            }
+          })
+          .then(function(response) { return response; })
+          .catch(function(error) { toastr.error(error); });
+        }
+
+
+
+
         function login(username, password, context) {
             return $http({
                     url: LDAP_LOGIN_API,
@@ -45,6 +67,9 @@
                         username: username,
                         password: password,
                         context: context
+                    },
+                    headers: {
+                        'Authorization': undefined
                     }
                 })
                 .then(function(response) {
@@ -57,6 +82,7 @@
         function logout() {
             $rootScope.Global.clearUser();
             localStorageService.remove('user');
+            localStorageService.remove('access');
             $rootScope.$broadcast('user-logged-out');
 
             // Close the sidenav for the login page
@@ -66,12 +92,12 @@
             $state.go('base.account.login');
         }
 
-        function checkForExistingUser(uid) {
+        function checkForExistingUser(student_number) {
             return $http({
                 url: REST_API_URL + 'user/users/',
                 method: "GET",
                 params: {
-                    uid: uid
+                    student_number: student_number
                 }
             })
             .then(function(response) {
@@ -82,19 +108,22 @@
         }
 
         function setUser(user, remember) {
+            if(localStorageService.get('trello_user').uploadedAvatarHash) {
+                user.avatar = localStorageService.get('trello_user').uploadedAvatarHash;
+            }
             if(remember) {
                 localStorageService.set('user', user);
             }
-            // Get the access level from the DB just to be sure no one will give himself access
+            // Get the access level from the DB just to be sure no one will give themselfs access
             $rootScope.$broadcast('new-user-login', user);
         }
 
-        function getAccessLevel(uid) {
+        function getAccessLevel(email) {
             return $http({
                 url: REST_API_URL + 'user/users/',
                 method: "GET",
                 params: {
-                    uid: uid
+                    email: email
                 }
             })
             .then(function(response) {
@@ -109,15 +138,15 @@
                 url: REST_API_URL + 'user/users/',
                 method: "POST",
                 data: {
-                    uid:               user.uid,
-                    student_number:    user.hvastudentnumber,
+                    student_number:    user.student_number,
                     email:             user.email,
                     initials:          user.initials,
                     first_name:        user.first_name,
                     surname_prefix:    user.surname_prefix,
                     surname:           user.surname,
                     gender:            user.gender,
-                    is_staff:          user.access
+                    is_staff:          user.is_staff,
+                    is_superuser:      user.is_superuser
                 }
             })
             .then(function(response) {
@@ -153,6 +182,38 @@
             .then(function(response) {
                 return response.data;
             }, function(error) {
+                return error;
+            });
+        }
+
+        function patchUser(user) {
+            return $http({
+                url: REST_API_URL + 'user/users/' + user.id + '/',
+                method: "PATCH",
+                data: {
+                    is_superuser: user.is_superuser
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            })
+            .catch(function(error) {
+                return error;
+            });
+        }
+
+        function patchAvatarHash(user) {
+            return $http({
+                url: REST_API_URL + 'user/users/' + user.id + '/',
+                method: "PATCH",
+                data: {
+                    avatar_hash: user.avatar_hash
+                }
+            })
+            .then(function(response) {
+                return response.data;
+            })
+            .catch(function(error) {
                 return error;
             });
         }

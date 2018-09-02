@@ -3,17 +3,16 @@
 <section ng-if="!guildActivityCtrl.loading_page" layout-fill>
   <cmd-empty-state ng-if="guildActivityCtrl.guilds.length < 1"
     icon="guild_dark"
-    headline="No group found"
-    title="Wait for a lecturer to add you to a group">
+    headline="No team found"
+    title="Wait for a lecturer to add you to a team">
   </cmd-empty-state>
   <section layout-fill ng-repeat="guild in guildActivityCtrl.guilds" ng-if="guild.id === guildActivityCtrl.selected_guild">
     <cmd-empty-state ng-if="guild.no_trello_board"
     icon="settings_dark"
     headline="Trello not configured"
-    title="Wait for a lecturer to configure this group correctly.">
+    title="Wait for a lecturer to configure this team correctly.">
     </cmd-empty-state>
     <section ng-if="!guild.no_trello_board" layout layout-fill>
-
       <md-content layout="column" layout-padding layout-margin flex=80 layout-fill md-whiteframe=1 id="main__content">
         <md-list ng-repeat="activity__group in guild.activities" class="timeline">
           <span style="display: none;">
@@ -44,7 +43,7 @@
                 <md-card flex>
                   <md-card-header>
                     <md-card-avatar>
-                      <md-icon md-svg-src="warning_light" class="background--color--red icon--size--36"></md-icon>
+                      <md-icon md-svg-src="warning_light" class="background--color--red icon__size--36"></md-icon>
                     </md-card-avatar>
                     <md-card-header-text>
                       <span class="md-title">
@@ -83,15 +82,14 @@
                   </section>
                   <section class="background--color--grey--1" layout layout-align="center center">
                     <md-card-actions>
-                      <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK">
-                        <md-icon md-svg-src="external_link_dark" class="icon--color--grey"></md-icon>
+                      <md-button class="md-icon-button" href="{{activity.link}}" target="_BLANK" ng-if="activity.link">
+                        <md-icon md-svg-src="external_link_dark" class="icon__color--grey"></md-icon>
                         <md-tooltip md-delay="1500">
                           Bekijk op Trello
                         </md-tooltip>
                       </md-button>
                     </md-card-actions>
                   </section>
-
                 </md-card>
               </md-list-item>
             </md-list>
@@ -101,16 +99,16 @@
 
       <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
         <section>
-          <h1 class="md-headline text--color--grey">
+          <div class="md-headline text--color--grey">
             Filter
-          </h1>
+          </div>
           <md-input-container class="md-block">
             <label>Type</label>
             <md-select ng-model="filters.action_type">
               <md-optgroup label="Type">
                 <md-option ng-value="undefined"> Alle </md-option>
                 <md-option ng-value="action_type.type" ng-repeat="action_type in guildActivityCtrl.action_types" layout layout-align="start center">
-                  <md-icon class="icon__helper icon--color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
+                  <md-icon class="icon__helper icon__color--black" md-svg-icon="{{action_type.icon}}"></md-icon>
                   {{ action_type.name }}
                 </md-option>
               </md-optgroup>
@@ -137,8 +135,7 @@
           </md-input-container>
           <md-input-container class="md-block">
               <label>Zoeken</label>
-              <input ng-model="filters.free_search"
-              ng-model-options=" { debounce: 500 }">
+              <input ng-model="filters.free_search" ng-model-options=" { debounce: 500 }">
           </md-input-container>
         </section>
         <section>

@@ -1,78 +1,67 @@
-<section flex layout>
-    <md-content flex=80 layout="column" layout-padding md-whiteframe="2">
-        <cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
-        <section flex ng-if="!worldsSettingsCtrl.loading_page" layout-fill layout="column">
-            test
-        </section>
-    </md-content>
+<cmd-loading-page ng-if="worldsSettingsCtrl.loading_page"></cmd-loading-page>
 
-    <section flex=20 layout-padding layout="column" style="overflow-x: hidden;">
-        <section>
-            <section layout="column">
-                <md-button class="md-raised md-accent"
-                ng-click="worldsSettingsCtrl.changeWorldName($event)" layout>
-                    <md-icon md-svg-src="pencil_light"></md-icon>
-                    <span flex>
-                        Change class name
-                    </span>
-                </md-button>
-                <md-button class="md-warn md-raised"
-                ng-click="worldsSettingsCtrl.deleteWorld($event)" layout>
-                    <md-icon md-svg-src="delete_light"></md-icon>
-                    <span flex>
-                        Delete class
-                    </span>
-                </md-button>
-            </section>
+<section ng-if="!worldsSettingsCtrl.loading_page" layout layout-fill>
+  <md-content layout="column" layout-padding flex=80 layout-fill md-whiteframe=1 id="main__content">
+    <md-card>
+      <md-card-content>
+        <h1 class="md-title text--color--grey">
+          Instellingen
+        </h1>
+        <section layout layout-padding>
+          <span flex=50 flex-gt-sm=30>Start datum</span>
+          <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-open-on-focus md-placeholder="Datum"></md-datepicker>
         </section>
-
-        <section>
-            <md-subheader>
-                Settings
-            </md-subheader>
-            <section layout="column" layout-padding>
-                <section layout="column">
-                    <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-placeholder="Pick a date"></md-datepicker>
-                    <div class="hint text--color--grey">Starting date of this class</div>
-                </section>
-                <md-input-container>
-                    <label>Duration</label>
-                    <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
-                    <div class="hint text--color--grey">In weeks</div>
-                </md-input-container>
-            </section>
+        <section layout layout-padding>
+          <span flex=50 flex-gt-sm=30>
+            Duur
+          </span>
+          <md-input-container>
+            <label>Duur</label>
+            <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
+            <div class="hint text--color--grey">In weken</div>
+          </md-input-container>
         </section>
-
-        <section>
-            <md-subheader>
-                Lecturers ({{worldsSettingsCtrl.world.gamemasters.length}})
-            </md-subheader>
-            <section layout layout-wrap>
-                <span flex=33 layout layout-padding layout-align="center"
-                    ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
-                    <img class="round" gravatar-size="60" gravatar-src-once="gamemaster.email">
-                    <md-tooltip md-delay="1000">
-                        {{ gamemaster | fullUserName }}
-                    </md-tooltip>
-                </span>
-            </section>
-        </section>
-
-        <section>
-            <md-subheader>
-                Groups ({{worldsSettingsCtrl.world.guilds.length}})
-            </md-subheader>
-            <section>
-                <md-list>
-                    <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds">
-                        {{ guild.name }}
-                        <md-tooltip md-delay="1000">
-                            View {{ guild.name }}
-                        </md-tooltip>
-                        <md-divider ng-if="!$last"></md-divider>
-                    </md-list-item>
-                </md-list>
-            </section>
-        </section>
+      </md-card-content>
+    </md-card>
+  </md-content>
+  <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+    <section>
+      <div class="md-headline text--color--grey">
+        Docenten
+      </div>
+      <md-list>
+        <md-list-item ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
+          <img ng-if="gamemaster.avatar_hash" class="md-avatar round" ng-src="https://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
+          <img ng-if="!gamemaster.avatar_hash" class="md-avatar round" gravatar-size="30" gravatar-src="gamemaster.email">
+          <p>
+            {{ gamemaster | fullUserName }}
+          </p>
+        </md-list-item>
+      </md-list>
+      <div class="md-headline text--color--grey">
+        Groepen
+      </div>
+      <md-list>
+        <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds | orderBy : 'name'">
+          {{ guild.name }}
+        </md-list-item>
+      </md-list>
     </section>
+    <section layout="column">
+      <md-button layout class="success md-raised" ng-click="worldsSettingsCtrl.changeWorldName($event)">
+        <md-icon md-svg-src="pencil_light">
+        </md-icon>
+        <span flex>
+          Wijzig naam
+        </span>
+      </md-button>
+      <md-button layout class="md-warn md-raised" ng-click="worldsSettingsCtrl.deleteWorld($event)">
+        <md-icon md-svg-src="delete_light">
+        </md-icon>
+        <span flex>
+          Verwijder klas
+        </span>
+      </md-button>
+    </section>
+  </section>
 </section>

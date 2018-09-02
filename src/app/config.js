@@ -7,25 +7,43 @@
 
     /** @ngInject */
     function config(
+        $httpProvider,
+        $base64,
         $compileProvider,
         $logProvider,
         $mdThemingProvider,
         $mdIconProvider,
         $urlRouterProvider,
+        $locationProvider,
         gravatarServiceProvider,
         localStorageServiceProvider,
-        ngOnboardingDefaultsProvider,
-        ScrollBarsProvider,
         cfpLoadingBarProvider,
         TrelloApiProvider,
+        toastrConfig,
         DEBUG_ENABLED,
         TRELLO_KEY,
-        TRELLO_SECRET
+        TRELLO_SECRET,
+        CREDENTIAL_USER,
+        CREDENTIAL_PASS
     ) {
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Routing provier
+            Credentials
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + $base64.encode(CREDENTIAL_USER + ':' + CREDENTIAL_PASS);
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Routing provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         $urlRouterProvider.otherwise('/');
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Location provider
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // $locationProvider.html5Mode({
+        //     enabled: true,
+        //     // requireBase: false
+        // });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Log provider
@@ -52,9 +70,6 @@
         $mdThemingProvider
             // Add palettes
             .definePalette('cmd', {
-                // 'contrastDefaultColor': 'light',
-                // 'default': 'FFCC00' // #FFCC00
-                // Im color blind, not that creative with colors
                 '50':   'FFF8E1', // #FFF8E1
                 '100':  'FFECB3', // #FFECB3
                 '200':  'FFE082', // #FFE082
@@ -231,20 +246,6 @@
         ; // End icon provier
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Fancy scrollbars \o.0/
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        ScrollBarsProvider.defaults = {
-            scrollButtons: {
-                scrollAmount: 'auto',
-                enable: false,
-            },
-            scrollInertia: 100,
-            axis: 'y', // 'y' || 'x' || 'yx'
-            theme: 'minimal-dark',
-            autoHideScrollbar: true,
-        };
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Gravatar
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         gravatarServiceProvider.secure = true;
@@ -263,18 +264,11 @@
         };
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Onboarding
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        ngOnboardingDefaultsProvider.set({
-            closeButtonText: '',
-            overlayOpacity: 0.8,
-        });
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Loading bar provier
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         // How many miliseconds before showing the loading bar
-        cfpLoadingBarProvider.latencyThreshold = 100;
+        cfpLoadingBarProvider.latencyThreshold = 50;
+        cfpLoadingBarProvider.includeSpinner = false;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Trello
@@ -288,7 +282,23 @@
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Momnent
+            Toastr
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        angular.extend(toastrConfig, {
+            autoDismiss: false,
+            containerId: 'toast-container',
+            maxOpened: 0,
+            extendedTimeOut: 3000,
+            newestOnTop: true,
+            progressBar: false,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: false,
+            preventOpenDuplicates: false,
+            target: 'body'
+        });
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Moment
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         moment.defineLocale('nl', {
             months : 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),

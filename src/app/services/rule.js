@@ -19,6 +19,7 @@
         services.addRule = addRule;
         services.getRules = getRules;
         services.deleteRule = deleteRule;
+        services.patchRule = patchRule;
 
         return services;
 
@@ -64,6 +65,23 @@
             }, function(error) {
                 return error;
             });
+        }
+
+        function patchRule(rule) {
+          return $http({
+            url: REST_API_URL + 'rules/rules/' + rule.id + '/',
+            method: "PATCH",
+            data: {
+                rule: rule.rule,
+                points: rule.points,
+                rule_type: rule.rule_type
+            }
+          })
+          .then(function(response) {
+              return response.data;
+          }, function(error) {
+              return error;
+          });
         }
 
     }

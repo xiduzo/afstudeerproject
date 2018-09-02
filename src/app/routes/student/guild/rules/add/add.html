@@ -3,7 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h1>
-        Stel afspraak op
+        Stel samen met je team een extra afspraak op
       </h1>
     </div>
   </md-toolbar>
@@ -12,32 +12,24 @@
 
     <form layout="column">
 
-      <md-input-container flex>
-        <label>De student</label>
-        <input md-autofocus placeholder="is op tijd in de les" ng-model="addGuildRuleCtrl.formInput.rule" />
-      </md-input-container>
+      <section layout layout-align="start center">
+        <span>
+          De student
+        </span>
+        <md-input-container class="md-block" flex style="margin: 24px 0 0 0;">
+          <input md-autofocus aria-label="rule" ng-model="addGuildRuleCtrl.formInput.rule" />
+        </md-input-container>
+      </section>
 
       <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
         <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center" ng-click="addGuildRuleCtrl.formInput.type = type.type">
-          <md-icon class="icon--size--48" md-svg-icon="{{type.icon}}"></md-icon>
+          <md-icon class="icon__size--48" md-svg-icon="{{type.icon}}"></md-icon>
           <span>
             {{ type.name }}
           </span>
           <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;"></md-radio-button>
         </div>
       </md-radio-group>
-
-      <h3 class="md-subhead">
-        Hoe belangrijk vinden julllie deze regel als groep?
-      </h3>
-
-      <md-slider flex class="md-primary" step="1" min="0" max="100" ng-model="addGuildRuleCtrl.formInput.importance" aria-label="Importance"></md-slider>
-
-      <div layout>
-        <strong flex=33 layout layout-align="start">Minder belangrijk</strong>
-        <strong flex=33 layout layout-align="center">Belangrijk</strong>
-        <strong flex=33 layout layout-align="end">Heel Belangrijk</strong>
-      </div>
 
     </form>
 

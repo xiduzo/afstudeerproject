@@ -12,7 +12,8 @@
         $rootScope,
         localStorageService,
         Account,
-        Notifications
+        Notifications,
+        toastr
     ) {
 
         var self = this;
@@ -22,6 +23,8 @@
         self.active_page = '';
         self.selected_world = null;
         self.selected_guild = null;
+        self.toState = null;
+        self.toStateParams = null;
         self.local_settings = {
             enabled_confirmation: true,
             enabled_hotkeys: true
@@ -30,7 +33,7 @@
         self.functions = {
             setUser: function(user) {
                 self.user = user;
-                self.functions.getAccessLevel(user, true);
+                self.functions.getAccessLevel(user);
             },
             getUser: function() {
                 return self.user;
@@ -43,11 +46,10 @@
                 return Number(self.access);
             },
             notAllowed: function() {
-                Notifications.simpleToast('You are not allowed to view this page');
-                $state.go('base.home');
+                toastr.warning('Je bent niet gemachtigd deze pagina te bekijken');
             },
             noConnection: function() {
-                Notifications.simpleToast('There seems to be a problem establishing a database connection');
+                toastr.error('Er lijkt iets mis te gaan met de database connectie');
             },
             statusCode: function(response) {
                 Notifications.simpleToast(response.status+': '+response.statusText);
@@ -58,8 +60,12 @@
             getAcitvePage: function() {
                 return self.page;
             },
+            setToState: function(state, params) {
+                self.toState = state.name === "base.account.login" ? self.toState : state;
+                self.toStateParams = state.name === "base.account.login" ? self.toStateParams : params;
+            },
             getAccessLevel: function(user, set_user) {
-                Account.getAccessLevel(user.uid)
+                Account.getAccessLevel(user.email)
                 .then(function(response) {
                     if(response.status === -1) {
                         return self.functions.noConnection();
@@ -69,33 +75,47 @@
 
                     if(user.is_superuser) {
                         self.access = 3;
+                        $state.go('base.worlds.overview');
                     } else if(user.is_staff) {
                         self.access = 2;
+                        $state.go('base.home.dashboards.lecturer');
                     } else {
                         self.access = 1;
+                        $state.go('base.home.dashboards.student');
                     }
 
-                    self.access = 3;
+                    localStorageService.set('access', self.access);
 
-                    if(set_user) {
+                    setTimeout(function () {
+                      if(self.toState) {
+                          if(self.toStateParams) {
+                              $state.go(self.toState.name, self.toStateParams);
+                          } else {
+                              $state.go(self.toState.name);
+                          }
+                        self.toState = null;
+                      } else {
                         $state.go('base.home');
-                        $rootScope.$broadcast('new-user-set');
-                    } else {
-                      $rootScope.$broadcast('user-logged-out');
-                    }
+                      }
+                      $rootScope.$broadcast('new-user-set');
+                    }, 100);
 
                 });
             },
             setSelectedGuild: function(guild) {
-                self.selected_guild = guild;
-                $rootScope.$broadcast('guild-changed', guild);
+              if(guild !== self.selected_guild) {
+                  self.selected_guild = guild;
+                  $rootScope.$broadcast('guild-changed', guild);
+              }
             },
             getSelectedGuild: function() {
                 return self.selected_guild;
             },
             setSelectedWorld: function(world) {
-                self.selected_world = world;
-                $rootScope.$broadcast('world-changed', world);
+              if(world !== self.selected_world) {
+                  self.selected_world = world;
+                  $rootScope.$broadcast('world-changed', world);
+              }
             },
             getSelectedWorld: function() {
                 return self.selected_world;
@@ -121,18 +141,20 @@
             setLocalSettings: function(settings) {
                 self.local_settings = settings;
                 localStorageService.set('settings', self.local_settings);
-                Notifications.simpleToast('settings patched');
+                toastr.success('Instelling opgeslagen');
             },
         };
 
         $rootScope.$on('new-user-login', function(event, user) {
             self.functions.setUser(user);
-            self.functions.getAccessLevel(user, true);
         });
 
         if(localStorageService.get('user')) {
-            self.user = localStorageService.get('user');
-            self.functions.getAccessLevel(self.user);
+            self.functions.setUser(localStorageService.get('user'));
+        }
+
+        if(localStorageService.get('access')) {
+            self.access = localStorageService.get('access');
         }
 
         if(localStorageService.get('settings')) {

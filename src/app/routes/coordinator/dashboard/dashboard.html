@@ -1,1 +1,35 @@
-<h1>coordinator dashboard</h1>
+<section layout-fill>
+  <md-content id="main__content" layout="column" layout-fill layout-padding>
+    <md-card flex>
+      <md-toolbar>
+        <div class="md-toolbar-tools" flex>
+          <span flex=10>
+
+          </span>
+          <span flex=70>
+            Docent
+          </span>
+          <span flex=20>
+            Is coordinator
+          </span>
+        </div>
+      </md-toolbar>
+      <md-card-content>
+        <md-list>
+          <md-list-item ng-repeat="lecturer in coordinatorDashboardCtrl.lecturers| orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.email !== coordinatorDashboardCtrl.user.email">
+            <span flex=10>
+              <img class="round" gravatar-size="50" gravatar-src="lecturer.email">
+            </span>
+            <span flex="70">
+              {{ lecturer | fullUserName }}
+            </span>
+            <span flex=20>
+              <md-switch class="md-primary" ng-change="coordinatorDashboardCtrl.patchAccessLevel(lecturer)" ng-model="lecturer.is_superuser" aria-label="Is superuser">
+              </md-switch>
+            </span>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+  </md-content>
+</section>

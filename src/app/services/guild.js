@@ -10,6 +10,7 @@
         $http,
         $q,
         Account,
+        toastr,
         REST_API_URL
     ) {
 
@@ -18,6 +19,10 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        service.V2getGuildRules = V2getGuildRules;
+
+        // Legacy
         service.getGuild = getGuild;
         service.addGuild = addGuild;
         service.addUserToGuild = addUserToGuild;
@@ -27,21 +32,34 @@
         service.deleteGuild = deleteGuild;
         service.getUserGuilds = getUserGuilds;
         service.addGuildRule = addGuildRule;
+        service.removeGuildRule = removeGuildRule;
         service.addEndorsement = addEndorsement;
         service.removeEndorsement = removeEndorsement;
         service.patchEndorsement = patchEndorsement;
         service.patchGuildSettings = patchGuildSettings;
 
+        return service;
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-        return service;
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        // V2
+        function V2getGuildRules(guild) {
+          return $http({
+            url: REST_API_URL + 'guild/rules/',
+            method: "GET",
+            params: {
+                guild: guild
+            }
+          })
+          .then(function(response) { return response; })
+          .catch(function(error) { toastr.error(error); });
+        }
+
+        // Legacy
         function getGuild(guild) {
             return $http({
                 url: REST_API_URL + 'guild/guilds/'+guild+'/',
@@ -79,7 +97,7 @@
 
         function removeUserFromGuild(user, guild) {
             return $http({
-                url: REST_API_URL + 'guild/userInGuild',
+                url: REST_API_URL + 'guild/userInGuild/',
                 method: "GET",
                 params: {
                     user: user,
@@ -87,16 +105,20 @@
                 }
             })
             .then(function(response) {
-                $http({
-                    url: response.data[0].url,
-                    method: "DELETE"
-                })
-                .then(function(response) { return response;
-                }, function(error) { return error; });
+              $http({
+                  url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id + '/',
+                  method: "DELETE"
+              })
+              .then(function(response) {
+                  return response;
+              }, function(error) {
+                  return error;
+              });
             }, function(error) { return error; });
         }
 
         function patchPlayersGuild(user, oldGuild, newGuild) {
+            console.log(oldGuild);
             return $http({
                 url: REST_API_URL + 'guild/userInGuild/',
                 method: "GET",
@@ -107,7 +129,7 @@
             })
             .then(function(response) {
                 return $http({
-                    url: response.data[0].url,
+                    url: REST_API_URL + 'guild/userInGuild/' + response.data[0].id + '/',
                     method: "PATCH",
                     data: {
                         guild: newGuild.url
@@ -161,6 +183,15 @@
             })
             .then(function(response) { return response.data;
             }, function(error) { return error; });
+        }
+
+        function removeGuildRule(rule) {
+          return $http({
+            url: REST_API_URL + 'guild/guildRules/' + rule.id + '/',
+            method: "DELETE"
+          })
+          .then(function(response) { return response.data;
+          }, function(error) { return error; });
         }
 
         function addEndorsement(rule, user, endorsed_by, week, rating) {

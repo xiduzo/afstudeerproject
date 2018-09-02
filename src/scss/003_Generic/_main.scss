@@ -1,15 +1,19 @@
+$mainBackground: #F9F9F9;
+$sidebarBackground: #EEEEEE;
+
 #main__content {
     background: $mainBackground;
 }
 
 #sidebar__content {
+  overflow-y: scroll;
   background: $sidebarBackground;
 }
 
 .bullet__points {
     .point {
-        width: 45px;
-        height: 45px;
+        width: 35px;
+        height: 35px;
         position: fixed;
         z-index: 999999;
         border-radius: 50%;
@@ -17,44 +21,44 @@
 
         &--1 {
             display: none;
-            left: 440px;
-            top: 270px;
+            left: 760px;
+            top: 420px;
             background: #F44336;
         }
         &--2 {
             display: none;
-            left: 1830px;
-            top: 160px;
+            left: 1260px;
+            top: 240px;
             background: #8BC34A;
         }
         &--3 {
             display: none;
-            left: 830px;
-            top: 650px;
+            left: 1090px;
+            top: 610px;
             background: #03A9F4;
         }
         &--4 {
             display: none;
-            left: 1830px;
-            top: 160px;
+            left: 1590px;
+            top: 920px;
             background: #FFEB3B;
         }
         &--5 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 890px;
+            top: 530px;
             background: #9C27B0;
         }
         &--6 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 1490px;
+            top: 560px;
             background: #795548;
         }
         &--7 {
             display: none;
-            left: 500px;
-            top: 200px;
+            left: 590px;
+            top: 720px;
             background: #009688;
         }
         &--8 {

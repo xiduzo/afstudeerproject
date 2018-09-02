@@ -17,6 +17,7 @@
         Guild,
         Global,
         Notifications,
+        toastr,
         World,
         LECTURER_ACCESS_LEVEL
     ) {
@@ -25,98 +26,114 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Groups overview');
+        Global.setRouteTitle('Teams overview');
         Global.setRouteBackRoute(null);
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.movePlayer = movePlayer;
-        self.newGuildDialog = newGuildDialog;
-        self.addGuildMember = addGuildMember;
-        self.removeGuildMember = removeGuildMember;
-        self.addHotkeys = addHotkeys;
+        vm.movePlayer = movePlayer;
+        vm.newGuildDialog = newGuildDialog;
+        vm.addGuildMember = addGuildMember;
+        vm.removeGuildMember = removeGuildMember;
+        vm.addHotkeys = addHotkeys;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.worlds = [];
-        self.loading_page = true;
-        self.selected_world = Global.getSelectedWorld();
+        vm.worlds = [];
+        vm.loading_page = true;
+        vm.selected_world = Global.getSelectedWorld();
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('world-changed', function(event, world) {
+          vm.selected_world = world;
+          if(!_.findWhere(vm.worlds, { id: world})) {
+            getWorld();
+          }
+
+          if(Global.getLocalSettings().enabled_hotkeys) {
+              vm.addHotkeys();
+          }
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        World.getWorldsOfGamemaster(Global.getUser().id)
-        .then(function(response) {
-            if(response.status >= 400) {
-                return Global.statusCode(response);
-            }
+        function getWorld() {
+          World.V2getWorld(vm.selected_world)
+          .then(function(response) {
 
-            _.each(response.worlds, function(world) {
-                // Adding the world to the frontend
-                _.each(world.world.guilds, function(guild) {
-                    _.each(guild.members, function(member) {
-                        // Adding guild id for moving players around
-                        member.user.guildId = guild.id;
-                    });
+            vm.loading_page = false;
+
+            var world = response.data;
+
+            _.each(response.data.guilds, function(guild) {
+              guild.members = [];
+              Guild.getGuild(guild.id)
+              .then(function(response) {
+                _.each(response.members, function(member) {
+                  member.user_id = member.user.id;
+                  member.guild_id = guild.id;
+                  guild.members.push(member);
                 });
-                self.worlds.push(world.world);
+              });
             });
 
             if(Global.getLocalSettings().enabled_hotkeys) {
-                self.addHotkeys();
+              vm.addHotkeys();
             }
-            self.loading_page = false;
-        }, function() {
-            // Err
-        });
 
+            vm.worlds.push(world);
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
+        }
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Broadcasts
+            Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        $rootScope.$on('world-changed', function(event, world) {
-            self.selected_world = world;
-            if(Global.getLocalSettings().enabled_hotkeys) {
-                self.addHotkeys();
-            }
-        });
+        if(vm.selected_world) {
+          getWorld();
+        }
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function movePlayer(event, guild, player) {
-            if(guild.id === player.user.guildId) {
+            if(guild.id === player.guild_id) {
                 return;
             }
+
             if((_.where(guild.members, { id: player.user.id })).length >=2) {
-                // Remove duplicate members in world
-                Guild.removeUserFromGuild(player.user.id, player.user.guilId);
+                // // Remove duplicate members in world
+                Guild.removeUserFromGuild(player.user.id, player.guild_id);
                 guild.members.splice(guild.members.indexOf(player), 1);
             } else {
-                Guild.patchPlayersGuild(player.user.id, player.user.guildId, guild)
+                Guild.patchPlayersGuild(player.user.id, player.guild_id, guild)
                 .then(function(response) {
-                    player.user.guildId = guild.id;
-                    Notifications.simpleToast(player.user.first_name + ' moved to ' + guild.name);
+                    player.guild_id = guild.id;
+                    toastr.success(player.user.first_name + ' verplaatst naar ' + guild.name);
                 }, function() {
                     // Err
                 });
             }
         }
 
-
         function newGuildDialog(event, world) {
             var dialog = $mdDialog.prompt()
-                        .title('Add a new group to ' + world.name)
-                        .textContent('How would you like to name the new group?')
+                        .title('Voeg een nieuw team toe aan ' + world.name)
+                        .textContent('Wat word de naam van dit team?')
                         .clickOutsideToClose(true)
-                        .placeholder('New group name')
-                        .ariaLabel('New group name')
+                        .placeholder('Team naam')
+                        .ariaLabel('Team naam')
                         .targetEvent(event)
-                        .ok('Create new group')
-                        .cancel('Cancel');
+                        .ok('Maak nieuw team')
+                        .cancel('Sluit');
 
             $mdDialog.show(dialog)
                 .then(function(result) {
@@ -124,7 +141,7 @@
 
                     // Checks for the guild name
                     if(!result) {
-                        Notifications.simpleToast('Please enter a group name');
+                        toastr.warning('Vul een team naam in');
                         return;
                     }
 
@@ -132,7 +149,7 @@
                         .then(function(response) {
                             response.members = [];
                             world.guilds.unshift(response);
-                            Notifications.simpleToast('Group ' + response.name + ' created');
+                            toastr.success('Team ' + response.name + ' aangemaakt');
                         }, function() {
 
                         });
@@ -160,9 +177,9 @@
                         targetEvent: event,
                         clickOutsideToClose: true,
                         locals: {
-                            title: 'Add students to ' + guild.name,
-                            subtitle: 'Please select the students you would like to add.',
-                            about: 'students',
+                            title: 'Voeg studenten toe aan ' + guild.name,
+                            subtitle: 'Selecteer studenten om toe te voegen',
+                            about: 'studenten',
                             players: response
                         }
                     })
@@ -177,12 +194,12 @@
                                 .then(function(response) {
                                     user.guildId = guild.id;
                                     guild.members.push({user: user});
+                                    toastr.success(user.first_name + ' toegevoegd aan ' + guild.name);
                                 }, function() {
                                     // Err
                                 });
                         });
 
-                        Notifications.simpleToast(response.length + ' member(s) added to ' + guild.name);
 
                     }, function() {
                         // Err
@@ -196,7 +213,7 @@
         function removeGuildMember(player, guild) {
             Guild.removeUserFromGuild(player.user.id, guild.id)
             .then(function(response) {
-                Notifications.simpleToast(player.user.first_name + ' got removed from ' + guild.name);
+                toastr.success(player.user.first_name + ' is verwijdert uit ' + guild.name);
                 guild.members.splice(guild.members.indexOf(player), 1);
             }, function() {
                 // Err
@@ -204,15 +221,15 @@
         }
 
         function addHotkeys() {
-            if(!self.selected_world) { return; }
+            if(!vm.selected_world) { return; }
 
-            var world = _.findWhere(self.worlds, {id: self.selected_world});
+            var world = _.findWhere(vm.worlds, {id: vm.selected_world});
             hotkeys.bindTo($scope)
             .add({
                 combo: 'shift+c',
-                description: 'Create new group',
+                description: 'Maak nieuw team',
                 callback: function(event) {
-                    self.newGuildDialog(event, world);
+                    vm.newGuildDialog(event, world);
                 }
             });
         }

@@ -11,12 +11,12 @@
         $stateProvider
 
             .state('base.worlds', {
-                url: '/classes',
+                url: '/klassen',
                 abstract: true
             })
 
             .state('base.worlds.overview', {
-                url: '/overview',
+                url: '/overzicht',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/worlds/overview/overview.html',
@@ -27,7 +27,7 @@
             })
 
             .state('base.worlds.settings', {
-                url: '/:worldUuid/settings',
+                url: '/instellingen/:worldUuid',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/coordinator/worlds/settings/settings.html',

@@ -3,10 +3,10 @@
 
     angular
         .module('cmd.components')
-        .controller('RupeeController', RupeeController);
+        .controller('TrelloCardController', TrelloCardController);
 
     /** @ngInject */
-    function RupeeController() {
+    function TrelloCardController() {
 
         var self = this;
 

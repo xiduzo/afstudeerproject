@@ -23,8 +23,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.formInput = {
             type: undefined,
-            rule: undefined,
-            importance: undefined
+            rule: undefined
         };
 
         self.types = [

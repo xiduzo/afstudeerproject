@@ -1,107 +1,145 @@
 <cmd-loading-page ng-if="studentDashboardCtrl.loading_page"></cmd-loading-page>
-<section layout-fill layout layout-margin layout-padding ng-repeat="guild in studentDashboardCtrl.guilds"
-ng-if="guild.id === studentDashboardCtrl.selected_guild && !studentDashboardCtrl.loading_page">
-    <onboarding-popover
-        enabled="studentDashboardCtrl.onboarding_enabled"
-        steps="studentDashboardCtrl.onboarding_steps"
-        step-index="studentDashboardCtrl.onboarding_step_index">
-    </onboarding-popover>
-    <!-- on-finish-callback='myCallbackFunction' -->
-    <section layout layout-fill  ng-if="!guild.trello_board && !guild.trello_done_list">
-        <cmd-empty-state flex
-            icon="settings_dark"
-            headline="No connection to trello."
-            title="Ask your lecturer to configure trello for your group.">
+
+<section layout flex ng-if="!studentsCtrl.loading_page">
+  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+    <section layout layout-wrap layout-fill>
+      <cmd-empty-state ng-if="world.guilds.length < 1"
+      icon="guild_dark"
+      headline="Geen team gevonden"
+      title="Wacht totdat een docent je toevoegd aan een team">
+      </cmd-empty-state>
+      <section flex layout="column" layout-fill ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild">
+        <cmd-empty-state ng-if="guild.trello_not_configured"
+        icon="settings_dark"
+        headline="Trello niet ingesteld"
+        title="Wacht totdat een docent trello insteld voor dit team">
         </cmd-empty-state>
-    </section>
-    <section layout layout-fill ng-if="guild.trello_board && guild.trello_done_list">
-        <section flex=60 layout="column">
-            <section flex=80 layout="column">
-                <section flex=35 layout id="numbers">
-                    <md-card flex=50 class="background--color--green" layout="column" layout-align="center center" id="world">
-                        <span class="md-display-2">
-                            {{ guild.world.end }}
-                        </span>
-                        <span>
-                            untill {{ guild.world.name }} is over
-                        </span>
-                    </md-card>
-                    <md-card flex=50 class="background--color--blue" layout="column" layout-align="center center" id="feedback">
-                        <span class="md-display-2">
-                            {{ guild.world.feedback_days_left }} days
-                        </span>
-                        <span>
-                            left to give feedback for this week
-                        </span>
-                    </md-card>
-                </section>
-                <md-card flex=65 id="feedback__graph" layout layout-align="center center">
-                    <div style="min-width: 95%;" id={{guild.id}}></div>
-                </md-card>
-            </section>
-            <md-card flex=20 layout="column" id="rupees">
-                <md-toolbar>
-                    <span class="md-toolbar-tools">
-                        My collected rupees
-                    </span>
-                </md-toolbar>
-                <md-card-content layout layout-align="space-around center">
-                    <div ng-repeat="rupee in guild.member.rupees">
-                        <cmd-rupee type="ruby"
-                        ng-if="rupee.type === 1"
-                        amount="{{rupee.amount}}"
-                        ></cmd-rupee>
-                        <cmd-rupee type="sapphire"
-                        amount="{{rupee.amount}}"
-                        ng-if="rupee.type === 2">
-                        </cmd-rupee>
-                        <cmd-rupee type="emerald"
-                        amount="{{rupee.amount}}"
-                        ng-if="rupee.type === 3">
-                        </cmd-rupee>
-                        <cmd-rupee type="amethyst"
-                        amount="{{rupee.amount}}"
-                        ng-if="rupee.type === 4">
-                        </cmd-rupee>
-                    </div>
+
+        <div flex ng-if="!guild.trello_not_configured" layout-margin>
+          <div layout="row" layout-wrap>
+            <!-- Days till feedback -->
+            <section flex=25 layout>
+              <md-card flex layout="column" layout-align="space-between">
+                <md-card-content flex layout="column" layout-align="center center">
+                  <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.current_week.end | hoursToGo) * 100 / (7*24) }}"></md-progress-circular>
+                  <span ng-if="(guild.current_week.end | daysToGo) > 2">
+                    {{ guild.current_week.end | daysToGo }}
+                    dagen om feedback te geven of te wijzigen
+                  </span>
+                  <span ng-if="(guild.current_week.end | daysToGo) <= 2">
+                    {{ guild.current_week.end | hoursToGo }}
+                    uur om feedback te geven of te wijzigen
+                  </span>
                 </md-card-content>
-            </md-card>
-        </section>
-        <md-card flex=40 md-whiteframe=1 id="tasks">
-            <md-toolbar>
-                <span class="md-toolbar-tools">
-                    Todo ({{ guild.todo_list.length }})
-                </span>
-            </md-toolbar>
-            <div layout flex ng-scrollbars>
-                <md-list>
-                    <md-list-item ng-if="guild.todo_list.length < 1" class="text--color--grey">
-                        No more cards on your todo list
-                    </md-list-item>
-                    <md-list-item ng-repeat="card in guild.todo_list" layout layout-padding>
-                        <span flex layout="column">
-                            <span class="md-title">
-                                {{ card.name }}
-                            </span>
-                            <em class="md-subhead">
-                                {{ card.desc | limitTo : 150 }}<span ng-if="card.desc.length > 150">....</span>
-                            </em>
-                            <em class="md-subhead" ng-if="!card.desc">
-                                No card description available
-                            </em>
-                            <span class="text--color--grey">
-                                card created: {{ card.created_at | fromNow }}
-                            </span>
-                        </span>
-                        <md-button class="md-icon-button" ng-click="studentDashboardCtrl.gotoCard(card)">
-                            <md-icon md-svg-src="external_link_dark"></md-icon>
-                            <md-tooltip md-delay="1000">
-                                Goto card
-                            </md-tooltip>
+                <div class="indication__bar indication__bar--success" ng-class="{
+                  'indication__bar--error' : (guild.current_week.end | hoursToGo) <= (1 * 24),
+                  'indication__bar--warning' : (guild.current_week.end | hoursToGo) <= (4 * 24)
+                }"></div>
+              </md-card>
+            </section>
+            <!-- Uncompleted cards + cards due -->
+            <section flex=50 layout>
+              <md-card class="hover--pointer" flex layout="column" layout-align="space-between" ng-click="studentDashboardCtrl.gotoBoard(guild.trello_board)">
+                <md-card-content layout flex>
+                  <section flex=50 layout="column" layout-align="center center">
+                    <span class="md-display-2">
+                      {{ guild.trello_cards.length }}
+                    </span>
+                    <span layout>
+                      onvoltooide kaart<span ng-if="guild.trello_cards.length >= 2 || guild.trello_cards.length === 0">en</span>
+                    </span>
+                  </section>
+                  <section flex=50 layout="column" layout-align="center center" ng-if="guild.current_week">
+                    <span class="md-display-2">
+                      {{ (guild.trello_cards | cardsDueThisWeek : guild.current_week).length }}
+                    </span>
+                    <span layout>
+                      kaart<span ng-if="(guild.trello_cards | cardsDueThisWeek : guild.current_week).length >= 2 || (guild.trello_cards | cardsDueThisWeek : guild.current_week).length === 0">en&nbsp;</span> met deadline deze week
+                    </span>
+                    <md-tooltip>
+                      Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end | momentDate : 'DD/MM/YYYY' }}
+                    </md-tooltip>
+                  </section>
+                </md-card-content>
+                <div ng-if="guild.current_week" class="indication__bar indication__bar--success" ng-class="{
+                  'indication__bar--error' : (guild.trello_cards | cardsDueThisWeek : guild.current_week).length * 100 / guild.trello_cards.length >= 60,
+                  'indication__bar--warning' : (guild.trello_cards | cardsDueThisWeek : guild.current_week).length * 100 / guild.trello_cards.length >= 33
+                }"></div>
+              </md-card>
+            </section>
+            <!-- Project duration -->
+            <section flex=25 layout>
+              <md-card flex layout="column" layout-align="space-between center">
+                <md-card-content flex layout="column" layout-align="center center">
+                  <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) }}"></md-progress-circular>
+                  <span>
+                    Beyond duurt nog {{ guild.world.end | daysToGo }}
+                    dag<span ng-if="(guild.world.end | daysToGo) != 1">en</span>
+                  </span>
+                </md-card-content>
+                <div class="indication__bar indication__bar--success" ng-class="{
+                  'indication__bar--error' : (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) <= 15,
+                  'indication__bar--warning' : (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) <= 35
+                }"></div>
+              </md-card>
+            </section>
+
+            <h1 class="md-title text--color--grey" layout-margin>
+              Mijn feedback
+            </h1>
+
+            <section flex=100 layout="column" layout-gt-sm="row">
+              <md-card flex=100 flex-gt-sm=60 id="line__{{guild.id}}"></md-card>
+              <md-card flex=100 flex-gt-sm=40 id="polar__{{guild.id}}"></md-card>
+            </section>
+
+            <h1 class="md-title text--color--grey" layout-margin>
+              Mijn kaarten
+            </h1>
+
+            <md-list flex="100" layout layout-wrap class="timeline">
+              <md-list-item layout layout-align="center center" class="text--color--grey" ng-if="guild.trello_cards.length <= 0">
+                Al jouw kaarten zijn voltooid
+              </md-list-item>
+              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33" ng-repeat="card in guild.trello_cards | orderBy: ['due', 'created_at'] | limitTo : 5" style="padding: 0;">
+                <trello-card card="card"></trello-card>
+              </md-list-item>
+              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33" ng-if="guild.trello_cards.length > 5" style="padding: 0;">
+                <md-card flex>
+                  <section flex layout>
+                    <md-content flex class="background--color--white">
+                      <md-card-title>
+                        <md-card-title-text>
+                          <span class="md-headline">
+                            +{{ guild.trello_cards.length - 5 }} andere kaarten
+                          </span>
+                          <span class="md-subhead text--color--grey">
+                            nog te voltooien
+                          </span>
+                        </md-card-title-text>
+                      </md-card-title>
+                      <md-card-content ng-if="trelloCardCtrl.card.desc">
+                        <span flex ng-bind-html="trelloCardCtrl.card.desc"></span>
+                      </md-card-content>
+                    </md-content>
+                    <section class="background--color--grey--1" layout layout-align="center center">
+                      <md-card-actions>
+                        <md-button class="md-icon-button" href="https://www.trello.com/b/{{guild.trello_board}}" target="_BLANK">
+                          <md-icon md-svg-src="external_link_dark" class="icon__color--grey"></md-icon>
+                          <md-tooltip md-delay="1500">
+                            Bekijk op Trello
+                          </md-tooltip>
                         </md-button>
-                    </md-list-item>
-                </md-list>
-            </div>
-        </md-card>
+                      </md-card-actions>
+                    </section>
+                  </section>
+                </md-card>
+              </md-list-item>
+            </md-list>
+          </div>
+        </div>
+
+      </section>
     </section>
+  </md-content>
 </section>

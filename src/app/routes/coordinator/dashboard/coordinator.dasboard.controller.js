@@ -7,22 +7,49 @@
 
     /** @ngInject */
     function CoordinatorDashboardController(
-        Global
+        Global,
+        Account
     ) {
 
         Global.setRouteTitle('Dashboard');
 
-        var self = this;
+        var vm = this;
 
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Methods
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        vm.patchAccessLevel = patchAccessLevel;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = Global.getUser();
+        vm.user = Global.getUser();
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            Extra logic
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        Account.getLecturers()
+        .then(function(response){
+          vm.lecturers = response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        function patchAccessLevel(user) {
+            console.log(user.is_superuser);
+            Account.patchUser(user).
+            then(function(response) {
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
 
     }
 

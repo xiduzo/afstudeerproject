@@ -14,7 +14,6 @@
                 url: '/',
                 views: {
                     'main@base': {
-                        templateUrl: 'app/routes/home/home.html',
                         controller: 'HomeController',
                         controllerAs: 'homeCtrl'
                     }
@@ -38,7 +37,7 @@
             })
 
             .state('base.home.dashboards.lecturer', {
-                url: '/lecturer',
+                url: '/docent',
                 views: {
                     'main@base': {
                         templateUrl: 'app/routes/lecturer/dashboard/dashboard.html',

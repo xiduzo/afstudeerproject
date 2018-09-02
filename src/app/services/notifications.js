@@ -41,8 +41,8 @@
                 .clickOutsideToClose(true)
                 .ariaLabel(label)
                 .targetEvent(event)
-                .ok('Yes, I accept the consequences')
-                .cancel('No, take me back!');
+                .ok('Ja, ik accepteer de consequenties')
+                .cancel('Nope, ik weet dit niet zeker!');
 
             return $mdDialog.show(dialog);
         }

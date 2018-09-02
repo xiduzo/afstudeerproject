@@ -1,3 +1,7 @@
+// TODO
+// 2 tabs indentation everywhere, i'm sloppy... sue me
+// xxx - Xiduzo
+
 (function () {
     'use strict';
 
@@ -7,16 +11,18 @@
 
     /** @ngInject */
     function StudentDashboardController(
-        $rootScope,
+        $scope,
         $filter,
         Global,
         Guild,
         World,
+        toastr,
         TrelloApi,
-        localStorageService,
         Notifications,
+        localStorageService,
         STUDENT_ACCESS_LEVEL,
-        COLORS
+        COLORS,
+        MAX_STAR_RATING
     ) {
 
         if(Global.getAccess() < STUDENT_ACCESS_LEVEL) {
@@ -25,202 +31,49 @@
 
         Global.setRouteTitle('Dashboard');
 
-        var self = this;
+        var vm = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.gotoCard = gotoCard;
-        self.buildGraphData = buildGraphData;
-        self.createChart = createChart;
+        vm.gotoCard = gotoCard;
+        vm.gotoBoard = gotoBoard;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.user = Global.getUser();
-        self.selected_guild = Global.getSelectedGuild();
-        self.user.trello = null;
-        self.guilds = [];
-        self.loading_page = true;
-        self.first_time = false;
+        vm.user = Global.getUser();
+        vm.selected_guild = Global.getSelectedGuild();
+        vm.user.trello = localStorageService.get('trello_user');
+        vm.guilds = [];
+        vm.loading_page = true;
 
-        self.onboarding_step_index = 0;
-        self.onboarding_steps = [
-            {
-                title: "Oh, hello "+self.user.first_name+"!",
-                description: "I can't help to notice this is your first time over here. My name is Sander, follow this steps and I'll show you how to get around.",
-                position: "centered",
-                width: 400,
-            },
-            {
-                title: "In 3... 2... 1...",
-                position: "bottom",
-                description: "These two dates are the most important dates you'll need to watch out for, let me explain what they are for.",
-                attachTo: "#numbers",
-                width: 400,
-                yOffset: -75,
-            },
-            {
-                title: "Till the end!",
-                position: "right",
-                description: "This card will let you know how many days you and your team still have to finish this course.",
-                attachTo: "#world",
-                width: 300,
-                xOffset: -325,
-            },
-            {
-                title: "#feedback",
-                position: "left",
-                description: "Every week you and your team will give each other feedback, make sure you give your's in time!",
-                attachTo: "#feedback",
-                width: 300,
-            },
-            {
-                title: "#feedback",
-                position: "top",
-                description: "Your teammates will give you feedback as well. This will be visable in this graph along with the average score of your team.",
-                attachTo: "#feedback__graph",
-                width: 300,
-            },
-            {
-                title: "What to do next?",
-                position: "left",
-                description: "Never lose track on the things your group has to do! Over here you'll see an short list of the items your group still has to finish.",
-                attachTo: "#tasks",
-                width: 400,
-            },
-            {
-                title: "Let's play a game.",
-                position: "top",
-                description: "You can earn rupees by playing CMD Athena. These rupees can earn you some awesome perks during this course.",
-                attachTo: "#rupees",
-                width: 300,
-            },
-            {
-                title: 'Thats it',
-                position: "centered",
-                description: "That's it for now, you can allways ask your teacher for more information. Goodbye, for now.",
-                width: 400,
-            },
-        ];
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             Broadcasts
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        $scope.$on('guild-changed', function(event, guild) {
+          vm.selected_guild = guild;
 
-
-        $rootScope.$on('guild-changed', function(event, guild) {
-            self.selected_guild = guild;
-
-            guild = _.findWhere(self.guilds, {id: self.selected_guild});
-
-            if(!guild.trello_board || !guild.trello_done_list) {
-                self.loading_page = false;
+          if(guild !== undefined) {
+            if(!_.findWhere(vm.guilds, {id: guild})) {
+              getGuildData(guild);
             } else {
-                if(guild.graphs_data) {
-                    setTimeout(function () {
-                        self.createChart(guild);
-                    }, 100);
-                }
+              prepareChartData(_.findWhere(vm.guilds, { id: guild}));
             }
-
+          }
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
              Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.id)
-        .then(function(response) {
-            self.user.guilds = [];
-            self.user.trello = localStorageService.get('trello_user');
 
-            if(!self.user.trello) {
-                return Notifications.simpleToast('Please authenticate your trello account.');
-            }
-
-            _.each(response.guilds, function(guild) {
-                self.guilds.push(guild.guild);
-            });
-
-            _.each(self.guilds, function(guild) {
-                self.loading_page = true;
-                if(!guild.trello_board || !guild.trello_done_list) {
-                    return false;
-                }
-
-                guild.members_data = [];
-
-                _.each(guild.members, function(member, index) {
-                    if(member.user.id === self.user.id) {
-                        guild.member = member;
-                    }
-
-                    guild.members_data.push({
-                        id: member.user.id,
-                        email: member.user.email,
-                        name: $filter('fullUserName')(member.user),
-                        color: COLORS[index],
-                        endorsements: [],
-                        line_data: [],
-                    });
-                });
-
-
-                guild.member.rupees = _.groupBy(guild.member.rupees, function(rupee) {
-                    return rupee.rupee;
-                });
-
-                // guild.member.rupees
-                guild.member.rupees = _.map(guild.member.rupees, function(rupees) {
-                    var tempObj = { type: null, amount: 0 };
-
-                    _.each(rupees, function(rupee) {
-                        tempObj.type = rupee.rupee;
-                        tempObj.amount += rupee.amount;
-                    });
-
-                    return tempObj;
-                });
-
-
-                World.getWorld(guild.world.id)
-                .then(function(response) {
-                    guild.world.name = response.name;
-                    guild.world.start = response.start;
-                    guild.world.course_duration = response.course_duration;
-                    guild.world.end = moment(guild.world.start).add(guild.world.course_duration, "days").fromNow(true);
-                    guild.world.feedback_days_left = Math.round((moment() - moment(guild.world.start)) / 86400000) % 7;
-
-                    setTimeout(function () {
-                        self.buildGraphData(guild);
-                    }, 100);
-                });
-
-                TrelloApi.Authenticate()
-                .then(function() {
-                    TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
-                    .then(function(response) {
-                        var cards = _.filter(response, function(card) {
-                            // No user assigned -> card is for everybody
-                            if(card.idMembers < 1) {
-                                return card;
-                            } else if(_.contains(card.idMembers, self.user.trello.id)) {
-                                return card;
-                            }
-                        });
-
-                        // Only get the cards which arn't finished yet
-                        cards = _.filter(cards, function(card) {
-                            card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
-                            return card.idList !== guild.trello_done_list;
-                        });
-
-                        guild.todo_list = cards;
-                        self.loading_page = false;
-                    });
-                });
-
-            });
-        });
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
              Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        if(vm.selected_guild !== undefined && vm.selected_guild !== null) {
+          getGuildData(vm.selected_guild);
+        }
+
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -228,123 +81,358 @@
             window.open(card.shortUrl);
         }
 
-        function buildGraphData(guild) {
-            guild.graphs_data = {
-                line: []
-            };
+        function gotoBoard(board) {
+          window.open('http://trello.com/b/' + board);
+        }
 
-            guild.horizontal_axis = [];
+        function getTrelloCards(guild) {
+          TrelloApi.Authenticate()
+          .then(function() {
+            TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
+            .then(function(response) {
 
-            var week = 0;
-            for(var i = guild.world.course_duration; i > 0; i-=7) {
-                guild.graphs_data.line.push(0);
-                guild.horizontal_axis.push(week);
-                week++;
+              // We don't care about cards that have been done allready
+              var cards = _.filter(response, function(card) {
+                return card.idList !== guild.trello_done_list;
+              });
+
+              // Only return cards where you are one of the members
+              cards = _.filter(cards, function(card) {
+                return  _.contains(card.idMembers, vm.user.trello.id);
+              });
+
+              // Add the created_at on the card b/c trello won't give this to us
+              _.each(cards, function(card) {
+                card.created_at = moment(new Date(1000*parseInt(card.id.substring(0,8),16)));
+              });
+
+              guild.trello_cards = cards;
+
+            })
+            .catch(function(error) {
+              toastr.error(error);
+            });
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
+        }
+
+        function getGuildData(guild) {
+          Guild.getGuild(guild)
+          .then(function(response) {
+            vm.loading_page = false;
+            guild = response;
+            var local_guilds = localStorageService.get('guilds') || [];
+
+            guild.world.end = moment(guild.world.start).add(guild.world.course_duration, 'weeks').add(6, 'days');
+            if(moment().isAfter(moment(guild.world.start).add(guild.world.course_duration,'weeks').add(6, 'days'), 'day')) {
+              guild.ended = true;
             }
 
-            _.each(guild.rules, function(rule) {
-                // Order the endorsements per user
-                _.each(rule.endorsements, function(endorsement) {
-                    _.findWhere(guild.members_data, {id: endorsement.user}).endorsements.push(endorsement);
-                });
-            });
+            // Check for trello
+            if(!guild.trello_done_list || !guild.trello_board) {
+              guild.trello_not_configured = true;
+            } else {
+              getTrelloCards(guild);
+            }
 
-            _.each(guild.members_data, function(member, index) {
-                // Order the endorsements
-                member.endorsements = _.groupBy(member.endorsements, function(endorsement) {
-                    return endorsement.week;
-                });
+            vm.guilds.push(guild);
 
-                _.each(member.endorsements, function(endorsements, index) {
-                    // Group the endorsements per week
-                    endorsements = _.groupBy(endorsements, function(endorsement) {
-                        return endorsement.rule.rule_type;
-                    });
+            // Get endorsements from the localstorage
+            if(_.findWhere(local_guilds, {guild: guild.id}) && moment(_.findWhere(local_guilds, {guild: guild.id}).datetime).isAfter(moment().subtract(1, 'hours'))) {
+              guild.rules = _.findWhere(local_guilds, {guild: guild.id}).rules;
+              prepareChartData(guild);
+            } else {
+              Guild.V2getGuildRules(guild.id)
+              .then(function(response) {
+                local_guilds = localStorageService.get('guilds') || [];
+                var local_guild = _.findWhere(local_guilds, {guild: guild.id});
+                var tempObj = { guild: guild.id, datetime: moment(), rules: response.data };
 
-                    var points = 0;
-                    // Count the points per week
-                    _.each(endorsements, function(endorsement_type, index) {
-                        _.each(endorsement_type, function(type_group) {
-                            points += type_group.rule.points * (type_group.rating * 1/3);
-                        });
-                    });
-
-                    guild.graphs_data.line[index] += points;
-                    member.line_data.push(points);
-                });
-            });
-
-            // Make sure the average is included in the graph as well
-            guild.graphs_data.line = [
-                {
-                    name: 'Average',
-                    data: _.map(guild.graphs_data.line, function(line_data) {
-                        return line_data / guild.members_data.length;
-                    }),
-                    color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+                // Check if we need to update the local storage
+                if(local_guild) {
+                  local_guilds[_.indexOf(local_guilds, local_guild)] = tempObj;
+                } else {
+                  local_guilds.push(tempObj);
                 }
-            ];
 
-            _.each(guild.members_data, function(member, index) {
-                if(member.id === self.user.id) {
-                    guild.graphs_data.line.push({
-                        visible: member.selected,
-                        name: 'You',
-                        data: member.line_data,
-                        color: member.color
-                    });
-                }
-            });
+                localStorageService.set('guilds', local_guilds);
 
-            guild.horizontal_axis = _.map(guild.horizontal_axis, function(axis_point) {
-                return 'Week ' + (axis_point+1);
-            });
+                guild.rules = response.data;
+                prepareChartData(guild);
 
-            self.onboarding_enabled = false;
+              })
+              .catch(function(error) {
+                toastr.error(error);
+              });
+            }
 
-
-            setTimeout(function () {
-                self.createChart(guild);
-            }, 100);
+          })
+          .catch(function(error) {
+            toastr.error(error);
+          });
         }
 
-        function createChart(data) {
-            $('#'+data.id).highcharts({
-                chart: { type: 'spline', animation: true },
-                title: { text: 'My endorsements' },
-                subtitle: { text: 'Feedback of you by your team members' },
-                xAxis: { categories: data.horizontal_axis },
-                yAxis: {
-                    title: { text: 'Points' },
-                    minorGridLineWidth: 0,
-                    gridLineWidth: 1,
-                    alternateGridColor: null,
-                },
-                tooltip: {
-                    shared: true,
-                    pointFormat: '{series.name}: <strong>{point.y:,.0f}</strong> <br/>'
-                },
-                plotOptions: {
-                    spline: {
-                        lineWidth: 4,
-                        marker: { enabled: false, },
-                    },
-                    series: {
-                        animation: self.first_line_graph_load,
-                        events: {
-                            legendItemClick: function () { return false; }
-                        }
-                    },
-                },
-                series: data.graphs_data.line,
-                credits: {
-                    href: '',
-                    text: moment().format('DD/MM/YY HH:mm'),
-                }
-            });
+        function prepareChartData(guild) {
+          var data = {
+            graphs_data: { line: [], polar: [] },
+            members_data: _.map(guild.members, function(member, index) {
+              return {
+                id: member.user.id,
+                name: $filter('fullUserName')(member.user),
+                color: COLORS[index],
+                endorsements: [],
+                line_data: [],
+                polar_data: [
+                  { type: 1, points: 0, max: 0, y: 0 },
+                  { type: 2, points: 0, max: 0, y: 0 },
+                  { type: 3, points: 0, max: 0, y: 0 },
+                  { type: 4, points: 0, max: 0, y: 0 },
+                ],
+                selected: member.user.id == vm.user.id ? true : false,
+                showInLegend: member.user.id == vm.user.id ? true : false
+              }
+            }),
+            first_line_graph_load: true,
+            horizontal_axis: [],
+            endorsed_rules: []
+          };
+
+          for(var index = 0; index <= guild.world.course_duration - 1; index++) {
+            // Only show weeks that have been in the past
+            if(!moment().isBefore(moment(guild.world.start).add(index, 'weeks'), 'day')) {
+              var lineObject = {y: 0, total: 0, max: 0, points: 0};
+              data.graphs_data.line.push(lineObject);
+              data.horizontal_axis.push('Week ' + (index+1));
+
+              // Add basis statistics for the users per week
+              _.each(data.members_data, function(member) {
+                member.line_data.push(lineObject);
+              });
+            }
+
+            if(moment().isBetween(moment(guild.world.start).add(index, 'weeks'),moment(guild.world.start).add(index, 'weeks').add(6, 'days'),'day')) {
+              guild.current_week = {
+                start: moment(guild.world.start).add(index, 'weeks'),
+                end: moment(guild.world.start).add(index, 'weeks').add(6, 'days').endOf('day')
+              };
+            }
+          }
+
+          setTimeout(function () {
+            processData(data, guild);
+          }, 100);
         }
 
+        function processData(data, guild) {
+          var all_endorsements = [];
 
+          // Add the endorsements to every user
+          _.each(guild.rules, function(rule) {
+
+            _.each(rule.endorsements, function(endorsement) {
+              // Set some options for this endorsement
+              endorsement.rule_type = rule.rule_type;
+              endorsement.rule_name = rule.rule;
+              endorsement.rule_points = rule.points;
+
+              // Make sure to remove all duplicate endorsements, just in case I fucked up the DB again
+              // And man, believe me, you don't want to do this by hand .__.
+              if(_.findWhere(all_endorsements, { week: endorsement.week, user: endorsement.user, endorsed_by: endorsement.endorsed_by, rule: endorsement.rule })) {
+                Guild.removeEndorsement(endorsement.id);
+              } else {
+                all_endorsements.push(endorsement);
+                // Add the endorsement to the user
+                var member = _.findWhere(data.members_data, { id: endorsement.user });
+                if(!member) { return false; }
+                member.endorsements.push(endorsement);
+              }
+            });
+          });
+
+          _.each(data.members_data, function(member) {
+            // Group the endorsements by week
+            member.endorsements = _.groupBy(member.endorsements, function(endorsement) {
+              if(!moment().isBefore(moment(guild.world.start).add(endorsement.week+1, 'weeks'), 'day')) {
+                return endorsement.week;
+              }
+            });
+
+            var week = 0; // somehow the second argument isnt indexing, quickfix
+
+            _.each(member.endorsements, function(endorsements) {
+
+              var weekly_points_earned = 0;
+              var weekly_max_points = 0;
+
+              // Group the endorsements by type
+              endorsements = _.groupBy(endorsements, function(endorsement) {
+                return endorsement.rule_type;
+              });
+
+              _.each(endorsements, function(endorsement_type) {
+
+                _.each(endorsement_type, function(endorsement) {
+
+                  var points_earned = endorsement.rating * endorsement.rule_points / MAX_STAR_RATING;
+
+                  // TODO only give points to users whom have filled in the form
+                  var given_endorsement = _.findWhere(all_endorsements, {
+                    week: endorsement.week,
+                    user: endorsement.endorsed_by,
+                    endorsed_by: endorsement.user,
+                    rule: endorsement.rule
+                  });
+
+                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).points += points_earned;
+                  _.findWhere(member.polar_data, { type: endorsement.rule_type }).max += endorsement.rule_points;
+
+                  weekly_points_earned += points_earned;
+                  weekly_max_points += endorsement.rule_points;
+
+                });
+              });
+
+
+              member.line_data[week] = {
+                y: weekly_points_earned * 100 / weekly_max_points, // percentage
+                total: weekly_points_earned * 100 / weekly_max_points,
+                max: weekly_max_points,
+                points: weekly_points_earned
+              }
+
+              week++;
+            });
+
+          });
+
+          reformatData(data, guild);
+        }
+
+        function reformatData(data, guild) {
+
+          // Prepare the polar data
+          data.graphs_data.polar = [
+            {
+              name: 'Gemiddeld',
+              visible: true,
+              color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+              data: [{y: 0},{y: 0},{y: 0},{y: 0}]
+            }
+          ];
+
+          // Prepare the line data
+          data.graphs_data.line = [
+            {
+              name: 'Gemiddeld',
+              data: _.map(data.members_data[0].line_data, function(line_data) {
+                return {y: 0, total: 0, max: 0, points: 0};
+              }),
+              color: Highcharts.Color('#222222').setOpacity(0.1).get(),
+              yAxis: 0
+            }
+          ];
+
+          _.each(data.members_data, function(member_data) {
+            // POLAR CHART
+            // Add the score in percentage per type
+            _.each(member_data.polar_data, function(polar_data, endorsement_type) {
+              if(polar_data.points) {
+                polar_data.y = polar_data.points * 100 / polar_data.max;
+                data.graphs_data.polar[0].data[endorsement_type].y += polar_data.y;
+              }
+            });
+
+            // Push to the polar data
+            data.graphs_data.polar.push({
+              visible: member_data.selected,
+              name: member_data.name,
+              data: member_data.polar_data,
+              color: member_data.color,
+              showInLegend: member_data.showInLegend
+            });
+
+            // LINE CHART
+            _.each(member_data.line_data, function(line_data, week) {
+              // Add the score of the previous week
+              if(week > 0) line_data.total += member_data.line_data[week - 1].total;
+
+              // for the average chart
+              data.graphs_data.line[0].data[week].y += line_data.y;
+            });
+
+            data.graphs_data.line.push({
+              visible: member_data.selected,
+              name: member_data.name,
+              data: member_data.line_data,
+              color: member_data.color,
+              showInLegend: member_data.showInLegend
+            })
+
+          });
+
+          // Update the average score for the polar chart
+          data.graphs_data.polar[0].data = _.map(data.graphs_data.polar[0].data, function(polar_data) {
+            return {y: polar_data.y / data.members_data.length};
+          });
+
+          // update the average score for the line chart
+          data.graphs_data.line[0].data = _.map(data.graphs_data.line[0].data, function(line_data) {
+            return {
+              y: line_data.y / data.members_data.length
+            }
+          })
+
+          createLineChart(data, guild);
+          createPolarChart(data, guild);
+
+          data.first_line_graph_load = false;
+          vm.data = data;
+          vm.guild = guild;
+        }
+
+        function createLineChart(data, guild) {
+          $('#line__'+guild.id).highcharts({
+            chart: { type: 'spline', animation: data.first_line_graph_load },
+            title: { text: 'Feedback ' + guild.name },
+            // subtitle: { text}
+            xAxis: { categories: data.horizontal_axis },
+            yAxis: [
+              { title: { text: 'Punten percentage'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, min:0, max: 100 },
+              //{ title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
+            ],
+            tooltip: { shared: true, pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>'},
+            plotOptions: {
+              spline: { lineWidth: 4, marker: { enabled: true, symbol: 'circle' }},
+              series: { animation: data.first_line_graph_load, events: { legendItemClick:function() { return false }} },
+            },
+            series: data.graphs_data.line,
+            exporting: { filename: guild.name + '_' + moment().format("DD/MM/YY HH:mm") },
+            credits: { href: null, text: moment().format("DD/MM/YY HH:mm") }
+          });
+        }
+
+        function createPolarChart(data, guild) {
+          $('#polar__'+guild.id).highcharts({
+            chart: { polar: true, type: 'spline' },
+            title: { text: 'Feedback focus ' + guild.name },
+            xAxis: {
+              categories: ['Houding', 'Functioneren binnen de groep', 'Kennisontwikkeling', 'Verantwoording'],
+              tickmarkPlacement: 'on',
+              lineWidth: 0,
+            },
+            yAxis: { gridLineInterpolation: 'polygon', visible: false, min: 0, max: 100},
+            tooltip: { shared: true, pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br>' },
+            plotOptions: {
+              series: { animation: data.first_line_graph_load, events: { legendItemClick: function() { return false; } } },
+              spline: { lineWidth: 4, marker: { enabled: false }}
+            },
+            series: data.graphs_data.polar,
+            exporting: { filename: guild.name + '_' + moment().format("DD/MM/YY HH:mm") },
+            credits: { href: null, text: moment().format("DD/MM/YY HH:mm") }
+          });
+        }
 
     }
 }());

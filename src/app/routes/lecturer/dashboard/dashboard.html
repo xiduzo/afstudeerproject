@@ -1,43 +1,103 @@
-<section flex layout-padding>
-    <section layout layout-wrap>
-        <section flex=25>
-            <md-content layout="column" layout-margin md-whiteframe=1 layout-align="center center">
-                <strong class="md-display-4">
-                    50%
-                </strong>
-                <span>
-                    van alle opdrachten zijn voltooid
-                </span>
-            </md-content>
-        </section>
-        <section flex=25>
-            <md-content layout layout-padding layout-margin md-whiteframe=1>
-                <span class="md-display-2">
-                    50%
-                </span>
-            </md-content>
-        </section>
-        <section flex=25>
-            <md-content layout layout-padding layout-margin md-whiteframe=1>
-                <span class="md-display-2">
-                    50%
-                </span>
-            </md-content>
-        </section>
-        <section flex=25>
-            <md-content layout layout-padding layout-margin md-whiteframe=1>
-                <span class="md-display-2">
-                    50%
-                </span>
-            </md-content>
-        </section>
-    </section>
+<cmd-loading-page ng-if="lecturerDashboardCtrl.loading_page"></cmd-loading-page>
 
-    <section class="rupee__container">
-        <cmd-rupee type="ruby" amount=1337></cmd-rupee>
-        <cmd-rupee type="sapphire" amount=1337></cmd-rupee>
-        <cmd-rupee type="emerald" amount=1337></cmd-rupee>
-        <cmd-rupee type="amethyst" amount=1337></cmd-rupee>
-    </section>
+<section layout flex ng-if="!studentsCtrl.loading_page">
+  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+    <section layout layout-wrap layout-fill>
+      <section flex layout="column" layout-fill ng-repeat="world in lecturerDashboardCtrl.worlds" ng-if="world.id === lecturerDashboardCtrl.selected_world">
+        <cmd-empty-state ng-if="world.not_configured"
+        icon="world_dark"
+        headline="Niet ingesteld"
+        title="Klas is niet goed ingesteld">
+        </cmd-empty-state>
+        <div flex ng-if="!world.not_configured" layout-margin>
+          <cmd-empty-state ng-if="world.guilds.length < 1"
+          icon="guild_dark"
+          headline="Geen klassen gevonden"
+          title="Voeg een nieuwe klas toe in de instellingen pagina">
+          </cmd-empty-state>
+          <div layout="row" layout-wrap>
+            <div  flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="guild in world.guilds | orderBy: '-created_at'">
+              <md-card>
+                <md-toolbar>
+                  <md-card-title class="md-toolbar-tools">
+                    <md-card-title-text>
+                      {{ guild.name }}
+                    </md-card-title-text>
+                  </md-card-title>
+                </md-toolbar>
+                <md-tabs md-dynamic-height md-border-bottom>
+                  <md-tab label="feedback">
+                    <md-content>
+                      <md-list>
+                        <md-list-item ng-repeat="member in guild.members | orderBy: 'endorsed_complete'" layout>
+                          <div flex=50>
+                            {{ member.user | fullUserName }}
+                          </div>
+                          <div flex=30>
+                            <md-progress-linear md-mode="determinate" value="{{member.endorsed_complete | number : 1}}">
+                            </md-progress-linear>
+                          </div>
+                          <div flex=20 layout layout-align="center">
+                            {{ (member.endorsed_complete * (guild.rules.length * (guild.members.length - 1)) / 100) || 0 | number : 0 }} / {{ guild.rules.length * (guild.members.length - 1) }}
+                          </div>
+                        </md-list-item>
+                      </md-list>
+                    </md-content>
+                    <md-divider></md-divider>
+                    <md-card-actions layout layout-align="end center">
+                      <md-button layout aria-label="Feedback of {{ guild.name }}" ui-sref="base.guilds.feedback({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="feedback_dark"></md-icon>
+                        Bekijk feedback
+                      </md-button>
+                    </md-card-actions>
+                  </md-tab>
 
+                  <md-tab label="achterstallige kaarten ({{ guild.cards_overdue.length || 0 }})">
+                    <md-content>
+                      <md-list md-virtual-repeat-container style="height:208px">
+                        <md-list-item ng-if="guild.trello_not_configured" class="text--color--grey">
+                          Trello is niet ingesteld
+                        </md-list-item>
+                        <md-list-item ng-if="!guild.trello_not_configured && guild.cards_overdue.length === 0" class="text--color--grey">
+                          Geen achterstallige kaarten
+                        </md-list-item>
+                        <md-list-item class="md-3-line" layout ng-repeat="card in guild.cards_overdue | orderBy: 'due'" ng-click="lecturerDashboardCtrl.gotoCard(card)">
+                          <div class="md-list-item-text" layout="column" flex>
+                            <h3>
+                              {{ card.name }}
+                            </h3>
+                            <h4>
+                              {{ card.due | momentDate : "dddd d MMMM @H:mm"}}
+                            </h4>
+                            <p>
+                              ({{ card.due | fromNow }})
+                            </p>
+                          </div>
+                          <md-button layout class="md-icon-button" aria-label="{{ card.name }}">
+                            <md-icon md-svg-src="external_link_dark" class="icon__color--grey">
+                            </md-icon>
+                          </md-button>
+                        </md-list-item>
+                      </md-list>
+                    </md-content>
+                    <md-divider></md-divider>
+                    <md-card-actions layout layout-align="end center">
+                      <md-button ng-if="!guild.trello_not_configured" layout aria-label="Progress of {{ guild.name }}" ui-sref="base.guilds.progress({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="timeline_dark"></md-icon>
+                        Bekijk progressie
+                      </md-button>
+                      <md-button ng-if="guild.trello_not_configured" layout aria-label="Settings of {{ guild.name }}" ui-sref="base.guilds.settings({guildUuid: guild.id})">
+                        <md-icon class="icon__helper" md-svg-icon="settings_dark"></md-icon>
+                        Team instellingen
+                      </md-button>
+                    </md-card-actions>
+                  </md-tab>
+                </md-tabs>
+              </md-card>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </md-content>
 </section>

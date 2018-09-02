@@ -59,7 +59,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function filterUsers(filter) {
             self.filter_users =_.filter(self.players, function(player) {
-                if(angular.lowercase(player.filter_name).indexOf(angular.lowercase(filter)) > -1 ) {
+                if(player.filter_name.toLowerCase().indexOf(filter.toLowerCase()) > -1 ) {
                     return player;
                 }
             });

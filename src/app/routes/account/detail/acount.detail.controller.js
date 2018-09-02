@@ -8,15 +8,9 @@
     /** @ngInject */
     function AccountDetailController(
         $rootScope,
-        $state,
         Global,
-        Guild,
-        World,
-        CMDChart,
-        Spiderchart,
         TrelloApi,
-        Notifications,
-        localStorageService,
+        Account,
         STUDENT_ACCESS_LEVEL
     ) {
 
@@ -24,22 +18,21 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Profile');
+        Global.setRouteTitle('Profiel');
+        Global.setRouteBackRoute(null);
 
         var self = this;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.createSpiderChart = createSpiderChart;
-        self.authenticate = authenticate;
-        self.selectGuild = selectGuild;
         self.patchLocalSettings = patchLocalSettings;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.user = Global.getUser();
+        console.log(self.user);
         self.trello_account = null;
         self.loading_page = true;
         self.local_settings = Global.getLocalSettings();
@@ -47,79 +40,29 @@
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        Guild.getUserGuilds(self.user.id)
+        TrelloApi.Authenticate()
         .then(function(response) {
-            self.user.guilds = [];
-            _.each(response.guilds, function(guild) {
-                self.user.guilds.push(guild.guild);
+            TrelloApi.Rest('GET', 'members/me')
+            .then(function(response) {
+                if(response.uploadedAvatarHash) {
+                    self.user.avatar_hash = response.uploadedAvatarHash;
+                    Account.patchAvatarHash(self.user);
+                }
+                self.trello_account = response;
+                self.loading_page = false;
             });
-
-            if(localStorageService.get('trello_token')) {
-                TrelloApi.Authenticate()
-                .then(function(response) {
-                    TrelloApi.Rest('GET', 'members/me')
-                    .then(function(response) {
-                        self.trello_account = response;
-                        self.loading_page = false;
-
-                        setTimeout(function () {
-                            var user = {
-                                techniek: Math.random() * 40 + 25,
-                                interaction: Math.random() * 40 + 25,
-                                visual: Math.random() * 40 + 25
-                            };
-
-                            CMDChart.createChart('cmdChart', user, 'small', true);
-                        }, 100);
-                    });
-                });
-            } else {
-                self.authenticate();
-            }
-
-        }, function(error) {
-            // Error get user guilds
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function createSpiderChart(average, my_scores) {
-
-        }
-
-        function authenticate() {
-            if(localStorageService.get('trello_token')) {
-                localStorageService.remove('trello_token');
-            }
-
-            TrelloApi.Authenticate()
-            .then(function(){
-                TrelloApi.Rest('GET', 'members/me')
-                .then(function(response) {
-                    self.trello_account = response;
-                    localStorageService.set('trello_user', response);
-                    Notifications.simpleToast('Authentication succeeded');
-                    self.loading_page = false;
-                });
-            }, function(){
-                Notifications.simpleToast('Authentication failed');
-            });
-        }
-
-        function selectGuild(guild) {
-            Global.setSelectedGuild(guild.id);
-            $state.go('base.home.dashboards.student');
-        }
-
-        function patchLocalSettings() {
-            Global.setLocalSettings(self.local_settings);
-            $rootScope.$broadcast('patched-local-settings');
+        function patchLocalSettings(ask_for_password) {
+          Global.setLocalSettings(self.local_settings);
+          $rootScope.$broadcast('patched-local-settings');
         }
 
     }

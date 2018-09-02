@@ -1,0 +1,36 @@
+<md-dialog aria-label="Add students" flex=40>
+
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h1>
+        Voeg student(en) toe
+      </h1>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content layout-padding>
+
+    <form layout="column">
+      <md-input-container>
+        <label>Student(en) JSON data</label>
+        <textarea ng-model="addStudentCtrl.students" rows="15" md-select-on-focus>
+        </textarea>
+      </md-input-container>
+    </form>
+
+  </md-dialog-content>
+
+  <md-dialog-actions>
+    <md-button ng-click="addStudentCtrl.close()">
+      <strong class="text--color--red">
+        Cancel
+      </strong>
+    </md-button>
+    <md-button ng-click="addStudentCtrl.addStudents()">
+      <strong class="text--color--green">
+        Add
+      </strong>
+    </md-button>
+  </md-dialog-actions>
+
+</md-dialog>

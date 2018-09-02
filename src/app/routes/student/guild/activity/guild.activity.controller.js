@@ -61,6 +61,11 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         Guild.getUserGuilds(self.user.id)
         .then(function(response) {
+            if(response.guilds.length < 1) {
+              self.loading_page = false;
+              return false;
+            }
+
             _.each(response.guilds, function(guildObject) {
                 var guild = guildObject.guild;
                 self.loading_page = true;
@@ -77,10 +82,9 @@
                             activities: []
                         };
 
-
                         TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/actions', { limit: 1000 })
                         .then(function(response) {
-
+                            self.loading_page = true;
                             response = _.filter(response, function(activity) {
                                 switch (activity.type) {
                                     case 'createList':

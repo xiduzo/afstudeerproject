@@ -1,5 +1,5 @@
 <md-sidenav
-    md-is-locked-open="$mdMedia('gt-md') && navigationCtrl.access >= 1"
+    md-is-locked-open="$mdMedia('gt-sm') && navigationCtrl.access >= 1"
     md-component-id="main__navigation"
     id="main__navigation"
     layout="column">
@@ -17,7 +17,7 @@
         </md-toolbar>
     </section>
 
-    <md-content flex ng-scrollbars>
+    <md-content flex>
         <section ng-repeat="group in navigationCtrl.main_navigation"
             ng-if="_.contains(group.access_levels, navigationCtrl.access)">
             <md-list>
@@ -27,7 +27,7 @@
                     'active_menu_item': navigationCtrl.active_menu_item == item.link_to,
                 }"
                 ng-if="_.contains(item.access_levels, navigationCtrl.access)">
-                  <md-icon class="icon--color--grey icon__helper"
+                  <md-icon class="icon__helper"
                   md-svg-icon="{{ item.icon }}"></md-icon>
                   <span flex>{{ item.name }}</span>
                 </md-list-item>

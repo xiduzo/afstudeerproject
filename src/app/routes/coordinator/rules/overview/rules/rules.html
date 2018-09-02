@@ -1,88 +1,63 @@
-<md-dialog md-theme="default" aria-label="{{ addRuleCtrl.about }}" flex="40">
+<md-dialog aria-label="Add rule" flex=50>
 
-    <md-toolbar>
-        <span class="md-toolbar-tools" layout layout-align="center center">
-            {{ addRuleCtrl.title }}
-        </span>
-    </md-toolbar>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h1>
+        Stel afspraak op
+      </h1>
+    </div>
+  </md-toolbar>
 
-    <md-dialog-content class="md-dialog-content" layout-padding>
-        <div class="md-dialog-content-body">
-            <form layout="column">
-                <section layout>
-                    <md-input-container flex>
-                        The student:
-                        <input md-autofocus
-                        aria-label="afspraak"
-                        ng-model="addRuleCtrl.formInput.rule" />
-                    </md-input-container>
-                </section>
+  <md-dialog-content layout-padding>
 
-                <section>
-                    <h2 class="md-title">
-                        Categorie
-                    </h2>
-                    <span class="md-subhead">
-                        Select the categorie of this new rule.
-                    </span>
-                    <md-radio-group layout layout-margin layout-align="space-around" ng-model="addRuleCtrl.formInput.rule_type">
-                        <div ng-repeat="type in addRuleCtrl.types" layout="column" layout-align="center center">
-                            <md-icon
-                                class="icon--size--48 icon--color--black"
-                                md-svg-icon="{{type.icon}}"
-                                ng-click="addRuleCtrl.formInput.rule_type = type.type">
-                            </md-icon>
-                            <span ng-click="addRuleCtrl.formInput.rule_type = type.type">
-                                {{ type.name }}
-                            </span>
-                            <md-radio-button
-                                layout-padding
-                                value="{{type.type}}"
-                                aria-label="{{type.type}}"
-                                style="width: 20px;">
-                            </md-radio-button>
-                        </div>
-                    </md-radio-group>
-                </section>
+    <form layout="column">
 
-                <section>
-                    <h2 class="md-title">
-                        Importance
-                    </h2>
-                    <span class="md-subhead">
-                        The more important the rule, the more points the student will earn.
-                    </span>
-                    <md-slider flex class="md-primary"
-                    step="1"
-                    min="0"
-                    max="100"
-                    ng-model="addRuleCtrl.formInput.importance"
-                    aria-label="Importance">
-                    </md-slider>
-                    <div layout layout-align="space-between">
-                        <strong>Less important</strong>
-                        <strong>Important</strong>
-                        <strong>Very important</strong>
-                    </div>
-                </section>
-            </form>
+      <md-input-container flex>
+        <label>De student</label>
+        <input md-autofocus ng-model="addRuleCtrl.formInput.rule" />
+      </md-input-container>
+
+      <md-radio-group layout layout-align="space-around" ng-model="addRuleCtrl.formInput.rule_type">
+        <div ng-repeat="type in addRuleCtrl.types" layout="column" layout-align="center center" ng-click="addRuleCtrl.formInput.rule_type = type.type">
+          <md-icon class="icon__size--48" md-svg-icon="{{type.icon}}"></md-icon>
+          <span>
+            {{ type.name }}
+          </span>
+          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;"></md-radio-button>
         </div>
+      </md-radio-group>
 
-    </md-dialog-content>
+      <h3 class="md-subhead">
+        Hoe belangrijk vinden julllie deze regel als groep?
+      </h3>
 
-    <md-dialog-actions>
-        <button class="md-primary md-button" type="button" aria-label="Cancel"
-            ng-click="addRuleCtrl.close()" md-ink-ripple>
-            <strong class="text--color--red">
-                Cancel
-            </strong>
-        </button>
-        <button class="md-primary md-button" type="button" aria-label="{{ addRuleCtrl.about }}"
-            ng-click="addRuleCtrl.addRule()" md-ink-ripple>
-            <strong class="text--color--green">
-                Add {{ addRuleCtrl.about }}
-            </strong>
-        </button>
-    </md-dialog-actions>
+      <md-slider flex class="md-primary" step="1" min="0" max="100" ng-model="addRuleCtrl.formInput.importance" aria-label="Importance"></md-slider>
+
+      <div layout>
+        <strong flex=33 layout layout-align="start">Minder belangrijk</strong>
+        <strong flex=33 layout layout-align="center">Belangrijk</strong>
+        <strong flex=33 layout layout-align="end">Heel Belangrijk</strong>
+      </div>
+
+    </form>
+
+    <em class="text--color--grey">
+      Hoe belangerijker de regel, hoe meer punten de student kan verdienen.
+    </em>
+
+  </md-dialog-content>
+
+  <md-dialog-actions>
+    <md-button ng-click="addRuleCtrl.close()">
+      <strong class="text--color--red">
+        Cancel
+      </strong>
+    </md-button>
+    <md-button ng-click="addRuleCtrl.addRule()">
+      <strong class="text--color--green">
+        {{ addRuleCtrl.about }}
+      </strong>
+    </md-button>
+  </md-dialog-actions>
 
 </md-dialog>

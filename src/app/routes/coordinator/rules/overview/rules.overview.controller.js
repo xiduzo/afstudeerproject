@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cmd.base')
+        .module('cmd.home')
         .controller('RulesOverviewController', RulesOverviewController);
 
     /** @ngInject */
@@ -11,6 +11,7 @@
         Global,
         Rules,
         Notifications,
+        toastr,
         LECTURER_ACCESS_LEVEL
     ) {
 
@@ -18,7 +19,7 @@
             return Global.notAllowed();
         }
 
-        Global.setRouteTitle('Rules');
+        Global.setRouteTitle('Afspraken');
         Global.setRouteBackRoute(null);
 
         var self = this;
@@ -28,8 +29,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.addRule = addRule;
         self.deleteRule = deleteRule;
-        self.typeFilter = typeFilter;
-        self.loading_page = true;
+        self.patchRule = patchRule;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -37,12 +37,7 @@
         self.user = Global.getUser();
         self.access = Global.getAccess();
         self.rules = [];
-        self.type_filters = {
-            attitude: true,
-            functioning: true,
-            knowledge: true,
-            justification: true
-        };
+        self.loading_page = true;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Services
@@ -68,7 +63,12 @@
                 clickOutsideToClose: true,
                 locals: {
                     title: 'Add rule',
-                    about: 'rule',
+                    about: 'add rule',
+                    formInput: {
+                        rule_type: null,
+                        rule: null,
+                        importance: null
+                    }
                 }
             })
             .then(function(response) {
@@ -76,7 +76,7 @@
                     !response.rule ||
                     !response.rule_type ||
                     !response.importance) {
-                    return Notifications.simpleToast('Fill in all the fields to add an rule');
+                    return toastr.warning('Vul alle velden in om een afspraak toe te voegen');
                 }
 
                 if(response.importance >= 95) {
@@ -96,45 +96,115 @@
                 // Add rule to the system
                 Rules.addRule(response)
                 .then(function(response) {
-                    Notifications.simpleToast('Rule \''+response.rule+'\' added');
+                    toastr.success('Afspraak \''+response.rule+'\' toegevoegd');
                     self.rules.push(response);
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
-
-
             }, function() {
                 // Err dialog
             });
         }
 
         function deleteRule(rule) {
+            if(Global.getLocalSettings().enabled_confirmation) {
+                Notifications.confirmation(
+                    'Weet je zeker dat je deze afspraak wilt verwijderen?',
+                    'Deze actie kan niet meer ongedaan worden.',
+                    'Verwijder afspraak',
+                    event
+                )
+                .then(function() {
+                    removeRuleFromBackend(rule);
+                }, function() {
+                    // No
+                });
+            } else {
+                removeRuleFromBackend(rule);
+            }
+        }
+
+        function removeRuleFromBackend(rule) {
             Rules.deleteRule(rule.id)
             .then(function(response) {
                 self.rules.splice(_.indexOf(self.rules, rule), 1);
-                Notifications.simpleToast('Rule got removed');
+                toastr.success('Afspraak verwijderd');
             })
             .catch(function(error) {
                 console.log(error);
             });
         }
 
-        function typeFilter() {
-            return _.map(self.rules, function(rule) {
-                if(rule.rule_type === 1 && self.type_filters.attitude) {
-                    return rule;
-                }
-                if(rule.rule_type === 2 && self.type_filters.functioning) {
-                    return rule;
-                }
-                if(rule.rule_type === 3 && self.type_filters.knowledge) {
-                    return rule;
-                }
-                if(rule.rule_type === 4 && self.type_filters.justification) {
-                    return rule;
-                }
-            });
+        function patchRule(rule) {
+          // Reverse engineering
+          if(rule.points === 13) {
+              rule.importance = 96;
+          } else if (rule.points === 8) {
+              rule.importance = 71;
+          } else if (rule.points === 5) {
+              rule.importance = 41;
+          } else if (rule.points === 3) {
+              rule.importance = 21;
+          } else if (rule.points === 2) {
+              rule.importance = 11;
+          } else {
+              rule.importance = 5;
+          }
+          $mdDialog.show({
+              controller: 'addRuleController',
+              controllerAs: 'addRuleCtrl',
+              templateUrl: 'app/routes/coordinator/rules/overview/rules/rules.html',
+              targetEvent: event,
+              clickOutsideToClose: true,
+              locals: {
+                  title: 'Wijzig afspraak',
+                  about: 'wijzig afspraak',
+                  formInput: {
+                      rule_type: rule.rule_type,
+                      rule: rule.rule,
+                      importance: rule.importance
+                  }
+              }
+          })
+          .then(function(response) {
+              if(!response ||
+                  !response.rule ||
+                  !response.rule_type ||
+                  !response.importance) {
+                  return toastr.warning('Vul alle velden in om een afspraak toe te voegen');
+              }
+
+              if(response.importance >= 95) {
+                  rule.points = 13;
+              } else if (response.importance > 70) {
+                  rule.points = 8;
+              } else if (response.importance > 40) {
+                  rule.points = 5;
+              } else if (response.importance > 20) {
+                  rule.points = 3;
+              } else if (response.importance > 10) {
+                  rule.points = 2;
+              } else {
+                  rule.points = 1;
+              }
+
+              rule.rule_type = response.rule_type;
+              rule.rule = response.rule;
+
+              // Add rule to the system
+              Rules.patchRule(rule)
+              .then(function(response) {
+                  toastr.success('Afspraak \''+response.rule+'\' gewijzigd');
+              })
+              .catch(function(error) {
+                  console.log(error);
+              });
+          })
+          .catch(function(response) {
+              console.log(error);
+          });
         }
+
     }
 }());

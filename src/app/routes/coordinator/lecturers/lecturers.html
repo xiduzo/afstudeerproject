@@ -1,0 +1,55 @@
+<cmd-loading-page ng-if="lecturersCtrl.loading_page"></cmd-loading-page>
+<section layout flex ng-if="!lecturersCtrl.loading_page">
+  <md-content flex=80 layout-padding layout-fill md-whiteframe=1 id="main__content">
+    <section layout layout-wrap>
+      <md-card flex>
+        <md-toolbar>
+          <div class="md-toolbar-tools" flex>
+            <span flex=80>
+              Docent
+            </span>
+            <span flex=20>
+              Is coordinator
+            </span>
+          </div>
+        </md-toolbar>
+        <md-card-content>
+          <md-list>
+            <md-list-item ng-repeat="lecturer in lecturersCtrl.lecturers | filter : search | orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="lecturer.email !== lecturersCtrl.user.email">
+              <span flex=10>
+                <img ng-if="lecturer.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{lecturer.avatar_hash}}/50.png">
+                <img ng-if="!lecturer.avatar_hash" class="round" gravatar-size="50" gravatar-src="lecturer.email">
+              </span>
+              <span flex="70">
+                {{ lecturer.filter_name }}
+              </span>
+              <span flex=20>
+                <md-switch class="md-primary" ng-change="lecturersCtrl.patchAccessLevel(lecturer)" ng-model="lecturer.is_superuser" aria-label="Is superuser">
+                </md-switch>
+              </span>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+      </md-card>
+    </section>
+  </md-content>
+  <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
+    <section>
+        <div class="md-title text--color--grey">
+            Opties
+        </div>
+        <md-input-container class="md-block">
+            <label>Zoek op naam</label>
+            <input ng-model="search.$">
+        </md-input-container>
+        <div class="md-subhead text--color--grey" style="margin-bottom: 0.5em;">
+          Zoek op functie
+        </div>
+        <md-radio-group ng-init="search.is_superuser = ''" ng-model="search.is_superuser" class="md-primary">
+          <md-radio-button value="" selected>All</md-radio-button>
+          <md-radio-button value="true"> Is coordinator </md-radio-button>
+          <md-radio-button value="false"> Is geen coordinator </md-radio-button>
+        </md-radio-group>
+    </section>
+  </section>
+</section>

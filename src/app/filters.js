@@ -55,7 +55,7 @@
             return function(date) {
               var end = moment(date);
               var today = moment().startOf('day');
-              return Math.round(moment.duration(end - today).asDays() + 1); // Be sure to calculate the last day
+              return Math.round(moment.duration(end - today).asDays());
             };
         })
 
@@ -63,10 +63,32 @@
             return function(date) {
               var end = moment(date);
               var today = moment();
-              return Math.round(moment.duration(end - today).asHours() + 24); // Be sure to calculate the last day
+              return Math.round(moment.duration(end - today).asHours());
             };
         })
 
+        .filter('secondsToGo', function() {
+            return function(date) {
+              var end = moment(date);
+              var today = moment();
+              return Math.round(moment.duration(end - today).asSeconds());
+            };
+        })
+
+        .filter('cardsDueThisWeek', function() {
+            return function(cards, week) {
+                return _.filter(cards, function(card) {
+                   if(card.due) {
+                      if(moment(card.due).isBetween(moment(week.start), moment(week.end), 'day') ||
+                          moment(card.due).isSame(moment(week.start), 'day') ||
+                          moment(card.due).isSame(moment(week.end), 'day')
+                      ) {
+                           return card;
+                      }
+                  }
+              });
+            };
+        })
 
 
     ; // End of filters

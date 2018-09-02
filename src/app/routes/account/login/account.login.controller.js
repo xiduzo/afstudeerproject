@@ -14,7 +14,7 @@
         Global,
         TrelloApi,
         md5,
-        Notifications,
+        toastr,
         localStorageService
     ) {
 
@@ -32,18 +32,18 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.login = login;
         self.authenticateTrello = authenticateTrello;
-        self.setUser = setUser;
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         self.login_form = {
-            username: '',
-            password: '',
-            remember: false,
+            username: null,
+            password: null,
+            remember: true,
         };
 
         self.login_type = 'student';
+        self.error = null;
 
         hotkeys.bindTo($scope)
         .add({
@@ -64,53 +64,52 @@
                 TrelloApi.Rest('GET', 'members/me')
                 .then(function(response) {
                     localStorageService.set('trello_user', response);
-                    Notifications.simpleToast('Authentication succeeded');
-                    self.setUser(user);
+                    toastr.success('Authentication succeeded');
+
+                    // Update the avatar hash
+                    if(response.uploadedAvatarHash) {
+                        user.avatar_hash = localStorageService.get('trello_user').uploadedAvatarHash;
+                        Account.patchAvatarHash(user);
+                    }
+                    Account.setUser(user, self.login_form.remember);
                 });
             })
             .catch(function() {
-                Notifications.simpleToast('Authentication failed');
+                self.error = 'Verifieer een trello account om door te kunnen gaan.';
+                toastr.error('Authentication failed');
             });
-        }
-
-        function setUser(user) {
-            Account.setUser(user, self.login_form.remember);
         }
 
         function login() {
             Account.login(self.login_form.username, self.login_form.password, self.login_type)
                 .then(function(response) {
+                  console.log(response);
                     if(response.uid) {
-
-                        // Only work with the information we need
-                        var logged_in_user = {
+                        var logged_in_user  = {
                             uid:               response.uid[0],
-                            hvastudentnumber:  response.hvastudentnumber[0],
+                            student_number:    response.hvastudentnumber ? response.hvastudentnumber[0] : response.employeenumber[0],
                             email:             response.mail[0].toLowerCase(),
                             initials:          response.initials[0],
-                            displayname:       response.displayname[0],
+                            first_name:        response.displayname[0],
                             surname_prefix:    response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
                             surname:           response.sn[0],
                             gender:            response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-                            is_staff:          self.login_type === 'student' ? false : true
+                            is_staff:          self.login_type === 'student' ? false : true,
+                            is_superuser:      false,
                         };
 
-                        Account.checkForExistingUser(logged_in_user.uid)
+                        Account.checkForExistingUser(logged_in_user.student_number)
                         .then(function(response) {
                             if(response.status === -1) {
                                 return Global.noConnection();
                             }
                             if(response.length) {
                                 response[0].password = md5(self.login_form.password);
-                                if(!localStorageService.get('trello_user')) {
-                                    self.authenticateTrello(response[0]);
-                                } else {
-                                    self.setUser(response[0], self.login_form.remember);
-                                }
+                                self.authenticateTrello(response[0]);
                             } else {
                                 // TODO
                                 // When the user is logging in for the first times
-                                // I think they can give themself access level 2 when they
+                                // I think they can give themself access when they
                                 // Manipulate the logged_in_user object before this service is fired
                                 //
                                 // On the other hand, they are first year students so let's just assume
@@ -124,11 +123,7 @@
                                     }
                                     if(response) {
                                         logged_in_user.password = md5(self.login_form.password);
-                                        if(!localStorageService.get('trello_user')) {
-                                            self.authenticateTrello(logged_in_user);
-                                        } else {
-                                            self.setUser(logged_in_user, self.login_form.remember);
-                                        }
+                                        self.authenticateTrello(response);
                                     }
                                 })
                                 .catch(function() {
@@ -139,10 +134,15 @@
 
                     } else {
                       if(self.login_type === 'student') {
-                        self.login_type = 'lecturer';
+                        self.login_type = 'medewerker';
                         self.login();
                       } else {
-                        Notifications.simpleToast(response.message);
+                        if(response.status === -1) {
+                          self.error = "There seems to be a problem establishing a database connection";
+                          return Global.noConnection();
+                        }
+                        self.error = response.message;
+                        toastr.error(response.message);
                       }
                     }
                 });

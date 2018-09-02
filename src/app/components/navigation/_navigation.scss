@@ -10,11 +10,14 @@
                 a {
                     margin: 0;
                 }
+                md-icon {
+                    @extend .icon__color--grey;
+                }
                 &.active_menu_item {
                     background-color: #FFCC00;
                     color: white;
                     md-icon {
-                        @extend .icon--color--white;
+                        @extend .icon__color--white;
                     }
                 }
             }

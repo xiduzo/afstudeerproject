@@ -6,31 +6,31 @@
     <md-button class="md-fab icon__fab" ng-click="worldsOverviewCtrl.newWorldDialog($event)">
       <md-icon md-svg-icon="world_light"></md-icon>
       <md-tooltip md-direction="left">
-        Create new class
+        Maak nieuwe klas
       </md-tooltip>
     </md-button>
 
     <cmd-empty-state ng-if="worldsOverviewCtrl.worlds.length < 1"
       icon="world_dark"
-      headline="No classes found."
-      title="Add a new class by clicking on the icon in the corner.">
+      headline="Geen klassen gevonden"
+      action="worldsOverviewCtrl.newWorldDialog($event)"
+      has-action="true"
+      title="Voeg een nieuwe klas toe door op de wereldbol te klikken">
     </cmd-empty-state>
 
     <section ng-if="worldsOverviewCtrl.worlds.length >= 1" layout layout-fill>
-      <md-content layout-padding flex layout-fill ng-scrollbars id="main__content">
+      <md-content layout-padding flex layout-fill id="main__content">
         <section layout layout-wrap>
-          <div flex=33 ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'created_at'">
+          <div flex=100 flex-gt-sm=50 flex-gt-md=33 ng-repeat="world in worldsOverviewCtrl.worlds | orderBy: 'name'">
             <md-card>
                 <md-toolbar layout-align="end center" layout>
                     <md-card-title class="md-toolbar-tools">
                         <md-card-title-text>
-                            <span class="md-headline">
-                                {{world.name}}
-                            </span>
+                          {{world.name}}
                         </md-card-title-text>
                     </md-card-title>
                     <md-menu>
-                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
                             <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
                         </md-button>
                         <md-menu-content width="4" >
@@ -41,7 +41,7 @@
                                             md-menu-align-target
                                             md-svg-icon="settings_dark">
                                         </md-icon>
-                                        <p flex> Settings </p>
+                                        <p flex> Instellingen </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -52,7 +52,7 @@
                                             md-menu-align-target
                                             md-svg-icon="add_dark">
                                         </md-icon>
-                                        <p flex> Add lecturer </p>
+                                        <p flex> Docent toevoegen </p>
                                     </div>
                                 </md-button>
                             </md-menu-item>
@@ -63,7 +63,7 @@
                 <md-card-content>
                     <section ng-if="world.gamemasters.length < 1">
                         <span class="text--color--grey" layout layout-align="center">
-                            No lecturers in this class yet.
+                            Er zitten (nog) geen docenten in deze klas
                         </span>
                     </section>
                     <md-list ng-if="world.gamemasters.length >= 1"
@@ -73,13 +73,14 @@
                             dnd-draggable="gamemaster"
                             dnd-moved="world.gamemasters.splice($index, 1)"
                             dnd-effect-allowed="move">
-                            <img class="round icon__helper" gravatar-size="45" gravatar-src="gamemaster.email" layout-padding>
-                            <span flex>
+                            <img ng-if="gamemaster.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
+                            <img ng-if="!gamemaster.avatar_hash" class="round" gravatar-size="30" gravatar-src="gamemaster.email">
+                            <span flex layout-padding>
                                 {{ gamemaster | fullUserName }}
                             </span>
                             <md-icon md-svg-icon="delete_dark" ng-click="worldsOverviewCtrl.removeGamemaster(gamemaster, world)">
                                 <md-tooltip md-direction="bottom">
-                                    Remove lecturer from {{ world.name }}
+                                    Verwijder docent van {{ world.name }}
                                 </md-tooltip>
                             </md-icon>
                         </md-list-item>

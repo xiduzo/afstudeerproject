@@ -4,71 +4,70 @@
         icon="rules_dark"
         headline="Dobby has no master."
         title="Dobby is a free elf."
-        subtitle="Or just add some rules on your right">
+        action="rulesOverviewCtrl.addRule()"
+        has-action="true"
+        subtitle="Or just add some rules you bastard">
     </cmd-empty-state>
-    <md-content flex=80 layout-fill ng-scrollbars md-whiteframe=1 id="main__content"
-     ng-if="rulesOverviewCtrl.rules.length >= 1">
+    <md-content flex=80 layout-fill layout-padding md-whiteframe=1 id="main__content" ng-if="rulesOverviewCtrl.rules.length >= 1">
         <section layout layout-wrap>
-            <div flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25 layout-padding
+            <div flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25
             ng-repeat="rule in filtered = (rulesOverviewCtrl.rules
             | filter: {
                 rule: filters.free_search
             }
-            )">
-                <section layout-fill>
-                    <md-card layout-fill layout-align="space-between">
-                        <md-card-content layout="column" layout-align="space-between center">
-                            <md-icon class="icon--size--36"
-                            md-svg-icon="work_dark"
-                            ng-if="rule.rule_type === 1">
-                            </md-icon>
-                            <md-icon class="icon--size--36"
-                            md-svg-icon="group_work_dark"
-                            ng-if="rule.rule_type === 2">
-                            </md-icon>
-                            <md-icon class="icon--size--36"
-                            md-svg-icon="lightbulb_dark"
-                            ng-if="rule.rule_type === 3">
-                            </md-icon>
-                            <md-icon class="icon--size--36"
-                            md-svg-icon="description_dark"
-                            ng-if="rule.rule_type === 4">
-                            </md-icon>
-                            <section layout="column" layout-align="center center">
-                                <strong layout-padding>
-                                    De student:
-                                </strong>
-                                <em class="md-title" style="text-align: center;">
-                                    {{ rule.rule }}
-                                </em>
-                            </section>
-                        </md-card-content>
-                        <md-card-actions layout="row" layout-align="center center">
-                            <md-button>
-                                <strong>
-                                    Edit
-                                </strong>
-                            </md-button>
-                            <md-button class="md-warn"
-                             ng-click="rulesOverviewCtrl.deleteRule(rule)">
-                                <strong>
-                                    Remove
-                                </strong>
-                            </md-button>
-                        </md-card-actions>
-                    </md-card>
-                </section>
+            ) | orderBy : ['rule_type', 'rule']">
+                <md-card layout-align="space-between">
+                    <md-card-content layout="column" layout-align="space-between center">
+                        <md-icon class="icon__size--36"
+                        md-svg-icon="work_dark"
+                        ng-if="rule.rule_type === 1">
+                        </md-icon>
+                        <md-icon class="icon__size--36"
+                        md-svg-icon="group_work_dark"
+                        ng-if="rule.rule_type === 2">
+                        </md-icon>
+                        <md-icon class="icon__size--36"
+                        md-svg-icon="lightbulb_dark"
+                        ng-if="rule.rule_type === 3">
+                        </md-icon>
+                        <md-icon class="icon__size--36"
+                        md-svg-icon="description_dark"
+                        ng-if="rule.rule_type === 4">
+                        </md-icon>
+                        <section layout="column" layout-align="center center">
+                            <strong layout-padding>
+                                De student
+                            </strong>
+                            <em class="md-title" style="text-align: center;">
+                                {{ rule.rule }}
+                            </em>
+                        </section>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="center center">
+                        <md-button ng-click="rulesOverviewCtrl.patchRule(rule)">
+                            <strong>
+                                Wijzig
+                            </strong>
+                        </md-button>
+                        <md-button class="md-warn"
+                         ng-click="rulesOverviewCtrl.deleteRule(rule)">
+                            <strong>
+                                Verwijder
+                            </strong>
+                        </md-button>
+                    </md-card-actions>
+                </md-card>
             </div>
         </section>
     </md-content>
 
     <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
         <section>
-            <h1 class="md-title text--color--grey">
-                Options
-            </h1>
+            <div class="md-title text--color--grey">
+                Opties
+            </div>
             <md-input-container class="md-block">
-                <label>Search rule</label>
+                <label>Zoek afspraak</label>
                 <input ng-model="filters.free_search">
             </md-input-container>
         </section>
@@ -78,7 +77,7 @@
                 <md-icon md-svg-src="rules_light">
                 </md-icon>
                 <span flex>
-                    New rule
+                    Nieuwe afspraak
                 </span>
             </md-button>
         </section>

@@ -9,19 +9,18 @@
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
             'ngCookies',
             'ngSanitize',
+            'ngAnimate',
             'ui.router',
             'ui.gravatar',
             'LocalStorageModule',
             'ngMaterial',
-            'ngScrollbars',
             'dndLists',
-            'textAngular',
             'angular-loading-bar',
-            'ngOnboarding',
             'cfp.hotkeys',
             'angular-md5',
+            'base64',
             'trello',
-            'angular-websocket',
+            'toastr',
             /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     		      Filters
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -60,6 +59,8 @@
             // Coordinator
             'cmd.worlds',
             'cmd.rules',
+            'cmd.lecturers',
+            'cmd.students',
 
             // Research
             'cmd.research',

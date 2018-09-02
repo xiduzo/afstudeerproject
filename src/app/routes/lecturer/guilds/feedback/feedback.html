@@ -1,95 +1,50 @@
 <cmd-loading-page ng-if="guildDetailFeedbackCtrl.loading_page"></cmd-loading-page>
 
 <section ng-if="!guildDetailFeedbackCtrl.loading_page" layout layout-fill>
-    <section flex=80 layout="column" layout-padding layout-margin>
-        <section flex=50 layout>
-            <md-content flex=100 id="chart" md-whiteframe=1>
-                <cmd-empty-state
-                icon="again_dark"
-                headline="Loading data."
-                title="Be patient peasant.">
-                </cmd-empty-state>
-            </md-content>
-        </section>
-        <section flex=50 layout>
-            <section flex layout-fill layout>
-                <md-content flex=50 layout="column" md-whiteframe=1>
-                    <md-toolbar>
-                        <span class="md-toolbar-tools">
-                            Most feedbacked rules
-                        </span>
-                    </md-toolbar>
-                    <section flex layout="column" layout-align="space-around">
-                        <div flex layout layout-align="start center" layout-padding layout-margin
-                        ng-repeat="rule in guildDetailFeedbackCtrl.endorsed_rules | orderBy : '-amount' | limitTo : 5">
-                            <md-icon class="icon__helper icon--size--36"
-                                md-svg-icon="work_dark"
-                                ng-if="rule.rule.rule_type === 1">
-                                <md-tooltip md-delay="1000">
-                                    Houding
-                                </md-tooltip>
-                            </md-icon>
-                            <md-icon class="icon__helper icon--size--36"
-                                md-svg-icon="group_work_dark"
-                                ng-if="rule.rule.rule_type === 2">
-                                <md-tooltip md-delay="1000">
-                                    Functioneren binnen de groep
-                                </md-tooltip>
-                            </md-icon>
-                            <md-icon class="icon__helper icon--size--36"
-                                md-svg-icon="lightbulb_dark"
-                                ng-if="rule.rule.rule_type === 3">
-                                    Kennisontwikkeling
-                                </md-tooltip>
-                            </md-icon>
-                            <md-icon class="icon__helper icon--size--36"
-                                md-svg-icon="description_dark"
-                                ng-if="rule.rule.rule_type === 4">
-                                <md-tooltip>
-                                    Verantwoording
-                                </md-tooltip>
-                            </md-icon>
-                            <span flex>
-                                The student {{ rule.rule.rule }}
-                            </span>
-                            <em>
-                                x {{ rule.amount }}
-                            </em>
-                        </div>
-                    </section>
-                </md-content>
-                <section flex=5>
-                    <!-- placeholder -->
-                </section>
-                <md-content flex=50 id="polar" md-whiteframe=1>
-                    <cmd-empty-state
-                    icon="again_dark"
-                    headline="Loading data."
-                    title="Be patient peasant.">
-                    </cmd-empty-state>
-                </md-content>
-            </section>
+  <md-content layout="column" layout-fill flex=80 id="main__content" md-whiteframe=1 layout-padding>
+    <md-card flex=50 id="chart">
+      <cmd-empty-state
+        icon="again_dark"
+        headline="Loading data."
+        title="Be patient peasant.">
+      </cmd-empty-state>
+    </md-card>
+    <md-card layout flex=50>
+      <section flex=50 id="polar">
+          <cmd-empty-state
+          icon="again_dark"
+          headline="Loading data."
+          title="Be patient peasant.">
+          </cmd-empty-state>
+      </section>
+      <section flex=50 id="pie">
+          <cmd-empty-state
+          icon="build_dark"
+          headline="under construction.">
+          </cmd-empty-state>
+      </section>
+    </md-card>
+  </md-content>
 
-        </section>
+  <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
+    <section>
+      <span class="md-headline text--color--grey">
+        Leden
+      </span>
+      <md-list>
+        <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.data.members_data" ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
+        <span layout layout-align="center center" style="min-width: 30px; max-width:30px; min-height: 30px; max-height: 30px; border-radius: 50%;"
+          ng-style="{
+          'background': member.color
+        }" class="icon__helper">
+        <md-icon ng-if="member.selected" md-svg-src="done_dark" class="icon__color--white" style=""></md-icon>
+        </span>
+        <span flex>
+          {{ member.name }}
+        </span>
+        </md-list-item>
+      </md-list>
     </section>
-    <md-content flex=20 layout-fill>
-        <md-list>
-            <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.members_data"
-            ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
-                <span style="width: 32px; height: 32px; border-radius: 50%;"
-                ng-style="{
-                    'background': member.color
-                }"></span>
-                <span flex layout-padding>
-                    <img class="round" gravatar-size=32 gravatar-src-once="member.email">
-                    <span>
-                        {{ member.name }}
-                    </span>
-                </span>
-                <md-icon ng-if="member.selected" md-svg-src="done_dark"
-                class="icon--color--green">
-                </md-icon>
-            </md-list-item>
-        </md-list>
-    </md-content>
+  </section>
+
 </section>
