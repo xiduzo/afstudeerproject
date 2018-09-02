@@ -155,7 +155,7 @@
                 index: i,
                 name: 'Week ' + (i+1),
                 start: moment(guild.world.start).add(i, 'weeks'),
-                end: moment(guild.world.start).add(i, 'weeks').add(6, 'days').subtract(1, 'minutes'),
+                end: moment(guild.world.start).add(i, 'weeks').add(6, 'days').endOf('day').subtract(1, 'minutes'),
                 editable: moment().isBetween(
                   moment(guild.world.start).add(i, 'weeks'),
                   moment(guild.world.start).add(i, 'weeks').add(6, 'days'),

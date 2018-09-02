@@ -215,7 +215,7 @@
             if(moment().isBetween(moment(guild.world.start).add(index, 'weeks'),moment(guild.world.start).add(index, 'weeks').add(6, 'days'),'day')) {
               guild.current_week = {
                 start: moment(guild.world.start).add(index, 'weeks'),
-                end: moment(guild.world.start).add(index, 'weeks').add(6, 'days')
+                end: moment(guild.world.start).add(index, 'weeks').add(6, 'days').endOf('day')
               };
             }
           }
