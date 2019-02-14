@@ -41,7 +41,6 @@
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         function patchAccessLevel(user) {
-            console.log(user.is_superuser);
             Account.patchUser(user).
             then(function(response) {
                 console.log(response);
