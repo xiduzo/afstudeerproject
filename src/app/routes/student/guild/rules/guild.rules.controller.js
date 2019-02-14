@@ -305,7 +305,7 @@
                             }
                         })
                         .catch(function(error) {
-                            console.log(error);
+                            //console.log(error);
                         });
                     });
                 }
@@ -392,7 +392,7 @@
 
                     // var local_guilds = localStorageService.get('guilds') || [];
                     // var local_guild = _.findWhere(local_guilds, {guild: guild.id});
-                    // console.log(local_guild);
+                    // //console.log(local_guild);
 
                 })
                 .catch(function(error) {

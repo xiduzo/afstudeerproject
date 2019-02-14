@@ -34,7 +34,7 @@
           vm.lecturers = response;
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,10 +43,10 @@
         function patchAccessLevel(user) {
             Account.patchUser(user).
             then(function(response) {
-                console.log(response);
+                // //console.log(response);
             })
             .catch(function(error) {
-                console.log(error);
+                //console.log(error);
             });
         }
 
