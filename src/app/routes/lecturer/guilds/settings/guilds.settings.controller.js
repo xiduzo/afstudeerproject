@@ -83,14 +83,14 @@
                                 toastr.info('Trello bord bestaad niet meer, team is geupdate');
                             })
                             .catch(function(error) {
-                                console.log(error);
+                                //console.log(error);
                             });
                         });
                     } else {
                       self.loading_page = false;
                     }
                 }, function(error){
-                    console.log(error);
+                    //console.log(error);
                 });
 
             }, function() {
@@ -184,7 +184,7 @@
                 .then(function(response) {
                     self.trello_board_lists = response;
                 }, function(error){
-                    console.log(error);
+                    //console.log(error);
                 });
             }
 
@@ -193,7 +193,7 @@
                 toastr.success('Team instellingen opgeslagen');
             })
             .catch(function(error) {
-                console.log(error);
+                //console.log(error);
             });
         }
 

@@ -83,7 +83,6 @@
         function login() {
             Account.login(self.login_form.username, self.login_form.password, self.login_type)
                 .then(function(response) {
-                  console.log(response);
                     if(response.uid) {
                         var logged_in_user  = {
                             uid:               response.uid[0],

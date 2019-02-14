@@ -48,7 +48,7 @@
             self.loading_page = false;
         })
         .catch(function(error) {
-            console.log(error);
+            //console.log(error);
         });
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,7 +100,7 @@
                     self.rules.push(response);
                 })
                 .catch(function(error) {
-                    console.log(error);
+                    //console.log(error);
                 });
             }, function() {
                 // Err dialog
@@ -132,7 +132,7 @@
                 toastr.success('Afspraak verwijderd');
             })
             .catch(function(error) {
-                console.log(error);
+                //console.log(error);
             });
         }
 
@@ -198,11 +198,11 @@
                   toastr.success('Afspraak \''+response.rule+'\' gewijzigd');
               })
               .catch(function(error) {
-                  console.log(error);
+                  //console.log(error);
               });
           })
           .catch(function(response) {
-              console.log(error);
+              //console.log(error);
           });
         }
 

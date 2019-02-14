@@ -47,7 +47,7 @@
         self.loading_page = false;
       })
       .catch(function(error) {
-        console.log(error);
+        //console.log(error);
       });
 
       /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,7 +59,7 @@
           toastr.success(user.filter_name + ' is ' + (response.is_superuser ? 'een' : 'geen') + ' coordinator ' + (response.is_superuser ? 'nu' : ' meer'));
         })
         .catch(function(error) {
-          console.log(error);
+          //console.log(error);
         });
       }
 

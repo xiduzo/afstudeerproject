@@ -14,6 +14,7 @@
         Account,
         World,
         Guild,
+        toastr,
         localStorageService,
         STUDENT_ACCESS_LEVEL,
         LECTURER_ACCESS_LEVEL,
@@ -96,7 +97,7 @@
             Global.setSelectedWorld(vm.selected_world.id);
 
           })
-          .catch(function(errror) {
+          .catch(function(error) {
             toastr.error(error);
           });
         }
@@ -130,7 +131,7 @@
                 localStorageService.set('guilds', vm.guilds);
             })
             .catch(function(error) {
-                console.log(error);
+                //console.log(error);
             });
         }
 

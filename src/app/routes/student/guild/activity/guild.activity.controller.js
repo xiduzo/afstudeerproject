@@ -152,7 +152,7 @@
                                         } else if(activity.data.old.name) {
                                             activity.sentence += activity.data.old.name + ' hernoemd naar ' + activity.data.card.name;
                                         } else {
-                                            // console.log(activity);
+                                            // //console.log(activity);
                                         }
                                         break;
                                     case 'updateCheckItemStateOnCard':
@@ -168,7 +168,7 @@
                                         activity.sentence += ' gecomment op ' + activity.data.card.name + ': <q>' + activity.data.text + '</q>';
                                         break;
                                     default:
-                                        // console.log(activity.type);
+                                        // //console.log(activity.type);
                                 }
                                 activity.sentence += '.';
                             });
