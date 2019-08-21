@@ -8,3 +8,6 @@ node_modules/*
 
 # Ignore the dist folder
 dist/*
+
+# We dont need sonarlint files
+.sonarlint
