@@ -10,8 +10,8 @@
       "LDAP_LOGIN_API",
       "https://oege.ie.hva.nl/~vddxx/ldapper/index.php"
     )
-    .constant("REST_API_URL", "http://127.0.0.1:8000/api/")
-    // .constant('REST_API_URL', 'https://back.beyond.jstur.org/api/')
+    // .constant("REST_API_URL", "http://127.0.0.1:8000/api/")
+    .constant("REST_API_URL", "https://back.beyond.jstur.org/api/")
 
     .constant("CREDENTIAL_USER", "bigd")
     .constant("CREDENTIAL_PASS", "aapnootbier")
