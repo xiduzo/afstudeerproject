@@ -9,7 +9,8 @@
         </h1>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>Start datum</span>
-          <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()" md-open-on-focus md-placeholder="Datum"></md-datepicker>
+          <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()"
+            md-open-on-focus md-placeholder="Datum"></md-datepicker>
         </section>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>
@@ -17,8 +18,20 @@
           </span>
           <md-input-container>
             <label>Duur</label>
-            <input ng-model="worldsSettingsCtrl.world.course_duration" type="number" ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }"/>
+            <input ng-model="worldsSettingsCtrl.world.course_duration" type="number"
+              ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }" />
             <div class="hint text--color--grey">In weken</div>
+          </md-input-container>
+        </section>
+        <section layout layout-padding>
+          <span flex=50 flex-gt-sm=30>
+            Trello user ID
+          </span>
+          <md-input-container>
+            <label>Trello user ID</label>
+            <input ng-model="worldsSettingsCtrl.world.trello_user_id" type="text"
+              ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }" />
+            <div class="hint text--color--grey">Trello user voor de klas</div>
           </md-input-container>
         </section>
       </md-card-content>
@@ -31,8 +44,10 @@
       </div>
       <md-list>
         <md-list-item ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
-          <img ng-if="gamemaster.avatar_hash" class="md-avatar round" ng-src="https://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
-          <img ng-if="!gamemaster.avatar_hash" class="md-avatar round" gravatar-size="30" gravatar-src="gamemaster.email">
+          <img ng-if="gamemaster.avatar_hash" class="md-avatar round"
+            ng-src="https://trello-avatars.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
+          <img ng-if="!gamemaster.avatar_hash" class="md-avatar round" gravatar-size="30"
+            gravatar-src="gamemaster.email">
           <p>
             {{ gamemaster | fullUserName }}
           </p>
