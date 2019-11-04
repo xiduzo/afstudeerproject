@@ -3,7 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h1>
-        Controleer afspraken
+        {{ 'STUDENT_RULES_CONFIRM_CHECK_AGREEMENTS' | translate}}
       </h1>
     </div>
   </md-toolbar>
@@ -11,15 +11,16 @@
   <md-dialog-content layout-padding>
     <article>
       <p>
-        Zorg ervoor dat elk lid van je team akkoord gaat met de afspraken voordat je deze accepteert.
+        {{ 'STUDENT_RULES_CONFIRM_EXPLANATION' | translate}}
       </p>
       <p>
-        <span class="text--color--red">Let op:</span> Afspraken kunnen <strong>niet</strong> meer veranderd worden nadat deze geaccepteerd zijn.
+        <span class="text--color--red">{{ 'WARNING' | translate}}:</span>
+        {{ 'STUDENT_RULES_CONFIRM_CANT_EDIT' | translate}}
       </p>
     </article>
 
     <h2 class="md-subhead text--color--grey">
-      Gekozen afspraken
+      {{ 'STUDENT_RULES_CONFIRM_CHOSEN_AGREEMENTS' | translate }}
     </h2>
 
     <md-list>
@@ -28,7 +29,7 @@
         <md-icon class="icon__helper" md-svg-icon="group_work_dark" ng-if="rule.rule_type === 2"></md-icon>
         <md-icon class="icon__helper" md-svg-icon="lightbulb_dark" ng-if="rule.rule_type === 3"></md-icon>
         <md-icon class="icon__helper" md-svg-icon="description_dark" ng-if="rule.rule_type === 4"></md-icon>
-        De student {{ rule.rule }}
+        {{ 'THE_STUDENT' | translate}} {{ rule.rule }}
       </md-list-item>
     </md-list>
   </md-dialog-content>
@@ -36,14 +37,14 @@
   <md-dialog-actions>
     <md-button ng-click="confirmGuildRulesCtrl.close()">
       <strong class="text--color--red">
-        Sluit
+        {{ 'CLOSE' | translate }}
       </strong>
     </md-button>
     <md-button ng-click="confirmGuildRulesCtrl.addRules()">
       <strong class="text--color--green">
-        Accepteer
+        {{ 'CONFIRM' | translate }}
       </strong>
-      </md-button>
+    </md-button>
   </md-dialog-actions>
 
 </md-dialog>

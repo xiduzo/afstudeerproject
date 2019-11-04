@@ -3,16 +3,12 @@
 <section layout flex ng-if="!studentsCtrl.loading_page">
   <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
     <section layout layout-wrap layout-fill>
-      <cmd-empty-state ng-if="world.guilds.length < 1"
-      icon="guild_dark"
-      headline="Geen team gevonden"
-      title="Wacht totdat een docent je toevoegd aan een team">
+      <cmd-empty-state ng-if="world.guilds.length < 1" icon="guild_dark" headline="NO_TEAM_FOUND" title="WAIT_FOR_TEAM">
       </cmd-empty-state>
-      <section flex layout="column" layout-fill ng-repeat="guild in studentDashboardCtrl.guilds" ng-if="guild.id === studentDashboardCtrl.selected_guild">
-        <cmd-empty-state ng-if="guild.trello_not_configured"
-        icon="settings_dark"
-        headline="Trello niet ingesteld"
-        title="Wacht totdat een docent trello insteld voor dit team">
+      <section flex layout="column" layout-fill ng-repeat="guild in studentDashboardCtrl.guilds"
+        ng-if="guild.id === studentDashboardCtrl.selected_guild">
+        <cmd-empty-state ng-if="guild.trello_not_configured" icon="settings_dark" headline="TRELLO_NOT_CONFIGURED"
+          title="WAIT_FOR_TRELLO">
         </cmd-empty-state>
 
         <div flex ng-if="!guild.trello_not_configured" layout-margin>
@@ -21,14 +17,15 @@
             <section flex=25 layout>
               <md-card flex layout="column" layout-align="space-between">
                 <md-card-content flex layout="column" layout-align="center center">
-                  <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.current_week.end | hoursToGo) * 100 / (7*24) }}"></md-progress-circular>
+                  <md-progress-circular md-diameter="70" md-mode="determinate"
+                    value="{{ (guild.current_week.end | hoursToGo) * 100 / (7*24) }}"></md-progress-circular>
                   <span ng-if="(guild.current_week.end | daysToGo) > 2">
                     {{ guild.current_week.end | daysToGo }}
-                    dagen om feedback te geven of te wijzigen
+                    {{ 'STUDENT_DASHBOARD_DAYS_TO_GIVE_FEEDBACK' | translate }}
                   </span>
                   <span ng-if="(guild.current_week.end | daysToGo) <= 2">
                     {{ guild.current_week.end | hoursToGo }}
-                    uur om feedback te geven of te wijzigen
+                    {{ 'STUDENT_DASHBOARD_HOURS_TO_GIVE_FEEDBACK' | translate }}
                   </span>
                 </md-card-content>
                 <div class="indication__bar indication__bar--success" ng-class="{
@@ -39,14 +36,16 @@
             </section>
             <!-- Uncompleted cards + cards due -->
             <section flex=50 layout>
-              <md-card class="hover--pointer" flex layout="column" layout-align="space-between" ng-click="studentDashboardCtrl.gotoBoard(guild.trello_board)">
+              <md-card class="hover--pointer" flex layout="column" layout-align="space-between"
+                ng-click="studentDashboardCtrl.gotoBoard(guild.trello_board)">
                 <md-card-content layout flex>
                   <section flex=50 layout="column" layout-align="center center">
                     <span class="md-display-2">
                       {{ guild.trello_cards.length }}
                     </span>
                     <span layout>
-                      onvoltooide kaart<span ng-if="guild.trello_cards.length >= 2 || guild.trello_cards.length === 0">en</span>
+                      {{ 'STUDENT_DASHBOARD_UNFINISHED_CARD' | translate }}<span
+                        ng-if="guild.trello_cards.length >= 2 || guild.trello_cards.length === 0">{{ 'PLURAL_1' | translate}}</span>
                     </span>
                   </section>
                   <section flex=50 layout="column" layout-align="center center" ng-if="guild.current_week">
@@ -54,10 +53,13 @@
                       {{ (guild.trello_cards | cardsDueThisWeek : guild.current_week).length }}
                     </span>
                     <span layout>
-                      kaart<span ng-if="(guild.trello_cards | cardsDueThisWeek : guild.current_week).length >= 2 || (guild.trello_cards | cardsDueThisWeek : guild.current_week).length === 0">en&nbsp;</span> met deadline deze week
+                      {{ 'CARD' | translate}}<span
+                        ng-if="(guild.trello_cards | cardsDueThisWeek : guild.current_week).length >= 2 || (guild.trello_cards | cardsDueThisWeek : guild.current_week).length === 0">{{ 'PLURAL_1' | translate }}&nbsp;</span>
+                      {{ 'STUDENT_DASHBOARD_WITH_DEADLINE' | translate }}
                     </span>
                     <md-tooltip>
-                      Periode: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} - {{ guild.current_week.end | momentDate : 'DD/MM/YYYY' }}
+                      {{ 'PERIOD' | translate }}: {{ guild.current_week.start | momentDate : 'DD/MM/YYYY' }} -
+                      {{ guild.current_week.end | momentDate : 'DD/MM/YYYY' }}
                     </md-tooltip>
                   </section>
                 </md-card-content>
@@ -71,10 +73,13 @@
             <section flex=25 layout>
               <md-card flex layout="column" layout-align="space-between center">
                 <md-card-content flex layout="column" layout-align="center center">
-                  <md-progress-circular md-diameter="70" md-mode="determinate" value="{{ (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) }}"></md-progress-circular>
+                  <md-progress-circular md-diameter="70" md-mode="determinate"
+                    value="{{ (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) }}">
+                  </md-progress-circular>
                   <span>
-                    Beyond duurt nog {{ guild.world.end | daysToGo }}
-                    dag<span ng-if="(guild.world.end | daysToGo) != 1">en</span>
+                    {{ 'BEYOND_WILL_LAST'|translate}} {{ guild.world.end | daysToGo }}
+                    {{'DAY'| translate }}<span
+                      ng-if="(guild.world.end | daysToGo) != 1">{{ 'PLURAL_1' | translate}}</span>
                   </span>
                 </md-card-content>
                 <div class="indication__bar indication__bar--success" ng-class="{
@@ -85,7 +90,7 @@
             </section>
 
             <h1 class="md-title text--color--grey" layout-margin>
-              Mijn feedback
+              {{ MY_FEEDBACK | translate }}
             </h1>
 
             <section flex=100 layout="column" layout-gt-sm="row">
@@ -94,27 +99,31 @@
             </section>
 
             <h1 class="md-title text--color--grey" layout-margin>
-              Mijn kaarten
+              {{ 'MY_CARDS' | translate }}
             </h1>
 
             <md-list flex="100" layout layout-wrap class="timeline">
-              <md-list-item layout layout-align="center center" class="text--color--grey" ng-if="guild.trello_cards.length <= 0">
-                Al jouw kaarten zijn voltooid
+              <md-list-item layout layout-align="center center" class="text--color--grey"
+                ng-if="guild.trello_cards.length <= 0">
+                {{ 'STUDENT_DASHBOARD_ALL_CARDS_COMPLETED' |translate}}
               </md-list-item>
-              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33" ng-repeat="card in guild.trello_cards | orderBy: ['due', 'created_at'] | limitTo : 5" style="padding: 0;">
+              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33"
+                ng-repeat="card in guild.trello_cards | orderBy: ['due', 'created_at'] | limitTo : 5"
+                style="padding: 0;">
                 <trello-card card="card"></trello-card>
               </md-list-item>
-              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33" ng-if="guild.trello_cards.length > 5" style="padding: 0;">
+              <md-list-item flex="100" flex-gt-xs="50" flex-gt-sm="33" ng-if="guild.trello_cards.length > 5"
+                style="padding: 0;">
                 <md-card flex>
                   <section flex layout>
                     <md-content flex class="background--color--white">
                       <md-card-title>
                         <md-card-title-text>
                           <span class="md-headline">
-                            +{{ guild.trello_cards.length - 5 }} andere kaarten
+                            +{{ guild.trello_cards.length - 5 }} {{ 'STUDENT_DASHBOARD_OTHER_CARDS' | translate}}
                           </span>
                           <span class="md-subhead text--color--grey">
-                            nog te voltooien
+                            {{ 'STUDENT_DASHBOARD_TO_COMPLETE' | translate}}
                           </span>
                         </md-card-title-text>
                       </md-card-title>
@@ -124,10 +133,11 @@
                     </md-content>
                     <section class="background--color--grey--1" layout layout-align="center center">
                       <md-card-actions>
-                        <md-button class="md-icon-button" href="https://www.trello.com/b/{{guild.trello_board}}" target="_BLANK">
+                        <md-button class="md-icon-button" href="https://www.trello.com/b/{{guild.trello_board}}"
+                          target="_BLANK">
                           <md-icon md-svg-src="external_link_dark" class="icon__color--grey"></md-icon>
                           <md-tooltip md-delay="1500">
-                            Bekijk op Trello
+                            {{ 'VIEW_ON_TRELLO' | translate }}
                           </md-tooltip>
                         </md-button>
                       </md-card-actions>

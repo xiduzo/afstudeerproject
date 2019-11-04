@@ -1,4 +1,5 @@
-<md-toolbar md-component-id="main__toolbar" id="main__toolbar" class="md-menu-toolbar" layout layout-align="start center" ng-if="toolbarCtrl.access > 0">
+<md-toolbar md-component-id="main__toolbar" id="main__toolbar" class="md-menu-toolbar" layout
+    layout-align="start center" ng-if="toolbarCtrl.access > 0">
     <section layout flex layout-align="start center">
         <md-button aria-label="toggle menu" class="md-icon-button" ng-click="toolbarCtrl.toggleNavigation()" hide-gt-sm>
             <md-icon md-svg-icon="menu_dark">
@@ -9,7 +10,7 @@
                 <md-button class="md-icon-button" ng-if="toolbarCtrl.back_route" ng-click="toolbarCtrl.changeState()">
                     <md-icon md-svg-src="back_dark"></md-icon>
                     <md-tooltip md-delay="1000">
-                        Take me back
+                        {{ 'TOOLBAR_TAKE_ME_BACK' | translate }}
                     </md-tooltip>
                 </md-button>
                 <h1>
@@ -27,7 +28,9 @@
                             <md-icon md-svg-src="expand_more_dark"></md-icon>
                         </md-button>
                         <md-menu-content width="4" class="main__toolbar__menu">
-                            <md-menu-item ng-repeat="guild in toolbarCtrl.guilds" ng-if="guild.id != toolbarCtrl.selected_guild.id" ng-click="toolbarCtrl.changeGuild(guild)">
+                            <md-menu-item ng-repeat="guild in toolbarCtrl.guilds"
+                                ng-if="guild.id != toolbarCtrl.selected_guild.id"
+                                ng-click="toolbarCtrl.changeGuild(guild)">
                                 <md-button>
                                     <div layout="row">
                                         <p flex>{{ guild.name }}</p>
@@ -46,7 +49,7 @@
                     <section ng-if="toolbarCtrl.guilds.length === 0">
                         <button ng-disabled="true">
                             <strong layout-padding>
-                                No group(s) found
+                                {{ 'TOOLBAR_NO_GROUPS_FOUND' | translate }}
                             </strong>
                         </button>
                     </section>
@@ -63,7 +66,9 @@
                             <md-icon md-svg-src="expand_more_dark"></md-icon>
                         </md-button>
                         <md-menu-content width="4" class="main__toolbar__menu">
-                            <md-menu-item ng-repeat="world in toolbarCtrl.worlds" ng-if="world.id != toolbarCtrl.selected_world.id" ng-click="toolbarCtrl.changeWorld(world)">
+                            <md-menu-item ng-repeat="world in toolbarCtrl.worlds"
+                                ng-if="world.id != toolbarCtrl.selected_world.id"
+                                ng-click="toolbarCtrl.changeWorld(world)">
                                 <md-button>
                                     <div layout="row">
                                         <p flex>{{ world.name }}</p>
@@ -82,7 +87,7 @@
                     <section ng-if="toolbarCtrl.worlds.length === 0">
                         <button ng-disabled="true">
                             <strong layout-padding>
-                                No class(es) found
+                                {{ 'TOOLBAR_NO_CLASSES_FOUND' | translate }}
                             </strong>
                         </button>
                     </section>
@@ -94,8 +99,10 @@
                 <md-menu>
                     <md-button layout ng-click="$mdMenu.open()">
                         <div layout style="padding-right: 8px;">
-                            <img ng-if="toolbarCtrl.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{toolbarCtrl.user.avatar_hash}}/30.png">
-                            <img ng-if="!toolbarCtrl.user.avatar_hash" class="round size--30" gravatar-size="30" gravatar-src="user.email">
+                            <img ng-if="toolbarCtrl.user.avatar_hash" class="round" alt="avatar"
+                                ng-src="https://trello-avatars.s3.amazonaws.com/{{toolbarCtrl.user.avatar_hash}}/30.png">
+                            <img ng-if="!toolbarCtrl.user.avatar_hash" class="round size--30" gravatar-size="30"
+                                alt="avatar" gravatar-src="user.email">
                         </div>
                         <strong>
                             {{ toolbarCtrl.user | fullUserName }}
@@ -106,14 +113,15 @@
                         <md-menu-item ui-sref="base.account.detail">
                             <md-button layout>
                                 <md-icon md-menu-align-target md-svg-icon="person_dark" class="icon__helper"> </md-icon>
-                                <p flex>Profiel</p>
+                                <p flex>{{ 'PROFILE' | translate }}</p>
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item ng-click="toolbarCtrl.logout()">
                             <md-button layout>
-                                <md-icon md-menu-align-target md-svg-icon="settings_dark" class="icon__helper"> </md-icon>
-                                <p flex>Uitloggen</p>
+                                <md-icon md-menu-align-target md-svg-icon="settings_dark" class="icon__helper">
+                                </md-icon>
+                                <p flex>{{ 'LOGOUT' | translate }}</p>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

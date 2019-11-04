@@ -1,19 +1,21 @@
 <section layout-fill layout="column" layout-align="center center">
     <span ng-if="emptyStateCtrl.icon">
         <md-button ng-if="emptyStateCtrl.hasAction">
-            <md-icon class="icon__size--192 icon__color--grey md-icon-button" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
+            <md-icon class="icon__size--192 icon__color--grey md-icon-button" md-svg-icon="{{emptyStateCtrl.icon}}"
+                ng-click="emptyStateCtrl.action()">
             </md-icon>
         </md-button>
-        <md-icon ng-if="!emptyStateCtrl.hasAction" class="icon__size--192 icon__color--grey" md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
+        <md-icon ng-if="!emptyStateCtrl.hasAction" class="icon__size--192 icon__color--grey"
+            md-svg-icon="{{emptyStateCtrl.icon}}" ng-click="emptyStateCtrl.action()">
         </md-icon>
     </span>
     <span class="md-headline">
-        {{ emptyStateCtrl.headline }}
+        {{ emptyStateCtrl.headline | translate }}
     </span>
     <span class="md-title text--color--blueGrey">
-        {{ emptyStateCtrl.title }}
+        {{ emptyStateCtrl.title | translate }}
     </span>
     <span class="md-subtitle text--color--grey" ng-if="emptyStateCtrl.subtitle">
-        {{ emptyStateCtrl.subtitle }}
+        {{ emptyStateCtrl.subtitle | translate }}
     </span>
 </section>

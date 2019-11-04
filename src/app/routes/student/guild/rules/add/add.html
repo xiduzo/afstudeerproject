@@ -3,7 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h1>
-        Stel samen met je team een extra afspraak op
+        {{ 'STUDENT_RULES_ADD_AGREEMENT' | translate }}
       </h1>
     </div>
   </md-toolbar>
@@ -14,7 +14,7 @@
 
       <section layout layout-align="start center">
         <span>
-          De student
+          {{ 'THE_STUDENT' | translate }}
         </span>
         <md-input-container class="md-block" flex style="margin: 24px 0 0 0;">
           <input md-autofocus aria-label="rule" ng-model="addGuildRuleCtrl.formInput.rule" />
@@ -22,19 +22,22 @@
       </section>
 
       <md-radio-group layout layout-align="space-around" ng-model="addGuildRuleCtrl.formInput.type">
-        <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center" ng-click="addGuildRuleCtrl.formInput.type = type.type">
+        <div ng-repeat="type in addGuildRuleCtrl.types" layout="column" layout-align="center center"
+          ng-click="addGuildRuleCtrl.formInput.type = type.type">
           <md-icon class="icon__size--48" md-svg-icon="{{type.icon}}"></md-icon>
           <span>
-            {{ type.name }}
+            {{ type.name | translate }}
           </span>
-          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;"></md-radio-button>
+          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;">
+          </md-radio-button>
         </div>
       </md-radio-group>
 
     </form>
 
     <em>
-      De nieuwe afspraak word automatisch geselecteerd voor het samenwerkingscontract.
+      {{ 'STUDENT_RULES_ADD_AGREEMENT_HELP_2' | translate}}
+
     </em>
 
   </md-dialog-content>
@@ -42,12 +45,12 @@
   <md-dialog-actions>
     <md-button ng-click="addGuildRuleCtrl.close()">
       <strong class="text--color--red">
-        Cancel
+        {{ 'CLOSE' | translate }}
       </strong>
     </md-button>
     <md-button ng-click="addGuildRuleCtrl.addRule()">
       <strong class="text--color--green">
-        Add
+        {{ 'CONFIRM' | translate}}
       </strong>
     </md-button>
   </md-dialog-actions>

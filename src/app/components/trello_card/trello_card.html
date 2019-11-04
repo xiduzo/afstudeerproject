@@ -7,10 +7,10 @@
             {{ trelloCardCtrl.card.name }}
           </span>
           <span class="md-subhead text--color--grey" ng-if="trelloCardCtrl.card.due">
-            Vervalt {{ trelloCardCtrl.card.due | fromNow }}
+            {{ 'EXPIRES' | translate }} {{ trelloCardCtrl.card.due | fromNow }}
           </span>
           <span class="md-subhead text--color--grey" ng-if="!trelloCardCtrl.card.due">
-            Gemaakt op {{ trelloCardCtrl.card.created_at | momentDate : 'DD/MM/YYYY @ HH:mm' }}
+            {{ 'MADE_AT' | translate }} {{ trelloCardCtrl.card.created_at | momentDate : 'DD/MM/YYYY @ HH:mm' }}
           </span>
         </md-card-title-text>
       </md-card-title>
@@ -23,7 +23,7 @@
         <md-button class="md-icon-button" href="{{trelloCardCtrl.card.shortUrl}}" target="_BLANK">
           <md-icon md-svg-src="external_link_dark" class="icon__color--grey"></md-icon>
           <md-tooltip md-delay="1500">
-            Bekijk op Trello
+            {{ 'VIEW_ON' | translate }} Trello
           </md-tooltip>
         </md-button>
       </md-card-actions>
