@@ -6,6 +6,7 @@
   /** @ngInject */
   function AccountLoginController(
     $state,
+    $translate,
     $scope,
     hotkeys,
     Account,
@@ -58,7 +59,7 @@
         .then(function() {
           TrelloApi.Rest('GET', 'members/me').then(function(response) {
             localStorageService.set('trello_user', response);
-            toastr.success('Authentication succeeded');
+            toastr.success($translate.instant('JS_AUTHENTICATED_SUCCEEDED'));
 
             // Update the avatar hash
             if (response.uploadedAvatarHash) {
@@ -69,79 +70,77 @@
           });
         })
         .catch(function() {
-          self.error = 'Verifieer een trello account om door te kunnen gaan.';
-          toastr.error('Authentication failed');
+          self.error = $translate.instant('JS_VERIFY_TRELLO_ACCOUNT');
+          toastr.error($translate.instant('JS_AUTHENTICATED_FAILED'));
         });
     }
 
     function login() {
-      Account.login(
-        self.login_form.username,
-        self.login_form.password,
-        self.login_type
-      ).then(function(response) {
-        if (response.uid) {
-          var logged_in_user = {
-            uid: response.uid[0],
-            student_number: response.hvastudentnumber
-              ? response.hvastudentnumber[0]
-              : response.employeenumber[0],
-            email: response.mail[0].toLowerCase(),
-            initials: response.initials[0],
-            first_name: response.displayname[0],
-            surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
-            surname: response.sn[0],
-            gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-            is_staff: self.login_type === 'student' ? false : true,
-            is_superuser: false,
-          };
+      Account.login(self.login_form.username, self.login_form.password, self.login_type).then(
+        function(response) {
+          if (response.uid) {
+            var logged_in_user = {
+              uid: response.uid[0],
+              student_number: response.hvastudentnumber
+                ? response.hvastudentnumber[0]
+                : response.employeenumber[0],
+              email: response.mail[0].toLowerCase(),
+              initials: response.initials[0],
+              first_name: response.displayname[0],
+              surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
+              surname: response.sn[0],
+              gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
+              is_staff: self.login_type === 'student' ? false : true,
+              is_superuser: false,
+            };
 
-          Account.checkForExistingUser(logged_in_user.student_number).then(function(response) {
-            if (response.status === -1) {
-              return Global.noConnection();
-            }
-            if (response.length) {
-              response[0].password = md5(self.login_form.password);
-              self.authenticateTrello(response[0]);
-            } else {
-              // TODO
-              // When the user is logging in for the first times
-              // I think they can give themself access when they
-              // Manipulate the logged_in_user object before this service is fired
-              //
-              // On the other hand, they are first year students so let's just assume
-              // They do not have the expertice to do this (yet...)
+            Account.checkForExistingUser(logged_in_user.student_number).then(function(response) {
+              if (response.status === -1) {
+                return Global.noConnection();
+              }
+              if (response.length) {
+                response[0].password = md5(self.login_form.password);
+                self.authenticateTrello(response[0]);
+              } else {
+                // TODO
+                // When the user is logging in for the first times
+                // I think they can give themself access when they
+                // Manipulate the logged_in_user object before this service is fired
+                //
+                // On the other hand, they are first year students so let's just assume
+                // They do not have the expertice to do this (yet...)
 
-              // Create user into the database
-              Account.createUser(logged_in_user)
-                .then(function(response) {
-                  if (response.status === -1) {
-                    return Global.noConnection();
-                  }
-                  if (response) {
-                    logged_in_user.password = md5(self.login_form.password);
-                    self.authenticateTrello(response);
-                  }
-                })
-                .catch(function() {
-                  // Err
-                });
-            }
-          });
-        } else {
-          if (self.login_type === 'student') {
-            self.login_type = 'medewerker';
-            self.login();
+                // Create user into the database
+                Account.createUser(logged_in_user)
+                  .then(function(response) {
+                    if (response.status === -1) {
+                      return Global.noConnection();
+                    }
+                    if (response) {
+                      logged_in_user.password = md5(self.login_form.password);
+                      self.authenticateTrello(response);
+                    }
+                  })
+                  .catch(function() {
+                    // Err
+                  });
+              }
+            });
           } else {
-            if (response.status === -1) {
-              self.error = 'There seems to be a problem establishing a database connection';
-              return Global.noConnection();
+            if (self.login_type === 'student') {
+              self.login_type = 'medewerker';
+              self.login();
+            } else {
+              if (response.status === -1) {
+                self.error = $translate.instant('JS_PROBLEM_DATABASE_CONNECTION');
+                return Global.noConnection();
+              }
+              self.error = response.message;
+              toastr.error(response.message);
             }
-            self.error = response.message;
-            toastr.error(response.message);
           }
         }
-      });
+      );
     }
   }
 })();
