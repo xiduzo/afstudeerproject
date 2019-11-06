@@ -1,7 +1,7 @@
-;(function() {
-  'use strict'
+(function() {
+  'use strict';
 
-  angular.module('cmd.config', ['cmd.constants']).config(config)
+  angular.module('cmd.config', ['cmd.constants']).config(config);
 
   /** @ngInject */
   function config(
@@ -29,12 +29,12 @@
             Credentials
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     $httpProvider.defaults.headers.common['Authorization'] =
-      'Basic ' + $base64.encode(CREDENTIAL_USER + ':' + CREDENTIAL_PASS)
+      'Basic ' + $base64.encode(CREDENTIAL_USER + ':' + CREDENTIAL_PASS);
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Routing provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    $urlRouterProvider.otherwise('/')
+    $urlRouterProvider.otherwise('/');
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Location provider
@@ -47,12 +47,12 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Log provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    $logProvider.debugEnabled(DEBUG_ENABLED)
+    $logProvider.debugEnabled(DEBUG_ENABLED);
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Compile provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    $compileProvider.debugInfoEnabled(DEBUG_ENABLED)
+    $compileProvider.debugInfoEnabled(DEBUG_ENABLED);
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             localStorage provider
@@ -60,7 +60,7 @@
     localStorageServiceProvider
       .setPrefix('cmd')
       .setStorageCookieDomain(window.location)
-      .setStorageCookie(60, '/') // End of local storage
+      .setStorageCookie(60, '/'); // End of local storage
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
@@ -110,7 +110,7 @@
 
       // Set palletes
       .primaryPalette('cmd')
-      .accentPalette('cmdContrast') // End of theming
+      .accentPalette('cmdContrast'); // End of theming
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Building the icon set
@@ -243,12 +243,12 @@
       // CMD icons @ https://www.dropbox.com/sh/n70kz7yya6yjv1o/AAA8h2z88jer3-1KvSsVTma2a/Iconen?dl=0
       .icon('cmd_enter', './assets/icons/cmd/enter.svg', 48)
       .icon('cmd_unicorn', './assets/icons/cmd/unicorn.svg', 48)
-      .icon('cmd_book', './assets/icons/cmd/book.svg', 48) // End icon provier
+      .icon('cmd_book', './assets/icons/cmd/book.svg', 48); // End icon provier
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Gravatar
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    gravatarServiceProvider.secure = true
+    gravatarServiceProvider.secure = true;
 
     gravatarServiceProvider.defaults = {
       size: 100,
@@ -261,14 +261,14 @@
       // retro:     awesome generated, 8-bit arcade-style pixelated faces
       // blank:     a transparent PNG image (border added to HTML below for demonstration purposes)
       default: 'retro',
-    }
+    };
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Loading bar provier
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     // How many miliseconds before showing the loading bar
-    cfpLoadingBarProvider.latencyThreshold = 50
-    cfpLoadingBarProvider.includeSpinner = false
+    cfpLoadingBarProvider.latencyThreshold = 50;
+    cfpLoadingBarProvider.includeSpinner = false;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Trello
@@ -279,7 +279,7 @@
       expiration: 'never',
       scope: { read: true, write: false, account: true },
       name: 'CMD Athena',
-    })
+    });
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Toastr
@@ -295,7 +295,7 @@
       preventDuplicates: false,
       preventOpenDuplicates: false,
       target: 'body',
-    })
+    });
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Moment
@@ -306,9 +306,9 @@
       ),
       monthsShort: function(m, format) {
         if (/-MMM-/.test(format)) {
-          return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()]
+          return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()];
         } else {
-          return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()]
+          return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()];
         }
       },
 
@@ -397,14 +397,14 @@
       },
       ordinalParse: /\d{1,2}(ste|de)/,
       ordinal: function(number) {
-        return number + (number === 1 || number === 8 || number >= 20 ? 'ste' : 'de')
+        return number + (number === 1 || number === 8 || number >= 20 ? 'ste' : 'de');
       },
       week: {
         dow: 1, // Monday is the first day of the week.
         doy: 4, // The week that contains Jan 4th is the first week of the year.
       },
-    })
-    moment.locale('nl')
+    });
+    moment.locale('nl');
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Translations
@@ -511,9 +511,9 @@
       STUDENT_RULES_CONFIRM_CHOSEN_AGREEMENTS: 'Gekozen afspraken',
       STUDENT_WORKLOAD_TO_BE_PRECISE: 'uur om precies te zijn',
       STUDENT_WORKLOAD_ONLY: 'Nog maar',
-      STUDENT_WORKLOAD_SHOW_COMPLTED_CARDS_OF: 'Bekijk voltooide kaarten van',
+      STUDENT_WORKLOAD_SHOW_COMPELTED_CARDS_OF: 'Bekijk voltooide kaarten van',
       STUDENT_WORKLOAD_AMOUNT_OF_CARDS: 'Aantal kaarten',
       STUDENT_WORKLOAD_COMLETED_AMOUNT: 'Waarvan voltooid',
-    })
+    });
   }
-})()
+})();

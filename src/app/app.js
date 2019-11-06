@@ -1,5 +1,5 @@
-;(function() {
-  'use strict'
+(function() {
+  'use strict';
 
   angular.module('cmd', [
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,5 +63,5 @@
 
     // Research
     'cmd.research',
-  ])
-})()
+  ]);
+})();
