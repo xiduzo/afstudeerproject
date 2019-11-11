@@ -94,9 +94,11 @@
             Rules.addRule(response)
               .then(function(response) {
                 toastr.success(
-                  `${$translate.instant('JS_AGREEMENT')} ${response.rule} ${$translate.instant(
-                    'JS_ADDED'
-                  )}`
+                  $translate.instant('JS_AGREEMENT') +
+                    ' ' +
+                    response.rule +
+                    ' ' +
+                    $translate.instant('JS_ADDED')
                 );
                 self.rules.push(response);
               })
@@ -199,9 +201,11 @@
           Rules.patchRule(rule)
             .then(function(response) {
               toastr.success(
-                `${$translate.instant('JS_AGREEMENT')} ${response.rule} ${$translate.instant(
-                  'JS_CHANGED'
-                )}`
+                $translate.instant('JS_AGREEMENT') +
+                  ' ' +
+                  response.rule +
+                  ' ' +
+                  $translate.instant('JS_CHANGED')
               );
             })
             .catch(function(error) {

@@ -85,9 +85,11 @@
               Account.createUser(student)
                 .then(function(response) {
                   toastr.success(
-                    `${$translate.instant('JS_STUDENT')} ${student.first_name} ${$translate.instant(
-                      'JS_ADDED'
-                    )}`
+                    $translate.instant('JS_STUDENT') +
+                      ' ' +
+                      student.first_name +
+                      ' ' +
+                      $translate.instant('JS_ADDED')
                   );
                   response.filter_name = $filter('fullUserName')(response);
                   self.students.push(response);

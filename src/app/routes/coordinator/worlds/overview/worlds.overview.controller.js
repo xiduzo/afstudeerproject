@@ -84,9 +84,11 @@
         World.removeGamemasterFromWorld(gamemaster.id, gamemaster.world_id);
         world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
         toastr.info(
-          `${gamemaster.first_name} ${$translate.instant('JS_ALLREADY_WAS_A_TEACHER_OF')} ${
+          gamemaster.first_name +
+            ' ' +
+            $translate.instant('JS_ALLREADY_WAS_A_TEACHER_OF') +
+            ' ' +
             world.name
-          }`
         );
       } else {
         World.removeGamemasterFromWorld(gamemaster.id, gamemaster.world_id);
@@ -97,7 +99,7 @@
             }
             gamemaster.world_id = world.id;
             toastr.success(
-              `${gamemaster.first_name} ${$translate.instant('JS_ADDED_TO')} ${world.name}`
+              gamemaster.first_name + ' ' + $translate.instant('JS_ADDED_TO') + ' ' + world.name
             );
           })
           .catch(function(error) {
@@ -124,9 +126,11 @@
               if (response.status === HTTP_STATUS.CREATED) {
                 vm.worlds.unshift(response.data);
                 toastr.success(
-                  `${$translate.instant('JS_CLASS')} ${response.data.name} ${$translate.instant(
-                    'JS_ADDED'
-                  )}`
+                  $translate.instant('JS_CLASS') +
+                    ' ' +
+                    response.data.name +
+                    ' ' +
+                    $translate.instant('JS_ADDED')
                 );
               } else {
                 toastr.warning('Something went wrong, try again later');
@@ -160,7 +164,7 @@
               targetEvent: event,
               clickOutsideToClose: true,
               locals: {
-                title: `${$translate.instant('JS_ADD_TEACHER_TO')} ${world.name}`,
+                title: $translate.instant('JS_ADD_TEACHER_TO') + ' ' + world.name,
                 subtitle: $translate.instant('JS_SELECT_TEACHERS'),
                 about: $translate.instant('TEACHERS'),
                 players: response,
@@ -182,7 +186,7 @@
                       user.world_id = world.id;
                       world.gamemasters.push(user);
                       toastr.success(
-                        `${user.first_name} ${$translate.instant('JS_ADDED_TO')} ${world.name}`
+                        user.first_name + ' ' + $translate.instant('JS_ADDED_TO') + ' ' + world.name
                       );
                     },
                     function() {
@@ -206,7 +210,11 @@
       World.removeGamemasterFromWorld(gamemaster.id, world.id)
         .then(function(response) {
           toastr.success(
-            `${gamemaster.first_name} ${$translate.instant('JS_IS_REMOVED_FROM')} ${world.name}`
+            gamemaster.first_name +
+              ' ' +
+              $translate.instant('JS_IS_REMOVED_FROM') +
+              ' ' +
+              world.name
           );
           world.gamemasters.splice(world.gamemasters.indexOf(gamemaster), 1);
         })
