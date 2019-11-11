@@ -78,20 +78,33 @@
     function login() {
       Account.login(self.login_form.username, self.login_form.password, self.login_type).then(
         function(response) {
-          if (response.uid) {
+          // if (response.uid) {
+          //   var logged_in_user = {
+          //     uid: response.uid[0],
+          //     student_number: response.hvastudentnumber
+          //       ? response.hvastudentnumber[0]
+          //       : response.employeenumber[0],
+          //     email: response.mail[0].toLowerCase(),
+          //     initials: response.initials[0],
+          //     first_name: response.displayname[0],
+          //     surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
+          //     surname: response.sn[0],
+          //     gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
+          //     is_staff: self.login_type === 'student' ? false : true,
+          //     is_superuser: false,
+          //   };
+          if (true) {
             var logged_in_user = {
-              uid: response.uid[0],
-              student_number: response.hvastudentnumber
-                ? response.hvastudentnumber[0]
-                : response.employeenumber[0],
-              email: response.mail[0].toLowerCase(),
-              initials: response.initials[0],
-              first_name: response.displayname[0],
-              surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
-              surname: response.sn[0],
-              gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-              is_staff: self.login_type === 'student' ? false : true,
-              is_superuser: false,
+              uid: 1234,
+              student_number: 1234,
+              email: 'mail@sanderboer.nl',
+              initials: 'AS',
+              first_name: 'Sander',
+              surname_prefix: null,
+              surname: 'Boer',
+              gender: 0,
+              is_staff: true,
+              is_superuser: true,
             };
 
             Account.checkForExistingUser(logged_in_user.student_number).then(function(response) {

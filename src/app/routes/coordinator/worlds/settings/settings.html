@@ -5,33 +5,33 @@
     <md-card>
       <md-card-content>
         <h1 class="md-title text--color--grey">
-          Instellingen
+          {{ 'SETTINGS' | translate }}
         </h1>
         <section layout layout-padding>
-          <span flex=50 flex-gt-sm=30>Start datum</span>
+          <span flex=50 flex-gt-sm=30>{{ 'STARTING_DATE' | translate}}</span>
           <md-datepicker ng-model="worldsSettingsCtrl.world.start" ng-change="worldsSettingsCtrl.patchWorldSettings()"
             md-open-on-focus md-placeholder="Datum"></md-datepicker>
         </section>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>
-            Duur
+            {{ 'DURATION' | translate }}
           </span>
           <md-input-container>
-            <label>Duur</label>
+            <label>{{ 'DURATION' | translate }}</label>
             <input ng-model="worldsSettingsCtrl.world.course_duration" type="number"
               ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }" />
-            <div class="hint text--color--grey">In weken</div>
+            <div class="hint text--color--grey">{{ 'WEEKS' | translate}}</div>
           </md-input-container>
         </section>
         <section layout layout-padding>
           <span flex=50 flex-gt-sm=30>
-            Trello user ID
+            {{ 'TRELLO_USER' | translate }}
           </span>
           <md-input-container>
-            <label>Trello user ID</label>
+            <label>{{ 'TRELLO_USER' | translate }}</label>
             <input ng-model="worldsSettingsCtrl.world.trello_user_id" type="text"
               ng-change="worldsSettingsCtrl.patchWorldSettings()" ng-model-options="{ debounce: 1000 }" />
-            <div class="hint text--color--grey">Trello user voor de klas</div>
+            <div class="hint text--color--grey">{{ 'TRELLO_USER_ID_TEXT' | translate}}</div>
           </md-input-container>
         </section>
       </md-card-content>
@@ -40,7 +40,7 @@
   <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
     <section>
       <div class="md-headline text--color--grey">
-        Docenten
+        {{ 'TEACHERS' | translate }}
       </div>
       <md-list>
         <md-list-item ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
@@ -54,7 +54,7 @@
         </md-list-item>
       </md-list>
       <div class="md-headline text--color--grey">
-        Groepen
+        {{ 'TEAMS' | translate }}
       </div>
       <md-list>
         <md-list-item ng-repeat="guild in worldsSettingsCtrl.world.guilds | orderBy : 'name'">
@@ -67,14 +67,14 @@
         <md-icon md-svg-src="pencil_light">
         </md-icon>
         <span flex>
-          Wijzig naam
+          {{ 'CHANGE_NAME' | translate }}
         </span>
       </md-button>
       <md-button layout class="md-warn md-raised" ng-click="worldsSettingsCtrl.deleteWorld($event)">
         <md-icon md-svg-src="delete_light">
         </md-icon>
         <span flex>
-          Verwijder klas
+          {{ 'REMOVE_CLASS' | translate}}
         </span>
       </md-button>
     </section>

@@ -56,7 +56,7 @@
             access_levels: [COORDINATOR_ACCESS_LEVEL],
           },
           {
-            name: 'JS_TEACHERS',
+            name: 'TEACHERS',
             icon: 'person_dark',
             link_to: 'base.lecturers',
             access_levels: [COORDINATOR_ACCESS_LEVEL],

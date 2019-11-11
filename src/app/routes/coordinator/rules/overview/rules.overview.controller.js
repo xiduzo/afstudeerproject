@@ -61,8 +61,8 @@
           targetEvent: event,
           clickOutsideToClose: true,
           locals: {
-            title: 'Add rule',
-            about: 'add rule',
+            title: $translate.instant('STUDENT_RULES_ADD_AGREEMENT'),
+            about: $translate.instant('STUDENT_RULES_ADD_AGREEMENT'),
             formInput: {
               rule_type: null,
               rule: null,

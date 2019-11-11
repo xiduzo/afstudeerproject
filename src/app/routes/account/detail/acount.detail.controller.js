@@ -25,6 +25,7 @@
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     self.patchLocalSettings = patchLocalSettings;
+    self.changeLanguage = changeLanguage;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -33,7 +34,7 @@
     self.trello_account = null;
     self.loading_page = true;
     self.local_settings = Global.getLocalSettings();
-
+    self.language = Global.getLanguage();
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -55,9 +56,13 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    function patchLocalSettings(ask_for_password) {
+    function patchLocalSettings() {
       Global.setLocalSettings(self.local_settings);
       $rootScope.$broadcast('patched-local-settings');
+    }
+
+    function changeLanguage() {
+      Global.setLanguage(self.language);
     }
   }
 })();

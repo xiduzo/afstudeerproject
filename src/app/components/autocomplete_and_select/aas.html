@@ -17,7 +17,7 @@
                     md-search-text-change="aasCtrl.filterUsers(aasCtrl.search_text)"
                     md-selected-item-change="aasCtrl.selectPlayer(player)"
                     md-items="player in aasCtrl.filter_users | orderBy:['displayname', 'surname']"
-                    placeholder="Zoek {{ aasCtrl.about }}" md-menu-class="aas__autocomplete">
+                    placeholder="{{ 'FIND' | translate}} {{ aasCtrl.about }}" md-menu-class="aas__autocomplete">
                     <md-item-template class="item--metadata">
                         <span class="item--metastat">
                             <img ng-if="player.avatar_hash" class="round"
@@ -78,10 +78,10 @@
 
     <md-dialog-actions>
         <md-button type="button" aria-label="Cancel" ng-click="aasCtrl.close()" md-ink-ripple>
-            <strong class="text--color--red">Sluit</strong>
+            <strong class="text--color--red">{{ 'CLOSE' | translate }}</strong>
         </md-button>
         <md-button type="button" aria-label="{{ aasCtrl.about }}" ng-click="aasCtrl.returnPlayers()" md-ink-ripple>
-            <strong class="text--color--green">{{ aasCtrl.about }} toevoegen</strong>
+            <strong class="text--color--green">{{ 'ADD' | translate }} {{ aasCtrl.about }}</strong>
         </md-button>
     </md-dialog-actions>
 

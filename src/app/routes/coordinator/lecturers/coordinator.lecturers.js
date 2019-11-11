@@ -16,7 +16,7 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle($translate.instant('JS_TEACHERS'));
+    Global.setRouteTitle($translate.instant('TEACHERS'));
     Global.setRouteBackRoute(null);
 
     var self = this;

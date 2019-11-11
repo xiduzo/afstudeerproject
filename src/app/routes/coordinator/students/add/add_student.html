@@ -3,7 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h1>
-        Voeg student(en) toe
+        {{ 'NEW_STUDENTS' | translate }}
       </h1>
     </div>
   </md-toolbar>
@@ -12,7 +12,7 @@
 
     <form layout="column">
       <md-input-container>
-        <label>Student(en) JSON data</label>
+        <label>{{ 'STUDENT_JSON' | translate}}</label>
         <textarea ng-model="addStudentCtrl.students" rows="15" md-select-on-focus>
         </textarea>
       </md-input-container>
@@ -23,12 +23,12 @@
   <md-dialog-actions>
     <md-button ng-click="addStudentCtrl.close()">
       <strong class="text--color--red">
-        Cancel
+        {{ 'CANCEL' | translate }}
       </strong>
     </md-button>
     <md-button ng-click="addStudentCtrl.addStudents()">
       <strong class="text--color--green">
-        Add
+        {{ 'ADD' | translate }}
       </strong>
     </md-button>
   </md-dialog-actions>

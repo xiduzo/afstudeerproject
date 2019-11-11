@@ -1,42 +1,30 @@
 <cmd-loading-page ng-if="rulesOverviewCtrl.loading_page"></cmd-loading-page>
 <section layout flex ng-if="!rulesOverviewCtrl.loading_page">
-    <cmd-empty-state flex ng-if="rulesOverviewCtrl.rules.length < 1"
-        icon="rules_dark"
-        headline="Dobby has no master."
-        title="Dobby is a free elf."
-        action="rulesOverviewCtrl.addRule()"
-        has-action="true"
+    <cmd-empty-state flex ng-if="rulesOverviewCtrl.rules.length < 1" icon="rules_dark" headline="Dobby has no master."
+        title="Dobby is a free elf." action="rulesOverviewCtrl.addRule()" has-action="true"
         subtitle="Or just add some rules you bastard">
     </cmd-empty-state>
-    <md-content flex=80 layout-fill layout-padding md-whiteframe=1 id="main__content" ng-if="rulesOverviewCtrl.rules.length >= 1">
+    <md-content flex=80 layout-fill layout-padding md-whiteframe=1 id="main__content"
+        ng-if="rulesOverviewCtrl.rules.length >= 1">
         <section layout layout-wrap>
-            <div flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25
-            ng-repeat="rule in filtered = (rulesOverviewCtrl.rules
+            <div flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25 ng-repeat="rule in filtered = (rulesOverviewCtrl.rules
             | filter: {
                 rule: filters.free_search
             }
             ) | orderBy : ['rule_type', 'rule']">
                 <md-card layout-align="space-between">
                     <md-card-content layout="column" layout-align="space-between center">
-                        <md-icon class="icon__size--36"
-                        md-svg-icon="work_dark"
-                        ng-if="rule.rule_type === 1">
+                        <md-icon class="icon__size--36" md-svg-icon="work_dark" ng-if="rule.rule_type === 1">
                         </md-icon>
-                        <md-icon class="icon__size--36"
-                        md-svg-icon="group_work_dark"
-                        ng-if="rule.rule_type === 2">
+                        <md-icon class="icon__size--36" md-svg-icon="group_work_dark" ng-if="rule.rule_type === 2">
                         </md-icon>
-                        <md-icon class="icon__size--36"
-                        md-svg-icon="lightbulb_dark"
-                        ng-if="rule.rule_type === 3">
+                        <md-icon class="icon__size--36" md-svg-icon="lightbulb_dark" ng-if="rule.rule_type === 3">
                         </md-icon>
-                        <md-icon class="icon__size--36"
-                        md-svg-icon="description_dark"
-                        ng-if="rule.rule_type === 4">
+                        <md-icon class="icon__size--36" md-svg-icon="description_dark" ng-if="rule.rule_type === 4">
                         </md-icon>
                         <section layout="column" layout-align="center center">
                             <strong layout-padding>
-                                De student
+                                {{ 'THE_STUDENT' | translate }}
                             </strong>
                             <em class="md-title" style="text-align: center;">
                                 {{ rule.rule }}
@@ -46,13 +34,12 @@
                     <md-card-actions layout="row" layout-align="center center">
                         <md-button ng-click="rulesOverviewCtrl.patchRule(rule)">
                             <strong>
-                                Wijzig
+                                {{ 'CHANGE' | translate }}
                             </strong>
                         </md-button>
-                        <md-button class="md-warn"
-                         ng-click="rulesOverviewCtrl.deleteRule(rule)">
+                        <md-button class="md-warn" ng-click="rulesOverviewCtrl.deleteRule(rule)">
                             <strong>
-                                Verwijder
+                                {{ 'REMOVE' | translate }}
                             </strong>
                         </md-button>
                     </md-card-actions>
@@ -64,20 +51,19 @@
     <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
         <section>
             <div class="md-title text--color--grey">
-                Opties
+                {{ 'OPTIONS' | translate }}
             </div>
             <md-input-container class="md-block">
-                <label>Zoek afspraak</label>
+                <label>{{ 'FIND_AGREEMENT' | translate }}</label>
                 <input ng-model="filters.free_search">
             </md-input-container>
         </section>
         <section layout="column">
-            <md-button layout flex class="success md-raised"
-            ng-click="rulesOverviewCtrl.addRule()">
+            <md-button layout flex class="success md-raised" ng-click="rulesOverviewCtrl.addRule()">
                 <md-icon md-svg-src="rules_light">
                 </md-icon>
                 <span flex>
-                    Nieuwe afspraak
+                    {{ 'NEW_AGREEMENT' | translate }}
                 </span>
             </md-button>
         </section>

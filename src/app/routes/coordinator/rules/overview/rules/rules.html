@@ -3,7 +3,7 @@
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h1>
-        Stel afspraak op
+        {{ 'STUDENT_RULES_ADD_AGREEMENT' | translate }}
       </h1>
     </div>
   </md-toolbar>
@@ -13,36 +13,39 @@
     <form layout="column">
 
       <md-input-container flex>
-        <label>De student</label>
+        <label>{{ 'THE_STUDENT' | translate }}</label>
         <input md-autofocus ng-model="addRuleCtrl.formInput.rule" />
       </md-input-container>
 
       <md-radio-group layout layout-align="space-around" ng-model="addRuleCtrl.formInput.rule_type">
-        <div ng-repeat="type in addRuleCtrl.types" layout="column" layout-align="center center" ng-click="addRuleCtrl.formInput.rule_type = type.type">
+        <div ng-repeat="type in addRuleCtrl.types" layout="column" layout-align="center center"
+          ng-click="addRuleCtrl.formInput.rule_type = type.type">
           <md-icon class="icon__size--48" md-svg-icon="{{type.icon}}"></md-icon>
           <span>
             {{ type.name }}
           </span>
-          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;"></md-radio-button>
+          <md-radio-button layout-padding value="{{type.type}}" aria-label="{{type.type}}" style="width: 20px;">
+          </md-radio-button>
         </div>
       </md-radio-group>
 
       <h3 class="md-subhead">
-        Hoe belangrijk vinden julllie deze regel als groep?
+        {{ 'WHAT_IS_THE_IMPORTANCE' | translate }}
       </h3>
 
-      <md-slider flex class="md-primary" step="1" min="0" max="100" ng-model="addRuleCtrl.formInput.importance" aria-label="Importance"></md-slider>
+      <md-slider flex class="md-primary" step="1" min="0" max="100" ng-model="addRuleCtrl.formInput.importance"
+        aria-label="Importance"></md-slider>
 
       <div layout>
-        <strong flex=33 layout layout-align="start">Minder belangrijk</strong>
-        <strong flex=33 layout layout-align="center">Belangrijk</strong>
-        <strong flex=33 layout layout-align="end">Heel Belangrijk</strong>
+        <strong flex=33 layout layout-align="start">{{ 'LESS_IMPORTANT' | translate }}</strong>
+        <strong flex=33 layout layout-align="center">{{ 'IMPORTANT' | translate }}</strong>
+        <strong flex=33 layout layout-align="end">{{ 'VERY_IMPORTANT' | translate }}</strong>
       </div>
 
     </form>
 
     <em class="text--color--grey">
-      Hoe belangerijker de regel, hoe meer punten de student kan verdienen.
+      {{ 'WHAT_IS_THE_IMPORTANCE_TEXT' | translate }}
     </em>
 
   </md-dialog-content>
@@ -50,7 +53,7 @@
   <md-dialog-actions>
     <md-button ng-click="addRuleCtrl.close()">
       <strong class="text--color--red">
-        Cancel
+        {{ 'CLOSE' | translate }}
       </strong>
     </md-button>
     <md-button ng-click="addRuleCtrl.addRule()">

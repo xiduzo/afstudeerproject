@@ -6,15 +6,18 @@
         <md-toolbar>
           <div class="md-toolbar-tools" flex>
             <span flex=100>
-              Student
+              {{ 'STUDENT' | translate}}
             </span>
           </div>
         </md-toolbar>
         <md-card-content>
           <md-list>
-            <md-list-item ng-repeat="student in studentsCtrl.students | filter : search | orderBy : ['first_name', 'surname']" flex style="padding:0;" ng-if="student.email !== studentsCtrl.user.email">
+            <md-list-item
+              ng-repeat="student in studentsCtrl.students | filter : search | orderBy : ['first_name', 'surname']" flex
+              style="padding:0;" ng-if="student.email !== studentsCtrl.user.email">
               <span flex=10>
-                <img ng-if="student.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{student.avatar_hash}}/50.png">
+                <img ng-if="student.avatar_hash" class="round"
+                  ng-src="https://trello-avatars.s3.amazonaws.com/{{student.avatar_hash}}/50.png">
                 <img ng-if="!student.avatar_hash" class="round" gravatar-size="50" gravatar-src="student.email">
               </span>
               <span flex="90">
@@ -28,22 +31,22 @@
   </md-content>
   <section flex=20 layout-padding layout="column" layout-align="space-between" id="sidebar__content">
     <section>
-        <div class="md-title text--color--grey">
-            Options
-        </div>
-        <md-input-container class="md-block">
-            <label>Zoek op naam</label>
-            <input ng-model="search.$">
-        </md-input-container>
+      <div class="md-title text--color--grey">
+        {{ 'OPTIONS' | translate}}
+      </div>
+      <md-input-container class="md-block">
+        <label>{{ 'FIND_BY_NAME' | translate }}</label>
+        <input ng-model="search.$">
+      </md-input-container>
     </section>
     <section layout="column">
-        <md-button layout flex class="success md-raised" ng-click="studentsCtrl.addStudents()">
-            <md-icon md-svg-src="add_light">
-            </md-icon>
-            <span flex>
-                Nieuwe student(en)
-            </span>
-        </md-button>
+      <md-button layout flex class="success md-raised" ng-click="studentsCtrl.addStudents()">
+        <md-icon md-svg-src="add_light">
+        </md-icon>
+        <span flex>
+          {{ 'NEW_STUDENTS' | translate }}
+        </span>
+      </md-button>
     </section>
   </section>
 </section>
