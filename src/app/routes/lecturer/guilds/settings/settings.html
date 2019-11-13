@@ -5,16 +5,16 @@
     <section>
       <md-card>
         <md-card-title>
-            <md-card-title-text>
-              <span class="md-headline">Instellingen</span>
-            </md-card-title-text>
-          </md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{ 'SETTINGS' | translate }}</span>
+          </md-card-title-text>
+        </md-card-title>
         <md-card-content>
           <section layout layout-padding>
             <span flex=50 flex-gt-sm=30>Trello bord</span>
             <md-input-container class="md-block">
               <label>
-                Trello bord
+                {{ 'TRELLO_BOARD' | translate }}
               </label>
               <md-select ng-model="guildSettingsCtrl.guild.trello_board" ng-change="guildSettingsCtrl.patchSettings()">
                 <md-option ng-value="board.id" ng-repeat="board in guildSettingsCtrl.trello_boards">
@@ -27,15 +27,16 @@
             <span flex=50 flex-gt-sm=30>Done lijst</span>
             <md-input-container class="md-block">
               <label>
-                Done lijst
+                {{ 'DONE_LIST' | translate }}
               </label>
-              <md-select ng-model="guildSettingsCtrl.guild.trello_done_list" ng-change="guildSettingsCtrl.patchSettings()">
+              <md-select ng-model="guildSettingsCtrl.guild.trello_done_list"
+                ng-change="guildSettingsCtrl.patchSettings()">
                 <md-option ng-value="list.id" ng-repeat="list in guildSettingsCtrl.trello_board_lists">
                   {{ list.name }}
                 </md-option>
               </md-select>
               <div class="hint text--color--grey">
-                Welke lijst is de 'done' lijst
+                {{ 'DONE_LIST_TEXT' | translate }}
               </div>
             </md-input-container>
           </section>
@@ -45,33 +46,25 @@
         <md-toolbar>
           <div class="md-toolbar-tools">
             <div flex>
-              Regel
+              {{ 'AGREEMENT' | translate }}
             </div>
             <div>
-              Verwijder
+              {{ 'REMOVE' | translate }}
             </div>
           </div>
         </md-toolbar>
         <md-list>
           <md-list-item ng-repeat="rule in guildSettingsCtrl.guild.rules | orderBy : rule.rule_type">
             <span flex>
-              <md-icon class="icon__size--24 icon__helper"
-              md-svg-icon="work_dark"
-              ng-if="rule.rule_type === 1">
+              <md-icon class="icon__size--24 icon__helper" md-svg-icon="work_dark" ng-if="rule.rule_type === 1">
               </md-icon>
-              <md-icon class="icon__size--24 icon__helper"
-              md-svg-icon="group_work_dark"
-              ng-if="rule.rule_type === 2">
+              <md-icon class="icon__size--24 icon__helper" md-svg-icon="group_work_dark" ng-if="rule.rule_type === 2">
               </md-icon>
-              <md-icon class="icon__size--24 icon__helper"
-              md-svg-icon="lightbulb_dark"
-              ng-if="rule.rule_type === 3">
+              <md-icon class="icon__size--24 icon__helper" md-svg-icon="lightbulb_dark" ng-if="rule.rule_type === 3">
               </md-icon>
-              <md-icon class="icon__size--24 icon__helper"
-              md-svg-icon="description_dark"
-              ng-if="rule.rule_type === 4">
+              <md-icon class="icon__size--24 icon__helper" md-svg-icon="description_dark" ng-if="rule.rule_type === 4">
               </md-icon>
-              De student {{ rule.rule }}
+              {{ 'THE_STUDENT' | translate }} {{ rule.rule }}
             </span>
             <md-button aria-label="Remove rule" class="md-icon-button" ng-click="guildSettingsCtrl.deleteRule(rule)">
               <md-icon md-svg-icon="delete_dark">
@@ -85,12 +78,14 @@
   <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
     <section>
       <div class="md-headline text--color--grey">
-        Team leden
+        {{ 'MEMBERS' | translate }}
       </div>
       <md-list>
         <md-list-item ng-repeat="member in guildSettingsCtrl.guild.members">
-          <img ng-if="member.user.avatar_hash" class="md-avatar round" ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/30.png">
-          <img ng-if="!member.user.avatar_hash" class="md-avatar round" gravatar-size="30" gravatar-src="member.user.email">
+          <img ng-if="member.user.avatar_hash" class="md-avatar round"
+            ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/30.png">
+          <img ng-if="!member.user.avatar_hash" class="md-avatar round" gravatar-size="30"
+            gravatar-src="member.user.email">
           <p>
             {{ member.user | fullUserName }}
           </p>
@@ -102,14 +97,14 @@
         <md-icon md-svg-src="pencil_light">
         </md-icon>
         <span flex>
-          Wijzig naam
+          {{ 'CHANGE_NAME' | translate }}
         </span>
       </md-button>
       <md-button layout class="md-warn md-raised" ng-click="guildSettingsCtrl.deleteGuild($event)">
         <md-icon md-svg-src="delete_light">
         </md-icon>
         <span flex>
-          Verwijder team
+          {{ 'REMOVE' | translate }} {{ 'TEAM' | translate }}
         </span>
       </md-button>
     </section>

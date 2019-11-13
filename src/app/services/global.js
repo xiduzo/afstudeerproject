@@ -141,11 +141,9 @@
         toastr.success($translate.instant('JS_SETTING_SAVED'));
       },
       getLanguage: function() {
-        console.log(self.language);
         return self.language;
       },
       setLanguage: function(language) {
-        console.log(language);
         localStorageService.set('language', language);
         self.language = language;
         switch (language) {

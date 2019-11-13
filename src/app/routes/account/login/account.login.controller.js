@@ -1,7 +1,9 @@
 (function() {
-  'use strict';
+  "use strict";
 
-  angular.module('cmd.account').controller('AccountLoginController', AccountLoginController);
+  angular
+    .module("cmd.account")
+    .controller("AccountLoginController", AccountLoginController);
 
   /** @ngInject */
   function AccountLoginController(
@@ -21,7 +23,7 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle('CMD Athena');
+    Global.setRouteTitle("CMD Athena");
 
     var self = this;
 
@@ -30,6 +32,7 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     self.login = login;
     self.authenticateTrello = authenticateTrello;
+    self.changeLanguage = changeLanguage;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -37,19 +40,21 @@
     self.login_form = {
       username: null,
       password: null,
-      remember: true,
+      remember: true
     };
 
-    self.login_type = 'student';
+    self.login_type = "student";
     self.error = null;
 
     hotkeys.bindTo($scope).add({
-      combo: 'enter',
-      description: 'login',
+      combo: "enter",
+      description: "login",
       callback: function() {
         self.login();
-      },
+      }
     }); // End of hotkeys
+
+    self.language = Global.getLanguage();
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
@@ -57,57 +62,63 @@
     function authenticateTrello(user) {
       TrelloApi.Authenticate()
         .then(function() {
-          TrelloApi.Rest('GET', 'members/me').then(function(response) {
-            localStorageService.set('trello_user', response);
-            toastr.success($translate.instant('JS_AUTHENTICATED_SUCCEEDED'));
+          TrelloApi.Rest("GET", "members/me").then(function(response) {
+            localStorageService.set("trello_user", response);
+            toastr.success($translate.instant("JS_AUTHENTICATED_SUCCEEDED"));
 
             // Update the avatar hash
             if (response.uploadedAvatarHash) {
-              user.avatar_hash = localStorageService.get('trello_user').uploadedAvatarHash;
+              user.avatar_hash = localStorageService.get(
+                "trello_user"
+              ).uploadedAvatarHash;
               Account.patchAvatarHash(user);
             }
             Account.setUser(user, self.login_form.remember);
           });
         })
         .catch(function() {
-          self.error = $translate.instant('JS_VERIFY_TRELLO_ACCOUNT');
-          toastr.error($translate.instant('JS_AUTHENTICATED_FAILED'));
+          self.error = $translate.instant("JS_VERIFY_TRELLO_ACCOUNT");
+          toastr.error($translate.instant("JS_AUTHENTICATED_FAILED"));
         });
     }
 
     function login() {
-      Account.login(self.login_form.username, self.login_form.password, self.login_type).then(
-        function(response) {
-          // if (response.uid) {
-          //   var logged_in_user = {
-          //     uid: response.uid[0],
-          //     student_number: response.hvastudentnumber
-          //       ? response.hvastudentnumber[0]
-          //       : response.employeenumber[0],
-          //     email: response.mail[0].toLowerCase(),
-          //     initials: response.initials[0],
-          //     first_name: response.displayname[0],
-          //     surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
-          //     surname: response.sn[0],
-          //     gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
-          //     is_staff: self.login_type === 'student' ? false : true,
-          //     is_superuser: false,
-          //   };
-          if (true) {
-            var logged_in_user = {
-              uid: 1234,
-              student_number: 1234,
-              email: 'mail@sanderboer.nl',
-              initials: 'AS',
-              first_name: 'Sander',
-              surname_prefix: null,
-              surname: 'Boer',
-              gender: 0,
-              is_staff: true,
-              is_superuser: true,
-            };
+      Account.login(
+        self.login_form.username,
+        self.login_form.password,
+        self.login_type
+      ).then(function(response) {
+        // if (response.uid) {
+        //   var logged_in_user = {
+        //     uid: response.uid[0],
+        //     student_number: response.hvastudentnumber
+        //       ? response.hvastudentnumber[0]
+        //       : response.employeenumber[0],
+        //     email: response.mail[0].toLowerCase(),
+        //     initials: response.initials[0],
+        //     first_name: response.displayname[0],
+        //     surname_prefix: response.hvatussenvoegsels ? response.hvatussenvoegsels[0] : null,
+        //     surname: response.sn[0],
+        //     gender: response.hvageslacht[0].toLowerCase() === 'm' ? 0 : 1,
+        //     is_staff: self.login_type === 'student' ? false : true,
+        //     is_superuser: false,
+        //   };
+        if (true) {
+          var logged_in_user = {
+            uid: 1234,
+            student_number: 1234,
+            email: "mail@sanderboer.nl",
+            initials: "AS",
+            first_name: "Sander",
+            surname_prefix: null,
+            surname: "Boer",
+            gender: 0,
+            is_staff: true,
+            is_superuser: false
+          };
 
-            Account.checkForExistingUser(logged_in_user.student_number).then(function(response) {
+          Account.checkForExistingUser(logged_in_user.student_number).then(
+            function(response) {
               if (response.status === -1) {
                 return Global.noConnection();
               }
@@ -138,22 +149,26 @@
                     // Err
                   });
               }
-            });
-          } else {
-            if (self.login_type === 'student') {
-              self.login_type = 'medewerker';
-              self.login();
-            } else {
-              if (response.status === -1) {
-                self.error = $translate.instant('JS_PROBLEM_DATABASE_CONNECTION');
-                return Global.noConnection();
-              }
-              self.error = response.message;
-              toastr.error(response.message);
             }
+          );
+        } else {
+          if (self.login_type === "student") {
+            self.login_type = "medewerker";
+            self.login();
+          } else {
+            if (response.status === -1) {
+              self.error = $translate.instant("JS_PROBLEM_DATABASE_CONNECTION");
+              return Global.noConnection();
+            }
+            self.error = response.message;
+            toastr.error(response.message);
           }
         }
-      );
+      });
+    }
+
+    function changeLanguage() {
+      Global.setLanguage(self.language);
     }
   }
 })();

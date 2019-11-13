@@ -1,46 +1,56 @@
 <section layout flex layout-align="center center" layout-wrap id="login__page">
-    <md-card md-whiteframe=10 flex=80 flex-gt-sm=60 flex-gt-md=25 flex-gt-lg=20 layout-padding>
-        <md-card-content layout="column">
 
-            <section layout="column" layout-align="center center">
-                <md-icon layout-padding class="icon__size--96" md-svg-src="cmd_unicorn"></md-icon>
-                <h1 class="md-headline">Enter Athena</h1>
-            </section>
+  <md-card md-whiteframe=10 flex=80 flex-gt-sm=60 flex-gt-md=25 flex-gt-lg=20 layout-padding>
+    <md-card-content layout="column">
 
-            <!-- User login -->
-            <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;" layout>
-              <md-icon md-svg-src="warning_dark" class="icon__color--red icon__helper" layout></md-icon>
-              <span flex>
-                {{ accountLoginCtrl.error }}
-              </span>
-            </section>
+      <section layout="column" layout-align="center center">
+        <md-icon layout-padding class="icon__size--96" md-svg-src="cmd_unicorn"></md-icon>
+        <h1 class="md-headline">Enter Athena</h1>
+      </section>
 
-            <md-input-container>
-                <label>HvA-ID</label>
-                <input type="text" ng-model="accountLoginCtrl.login_form.username">
-            </md-input-container>
+      <!-- User login -->
+      <section ng-if="accountLoginCtrl.error" class="text--color--red md-caption" style="margin: 1em 0;" layout>
+        <md-icon md-svg-src="warning_dark" class="icon__color--red icon__helper" layout></md-icon>
+        <span flex>
+          {{ accountLoginCtrl.error }}
+        </span>
+      </section>
 
-            <md-input-container class="md-block">
-                <label>Password</label>
-                <input type="password" ng-model="accountLoginCtrl.login_form.password">
-            </md-input-container>
+      <div class="language-selector">
+        <md-input-container>
+          <md-select ng-model="accountLoginCtrl.language" ng-change="accountLoginCtrl.changeLanguage()">
+            <md-option value='nl-NL'>Nederlands</md-option>
+            <md-option value='en-EN'>English</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
 
-            <section layout layout-align="space-between center">
-              <md-checkbox ng-model="accountLoginCtrl.login_form.remember" style="margin-bottom: 0;">
-                Remember me
-              </md-checkbox>
-              <md-button ui-sref="base.account.forgot" class="md-primary md-hue-1" md-no-ink>
-                Forgot password
-              </md-button>
-            </section>
+      <md-input-container>
+        <label>HvA-ID</label>
+        <input type="text" ng-model="accountLoginCtrl.login_form.username">
+      </md-input-container>
 
-        </md-card-content>
-        <md-divider></md-divider>
-        <md-card-actions layout="column">
-            <md-button class="md-primary md-raised" ng-click="accountLoginCtrl.login()">
-                Login
-            </md-button>
-        </md-card-actions>
+      <md-input-container class="md-block">
+        <label>{{ 'PASSWORD' | translate}}</label>
+        <input type="password" ng-model="accountLoginCtrl.login_form.password">
+      </md-input-container>
 
-    </md-card>
+      <section layout layout-align="space-between center">
+        <md-checkbox ng-model="accountLoginCtrl.login_form.remember" style="margin-bottom: 0;">
+          {{ 'REMEMBER_ME' | translate}}
+        </md-checkbox>
+        <md-button ui-sref="base.account.forgot" class="md-primary md-hue-1" md-no-ink>
+          {{ 'FORGOT_PASSWORD' | translate}}
+        </md-button>
+      </section>
+
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions layout="column">
+      <md-button class="md-primary md-raised" ng-click="accountLoginCtrl.login()">
+        {{ 'LOGIN' | translate }}
+      </md-button>
+    </md-card-actions>
+
+  </md-card>
 </section>

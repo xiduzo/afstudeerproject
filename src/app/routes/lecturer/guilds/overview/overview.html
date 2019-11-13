@@ -1,107 +1,104 @@
 <cmd-loading-page ng-if="guildsOverviewCtrl.loading_page"></cmd-loading-page>
 
 <section layout flex ng-if="!guildsOverviewCtrl.loading_page">
-  <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
-      <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1"
-      icon="world_dark"
-      headline="Geen klas gevonden"
-      title="Wacht tot een co&ouml;rdiantor je toevoegd aan een klas">
-      </cmd-empty-state>
-      <section layout layout-fill layout-wrap ng-if="guildsOverviewCtrl.worlds.length > 0">
-        <section flex layout="column" layout-fill ng-repeat="world in guildsOverviewCtrl.worlds" ng-if="world.id === guildsOverviewCtrl.selected_world">
-          <section layout="row" layout-align="start stretch">
-              <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
-                  <md-icon md-svg-icon="guild_light"></md-icon>
-                  <md-tooltip md-direction="left">
-                      Maak nieuw team
-                  </md-tooltip>
-              </md-button>
-          </section>
-          <section flex layout="column">
-              <section flex layout="row" layout-margin>
-                  <cmd-empty-state ng-if="world.guilds.length < 1"
-                  icon="guild_dark"
-                  action="guildsOverviewCtrl.newGuildDialog($event, world)"
-                  has-action="true"
-                  headline="Geen teams gevonden"
-                  title="Voeg een nieuw team toe door op het schild te klikken">
-                  </cmd-empty-state>
-                  <div flex>
-                      <div layout="row" layout-wrap>
-                          <div flex=33
-                              ng-repeat="guild in world.guilds | orderBy: 'name'">
-                              <md-card>
-                                  <md-toolbar layout-align="end center" layout>
-                                      <md-card-title class="md-toolbar-tools">
-                                          <md-card-title-text>
-                                              {{guild.name}}
-                                          </md-card-title-text>
-                                      </md-card-title>
-                                      <md-menu>
-                                          <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
-                                              <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
-                                          </md-button>
-                                          <md-menu-content width="4" >
-                                              <md-menu-item aria-label="Change guild settings" ui-sref="base.guilds.settings({guildUuid: guild.id})">
-                                                  <md-button>
-                                                      <div layout="row">
-                                                          <md-icon
-                                                              md-menu-align-target
-                                                              md-svg-icon="settings_dark">
-                                                          </md-icon>
-                                                          <p flex>Instellingen</p>
-                                                      </div>
-                                                  </md-button>
-                                              </md-menu-item>
-                                              <md-menu-item ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
-                                                  <md-button>
-                                                      <div layout="row">
-                                                          <md-icon
-                                                              md-menu-align-target
-                                                              md-svg-icon="add_dark">
-                                                          </md-icon>
-                                                          <p flex>Studenten toevoegen</p>
-                                                      </div>
-                                                  </md-button>
-                                              </md-menu-item>
-                                          </md-menu-content>
-                                      </md-menu>
-                                  </md-toolbar>
+    <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
+        <cmd-empty-state ng-if="guildsOverviewCtrl.worlds.length < 1" icon="world_dark"
+            headline="{{ 'TOOLBAR_NO_CLASSES_FOUND' | translate }}" title="{{ 'WAIT_FOR_TEAM_LECTURER' | translate }}">
+        </cmd-empty-state>
+        <section layout layout-fill layout-wrap ng-if="guildsOverviewCtrl.worlds.length > 0">
+            <section flex layout="column" layout-fill ng-repeat="world in guildsOverviewCtrl.worlds"
+                ng-if="world.id === guildsOverviewCtrl.selected_world">
+                <section layout="row" layout-align="start stretch">
+                    <md-button class="md-fab icon__fab" ng-click="guildsOverviewCtrl.newGuildDialog($event, world)">
+                        <md-icon md-svg-icon="guild_light"></md-icon>
+                        <md-tooltip md-direction="left">
+                            {{ 'NEW_TEAM' | translate }}
+                        </md-tooltip>
+                    </md-button>
+                </section>
+                <section flex layout="column">
+                    <section flex layout="row" layout-margin>
+                        <cmd-empty-state ng-if="world.guilds.length < 1" icon="guild_dark"
+                            action="guildsOverviewCtrl.newGuildDialog($event, world)" has-action="true"
+                            headline="{{ 'NO_TEAM_FOUND' | translate }}" title="{{ 'NO_TEAM_FOUND_TEXT' | translate }}">
+                        </cmd-empty-state>
+                        <div flex>
+                            <div layout="row" layout-wrap>
+                                <div flex=33 ng-repeat="guild in world.guilds | orderBy: 'name'">
+                                    <md-card>
+                                        <md-toolbar layout-align="end center" layout>
+                                            <md-card-title class="md-toolbar-tools">
+                                                <md-card-title-text>
+                                                    {{guild.name}}
+                                                </md-card-title-text>
+                                            </md-card-title>
+                                            <md-menu>
+                                                <md-button aria-label="Open menu" class="md-icon-button"
+                                                    ng-click="$mdMenu.open($event)">
+                                                    <md-icon md-menu-origin md-svg-icon="more_vert_light"></md-icon>
+                                                </md-button>
+                                                <md-menu-content width="4">
+                                                    <md-menu-item aria-label="Change guild settings"
+                                                        ui-sref="base.guilds.settings({guildUuid: guild.id})">
+                                                        <md-button>
+                                                            <div layout="row">
+                                                                <md-icon md-menu-align-target
+                                                                    md-svg-icon="settings_dark">
+                                                                </md-icon>
+                                                                <p flex>{{ 'SETTINGS' | translate }}</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item
+                                                        ng-click="guildsOverviewCtrl.addGuildMember($event, world, guild)">
+                                                        <md-button>
+                                                            <div layout="row">
+                                                                <md-icon md-menu-align-target md-svg-icon="add_dark">
+                                                                </md-icon>
+                                                                <p flex>{{ 'ADD' | translate }}
+                                                                    {{ 'MEMBERS' | translate }}</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-toolbar>
 
-                                  <md-card-content>
-                                      <md-list
-                                          dnd-list="guild.members"
-                                          dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
-                                          <md-list-item ng-if="guild.members.length < 1"
-                                               class="text--color--grey" layout layout-align="center center">
-                                              Er zitten (nog) geen studenten in dit team
-                                          </md-list-item>
-                                          <md-list-item ng-repeat="player in guild.members"
-                                              ng-if="guild.members.length >= 1"
-                                              dnd-draggable="player"
-                                              dnd-moved="guild.members.splice($index, 1)"
-                                              dnd-effect-allowed="move">
-                                              <img ng-if="player.user.avatar_hash" class="round" ng-src="https://trello-avatars.s3.amazonaws.com/{{player.user.avatar_hash}}/30.png">
-                                              <img ng-if="!player.user.avatar_hash" class="round" gravatar-size="30" gravatar-src="player.user.email">
-                                              <span flex layout-padding>
-                                                  {{ player.user | fullUserName }}
-                                              </span>
-                                              <md-icon md-svg-icon="delete_dark" ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
-                                                  <md-tooltip md-direction="bottom" md-delay="1000">
-                                                      Verwijder student uit team
-                                                  </md-tooltip>
-                                              </md-icon>
-                                          </md-list-item>
-                                      </md-list>
-                                  </md-card-content>
-                              </md-card>
+                                        <md-card-content>
+                                            <md-list dnd-list="guild.members"
+                                                dnd-inserted="guildsOverviewCtrl.movePlayer(event, guild, item)">
+                                                <md-list-item ng-if="guild.members.length < 1" class="text--color--grey"
+                                                    layout layout-align="center center">
+                                                    {{ 'NO_MEMBERS' | translate }}
+                                                </md-list-item>
+                                                <md-list-item ng-repeat="player in guild.members"
+                                                    ng-if="guild.members.length >= 1" dnd-draggable="player"
+                                                    dnd-moved="guild.members.splice($index, 1)"
+                                                    dnd-effect-allowed="move">
+                                                    <img ng-if="player.user.avatar_hash" class="round"
+                                                        ng-src="https://trello-avatars.s3.amazonaws.com/{{player.user.avatar_hash}}/30.png">
+                                                    <img ng-if="!player.user.avatar_hash" class="round"
+                                                        gravatar-size="30" gravatar-src="player.user.email">
+                                                    <span flex layout-padding>
+                                                        {{ player.user | fullUserName }}
+                                                    </span>
+                                                    <md-icon md-svg-icon="delete_dark"
+                                                        ng-click="guildsOverviewCtrl.removeGuildMember(player, guild)">
+                                                        <md-tooltip md-direction="bottom" md-delay="1000">
+                                                            {{ 'REMOVE' | translate }}
+                                                        </md-tooltip>
+                                                    </md-icon>
+                                                </md-list-item>
+                                            </md-list>
+                                        </md-card-content>
+                                    </md-card>
 
-                          </div> <!-- End of guilds -->
-                      </div>
-                  </div>
-              </section>
-          </section>
+                                </div> <!-- End of guilds -->
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
         </section>
-      </section>
-  </md-content>
+    </md-content>
 </section>

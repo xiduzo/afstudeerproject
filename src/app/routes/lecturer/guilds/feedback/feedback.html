@@ -3,25 +3,17 @@
 <section ng-if="!guildDetailFeedbackCtrl.loading_page" layout layout-fill>
   <md-content layout="column" layout-fill flex=80 id="main__content" md-whiteframe=1 layout-padding>
     <md-card flex=50 id="chart">
-      <cmd-empty-state
-        icon="again_dark"
-        headline="Loading data."
-        title="Be patient peasant.">
+      <cmd-empty-state icon="again_dark" headline="Loading data." title="Be patient peasant.">
       </cmd-empty-state>
     </md-card>
     <md-card layout flex=50>
       <section flex=50 id="polar">
-          <cmd-empty-state
-          icon="again_dark"
-          headline="Loading data."
-          title="Be patient peasant.">
-          </cmd-empty-state>
+        <cmd-empty-state icon="again_dark" headline="Loading data." title="Be patient peasant.">
+        </cmd-empty-state>
       </section>
       <section flex=50 id="pie">
-          <cmd-empty-state
-          icon="build_dark"
-          headline="under construction.">
-          </cmd-empty-state>
+        <cmd-empty-state icon="build_dark" headline="under construction.">
+        </cmd-empty-state>
       </section>
     </md-card>
   </md-content>
@@ -29,19 +21,20 @@
   <section layout="column" layout-align="space-between" layout-padding id="sidebar__content" flex=20>
     <section>
       <span class="md-headline text--color--grey">
-        Leden
+        {{ 'MEMBERS' | translate }}
       </span>
       <md-list>
-        <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.data.members_data" ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
-        <span layout layout-align="center center" style="min-width: 30px; max-width:30px; min-height: 30px; max-height: 30px; border-radius: 50%;"
-          ng-style="{
+        <md-list-item ng-repeat="member in guildDetailFeedbackCtrl.data.members_data"
+          ng-click="guildDetailFeedbackCtrl.selectMember(member)" layout>
+          <span layout layout-align="center center"
+            style="min-width: 30px; max-width:30px; min-height: 30px; max-height: 30px; border-radius: 50%;" ng-style="{
           'background': member.color
         }" class="icon__helper">
-        <md-icon ng-if="member.selected" md-svg-src="done_dark" class="icon__color--white" style=""></md-icon>
-        </span>
-        <span flex>
-          {{ member.name }}
-        </span>
+            <md-icon ng-if="member.selected" md-svg-src="done_dark" class="icon__color--white" style=""></md-icon>
+          </span>
+          <span flex>
+            {{ member.name }}
+          </span>
         </md-list-item>
       </md-list>
     </section>

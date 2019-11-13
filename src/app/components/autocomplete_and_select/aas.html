@@ -17,7 +17,7 @@
                     md-search-text-change="aasCtrl.filterUsers(aasCtrl.search_text)"
                     md-selected-item-change="aasCtrl.selectPlayer(player)"
                     md-items="player in aasCtrl.filter_users | orderBy:['displayname', 'surname']"
-                    placeholder="{{ 'FIND' | translate}} {{ aasCtrl.about }}" md-menu-class="aas__autocomplete">
+                    placeholder="{{ aasCtrl.about }}" md-menu-class="aas__autocomplete">
                     <md-item-template class="item--metadata">
                         <span class="item--metastat">
                             <img ng-if="player.avatar_hash" class="round"

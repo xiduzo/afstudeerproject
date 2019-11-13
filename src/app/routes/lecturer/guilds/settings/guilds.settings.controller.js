@@ -10,6 +10,7 @@
     $mdDialog,
     $mdToast,
     $state,
+    $translate,
     $stateParams,
     Global,
     Notifications,
@@ -23,7 +24,11 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle("Team instellingen");
+    Global.setRouteTitle(
+      $translate.instant("TEAM") +
+        " " +
+        $translate.instant("SETTINGS").toLowerCase()
+    );
     Global.setRouteBackRoute("base.guilds.overview");
 
     var self = this;
@@ -50,14 +55,26 @@
     Guild.getGuild($stateParams.guildUuid).then(
       function(response) {
         if (response.status === 404) {
-          toastr.error("Team " + $stateParams.guildUuid + " bestaad niet");
+          toastr.error(
+            $translate.instant("TEAM") +
+              " " +
+              $stateParams.guildUuid +
+              " " +
+              $translate.instant("DOES_NOT_EXIST")
+          );
           $state.go("base.guilds.overview");
         }
-        Global.setRouteTitle("Team instellingen " + response.name);
+        Global.setRouteTitle(
+          $translate.instant("TEAM") +
+            " " +
+            $translate.instant("SETTINGS").toLowerCase() +
+            " " +
+            response.name
+        );
         self.guild = response;
         getGuildRules(self.guild);
         if (!response.world.trello_user_id) {
-          toastr.error("Geen trello user ingesteld");
+          toastr.error($translate.instant("NO_TRELLO_USER"));
           $state.go("base.guilds.overview");
         } else {
           TrelloApi.Authenticate().then(
@@ -87,9 +104,7 @@
                     // bacause the bord has been deleted
                     Guild.patchGuildSettings(self.guild)
                       .then(function(response) {
-                        toastr.info(
-                          "Trello bord bestaad niet meer, team is geupdate"
-                        );
+                        toastr.info($translate.instant("TRELLO_BOARD_EXPIRED"));
                       })
                       .catch(function(error) {
                         //console.log(error);
@@ -154,15 +169,21 @@
 
     function deleteGuild(event) {
       Notifications.confirmation(
-        "Weet je zeker dat je dit team wilt verwijderen?",
-        "Deze actie kan niet meer ongedaan worden.",
-        "Verwijder team",
+        $translate.instant("JS_ARE_YOU_SURE_DELETE_TEAM"),
+        $translate.instant("JS_CAN_NOT_BE_UNDONE"),
+        $translate.instant("JS_REMOVE_TEAM"),
         event
       ).then(
         function() {
           Guild.deleteGuild(self.guild.id).then(
             function(response) {
-              toastr.success("Team " + self.guild.name + " is verwijdert");
+              toastr.success(
+                $translate.instant("TEAM") +
+                  " " +
+                  self.guild.name +
+                  " " +
+                  $translate.instant("REMOVED")
+              );
               $state.go("base.guilds.overview");
             },
             function() {
@@ -178,20 +199,22 @@
 
     function changeGuildName(event) {
       Notifications.prompt(
-        'Wijzig teamnaam van "' + self.guild.name + '"',
-        "Wat word de nieuwe naam van dit team?",
-        "Team naam",
+        $translate.instant("CHANGE_NAME") + ' "' + self.guild.name + '"',
+        $translate.instant("JS_NAME_OF_CLASS"),
+        $translate.instant("JS_NAME"),
         event
       ).then(
         function(result) {
           // Checks for thw world name
           if (!result) {
-            return toastr.warning("Vul een teamnaam in");
+            return toastr.warning($translate.instant("JS_ENTER_NAME"));
           }
 
           Guild.patchGuildName(result, self.guild.id).then(
             function(response) {
-              toastr.success("Team naam gewijzigd naar " + result);
+              toastr.success(
+                $translate.instant("JS_NAME_CHANGE_TO") + " " + result
+              );
               self.guild.name = result;
             },
             function() {
@@ -232,9 +255,9 @@
     function deleteRule(rule) {
       if (Global.getLocalSettings().enabled_confirmation) {
         Notifications.confirmation(
-          "Weet je zeker dat je deze regel wilt verwijderen?",
-          "Deze actie kan niet meer ongedaan worden.",
-          "verwijder regel",
+          $translate.instant("JS_ARE_YOU_SURE_DELETE_RULE"),
+          $translate.instant("JS_CAN_NOT_BE_UNDONE"),
+          $translate.instant("STUDENT_RULES_REMOVE"),
           event
         ).then(
           function() {
@@ -258,7 +281,7 @@
             ),
             1
           );
-          toastr.success("Regel is verwijdert");
+          toastr.success($translate.instant("REMOVED"));
         })
         .catch(function(error) {
           toastr.error(error);
