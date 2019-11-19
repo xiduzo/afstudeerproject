@@ -74,6 +74,7 @@
         method: "PATCH",
         data: {
           rule: rule.rule,
+          rule_eng: rule.rule_eng,
           points: rule.points,
           rule_type: rule.rule_type
         }

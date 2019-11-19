@@ -1111,7 +1111,7 @@
         NO_TEAM_FOUND: "No team found",
         NO_TEAM_FOUND_TEXT: "Add a new team by clicking the shield",
         NO_TRELLO_USER: "No trello user set",
-        OPTIONS: "Opties",
+        OPTIONS: "Options",
         OVERDUE_CARDS: "Overdue cards",
         PASSWORD: "Password",
         PERIOD: "Period",
