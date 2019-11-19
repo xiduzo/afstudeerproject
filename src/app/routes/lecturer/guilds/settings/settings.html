@@ -64,7 +64,7 @@
               </md-icon>
               <md-icon class="icon__size--24 icon__helper" md-svg-icon="description_dark" ng-if="rule.rule_type === 4">
               </md-icon>
-              {{ 'THE_STUDENT' | translate }} {{ rule.rule }}
+              {{ 'THE_STUDENT' | translate }} {{ guildSettingsCtrl.language === 'nl-NL' ? rule.rule : rule.rule_eng }}
             </span>
             <md-button aria-label="Remove rule" class="md-icon-button" ng-click="guildSettingsCtrl.deleteRule(rule)">
               <md-icon md-svg-icon="delete_dark">

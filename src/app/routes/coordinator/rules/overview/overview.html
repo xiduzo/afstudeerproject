@@ -27,7 +27,7 @@
                                 {{ 'THE_STUDENT' | translate }}
                             </strong>
                             <em class="md-title" style="text-align: center;">
-                                {{ rule.rule }}
+                                {{ rulesOverviewCtrl.language === 'nl-NL' ? rule.rule : rule.rule_eng }}
                             </em>
                         </section>
                     </md-card-content>

@@ -29,7 +29,7 @@
         <md-icon class="icon__helper" md-svg-icon="group_work_dark" ng-if="rule.rule_type === 2"></md-icon>
         <md-icon class="icon__helper" md-svg-icon="lightbulb_dark" ng-if="rule.rule_type === 3"></md-icon>
         <md-icon class="icon__helper" md-svg-icon="description_dark" ng-if="rule.rule_type === 4"></md-icon>
-        {{ 'THE_STUDENT' | translate}} {{ rule.rule }}
+        {{ 'THE_STUDENT' | translate}} {{ confirmGuildRulesCtrl.language === 'nl-NL' ? rule.rule : rule.rule_eng }}
       </md-list-item>
     </md-list>
   </md-dialog-content>

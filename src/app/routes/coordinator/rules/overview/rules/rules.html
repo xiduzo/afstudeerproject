@@ -11,10 +11,13 @@
   <md-dialog-content layout-padding>
 
     <form layout="column">
-
       <md-input-container flex>
-        <label>{{ 'THE_STUDENT' | translate }}</label>
+        <label>De student</label>
         <input md-autofocus ng-model="addRuleCtrl.formInput.rule" />
+      </md-input-container>
+      <md-input-container flex>
+        <label>The student</label>
+        <input ng-model="addRuleCtrl.formInput.rule_eng" />
       </md-input-container>
 
       <md-radio-group layout layout-align="space-around" ng-model="addRuleCtrl.formInput.rule_type">

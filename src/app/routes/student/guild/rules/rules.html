@@ -92,7 +92,8 @@
                     <md-checkbox ng-change="guildRulesCtrl.toggleRule(rule, guild)" ng-model="rule.selected"
                       aria-label="Select rule">
                     </md-checkbox>
-                    {{ 'THE_STUDENT' | translate}} {{ rule.rule }}
+                    {{ 'THE_STUDENT' | translate}}
+                    {{ guildRulesCtrl.language === 'nl-NL' ? rule.rule : rule.rule_eng }}
                   </md-list-item>
                 </md-list>
               </md-card>
@@ -208,7 +209,9 @@
                   <md-list-item ng-repeat="rule in guild.rules" flex>
                     <section flex layout="column" layout-padding ng-if="rule.rule">
                       <div class="md-title" layout-padding>
-                        {{ 'THE_STUDENT' | translate }} {{ rule.rule }}
+                        {{ 'THE_STUDENT' | translate }}
+                        {{ guildRulesCtrl.language === 'nl-NL' ? rule.rule : rule.rule_eng }}
+
                       </div>
                       <section flex layout layout-wrap>
                         <section flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25 ng-repeat="member in guild.members"

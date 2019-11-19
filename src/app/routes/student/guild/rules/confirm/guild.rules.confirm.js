@@ -1,47 +1,39 @@
-(function () {
-    'use strict';
+(function() {
+  "use strict";
 
-    angular
-        .module('cmd.guild')
-        .controller('confirmGuildRulesController', confirmGuildRulesController);
+  angular
+    .module("cmd.guild")
+    .controller("confirmGuildRulesController", confirmGuildRulesController);
 
-    /** @ngInject */
-    function confirmGuildRulesController(
-        $mdDialog,
-        rules
-    ) {
+  /** @ngInject */
+  function confirmGuildRulesController($mdDialog, Global, rules) {
+    var self = this;
 
-        var self = this;
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.close = close;
-        self.addRules = addRules;
+    self.close = close;
+    self.addRules = addRules;
 
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        self.rules = rules;
+    self.rules = rules;
+    self.language = Global.getLanguage();
 
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Method Declarations
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        function close() {
-            $mdDialog.hide();
-        }
-
-        function addRules() {
-            $mdDialog.hide(true);
-        }
-
-
+    function close() {
+      $mdDialog.hide();
     }
 
-}());
+    function addRules() {
+      $mdDialog.hide(true);
+    }
+  }
+})();

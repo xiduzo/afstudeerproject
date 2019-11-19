@@ -48,6 +48,7 @@
     self.trello_boards = [];
     self.trello_board_lists = [];
     self.loading_page = true;
+    self.language = Global.getLanguage();
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			Services
