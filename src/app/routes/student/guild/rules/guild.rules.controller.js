@@ -11,6 +11,7 @@
     $mdDialog,
     $state,
     $scope,
+    $translate,
     Global,
     Guild,
     World,
@@ -18,13 +19,14 @@
     Notifications,
     toastr,
     localStorageService,
-    STUDENT_ACCESS_LEVEL
+    STUDENT_ACCESS_LEVEL,
+    HTTP_STATUS
   ) {
     if (Global.getAccess() < STUDENT_ACCESS_LEVEL) {
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle("Feedback");
+    Global.setRouteTitle($translate.instant("FEEDBACK"));
     Global.setRouteBackRoute(null);
 
     var vm = this;
@@ -214,7 +216,7 @@
       rule.selected = false;
       vm.toggleRule(rule, guild);
       rule = null;
-      toastr.success("Afspraak verwijdert");
+      toastr.success($translate.instant("JS_AGREEMENT_REMOVED"));
     }
 
     function toggleRule(rule, guild) {
@@ -277,7 +279,9 @@
         .then(
           function(response) {
             if (!response.type || !response.rule) {
-              return toastr.warning("Vul alle velden in");
+              return toastr.warning(
+                $translate.instant("JS_FILL_IN_ALL_FIELDS")
+              );
             }
 
             var tempObj = {
@@ -291,7 +295,7 @@
             guild.own_rule = tempObj;
             vm.toggleRule(tempObj, guild);
 
-            toastr.success("Afspraak toegevoegd");
+            toastr.success($translate.instant("JS_ADDED"));
           },
           function() {
             // Err dialog
@@ -379,7 +383,7 @@
       return endorsement ? endorsement.rating : null;
     }
 
-    function setRating(week, rule, user, rating, guild, event) {
+    function setRating(week, rule, user, newRating, guild, event) {
       var local_guilds = localStorageService.get("guilds") || [];
       var local_guild = _.findWhere(local_guilds, { guild: guild.id });
 
@@ -399,11 +403,11 @@
       }
 
       if (endorsement) {
-        Guild.patchEndorsement(endorsement.id, rating)
+        Guild.patchEndorsement(endorsement.id, newRating)
           .then(function(response) {
             // Update the rating in the memory
             endorsement.rating = response.rating;
-            toastr.success("Je feedback is opgeslagen");
+            toastr.success($translate.instant("JS_YOUR_FEEDBACK_IS_SAVED"));
 
             // TODO
             // Update the local storage
@@ -418,7 +422,7 @@
             toastr.error(error);
           });
       } else {
-        Guild.addEndorsement(rule.id, user.id, vm.user.id, week, rating)
+        Guild.addEndorsement(rule.id, user.id, vm.user.id, week, newRating)
           .then(function(response) {
             // Yeah this is fucked up, bc of the ng-init for rating check
             // but the deadline is near and i dont have a faster sollution
@@ -430,7 +434,7 @@
               rule.endorsements.push(response);
             }
 
-            toastr.success("Je feedback is opgeslagen");
+            toastr.success($translate.instant("JS_YOUR_FEEDBACK_IS_SAVED"));
 
             // Update the guild localstorage
             local_guilds[_.indexOf(local_guilds, local_guild)] = {

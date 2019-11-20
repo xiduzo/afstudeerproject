@@ -4,7 +4,15 @@
   angular.module("cmd.services").factory("Guild", Guild);
 
   /** @ngInject */
-  function Guild($http, $q, Account, toastr, REST_API_URL) {
+  function Guild(
+    $http,
+    $q,
+    $translate,
+    Account,
+    toastr,
+    REST_API_URL,
+    HTTP_STATUS
+  ) {
     var service = this;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -293,7 +301,10 @@
           return response.data;
         },
         function(error) {
-          return error;
+          if (error.status === HTTP_STATUS.THROTTLED) {
+            throw $translate.instant("JS_WOW_SLOW_DOWN");
+          }
+          throw error.statusText;
         }
       );
     }

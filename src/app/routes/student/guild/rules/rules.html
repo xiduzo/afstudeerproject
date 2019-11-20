@@ -217,7 +217,7 @@
                         <section flex=100 flex-gt-sm=50 flex-gt-md=33 flex-gt-lg=25 ng-repeat="member in guild.members"
                           ng-if="member.user.id !== guildRulesCtrl.user.id">
                           <md-card layout="column" layout-align="center center"
-                            ng-init="rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user); new_rating = rating;">
+                            x="{{rating = guildRulesCtrl.checkRuleEndorsementStatus(week.index, rule, member.user)}}">
                             <md-card-header>
                               <md-card-avatar>
                                 <img ng-if="member.user.avatar_hash" class="round" alt='avatar'
@@ -234,7 +234,7 @@
                             <md-card-content>
                               <section layout class="rating" ng-if="week.editable">
                                 <div
-                                  ng-click="rating = 1; guildRulesCtrl.setRating(week.index, rule, member.user, 1, guild, $event)">
+                                  ng-click="guildRulesCtrl.setRating(week.index, rule, member.user, 1, guild, $event)">
                                   <md-icon aria-label="rate 1" md-svg-src="star_dark"
                                     class="icon__size--36 icon__color--lightGreen" ng-if="rating >= 1"></md-icon>
                                   <md-icon aria-label="rate 1" md-svg-src="star_border_dark" class="icon__size--36"
@@ -242,7 +242,7 @@
                                   </md-icon>
                                 </div>
                                 <div
-                                  ng-click="rating = 2; guildRulesCtrl.setRating(week.index, rule, member.user, 2, guild, $event)">
+                                  ng-click="guildRulesCtrl.setRating(week.index, rule, member.user, 2, guild, $event)">
                                   <md-icon aria-label="rate 2" md-svg-src="star_dark"
                                     class="icon__size--36 icon__color--lightGreen" ng-if="rating >= 2"></md-icon>
                                   <md-icon aria-label="rate 2" md-svg-src="star_border_dark" class="icon__size--36"
@@ -250,7 +250,7 @@
                                   </md-icon>
                                 </div>
                                 <div
-                                  ng-click="rating = 3; guildRulesCtrl.setRating(week.index, rule, member.user, 3, guild, $event)">
+                                  ng-click="guildRulesCtrl.setRating(week.index, rule, member.user, 3, guild, $event)">
                                   <md-icon aria-label="rate 3" md-svg-src="star_dark"
                                     class="icon__size--36 icon__color--lightGreen" ng-if="rating >= 3"></md-icon>
                                   <md-icon aria-label="rate 3" md-svg-src="star_border_dark" class="icon__size--36"
@@ -258,7 +258,7 @@
                                   </md-icon>
                                 </div>
                                 <div
-                                  ng-click="rating = 4; guildRulesCtrl.setRating(week.index, rule, member.user, 4, guild, $event)">
+                                  ng-click="guildRulesCtrl.setRating(week.index, rule, member.user, 4, guild, $event)">
                                   <md-icon aria-label="rate 4" md-svg-src="star_dark"
                                     class="icon__size--36 icon__color--lightGreen" ng-if="rating >= 4"></md-icon>
                                   <md-icon aria-label="rate 4" md-svg-src="star_border_dark" class="icon__size--36"
