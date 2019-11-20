@@ -14,7 +14,7 @@
   "author": "sander_boer",
   "license": "apache-2.0",
   "dependencies": {
-    "angular": "^1.5.3",
+    "angular": "^1.7.9",
     "angular-aria": "^1.5.3",
     "angular-messages": "^1.5.3",
     "gulp-install": "^0.6.0",
