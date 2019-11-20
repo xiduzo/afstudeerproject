@@ -828,7 +828,7 @@
         IS_NO_COORDINATOR: "Is NO coordinator",
         JS_ADDED: "Toegevoegd",
         JS_ADDED_TO: "Toegevoegd aan",
-        JS_ADD_CLASS: "Klas toeveogen",
+        JS_ADD_CLASS: "Klas toevoegen",
         JS_ADD_TEACHER_TO: "Toevoegen docent aan",
         JS_AGREEMENT: "Afspraak",
         JS_AGREEMENTS: "Afspraken",
@@ -868,6 +868,9 @@
         JS_VERIFY_TRELLO_ACCOUNT:
           "Verifieer trello account om door te kunnen gaan",
         JS_WORKLOAD: "Workload",
+        JS_WOW_SLOW_DOWN:
+          "Slowwww down cowbow, het lijkt erop alsof je de server aan het spammen bent",
+        JS_YOUR_FEEDBACK_IS_SAVED: "Je feedback is opgeslagen",
         KNOWLEDGE_DEVELOPMENT: "Kennisontwikkeling",
         LANGUAGE: "Taal",
         LESS_IMPORTANT: "Minder belangrijk",
@@ -1089,6 +1092,9 @@
         JS_STUDENTS: "Students",
         JS_VERIFY_TRELLO_ACCOUNT: "Verify trello account to continue.",
         JS_WORKLOAD: "Workload",
+        JS_WOW_SLOW_DOWN:
+          "Slowwww down cowbow, it seems like you are spamming the server",
+        JS_YOUR_FEEDBACK_IS_SAVED: "Your feedback is saved",
         KNOWLEDGE_DEVELOPMENT: "Knowledge development",
         LANGUAGE: "Language",
         LESS_IMPORTANT: "Less important",
@@ -1117,7 +1123,7 @@
         PASSWORD: "Password",
         PERIOD: "Period",
         PER_MEMBER_PER_WEEK: "Per member per week",
-        PER_MEMBER_TOTAL: "Per memeber total",
+        PER_MEMBER_TOTAL: "Per member total",
         PLURAL_1: "s",
         PLURAL_2: "",
         POINT_PERCENTAGE: "Points in percentage",
@@ -1220,7 +1226,9 @@
         WHAT_IS_THE_IMPORTANCE_TEXT:
           "The imporancy of the rule affects the point you can earn"
       })
-      .preferredLanguage("nl-NL");
+      .preferredLanguage("nl-NL")
+      .useSanitizeValueStrategy("escape")
+      .fallbackLanguage("nl-NL");
     // .preferredLanguage('en-EN');
   }
 })();
