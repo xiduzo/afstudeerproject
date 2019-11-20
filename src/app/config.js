@@ -776,6 +776,7 @@
       }
     });
     moment.locale("nl");
+    moment.tz.setDefault("Etc/Greenwich");
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Translations
