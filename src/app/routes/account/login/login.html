@@ -18,7 +18,8 @@
 
       <div class="language-selector">
         <md-input-container>
-          <md-select ng-model="accountLoginCtrl.language" ng-change="accountLoginCtrl.changeLanguage()">
+          <md-select aria-label="select language" ng-model="accountLoginCtrl.language"
+            ng-change="accountLoginCtrl.changeLanguage()">
             <md-option value='nl-NL'>Nederlands</md-option>
             <md-option value='en-EN'>English</md-option>
           </md-select>
