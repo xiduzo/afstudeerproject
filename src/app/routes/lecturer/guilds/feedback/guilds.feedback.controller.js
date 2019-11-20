@@ -204,7 +204,7 @@
                 // Check if the other user has given feedback
                 var feedback = rule.endorsements.find(function(endorsement) {
                   return (
-                    endorsement.week === weekNum + 1 &&
+                    endorsement.week === weekNum &&
                     endorsement.endorsed_by === otherMember.user.id &&
                     endorsement.user === member.user.id
                   );
@@ -215,7 +215,7 @@
                   endorsement
                 ) {
                   return (
-                    endorsement.week === weekNum + 1 &&
+                    endorsement.week === weekNum &&
                     endorsement.endorsed_by === member.user.id &&
                     endorsement.user === otherMember.user.id
                   );
