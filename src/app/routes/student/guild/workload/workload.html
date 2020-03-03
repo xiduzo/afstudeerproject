@@ -12,10 +12,7 @@
     <cmd-empty-state ng-if="guild.no_world_settings" icon="settings_dark" headline="NO_CLASS_FOUND"
       title="WAIT_FOR_CLASS">
     </cmd-empty-state>
-    <cmd-empty-state ng-if="guildWorkloadCtrl.user.trello" icon="settings_dark" headline="JS_VERIFY_TRELLO_ACCOUNT">
-    </cmd-empty-state>
-    <div layout layout-fill flex
-      ng-if="!guild.trello_not_configured && !guild.no_world_settings && guildWorkloadCtrl.user.trello">
+    <div layout layout-fill flex ng-if="!guild.trello_not_configured && !guild.no_world_settings">
       <md-content layout="column" layout-padding flex=80 layout-fill md-whiteframe=1 id="main__content">
         <section layout layout-wrap layout-fill>
           <div layout="column" flex>

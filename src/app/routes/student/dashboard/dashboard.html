@@ -36,7 +36,11 @@
             </section>
             <!-- Uncompleted cards + cards due -->
             <section flex=50 layout ng-if="!studentDashboardCtrl.user.trello">
-              {{ 'JS_VERIFY_TRELLO_ACCOUNT' | translate }}
+              <md-card flex layout="column" layout-align="space-between">
+                <md-card-content layout flex>
+                  {{ 'JS_VERIFY_TRELLO_ACCOUNT' | translate }}
+                </md-card-content>
+              </md-card>
             </section>
             <section flex=50 layout ng-if="studentDashboardCtrl.user.trello">
               <md-card class="hover--pointer" flex layout="column" layout-align="space-between"
@@ -104,6 +108,9 @@
             <h1 class="md-title text--color--grey" layout-margin>
               {{ 'MY_CARDS' | translate }}
             </h1>
+            <section flex=100 layout ng-if="!studentDashboardCtrl.user.trello">
+              {{ 'JS_VERIFY_TRELLO_ACCOUNT' | translate }}
+            </section>
 
             <md-list flex="100" layout layout-wrap class="timeline">
               <md-list-item layout layout-align="center center" class="text--color--grey"

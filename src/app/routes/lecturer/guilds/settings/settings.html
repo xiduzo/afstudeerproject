@@ -12,7 +12,7 @@
         <md-card-content ng-if="!guildSettingsCtrl.local_trello_user">
           {{ 'JS_VERIFY_TRELLO_ACCOUNT' | translate }}
         </md-card-content>
-        <md-card-content ng=if="guildSettingsCtrl.local_trello_user">
+        <md-card-content ng-if="guildSettingsCtrl.local_trello_user">
           <section layout layout-padding>
             <span flex=50 flex-gt-sm=30>Trello bord</span>
             <md-input-container class="md-block">
