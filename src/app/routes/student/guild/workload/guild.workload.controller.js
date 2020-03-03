@@ -1,7 +1,7 @@
 (function() {
-  "use strict";
+  'use strict';
 
-  angular.module("cmd.guild").controller("GuildWorkloadController", GuildWorkloadController);
+  angular.module('cmd.guild').controller('GuildWorkloadController', GuildWorkloadController);
 
   /** @ngInject */
   function GuildWorkloadController(
@@ -25,7 +25,7 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle("Werkverdeling");
+    Global.setRouteTitle('Werkverdeling');
     Global.setRouteBackRoute(null);
 
     var vm = this;
@@ -39,7 +39,7 @@
       Variables
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     vm.user = Global.getUser();
-    vm.user.trello = localStorageService.get("trello_user") ? true : false;
+    vm.user.trello = localStorageService.get('trello_user') ? true : false;
     vm.selected_guild = Global.getSelectedGuild();
     vm.guilds = [];
 
@@ -50,7 +50,7 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       Extra logic
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    $scope.$on("guild-changed", function(event, guild) {
+    $scope.$on('guild-changed', function(event, guild) {
       vm.selected_guild = guild;
 
       if (guild !== undefined) {
@@ -77,7 +77,7 @@
       if (!vm.user.trello) return;
       TrelloApi.Authenticate()
         .then(function() {
-          TrelloApi.Rest("GET", "boards/" + guild.trello_board + "/cards")
+          TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')
             .then(function(response) {
               var cards = response;
 
@@ -102,11 +102,11 @@
         .then(function(response) {
           vm.loading_page = false;
           guild = response;
-          var local_guilds = localStorageService.get("guilds") || [];
+          var local_guilds = localStorageService.get('guilds') || [];
 
-          guild.world.end = moment(guild.world.start).add(guild.world.course_duration, "weeks").add(6, "days");
+          guild.world.end = moment(guild.world.start).add(guild.world.course_duration, 'weeks').add(6, 'days');
           if (
-            moment().isAfter(moment(guild.world.start).add(guild.world.course_duration, "weeks").add(6, "days"), "day")
+            moment().isAfter(moment(guild.world.start).add(guild.world.course_duration, 'weeks').add(6, 'days'), 'day')
           ) {
             guild.ended = true;
           }
@@ -123,14 +123,14 @@
           // Get endorsements from the localstorage
           if (
             _.findWhere(local_guilds, { guild: guild.id }) &&
-            moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(moment().subtract(1, "hours"))
+            moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(moment().subtract(1, 'hours'))
           ) {
             guild.rules = _.findWhere(local_guilds, { guild: guild.id }).rules;
             buildGraphData(guild);
           } else {
             Guild.V2getGuildRules(guild.id)
               .then(function(response) {
-                local_guilds = localStorageService.get("guilds") || [];
+                local_guilds = localStorageService.get('guilds') || [];
                 var local_guild = _.findWhere(local_guilds, { guild: guild.id });
                 var tempObj = { guild: guild.id, datetime: moment(), rules: response.data };
 
@@ -141,7 +141,7 @@
                   local_guilds.push(tempObj);
                 }
 
-                localStorageService.set("guilds", local_guilds);
+                localStorageService.set('guilds', local_guilds);
 
                 guild.rules = response.data;
                 buildGraphData(guild);
@@ -174,9 +174,9 @@
 
         _.each(guild.insight_data.course_weeks, function(course_week) {
           if (
-            (moment(card.dateLastActivity).isBetween(course_week.start, course_week.end, "day") ||
-              moment(card.dateLastActivity).isSame(course_week.start, "day") ||
-              moment(card.dateLastActivity).isSame(course_week.end, "day")) &&
+            (moment(card.dateLastActivity).isBetween(course_week.start, course_week.end, 'day') ||
+              moment(card.dateLastActivity).isSame(course_week.start, 'day') ||
+              moment(card.dateLastActivity).isSame(course_week.end, 'day')) &&
             card.done
           ) {
             // TODO
@@ -187,9 +187,9 @@
 
           if (card.due) {
             if (
-              (moment(card.due).isBetween(course_week.start, course_week.end, "day") ||
-                moment(card.due).isSame(course_week.start, "day") ||
-                moment(card.due).isSame(course_week.end, "day")) &&
+              (moment(card.due).isBetween(course_week.start, course_week.end, 'day') ||
+                moment(card.due).isSame(course_week.start, 'day') ||
+                moment(card.due).isSame(course_week.end, 'day')) &&
               !card.done
             ) {
               course_week.cards_due.push(card);
@@ -220,8 +220,8 @@
         }
         guild.insight_data.workload_percentage_icon =
           guild.insight_data.workload_percentage < -4
-            ? "trending_down_dark"
-            : guild.insight_data.workload_percentage > 4 ? "trending_up_dark" : "trending_flat_dark";
+            ? 'trending_down_dark'
+            : guild.insight_data.workload_percentage > 4 ? 'trending_up_dark' : 'trending_flat_dark';
       } else {
         guild.previous_week = null;
       }
@@ -260,7 +260,7 @@
         });
 
         guild.board.pie.series[1].data.push({
-          name: "Voltooide kaarten",
+          name: 'Voltooide kaarten',
           color: Highcharts.Color(member.color).setOpacity(0.75).get(),
           y: roundToTwo(
             _.filter(member.cards, function(card) {
@@ -275,7 +275,7 @@
         });
 
         guild.board.pie.series[1].data.push({
-          name: "Onvoltooide kaarten",
+          name: 'Onvoltooide kaarten',
           color: Highcharts.Color(member.color).setOpacity(0.25).get(),
           y: roundToTwo(
             _.filter(member.cards, function(card) {
@@ -296,7 +296,7 @@
     }
 
     function getTrelloMembers(guild) {
-      TrelloApi.Rest("GET", "boards/" + guild.trello_board + "/members/normal").then(function(response) {
+      TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/members/normal').then(function(response) {
         _.each(response, function(member, index) {
           guild.board.members.push({
             name: member.fullName,
@@ -320,24 +320,24 @@
         pie: {
           series: [
             {
-              type: "pie",
-              name: "Totaal",
-              size: "93%",
+              type: 'pie',
+              name: 'Totaal',
+              size: '93%',
               data: [],
               dataLabels: {
                 formatter: function() {
                   return this.y > 10 ? this.point.name : null;
                 },
-                color: "#ffffff",
+                color: '#ffffff',
                 distance: -50,
               },
             },
             {
-              type: "pie",
-              name: "Aantal",
+              type: 'pie',
+              name: 'Aantal',
               data: [],
-              size: "100%",
-              innerSize: "95%",
+              size: '100%',
+              innerSize: '95%',
               dataLabels: {
                 formatter: function() {
                   return null;
@@ -355,17 +355,17 @@
 
       for (var index = 0; index <= guild.world.course_duration; index++) {
         guild.insight_data.course_weeks.push({
-          name: "Week " + (index + 1),
-          start: moment(guild.world.start).add(index, "weeks"),
-          end: moment(guild.world.start).add(index, "weeks").add(6, "days"),
+          name: 'Week ' + (index + 1),
+          start: moment(guild.world.start).add(index, 'weeks'),
+          end: moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
           current_week:
             moment().isBetween(
-              moment(guild.world.start).add(index, "weeks"),
-              moment(guild.world.start).add(index, "weeks").add(6, "days"),
-              "day"
+              moment(guild.world.start).add(index, 'weeks'),
+              moment(guild.world.start).add(index, 'weeks').add(6, 'days'),
+              'day'
             ) ||
-            moment().isSame(moment(guild.world.start).add(index, "weeks"), "day") ||
-            moment().isSame(moment(guild.world.start).add(index, "weeks").add(6, "days"), "day"),
+            moment().isSame(moment(guild.world.start).add(index, 'weeks'), 'day') ||
+            moment().isSame(moment(guild.world.start).add(index, 'weeks').add(6, 'days'), 'day'),
           cards: [],
           cards_due: [],
         });
@@ -376,18 +376,18 @@
     }
 
     function createChart(guild) {
-      $("#chart__" + guild.id).highcharts({
-        chart: { type: "pie" },
-        title: { text: "Werkverdeling " + guild.name },
-        tooltip: { pointFormat: "{series.name}: <b>{point.cards}</b>" },
+      $('#chart__' + guild.id).highcharts({
+        chart: { type: 'pie' },
+        title: { text: 'Werkverdeling ' + guild.name },
+        tooltip: { pointFormat: '{series.name}: <b>{point.cards}</b>' },
         plotOptions: {
-          pie: { shadow: false, center: [ "50%", "50%" ] },
+          pie: { shadow: false, center: [ '50%', '50%' ] },
         },
         series: guild.board.pie.series,
         exporting: { enabled: Global.getAccess() > 1 ? true : false },
         credits: {
-          text: moment().format("DD/MM/YY HH:MM"),
-          href: "",
+          text: moment().format('DD/MM/YY HH:MM'),
+          href: '',
         },
       });
     }
@@ -395,9 +395,9 @@
     function showMemberWorkload(member, others, guild) {
       $mdDialog
         .show({
-          controller: "memberWorkloadController",
-          controllerAs: "memberWorkloadCtrl",
-          templateUrl: "app/routes/student/guild/workload/dialogs/dialog.workload.html",
+          controller: 'memberWorkloadController',
+          controllerAs: 'memberWorkloadCtrl',
+          templateUrl: 'app/routes/student/guild/workload/dialogs/dialog.workload.html',
           targetEvent: event,
           clickOutsideToClose: true,
           locals: {
