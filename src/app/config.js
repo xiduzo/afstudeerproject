@@ -838,7 +838,7 @@
           "Weet je zeker dat je deze afspraak wilt verwijderen?",
         JS_ARE_YOU_SURE_DELETE_TEAM:
           "Weet je zeker dat je dit team wilt verwidjeren?",
-        JS_AUTHENTICATED_FAILED: "Authenticatie gefaalt",
+        JS_AUTHENTICATED_FAILED: "Trello authenticatie mislukt, niet alle functies zijn beschikbaar",
         JS_AUTHENTICATED_SUCCEEDED: "Authenticatie success",
         JS_CAN_NOT_BE_UNDONE: "Deze actie kan niet ongedaan worden.",
         JS_CHANGED: "Aangepast",
@@ -1064,7 +1064,7 @@
           "Are you sure you want to remove this agreement?",
         JS_ARE_YOU_SURE_DELETE_TEAM:
           "Are you sure you want to remove this team?",
-        JS_AUTHENTICATED_FAILED: "Authentication failed",
+        JS_AUTHENTICATED_FAILED: "Trello authentication failed, not all features are enables",
         JS_AUTHENTICATED_SUCCEEDED: "Authentication succeeded",
         JS_CAN_NOT_BE_UNDONE: "This action can not be undone.",
         JS_CHANGED: "Changed",

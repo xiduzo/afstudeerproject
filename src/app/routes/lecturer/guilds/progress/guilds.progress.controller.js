@@ -19,6 +19,7 @@
     TrelloApi,
     LECTURER_ACCESS_LEVEL,
     COLORS,
+    localStorageService,
     HTTP_STATUS
   ) {
     if (Global.getAccess() < LECTURER_ACCESS_LEVEL) {
@@ -47,6 +48,7 @@
       members: [],
       cards: []
     };
+    vm.local_trello_user = localStorageService.get('trello_user');
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
@@ -113,7 +115,7 @@
         });
       }
 
-      if (!guild.no_trello_settings) {
+      if (!guild.no_trello_settings && vm.local_trello_user) {
         TrelloApi.Authenticate().then(
           function() {
             var graph_data = {

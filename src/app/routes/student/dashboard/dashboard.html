@@ -35,7 +35,10 @@
               </md-card>
             </section>
             <!-- Uncompleted cards + cards due -->
-            <section flex=50 layout>
+            <section flex=50 layout ng-if="!studentDashboardCtrl.user.trello">
+              {{ 'JS_VERIFY_TRELLO_ACCOUNT' | translate }}
+            </section>
+            <section flex=50 layout ng-if="studentDashboardCtrl.user.trello">
               <md-card class="hover--pointer" flex layout="column" layout-align="space-between"
                 ng-click="studentDashboardCtrl.gotoBoard(guild.trello_board)">
                 <md-card-content layout flex>

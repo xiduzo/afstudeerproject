@@ -2,7 +2,10 @@
 
 <section layout flex ng-if="!guildDetailProgressCtrl.loading_page">
   <md-content flex=100 layout-fill md-whiteframe=1 id="main__content">
-    <section layout layout-wrap layout-fill>
+    <cmd-empty-state flex ng-if="!guildDetailProgressCtrl.trello_local_user" icon="settings_dark"
+      headline="JS_VERIFY_TRELLO_ACCOUNT">
+    </cmd-empty-state>
+    <section layout layout-wrap layout-fill ng-if="guildDetailProgressCtrl.trello_local_user">
       <div layout="column" flex layout-margin>
         <section layout style="min-height: 460px;">
           <md-card flex=60 id="cards_per_week" md-whiteframe=1></md-card>

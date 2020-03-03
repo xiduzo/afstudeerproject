@@ -83,6 +83,7 @@
     }
 
     function getTrelloCards(guild) {
+      if(!vm.user.trello) return
       TrelloApi.Authenticate()
         .then(function() {
           TrelloApi.Rest('GET', 'boards/' + guild.trello_board + '/cards')

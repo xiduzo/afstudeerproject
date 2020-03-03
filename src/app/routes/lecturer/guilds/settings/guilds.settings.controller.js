@@ -49,6 +49,7 @@
     self.trello_board_lists = [];
     self.loading_page = true;
     self.language = Global.getLanguage();
+    self.local_trello_user = localStorageService.get('trello_user');
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			Services
@@ -78,6 +79,7 @@
           toastr.error($translate.instant("NO_TRELLO_USER"));
           $state.go("base.guilds.overview");
         } else {
+          if(!self.local_trello_user) return
           TrelloApi.Authenticate().then(
             function(response) {
               TrelloApi.Rest(

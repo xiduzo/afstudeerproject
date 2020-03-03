@@ -108,8 +108,9 @@
         }
 
         function setUser(user, remember) {
-            if(localStorageService.get('trello_user').uploadedAvatarHash) {
-                user.avatar = localStorageService.get('trello_user').uploadedAvatarHash;
+            var localUser = localStorageService.get('trello_user')
+            if(localUser && localUser.uploadedAvatarHash) {
+                user.avatar = localUser.uploadedAvatarHash;
             }
             if(remember) {
                 localStorageService.set('user', user);

@@ -37,6 +37,7 @@
       Variables
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     vm.user = Global.getUser();
+    vm.user.trello = localStorageService.get('trello_user');
     vm.worlds = [];
     vm.loading_page = false;
 
@@ -63,6 +64,8 @@
     }
 
     function getOverdueTrelloCards(guild) {
+      if(!vm.user.trello) return
+
       TrelloApi.Authenticate()
         .then(function() {
           TrelloApi.Rest("GET", "boards/" + guild.trello_board + "/cards")

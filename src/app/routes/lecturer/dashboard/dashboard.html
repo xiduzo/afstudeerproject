@@ -59,7 +59,11 @@
                       {{ 'OVERDUE_CARDS' | translate }} ({{ guild.cards_overdue.length || 0 }})
                     </md-tab-label>
                     <md-tab-body>
-                      <md-list md-virtual-repeat-container style="height:208px">
+                      <section ng-if="!lecturerDashboardCtrl.user.trello">
+                        {{ 'NO_TRELLO_USER' | translate }}
+                      </section>
+                      <md-list md-virtual-repeat-container style="height:208px"
+                        ng-if="lecturerDashboardCtrl.user.trello">
                         <md-list-item ng-if="guild.trello_not_configured" class="text--color--grey">
                           {{ 'TRELLO_NOT_CONFIGURED' | translate }}
                         </md-list-item>

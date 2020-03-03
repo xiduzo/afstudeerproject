@@ -35,18 +35,21 @@
     self.loading_page = true;
     self.local_settings = Global.getLocalSettings();
     self.language = Global.getLanguage();
+
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    TrelloApi.Authenticate().then(function(response) {
+    TrelloApi.Authenticate().then(function() {
       TrelloApi.Rest('GET', 'members/me').then(function(response) {
         if (response.uploadedAvatarHash) {
           self.user.avatar_hash = response.uploadedAvatarHash;
           Account.patchAvatarHash(self.user);
         }
         self.trello_account = response;
-        self.loading_page = false;
-      });
+      })
+      self.loading_page = false;
+    }).catch(function() {
+      self.loading_page = false;
     });
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
