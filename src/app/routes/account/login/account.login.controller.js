@@ -1,7 +1,7 @@
-;(function() {
-  'use strict'
+(function() {
+  "use strict";
 
-  angular.module('cmd.account').controller('AccountLoginController', AccountLoginController)
+  angular.module("cmd.account").controller("AccountLoginController", AccountLoginController);
 
   /** @ngInject */
   function AccountLoginController(
@@ -18,19 +18,19 @@
   ) {
     // If the user is logged in send him back to the homepage
     if (Global.getAccess() > 0) {
-      return Global.notAllowed()
+      return Global.notAllowed();
     }
 
-    Global.setRouteTitle('CMD Athena')
+    Global.setRouteTitle("CMD Athena");
 
-    var self = this
+    var self = this;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Methods
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    self.login = login
-    self.authenticateTrello = authenticateTrello
-    self.changeLanguage = changeLanguage
+    self.login = login;
+    self.authenticateTrello = authenticateTrello;
+    self.changeLanguage = changeLanguage;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Variables
@@ -39,20 +39,20 @@
       username: null,
       password: null,
       remember: true,
-    }
+    };
 
-    self.login_type = 'student'
-    self.error = null
+    self.login_type = "student";
+    self.error = null;
 
     hotkeys.bindTo($scope).add({
-      combo: 'enter',
-      description: 'login',
+      combo: "enter",
+      description: "login",
       callback: function() {
-        self.login()
+        self.login();
       },
-    }) // End of hotkeys
+    }); // End of hotkeys
 
-    self.language = Global.getLanguage()
+    self.language = Global.getLanguage();
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		      Method Declarations
@@ -60,22 +60,22 @@
     function authenticateTrello(user) {
       TrelloApi.Authenticate()
         .then(function() {
-          TrelloApi.Rest('GET', 'members/me').then(function(response) {
-            localStorageService.set('trello_user', response)
-            toastr.success($translate.instant('JS_AUTHENTICATED_SUCCEEDED'))
+          TrelloApi.Rest("GET", "members/me").then(function(response) {
+            localStorageService.set("trello_user", response);
+            toastr.success($translate.instant("JS_AUTHENTICATED_SUCCEEDED"));
 
             // Update the avatar hash
             if (response.uploadedAvatarHash) {
-              user.avatar_hash = localStorageService.get('trello_user').uploadedAvatarHash
-              Account.patchAvatarHash(user)
+              user.avatar_hash = localStorageService.get("trello_user").uploadedAvatarHash;
+              Account.patchAvatarHash(user);
             }
-          })
+          });
         })
         .catch(function() {
           // self.error = $translate.instant("JS_VERIFY_TRELLO_ACCOUNT");
-          toastr.warning($translate.instant('JS_AUTHENTICATED_FAILED'))
-        })
-      Account.setUser(user, self.login_form.remember)
+          toastr.warning($translate.instant("JS_AUTHENTICATED_FAILED"));
+        });
+      Account.setUser(user, self.login_form.remember);
     }
 
     function login() {
@@ -101,23 +101,23 @@
           var logged_in_user = {
             uid: 1234,
             student_number: 1234,
-            email: 'mail@sanderboer.nl',
-            initials: 'AS',
-            first_name: 'Sander',
+            email: "mail@sanderboer.nl",
+            initials: "AS",
+            first_name: "Sander",
             surname_prefix: null,
-            surname: 'Boer',
+            surname: "Boer",
             gender: 0,
             is_staff: true,
             is_superuser: true,
-          }
+          };
 
           Account.checkForExistingUser(logged_in_user.student_number).then(function(response) {
             if (response.status === -1) {
-              return Global.noConnection()
+              return Global.noConnection();
             }
             if (response.length) {
-              response[0].password = md5(self.login_form.password)
-              self.authenticateTrello(response[0])
+              response[0].password = md5(self.login_form.password);
+              self.authenticateTrello(response[0]);
             } else {
               // TODO
               // When the user is logging in for the first times
@@ -131,36 +131,36 @@
               Account.createUser(logged_in_user)
                 .then(function(response) {
                   if (response.status === -1) {
-                    return Global.noConnection()
+                    return Global.noConnection();
                   }
                   if (response) {
-                    logged_in_user.password = md5(self.login_form.password)
-                    self.authenticateTrello(response)
+                    logged_in_user.password = md5(self.login_form.password);
+                    self.authenticateTrello(response);
                   }
                 })
                 .catch(function() {
                   // Err
-                })
+                });
             }
-          })
+          });
         } else {
-          if (self.login_type === 'student') {
-            self.login_type = 'medewerker'
-            self.login()
+          if (self.login_type === "student") {
+            self.login_type = "medewerker";
+            self.login();
           } else {
             if (response.status === -1) {
-              self.error = $translate.instant('JS_PROBLEM_DATABASE_CONNECTION')
-              return Global.noConnection()
+              self.error = $translate.instant("JS_PROBLEM_DATABASE_CONNECTION");
+              return Global.noConnection();
             }
-            self.error = response.message
-            toastr.error(response.message)
+            self.error = response.message;
+            toastr.error(response.message);
           }
         }
-      })
+      });
     }
 
     function changeLanguage() {
-      Global.setLanguage(self.language)
+      Global.setLanguage(self.language);
     }
   }
-})()
+})();
