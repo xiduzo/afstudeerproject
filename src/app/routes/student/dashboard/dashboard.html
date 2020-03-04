@@ -84,7 +84,7 @@
                     value="{{ (guild.world.end | hoursToGo) * 100 / (guild.world.course_duration * 7 * 24) }}">
                   </md-progress-circular>
                   <span>
-                    {{ 'BEYOND_WILL_LAST'|translate}} {{ guild.world.end | daysToGo }}
+                    {{ 'PROJECT_WILL_LAST'|translate}} {{ guild.world.end | daysToGo }}
                     {{'DAY'| translate }}<span
                       ng-if="(guild.world.end | daysToGo) != 1">{{ 'PLURAL_1' | translate}}</span>
                   </span>
