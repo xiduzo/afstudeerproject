@@ -17,6 +17,7 @@
     toastr,
     TrelloApi,
     Notifications,
+    $translate,
     localStorageService,
     STUDENT_ACCESS_LEVEL,
     COLORS,
@@ -121,9 +122,16 @@
           guild = response;
           var local_guilds = localStorageService.get("guilds") || [];
 
-          guild.world.end = moment(guild.world.start).add(guild.world.course_duration, "weeks").add(6, "days");
+          guild.world.end = moment(guild.world.start)
+            .add(guild.world.course_duration, "weeks")
+            .add(6, "days");
           if (
-            moment().isAfter(moment(guild.world.start).add(guild.world.course_duration, "weeks").add(6, "days"), "day")
+            moment().isAfter(
+              moment(guild.world.start)
+                .add(guild.world.course_duration, "weeks")
+                .add(6, "days"),
+              "day"
+            )
           ) {
             guild.ended = true;
           }
@@ -140,7 +148,9 @@
           // Get endorsements from the localstorage
           if (
             _.findWhere(local_guilds, { guild: guild.id }) &&
-            moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(moment().subtract(1, "hours"))
+            moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(
+              moment().subtract(1, "hours")
+            )
           ) {
             guild.rules = _.findWhere(local_guilds, { guild: guild.id }).rules;
             prepareChartData(guild);
@@ -214,13 +224,18 @@
         if (
           moment().isBetween(
             moment(guild.world.start).add(index, "weeks"),
-            moment(guild.world.start).add(index, "weeks").add(6, "days"),
+            moment(guild.world.start)
+              .add(index, "weeks")
+              .add(6, "days"),
             "day"
           )
         ) {
           guild.current_week = {
             start: moment(guild.world.start).add(index, "weeks"),
-            end: moment(guild.world.start).add(index, "weeks").add(6, "days").endOf("day"),
+            end: moment(guild.world.start)
+              .add(index, "weeks")
+              .add(6, "days")
+              .endOf("day"),
           };
         }
       }
@@ -291,7 +306,7 @@
 
           /// Update line chart
           dataMember.line_data[weekNum] = {
-            y: weekly_points_earned * 100 / weekly_max_points, // percentage,
+            y: (weekly_points_earned * 100) / weekly_max_points, // percentage,
             max: weekly_max_points,
             points: weekly_points_earned,
             average: 0,
@@ -306,21 +321,25 @@
       // Prepare the polar data
       data.graphs_data.polar = [
         {
-          name: "Gemiddeld",
+          name: $translate.instant("AVERAGE"),
           visible: true,
-          color: Highcharts.Color("#222222").setOpacity(0.1).get(),
-          data: [ { y: 0 }, { y: 0 }, { y: 0 }, { y: 0 } ],
+          color: Highcharts.Color("#222222")
+            .setOpacity(0.1)
+            .get(),
+          data: [{ y: 0 }, { y: 0 }, { y: 0 }, { y: 0 }],
         },
       ];
 
       // Prepare the line data
       data.graphs_data.line = [
         {
-          name: "Gemiddeld",
+          name: $translate.instant("AVERAGE"),
           data: _.map(data.members_data[0].line_data, function(line_data) {
             return { y: 0, total: 0, max: 0, points: 0 };
           }),
-          color: Highcharts.Color("#222222").setOpacity(0.1).get(),
+          color: Highcharts.Color("#222222")
+            .setOpacity(0.1)
+            .get(),
           yAxis: 0,
         },
       ];
@@ -330,7 +349,7 @@
         // Add the score in percentage per type
         _.each(member_data.polar_data, function(polar_data, endorsement_type) {
           if (polar_data.points) {
-            polar_data.y = polar_data.points * 100 / polar_data.max;
+            polar_data.y = (polar_data.points * 100) / polar_data.max;
             data.graphs_data.polar[0].data[endorsement_type].y += polar_data.y;
           }
         });
@@ -425,7 +444,12 @@
         chart: { polar: true, type: "spline" },
         title: { text: "Feedback focus " + guild.name },
         xAxis: {
-          categories: [ "Houding", "Functioneren binnen de groep", "Kennisontwikkeling", "Verantwoording" ],
+          categories: [
+            $translate.instant("ATTITUDE"),
+            $translate.instant("FUNCTIONING_IN_TEAM"),
+            $translate.instant("KNOWLEDGE_DEVELOPMENT"),
+            $translate.instant("ACCOUNTABILITY"),
+          ],
           tickmarkPlacement: "on",
           lineWidth: 0,
         },

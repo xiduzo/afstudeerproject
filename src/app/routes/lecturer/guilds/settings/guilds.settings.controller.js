@@ -22,7 +22,9 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle($translate.instant("TEAM") + " " + $translate.instant("SETTINGS").toLowerCase());
+    Global.setRouteTitle(
+      $translate.instant("TEAM") + " " + $translate.instant("SETTINGS").toLowerCase()
+    );
     Global.setRouteBackRoute("base.guilds.overview");
 
     var self = this;
@@ -52,57 +54,63 @@
       function(response) {
         if (response.status === 404) {
           toastr.error(
-            $translate.instant("TEAM") + " " + $stateParams.guildUuid + " " + $translate.instant("DOES_NOT_EXIST")
+            $translate.instant("TEAM") +
+              " " +
+              $stateParams.guildUuid +
+              " " +
+              $translate.instant("DOES_NOT_EXIST")
           );
           $state.go("base.guilds.overview");
         }
         Global.setRouteTitle(
-          $translate.instant("TEAM") + " " + $translate.instant("SETTINGS").toLowerCase() + " " + response.name
+          $translate.instant("TEAM") +
+            " " +
+            $translate.instant("SETTINGS").toLowerCase() +
+            " " +
+            response.name
         );
         self.guild = response;
         getGuildRules(self.guild);
-        if (!response.world.trello_user_id) {
-          toastr.error($translate.instant("JS_VERIFY_TRELLO_ACCOUNT"));
-          $state.go("base.guilds.overview");
-        } else {
-          if (!self.local_trello_user) return (self.loading_page = false);
-          TrelloApi.Authenticate().then(
-            function(response) {
-              TrelloApi.Rest("GET", "members/" + self.guild.world.trello_user_id + "/boards").then(function(response) {
+
+        if (!self.local_trello_user) return (self.loading_page = false);
+        TrelloApi.Authenticate().then(
+          function(response) {
+            TrelloApi.Rest("GET", "members/" + self.guild.world.trello_user_id + "/boards").then(
+              function(response) {
                 self.trello_boards = response;
-              });
-              if (self.guild.trello_board) {
-                TrelloApi.Rest("GET", "boards/" + self.guild.trello_board + "/lists").then(
-                  function(response) {
-                    self.trello_board_lists = response;
-                    self.loading_page = false;
-                  },
-                  function(error) {
-                    // TODO
-                    // Dont delete this on a 404
-                    self.loading_page = false;
-                    self.guild.trello_board = null;
-                    self.guild.trello_done_lists = null;
-                    // Make sure to delete this setting in the backend
-                    // bacause the bord has been deleted
-                    Guild.patchGuildSettings(self.guild)
-                      .then(function(response) {
-                        toastr.info($translate.instant("TRELLO_BOARD_EXPIRED"));
-                      })
-                      .catch(function(error) {
-                        //console.log(error);
-                      });
-                  }
-                );
-              } else {
-                self.loading_page = false;
               }
-            },
-            function(error) {
-              //console.log(error);
+            );
+            if (self.guild.trello_board) {
+              TrelloApi.Rest("GET", "boards/" + self.guild.trello_board + "/lists").then(
+                function(response) {
+                  self.trello_board_lists = response;
+                  self.loading_page = false;
+                },
+                function(error) {
+                  // TODO
+                  // Dont delete this on a 404
+                  self.loading_page = false;
+                  self.guild.trello_board = null;
+                  self.guild.trello_done_lists = null;
+                  // Make sure to delete this setting in the backend
+                  // bacause the bord has been deleted
+                  Guild.patchGuildSettings(self.guild)
+                    .then(function(response) {
+                      toastr.info($translate.instant("TRELLO_BOARD_EXPIRED"));
+                    })
+                    .catch(function(error) {
+                      //console.log(error);
+                    });
+                }
+              );
+            } else {
+              self.loading_page = false;
             }
-          );
-        }
+          },
+          function(error) {
+            //console.log(error);
+          }
+        );
       },
       function() {
         // Err
@@ -117,7 +125,9 @@
 
       if (
         _.findWhere(local_guilds, { guild: guild.id }) &&
-        moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(moment().subtract(1, "minutes"))
+        moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(
+          moment().subtract(1, "minutes")
+        )
       ) {
         guild.rules = _.findWhere(local_guilds, { guild: guild.id }).rules;
       } else {
@@ -158,7 +168,13 @@
         function() {
           Guild.deleteGuild(self.guild.id).then(
             function(response) {
-              toastr.success($translate.instant("TEAM") + " " + self.guild.name + " " + $translate.instant("REMOVED"));
+              toastr.success(
+                $translate.instant("TEAM") +
+                  " " +
+                  self.guild.name +
+                  " " +
+                  $translate.instant("REMOVED")
+              );
               $state.go("base.guilds.overview");
             },
             function() {
@@ -245,7 +261,10 @@
     function removeGuildRule(rule) {
       Guild.removeGuildRule(rule)
         .then(function(response) {
-          self.guild.rules.splice(self.guild.rules.indexOf(_.findWhere(self.guild.rules, { id: rule.id })), 1);
+          self.guild.rules.splice(
+            self.guild.rules.indexOf(_.findWhere(self.guild.rules, { id: rule.id })),
+            1
+          );
           toastr.success($translate.instant("REMOVED"));
         })
         .catch(function(error) {
