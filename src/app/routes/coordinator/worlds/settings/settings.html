@@ -44,9 +44,9 @@
       </div>
       <md-list>
         <md-list-item ng-repeat="gamemaster in worldsSettingsCtrl.world.gamemasters">
-          <img ng-if="gamemaster.avatar_hash" class="md-avatar round"
-            ng-src="https://trello-members.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
-          <img ng-if="!gamemaster.avatar_hash" class="md-avatar round" gravatar-size="30"
+          <img ng-if="gamemaster.avatar_hash" alt="avatar" class="md-avatar round"
+            ng-src="{{gamemaster.avatar_hash}}/30.png">
+          <img ng-if="!gamemaster.avatar_hash" alt="avatar" class="md-avatar round" gravatar-size="30"
             gravatar-src="gamemaster.email">
           <p>
             {{ gamemaster | fullUserName }}

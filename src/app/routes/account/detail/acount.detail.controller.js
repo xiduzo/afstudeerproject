@@ -45,8 +45,8 @@
       TrelloApi.Authenticate()
         .then(function () {
           TrelloApi.Rest('GET', 'members/me').then(function (response) {
-            if (response.id && response.uploadedAvatarHash) {
-              self.user.avatar_hash = response.id + '/' + response.uploadedAvatarHash;
+            if (response.uploadedAvatarUrl) {
+              self.user.avatar_hash = response.uploadedAvatarUrl;
               Account.patchAvatarHash(self.user);
             }
             self.trello_account = response;
