@@ -48,7 +48,7 @@
                 <md-card-content layout flex>
                   <section flex=50 layout="column" layout-align="center center">
                     <span class="md-display-2">
-                      {{ guild.trello_cards.length }}
+                      {{ guild.trello_cards.length || 0 }}
                     </span>
                     <span layout>
                       {{ 'STUDENT_DASHBOARD_UNFINISHED_CARD' | translate }}<span

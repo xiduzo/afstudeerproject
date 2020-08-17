@@ -86,7 +86,7 @@
       <md-list>
         <md-list-item ng-repeat="member in guildSettingsCtrl.guild.members">
           <img ng-if="member.user.avatar_hash" class="md-avatar round"
-            ng-src="https://trello-avatars.s3.amazonaws.com/{{member.user.avatar_hash}}/30.png">
+            ng-src="https://trello-members.s3.amazonaws.com/{{member.user.avatar_hash}}/30.png">
           <img ng-if="!member.user.avatar_hash" class="md-avatar round" gravatar-size="30"
             gravatar-src="member.user.email">
           <p>

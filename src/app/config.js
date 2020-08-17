@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('cmd.config', ['cmd.constants']).config(config);
+  angular.module('cmd.config', [ 'cmd.constants' ]).config(config);
 
   /** @ngInject */
   function config(
@@ -56,10 +56,7 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             localStorage provider
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    localStorageServiceProvider
-      .setPrefix('cmd')
-      .setStorageCookieDomain(window.location)
-      .setStorageCookie(60, '/'); // End of local storage
+    localStorageServiceProvider.setPrefix('cmd').setStorageCookieDomain(window.location).setStorageCookie(60, '/'); // End of local storage
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Build a CMD theme
@@ -188,11 +185,7 @@
       .icon('again_dark', './assets/icons/material/ic_cached_black_48px.svg', 48)
       .icon('check_light', './assets/icons/material/ic_check_box_white_24px.svg', 24)
       .icon('check_dark', './assets/icons/material/ic_check_box_black_24px.svg', 24)
-      .icon(
-        'uncheck_light',
-        './assets/icons/material/ic_check_box_outline_blank_white_24px.svg',
-        24
-      )
+      .icon('uncheck_light', './assets/icons/material/ic_check_box_outline_blank_white_24px.svg', 24)
       .icon('uncheck_dark', './assets/icons/material/ic_check_box_outline_blank_black_24px.svg', 24)
       .icon('list_light', './assets/icons/material/ic_list_white_48px.svg', 48)
       .icon('list_dark', './assets/icons/material/ic_list_black_48px.svg', 48)
@@ -297,9 +290,7 @@
             Moment
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     moment.defineLocale('nl', {
-      months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split(
-        '_'
-      ),
+      months: 'januari_februari_maart_april_mei_juni_juli_augustus_september_oktober_november_december'.split('_'),
       monthsShort: function(m, format) {
         if (/-MMM-/.test(format)) {
           return 'jan_feb_mrt_apr_mei_jun_jul_aug_sep_okt_nov_dec'.split('_')[m.month()];
@@ -460,8 +451,7 @@
         JS_ALLREADY_WAS_A_TEACHER_OF: 'was al een docent van',
         JS_ARE_YOU_SURE_DELETE_RULE: 'Weet je zeker dat je deze afspraak wilt verwijderen?',
         JS_ARE_YOU_SURE_DELETE_TEAM: 'Weet je zeker dat je dit team wilt verwidjeren?',
-        JS_AUTHENTICATED_FAILED:
-          'Trello authenticatie mislukt, niet alle functies zijn beschikbaar',
+        JS_AUTHENTICATED_FAILED: 'Trello authenticatie mislukt, niet alle functies zijn beschikbaar',
         JS_AUTHENTICATED_SUCCEEDED: 'Authenticatie success',
         JS_CAN_NOT_BE_UNDONE: 'Deze actie kan niet ongedaan worden.',
         JS_CHANGED: 'Aangepast',
@@ -479,8 +469,7 @@
         JS_NAME_NEW_CLASS: 'Naam nieuwe klas',
         JS_NAME_OF_CLASS: 'Wat is de naam',
         JS_NEW_CLASS: 'Nieuwe klas',
-        JS_PROBLEM_DATABASE_CONNECTION:
-          'Er lijkt iets mis te gaan met de verbinding tot de database',
+        JS_PROBLEM_DATABASE_CONNECTION: 'Er lijkt iets mis te gaan met de verbinding tot de database',
         JS_REMOVE_AGREEMENT: 'Verwijder afpsraak',
         JS_REMOVE_TEAM: 'Verwijder team',
         JS_SELECT_TEACHERS: 'Selecteerd docenten',
@@ -489,8 +478,7 @@
         JS_STUDENTS: 'Studenten',
         JS_VERIFY_TRELLO_ACCOUNT: 'Verifieer een trello account voor deze feature',
         JS_WORKLOAD: 'Workload',
-        JS_WOW_SLOW_DOWN:
-          'Slowwww down cowbow, het lijkt erop alsof je de server aan het spammen bent',
+        JS_WOW_SLOW_DOWN: 'Slowwww down cowbow, het lijkt erop alsof je de server aan het spammen bent',
         JS_YOUR_FEEDBACK_IS_SAVED: 'Je feedback is opgeslagen',
         KNOWLEDGE_DEVELOPMENT: 'Kennisontwikkeling',
         LANGUAGE: 'Taal',
@@ -559,13 +547,11 @@
           'De nieuwe afspraak word automatisch geselecteerd voor het samenwerkingscontract.',
         STUDENT_RULES_AGREEMENTS_EXPLANATION:
           'Kies tenminste acht afspraken met uit elke categorie tenminste één afspraak. Ook kun je als team één eigen afspraak opstellen.',
-        STUDENT_RULES_AGREEMENTS_WARNING:
-          'elke week zal iedereen elkaar beoordelen op de gemaakte afspraken.',
+        STUDENT_RULES_AGREEMENTS_WARNING: 'elke week zal iedereen elkaar beoordelen op de gemaakte afspraken.',
         STUDENT_RULES_CANT_EDIT: 'Je kunt deze week niet meer bewerken',
         STUDENT_RULES_CHOOSE_ATLEAST: 'Kies nog minimaal',
         STUDENT_RULES_CHOOSE_ATLEAST_ONE: 'Kies uit elke categorie tenminste één afspraak',
-        STUDENT_RULES_CONFIRM_CANT_EDIT:
-          'Afspraken kunnen NIET meer veranderd worden nadat deze geaccepteerd zijn.',
+        STUDENT_RULES_CONFIRM_CANT_EDIT: 'Afspraken kunnen NIET meer veranderd worden nadat deze geaccepteerd zijn.',
         STUDENT_RULES_CONFIRM_CHECK_AGREEMENTS: 'Controleer afspraken',
         STUDENT_RULES_CONFIRM_CHOSEN_AGREEMENTS: 'Gekozen afspraken',
         STUDENT_RULES_CONFIRM_EXPLANATION:
@@ -690,8 +676,7 @@
         JS_NAME_NEW_CLASS: 'Name new class',
         JS_NAME_OF_CLASS: 'What is the name going to be',
         JS_NEW_CLASS: 'New class',
-        JS_PROBLEM_DATABASE_CONNECTION:
-          'There seems to be a problem establishing a database connection',
+        JS_PROBLEM_DATABASE_CONNECTION: 'There seems to be a problem establishing a database connection',
         JS_REMOVE_AGREEMENT: 'Remove agreement',
         JS_REMOVE_TEAM: 'Remove team',
         JS_SELECT_TEACHERS: 'Select teachers',
@@ -736,8 +721,7 @@
         POINT_PERCENTAGE: 'Points in percentage',
         PROFILE: 'Profile',
         PROFILE_ASK_FOR_CONFIRMATION: 'Ask for comfirmation',
-        PROFILE_ASK_FOR_CONFIRMATION_EXPLANATION:
-          'Use this option to prevent deletion of critical information.',
+        PROFILE_ASK_FOR_CONFIRMATION_EXPLANATION: 'Use this option to prevent deletion of critical information.',
         PROFILE_GENERAL_INFORMATION: 'General information',
         PROFILE_MEMBER_SINCE: 'Member since',
         PROFILE_USE_HOTKEYS: 'Use hotkeys for faster navigation.',
@@ -766,16 +750,14 @@
         STUDENT_RULES_ADD_AGREEMENT: 'Add agreement',
         STUDENT_RULES_ADD_AGREEMENT_HELP: 'Max one agreement per team',
         STUDENT_RULES_ADD_AGREEMENT_HELP_2:
-          'The new appointment is automatically selected for the collaboration contract.',
+          'The new agreement is automatically selected for the collaboration contract.',
         STUDENT_RULES_AGREEMENTS_EXPLANATION:
-          'Choose at least eight appointments with at least one appointment from each category. As a team you can also set up one appointment.',
-        STUDENT_RULES_AGREEMENTS_WARNING:
-          'Every week everyone will judge each other on the agreements made.',
+          'Choose at least eight agreements with at least one agreement from each category. As a team you can also set up one agreement.',
+        STUDENT_RULES_AGREEMENTS_WARNING: 'Every week everyone will judge each other on the agreements made.',
         STUDENT_RULES_CANT_EDIT: 'You can not edit this weak anymore',
         STUDENT_RULES_CHOOSE_ATLEAST: 'Choose at least',
-        STUDENT_RULES_CHOOSE_ATLEAST_ONE: 'Choose at least one appointment from each category',
-        STUDENT_RULES_CONFIRM_CANT_EDIT:
-          'Appointments can NOT be changed after they have been accepted.',
+        STUDENT_RULES_CHOOSE_ATLEAST_ONE: 'Choose at least one agreement from each category',
+        STUDENT_RULES_CONFIRM_CANT_EDIT: 'agreements can NOT be changed after they have been accepted.',
         STUDENT_RULES_CONFIRM_CHECK_AGREEMENTS: 'Check agreements',
         STUDENT_RULES_CONFIRM_CHOSEN_AGREEMENTS: 'Chosen agreements',
         STUDENT_RULES_CONFIRM_EXPLANATION:
