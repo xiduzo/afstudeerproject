@@ -1,9 +1,7 @@
-(function() {
-  "use strict";
+(function () {
+  'use strict';
 
-  angular
-    .module("cmd.guild")
-    .controller("GuildRulesController", GuildRulesController);
+  angular.module('cmd.guild').controller('GuildRulesController', GuildRulesController);
 
   /** @ngInject */
   function GuildRulesController(
@@ -26,7 +24,7 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle($translate.instant("FEEDBACK"));
+    Global.setRouteTitle($translate.instant('FEEDBACK'));
     Global.setRouteBackRoute(null);
 
     var vm = this;
@@ -56,14 +54,14 @@
       radius: { 6: 36 - 3 },
       angle: 90,
       children: {
-        shape: "circle",
+        shape: 'circle',
         radius: 24 / 2.2,
-        fill: "#FFCC00",
-        degreeShift: "stagger(0,-5)",
+        fill: '#FFCC00',
+        degreeShift: 'stagger(0,-5)',
         duration: 700,
         delay: 200,
-        easing: "quad.out"
-      }
+        easing: 'quad.out',
+      },
     });
     var timeline = new mojs.Timeline({ speed: 1.5 });
     timeline.add(burst);
@@ -71,7 +69,7 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Broadcasts
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    $scope.$on("guild-changed", function(event, guild) {
+    $scope.$on('guild-changed', function (event, guild) {
       vm.selected_guild = guild;
 
       if (!_.findWhere(vm.guilds, { id: vm.selected_guild })) {
@@ -83,10 +81,7 @@
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Extra logic
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    if (
-      !_.findWhere(vm.guilds, { id: vm.selected_guild }) &&
-      vm.selected_guild
-    ) {
+    if (!_.findWhere(vm.guilds, { id: vm.selected_guild }) && vm.selected_guild) {
       getGuild(vm.selected_guild);
     }
 
@@ -95,31 +90,31 @@
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     function getGuild(guild) {
       Guild.getGuild(guild)
-        .then(function(response) {
+        .then(function (response) {
           vm.loading_page = false;
           guild = response;
 
-          var local_guilds = localStorageService.get("guilds") || [];
+          var local_guilds = localStorageService.get('guilds') || [];
 
           // // Get the rules from the localstorage
           if (
             _.findWhere(local_guilds, { guild: guild.id }) &&
-            moment(
-              _.findWhere(local_guilds, { guild: guild.id }).datetime
-            ).isAfter(moment().subtract(1, "hours"))
+            moment(_.findWhere(local_guilds, { guild: guild.id }).datetime).isAfter(
+              moment().subtract(1, 'hours')
+            )
           ) {
             guild.rules = _.findWhere(local_guilds, { guild: guild.id }).rules;
           } else {
             Guild.V2getGuildRules(guild.id)
-              .then(function(response) {
-                local_guilds = localStorageService.get("guilds") || [];
+              .then(function (response) {
+                local_guilds = localStorageService.get('guilds') || [];
                 var local_guild = _.findWhere(local_guilds, {
-                  guild: guild.id
+                  guild: guild.id,
                 });
                 var tempObj = {
                   guild: guild.id,
                   datetime: moment(),
-                  rules: response.data
+                  rules: response.data,
                 };
 
                 // Check if we need to update the local storage
@@ -129,11 +124,11 @@
                   local_guilds.push(tempObj);
                 }
 
-                localStorageService.set("guilds", local_guilds);
+                localStorageService.set('guilds', local_guilds);
 
                 guild.rules = response.data;
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 toastr.error(error);
               });
           }
@@ -144,18 +139,18 @@
               attitude: { selected: 0, check: false },
               functioning: { selected: 0, check: false },
               knowledge: { selected: 0, check: false },
-              justification: { selected: 0, check: false }
+              justification: { selected: 0, check: false },
             };
             guild.selected_rules = [];
             guild.minimun_rules_selected = false;
 
             Rules.getRules()
-              .then(function(response) {
-                guild.possible_rules = _.groupBy(response, function(rule) {
+              .then(function (response) {
+                guild.possible_rules = _.groupBy(response, function (rule) {
                   return rule.rule_type;
                 });
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 toastr.error(error);
               });
           }
@@ -165,35 +160,22 @@
           for (var i = 0; i <= guild.world.course_duration; i++) {
             guild.weeks.push({
               index: i,
-              name: "Week " + (i + 1),
-              start: moment(guild.world.start).add(i, "weeks"),
+              name: 'Week ' + (i + 1),
+              start: moment(guild.world.start).add(i, 'weeks'),
               end: moment(guild.world.start)
-                .add(i, "weeks")
-                .add(6, "days")
-                .endOf("day")
-                .subtract(1, "minutes"),
+                .add(i, 'weeks')
+                .add(6, 'days')
+                .endOf('day')
+                .subtract(1, 'minutes'),
               editable:
                 moment().isBetween(
-                  moment(guild.world.start).add(i, "weeks"),
-                  moment(guild.world.start)
-                    .add(i, "weeks")
-                    .add(6, "days"),
-                  "day"
+                  moment(guild.world.start).add(i, 'weeks'),
+                  moment(guild.world.start).add(i, 'weeks').add(6, 'days'),
+                  'day'
                 ) ||
-                moment().isSame(
-                  moment(guild.world.start).add(i, "weeks"),
-                  "day"
-                ) ||
-                moment().isSame(
-                  moment(guild.world.start)
-                    .add(i, "weeks")
-                    .add(6, "days"),
-                  "day"
-                ),
-              future_week: moment().isBefore(
-                moment(guild.world.start).add(i, "weeks"),
-                "day"
-              )
+                moment().isSame(moment(guild.world.start).add(i, 'weeks'), 'day') ||
+                moment().isSame(moment(guild.world.start).add(i, 'weeks').add(6, 'days'), 'day'),
+              future_week: moment().isBefore(moment(guild.world.start).add(i, 'weeks'), 'day'),
             });
           }
 
@@ -204,7 +186,7 @@
           }
           vm.guilds.push(guild);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           toastr.error(error);
         });
     }
@@ -216,7 +198,7 @@
       rule.selected = false;
       vm.toggleRule(rule, guild);
       rule = null;
-      toastr.success($translate.instant("JS_AGREEMENT_REMOVED"));
+      toastr.success($translate.instant('JS_AGREEMENT_REMOVED'));
     }
 
     function toggleRule(rule, guild) {
@@ -226,8 +208,7 @@
         guild.selected_rules.splice(_.indexOf(guild.selected_rules, rule), 1);
       }
 
-      guild.minimun_rules_selected =
-        guild.selected_rules.length >= 8 ? true : false;
+      guild.minimun_rules_selected = guild.selected_rules.length >= 8 ? true : false;
 
       // This should be done in a better way somehow
       if (rule.own_rule) {
@@ -245,8 +226,7 @@
             break;
           case 2:
             guild.requirements.functioning.selected =
-              guild.requirements.functioning.selected +
-              (rule.selected ? 1 : -1);
+              guild.requirements.functioning.selected + (rule.selected ? 1 : -1);
             guild.requirements.functioning.check =
               guild.requirements.functioning.selected >= 1 ? true : false;
             break;
@@ -258,8 +238,7 @@
             break;
           case 4:
             guild.requirements.justification.selected =
-              guild.requirements.justification.selected +
-              (rule.selected ? 1 : -1);
+              guild.requirements.justification.selected + (rule.selected ? 1 : -1);
             guild.requirements.justification.check =
               guild.requirements.justification.selected >= 1 ? true : false;
             break;
@@ -270,18 +249,16 @@
     function addRule(event, guild) {
       $mdDialog
         .show({
-          controller: "addGuildRuleController",
-          controllerAs: "addGuildRuleCtrl",
-          templateUrl: "app/routes/student/guild/rules/add/add.html",
+          controller: 'addGuildRuleController',
+          controllerAs: 'addGuildRuleCtrl',
+          templateUrl: 'app/routes/student/guild/rules/add/add.html',
           targetEvent: event,
-          clickOutsideToClose: true
+          clickOutsideToClose: true,
         })
         .then(
-          function(response) {
+          function (response) {
             if (!response.type || !response.rule) {
-              return toastr.warning(
-                $translate.instant("JS_FILL_IN_ALL_FIELDS")
-              );
+              return toastr.warning($translate.instant('JS_FILL_IN_ALL_FIELDS'));
             }
 
             var tempObj = {
@@ -290,14 +267,14 @@
               rule_eng: response.rule,
               rule_type: response.type,
               selected: true,
-              own_rule: true
+              own_rule: true,
             };
             guild.own_rule = tempObj;
             vm.toggleRule(tempObj, guild);
 
-            toastr.success($translate.instant("JS_ADDED"));
+            toastr.success($translate.instant('JS_ADDED'));
           },
-          function() {
+          function () {
             // Err dialog
           }
         );
@@ -306,70 +283,67 @@
     function addRulesToGuild(event, guild) {
       $mdDialog
         .show({
-          controller: "confirmGuildRulesController",
-          controllerAs: "confirmGuildRulesCtrl",
-          templateUrl: "app/routes/student/guild/rules/confirm/confirm.html",
+          controller: 'confirmGuildRulesController',
+          controllerAs: 'confirmGuildRulesCtrl',
+          templateUrl: 'app/routes/student/guild/rules/confirm/confirm.html',
           targetEvent: event,
           clickOutsideToClose: true,
           locals: {
-            rules: guild.selected_rules
-          }
+            rules: guild.selected_rules,
+          },
         })
         .then(
-          function(response) {
+          function (response) {
             if (response) {
               vm.loading_page = true;
-              _.each(guild.selected_rules, function(rule, index) {
+              _.each(guild.selected_rules, function (rule, index) {
                 Guild.addGuildRule(guild.id, rule)
-                  .then(function(response) {
+                  .then(function (response) {
                     guild.rules.push(rule);
                     if (index === guild.selected_rules.length - 1) {
                       vm.loading_page = false;
                       Guild.V2getGuildRules(guild.id)
-                        .then(function(response) {
-                          var local_guilds =
-                            localStorageService.get("guilds") || [];
+                        .then(function (response) {
+                          var local_guilds = localStorageService.get('guilds') || [];
                           var local_guild = _.findWhere(local_guilds, {
-                            guild: guild.id
+                            guild: guild.id,
                           });
                           var tempObj = {
                             guild: guild.id,
                             datetime: moment(),
-                            rules: response.data
+                            rules: response.data,
                           };
 
                           // Check if we need to update the local storage
                           if (local_guild) {
-                            local_guilds[
-                              _.indexOf(local_guilds, local_guild)
-                            ] = tempObj;
+                            local_guilds[_.indexOf(local_guilds, local_guild)] = tempObj;
                           } else {
                             local_guilds.push(tempObj);
                           }
 
-                          localStorageService.set("guilds", local_guilds);
+                          localStorageService.set('guilds', local_guilds);
 
                           guild.rules = response.data;
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                           toastr.error(error);
                         });
                     }
                   })
-                  .catch(function(error) {
+                  .catch(function (error) {
                     //console.log(error);
                   });
               });
             }
           },
-          function() {
+          function () {
             // Err dialog
           }
         );
     }
 
     function checkRuleEndorsementStatus(week, rule, user) {
-      _.each(rule.endorsements, function(endorsement) {
+      _.each(rule.endorsements, function (endorsement) {
         return (endorsement.rule_id = endorsement.rule);
       });
 
@@ -377,53 +351,53 @@
         endorsed_by: vm.user.id,
         week: week,
         user: user.id,
-        rule_id: rule.id
+        rule_id: rule.id,
       });
 
       return endorsement ? endorsement.rating : null;
     }
 
     function setRating(week, rule, user, newRating, guild, event) {
-      var local_guilds = localStorageService.get("guilds") || [];
+      var local_guilds = localStorageService.get('guilds') || [];
       var local_guild = _.findWhere(local_guilds, { guild: guild.id });
 
       var endorsement = _.findWhere(rule.endorsements, {
         endorsed_by: vm.user.id,
         week: week,
         user: user.id,
-        rule_id: rule.id
+        rule_id: rule.id,
       });
 
       // Adding in some fun for the users
       if (Math.round(Math.random() * 4) === 1) {
         showBurst({
           x: event.originalEvent.pageX - event.originalEvent.offsetX,
-          y: event.originalEvent.pageY - event.originalEvent.offsetY
+          y: event.originalEvent.pageY - event.originalEvent.offsetY,
         });
       }
 
       if (endorsement) {
         Guild.patchEndorsement(endorsement.id, newRating)
-          .then(function(response) {
+          .then(function (response) {
             // Update the rating in the memory
             endorsement.rating = response.rating;
-            toastr.success($translate.instant("JS_YOUR_FEEDBACK_IS_SAVED"));
+            toastr.success($translate.instant('JS_YOUR_FEEDBACK_IS_SAVED'));
 
             // TODO
             // Update the local storage
             local_guilds[_.indexOf(local_guilds, local_guild)] = {
               guild: guild.id,
               datetime: moment(),
-              rules: guild.rules
+              rules: guild.rules,
             };
-            localStorageService.set("guilds", local_guilds);
+            localStorageService.set('guilds', local_guilds);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             toastr.error(error);
           });
       } else {
         Guild.addEndorsement(rule.id, user.id, vm.user.id, week, newRating)
-          .then(function(response) {
+          .then(function (response) {
             // Yeah this is fucked up, bc of the ng-init for rating check
             // but the deadline is near and i dont have a faster sollution
             // #sorrynotsorry
@@ -434,21 +408,21 @@
               rule.endorsements.push(response);
             }
 
-            toastr.success($translate.instant("JS_YOUR_FEEDBACK_IS_SAVED"));
+            toastr.success($translate.instant('JS_YOUR_FEEDBACK_IS_SAVED'));
 
             // Update the guild localstorage
             local_guilds[_.indexOf(local_guilds, local_guild)] = {
               guild: guild.id,
               datetime: moment(),
-              rules: guild.rules
+              rules: guild.rules,
             };
-            localStorageService.set("guilds", local_guilds);
+            localStorageService.set('guilds', local_guilds);
 
             // var local_guilds = localStorageService.get('guilds') || [];
             // var local_guild = _.findWhere(local_guilds, {guild: guild.id});
-            // //console.log(local_guild);
+            //console.log(local_guild);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             toastr.error(error);
           });
       }

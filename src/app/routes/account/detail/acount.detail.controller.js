@@ -45,10 +45,34 @@
       TrelloApi.Authenticate()
         .then(function () {
           TrelloApi.Rest('GET', 'members/me').then(function (response) {
-            if (response.id && response.uploadedAvatarHash) {
-              self.user.avatar_hash = response.id + '/' + response.uploadedAvatarHash;
-              Account.patchAvatarHash(self.user);
+            localStorageService.set('trello_user', response);
+
+            var userAvatar = null;
+
+            if (response.avatarUrl) {
+              userAvatar = response.avatarUrl;
+            } else if (response.uploadedAvatarUrl) {
+              userAvatar = response.uploadedAvatarUrl;
+            } else if (response.id) {
+              if (response.avatarHash) {
+                userAvatar =
+                  'https://trello-members.s3.amazonaws.com/' +
+                  response.id +
+                  '/' +
+                  response.avatarHash;
+              } else if (response.uploadedAvatarHash) {
+                userAvatar =
+                  'https://trello-members.s3.amazonaws.com/' +
+                  response.id +
+                  '/' +
+                  response.uploadedAvatarHash;
+              }
             }
+
+            self.user.avatar_hash = userAvatar;
+
+            Account.patchAvatarHash(self.user);
+
             self.trello_account = response;
           });
           self.loading_page = false;

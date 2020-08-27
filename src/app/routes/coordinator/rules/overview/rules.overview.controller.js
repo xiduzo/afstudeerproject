@@ -1,9 +1,7 @@
-(function() {
-  "use strict";
+(function () {
+  'use strict';
 
-  angular
-    .module("cmd.home")
-    .controller("RulesOverviewController", RulesOverviewController);
+  angular.module('cmd.home').controller('RulesOverviewController', RulesOverviewController);
 
   /** @ngInject */
   function RulesOverviewController(
@@ -19,7 +17,7 @@
       return Global.notAllowed();
     }
 
-    Global.setRouteTitle($translate.instant("JS_AGREEMENTS"));
+    Global.setRouteTitle($translate.instant('JS_AGREEMENTS'));
     Global.setRouteBackRoute(null);
 
     var self = this;
@@ -44,11 +42,11 @@
 		      Services
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     Rules.getRules()
-      .then(function(rules) {
+      .then(function (rules) {
         self.rules = rules;
         self.loading_page = false;
       })
-      .catch(function(error) {
+      .catch(function (error) {
         //console.log(error);
       });
 
@@ -58,24 +56,24 @@
     function addRule() {
       $mdDialog
         .show({
-          controller: "addRuleController",
-          controllerAs: "addRuleCtrl",
-          templateUrl: "app/routes/coordinator/rules/overview/rules/rules.html",
+          controller: 'addRuleController',
+          controllerAs: 'addRuleCtrl',
+          templateUrl: 'app/routes/coordinator/rules/overview/rules/rules.html',
           targetEvent: event,
           clickOutsideToClose: true,
           locals: {
-            title: $translate.instant("STUDENT_RULES_ADD_AGREEMENT"),
-            about: $translate.instant("STUDENT_RULES_ADD_AGREEMENT"),
+            title: $translate.instant('STUDENT_RULES_ADD_AGREEMENT'),
+            about: $translate.instant('STUDENT_RULES_ADD_AGREEMENT'),
             formInput: {
               rule_type: null,
               rule: null,
               rule_eng: null,
-              importance: null
-            }
-          }
+              importance: null,
+            },
+          },
         })
         .then(
-          function(response) {
+          function (response) {
             if (
               !response ||
               !response.rule ||
@@ -83,9 +81,7 @@
               !response.rule_type ||
               !response.importance
             ) {
-              return toastr.warning(
-                $translate.instant("JS_FILL_IN_ALL_FIELDS")
-              );
+              return toastr.warning($translate.instant('JS_FILL_IN_ALL_FIELDS'));
             }
 
             if (response.importance >= 95) {
@@ -101,25 +97,24 @@
             } else {
               response.points = 1;
             }
-            console.log(response);
 
             // Add rule to the system
             Rules.addRule(response)
-              .then(function(response) {
+              .then(function (response) {
                 toastr.success(
-                  $translate.instant("JS_AGREEMENT") +
-                    " " +
+                  $translate.instant('JS_AGREEMENT') +
+                    ' ' +
                     response.rule +
-                    " " +
-                    $translate.instant("JS_ADDED")
+                    ' ' +
+                    $translate.instant('JS_ADDED')
                 );
                 self.rules.push(response);
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 //console.log(error);
               });
           },
-          function() {
+          function () {
             // Err dialog
           }
         );
@@ -128,15 +123,15 @@
     function deleteRule(rule) {
       if (Global.getLocalSettings().enabled_confirmation) {
         Notifications.confirmation(
-          $translate.instant("JS_ARE_YOU_SURE_DELETE_RULE"),
-          $translate.instant("JS_CAN_NOT_BE_UNDONE"),
-          $translate.instant("JS_REMOVE_AGREEMENT"),
+          $translate.instant('JS_ARE_YOU_SURE_DELETE_RULE'),
+          $translate.instant('JS_CAN_NOT_BE_UNDONE'),
+          $translate.instant('JS_REMOVE_AGREEMENT'),
           event
         ).then(
-          function() {
+          function () {
             removeRuleFromBackend(rule);
           },
-          function() {
+          function () {
             // No
           }
         );
@@ -147,11 +142,11 @@
 
     function removeRuleFromBackend(rule) {
       Rules.deleteRule(rule.id)
-        .then(function(response) {
+        .then(function (response) {
           self.rules.splice(_.indexOf(self.rules, rule), 1);
-          toastr.success($translate.instant("JS_AGREEMENT_REMOVED"));
+          toastr.success($translate.instant('JS_AGREEMENT_REMOVED'));
         })
-        .catch(function(error) {
+        .catch(function (error) {
           //console.log(error);
         });
     }
@@ -173,28 +168,28 @@
       }
       $mdDialog
         .show({
-          controller: "addRuleController",
-          controllerAs: "addRuleCtrl",
-          templateUrl: "app/routes/coordinator/rules/overview/rules/rules.html",
+          controller: 'addRuleController',
+          controllerAs: 'addRuleCtrl',
+          templateUrl: 'app/routes/coordinator/rules/overview/rules/rules.html',
           targetEvent: event,
           clickOutsideToClose: true,
           locals: {
-            title: $translate.instant("JS_CHANGE_RULE"),
-            about: $translate.instant("JS_CHANGE_RULE"),
+            title: $translate.instant('JS_CHANGE_RULE'),
+            about: $translate.instant('JS_CHANGE_RULE'),
             formInput: {
               rule_type: rule.rule_type,
               rule: rule.rule,
               rule_eng: rule.rule_eng,
-              importance: rule.importance
-            }
-          }
+              importance: rule.importance,
+            },
+          },
         })
-        .then(function(response) {
+        .then(function (response) {
           if (
             (!response || !response.rule || !response.rule_type,
             !response.rule_type || !response.importance)
           ) {
-            return toastr.warning($translate.instant("JS_FILL_IN_ALL_FIELDS"));
+            return toastr.warning($translate.instant('JS_FILL_IN_ALL_FIELDS'));
           }
 
           if (response.importance >= 95) {
@@ -217,20 +212,20 @@
 
           // Add rule to the system
           Rules.patchRule(rule)
-            .then(function(response) {
+            .then(function (response) {
               toastr.success(
-                $translate.instant("JS_AGREEMENT") +
-                  " " +
+                $translate.instant('JS_AGREEMENT') +
+                  ' ' +
                   response.rule +
-                  " " +
-                  $translate.instant("JS_CHANGED")
+                  ' ' +
+                  $translate.instant('JS_CHANGED')
               );
             })
-            .catch(function(error) {
+            .catch(function (error) {
               //console.log(error);
             });
         })
-        .catch(function(response) {
+        .catch(function (response) {
           //console.log(error);
         });
     }

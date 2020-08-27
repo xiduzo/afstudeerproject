@@ -7,8 +7,8 @@
         <md-card flex>
           <md-card-title>
             <md-card-avatar class="icon__helper" layout="column" layout-align="center center">
-              <img ng-if="accountDetailCtrl.user.avatar_hash" alt="avater" class="round"
-                ng-src="https://trello-members.s3.amazonaws.com/{{accountDetailCtrl.user.avatar_hash}}/50.png">
+              <img ng-if="accountDetailCtrl.user.avatar_hash" alt="avatar" class="round"
+                ng-src="{{accountDetailCtrl.user.avatar_hash}}/50.png">
               <img ng-if="!accountDetailCtrl.user.avatar_hash" alt="avatar" class="round" gravatar-size="50"
                 gravatar-src="accountDetailCtrl.user.email">
             </md-card-avatar>

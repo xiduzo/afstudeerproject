@@ -16,8 +16,7 @@
               ng-repeat="student in studentsCtrl.students | filter : search | orderBy : ['first_name', 'surname']" flex
               style="padding:0;" ng-if="student.email !== studentsCtrl.user.email">
               <span flex=10>
-                <img ng-if="student.avatar_hash" class="round"
-                  ng-src="https://trello-members.s3.amazonaws.com/{{student.avatar_hash}}/50.png">
+                <img ng-if="student.avatar_hash" class="round" ng-src="{{student.avatar_hash}}/50.png">
                 <img ng-if="!student.avatar_hash" class="round" gravatar-size="50" gravatar-src="student.email">
               </span>
               <span flex="90">

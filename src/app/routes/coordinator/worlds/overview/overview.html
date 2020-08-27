@@ -66,10 +66,10 @@
                                     dnd-inserted="worldsOverviewCtrl.moveGamemaster(event, world, item)">
                                     <md-list-item ng-repeat="gamemaster in world.gamemasters" dnd-draggable="gamemaster"
                                         dnd-moved="world.gamemasters.splice($index, 1)" dnd-effect-allowed="move">
-                                        <img ng-if="gamemaster.avatar_hash" class="round"
-                                            ng-src="https://trello-members.s3.amazonaws.com/{{gamemaster.avatar_hash}}/30.png">
+                                        <img ng-if="gamemaster.avatar_hash" class="round" alt="avatar"
+                                            ng-src="{{gamemaster.avatar_hash}}/30.png">
                                         <img ng-if="!gamemaster.avatar_hash" class="round" gravatar-size="30"
-                                            gravatar-src="gamemaster.email">
+                                            gravatar-src="gamemaster.email" alt="avatar">
                                         <span flex layout-padding>
                                             {{ gamemaster | fullUserName }}
                                         </span>

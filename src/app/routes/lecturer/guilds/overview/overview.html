@@ -75,9 +75,9 @@
                                                     ng-if="guild.members.length >= 1" dnd-draggable="player"
                                                     dnd-moved="guild.members.splice($index, 1)"
                                                     dnd-effect-allowed="move">
-                                                    <img ng-if="player.user.avatar_hash" class="round"
-                                                        ng-src="https://trello-members.s3.amazonaws.com/{{player.user.avatar_hash}}/30.png">
-                                                    <img ng-if="!player.user.avatar_hash" class="round"
+                                                    <img ng-if="player.user.avatar_hash" class="round" alt="avatar"
+                                                        ng-src="{{player.user.avatar_hash}}/30.png">
+                                                    <img ng-if="!player.user.avatar_hash" class="round" alt="avatar"
                                                         gravatar-size="30" gravatar-src="player.user.email">
                                                     <span flex layout-padding>
                                                         {{ player.user | fullUserName }}
