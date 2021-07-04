@@ -137,7 +137,7 @@
               }
               if (response.length) {
                 response[0].password = md5(self.login_form.password);
-                self.authenticateTrello(response[0]);
+                // self.authenticateTrello(response[0]);
               } else {
                 // TODO
                 // When the user is logging in for the first times
@@ -155,7 +155,7 @@
                     }
                     if (response) {
                       logged_in_user.password = md5(self.login_form.password);
-                      self.authenticateTrello(response);
+                      // self.authenticateTrello(response);
                     }
                   })
                   .catch(function () {
