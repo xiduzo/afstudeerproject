@@ -21,7 +21,7 @@
     "graceful-fs": "^4.2.6",
     "gulp-install": "^0.6.0",
     "natives": "^1.1.6",
-    "node-sass": "^5.0.0"
+    "node-sass": "^7.0.0"
   },
   "devDependencies": {
     "browser-sync": "^2.26.7",
